@@ -46,6 +46,17 @@ MRC with log loss and fixed instances' marginals
 clf = CMRC(r=r, loss='log').fit(X, Y)
 ```
 
+## A small training example of MRC
+```
+from MRC import MRC
+from datasets import load_mammographic
+
+X, Y = load_mammographic(return_X_y=True)
+r = len(np.unique(Y))
+clf = MRC(r=r).fit(X, Y)
+y_pred = clf.predict(X[:2,:])
+```
+
 ## Bounds on the error for MRC
 
 ```
@@ -56,11 +67,6 @@ lower_bound = clf.getLowerBound()
 
 Only available for the MRC class
 
-## Prediction
-
-```
-y_pred = clf.predict(X)
-```
 
 ## Setting the interval estimates while fitting
 
