@@ -33,7 +33,7 @@ class PhiLinear(Phi):
         Y : array-like of shape (n_samples,), default=None
             This argument will never be used in this case. 
             It is present in the signature for consistency 
-            in the signature among different feature mappings.
+            in the signature of the function among different feature mappings.
 
         Returns
         -------

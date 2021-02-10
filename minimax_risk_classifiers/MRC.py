@@ -66,7 +66,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             # Constraints in case of log loss function
 
             numConstr = phi.shape[0]
-            constraints.extend([cvx.log_sum_exp(phi[i, :, :]@mu + np.ones(self.r) * nu) <= 0 \
+            constraints.extend([cvx.log_sum_exp(phi[i, :, :]@mu + np.ones(self.n_classes) * nu) <= 0 \
                                     for i in range(numConstr)])
 
         self.mu, self.zhi, self.nu = self.trySolvers(objective, constraints, mu, zhi, nu)
@@ -113,21 +113,21 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             c= np.sum(eps, axis=1)
             zeros= np.isclose(c, 0)
             c[zeros]= 1
-            eps[zeros, :]= 1/self.r
-            c= np.tile(c, (self.r, 1)).transpose()
+            eps[zeros, :]= 1/self.n_classes
+            c= np.tile(c, (self.n_classes, 1)).transpose()
             eps/= c
             eps = 1 - eps
 
             constraints.extend(
                 [phi[j, y, :]@low_mu + low_nu <= eps[j, y]
-                    for j in range(numConstr) for y in range(self.r)])
+                    for j in range(numConstr) for y in range(self.n_classes)])
 
         elif self.loss == 'log':
             # Constraints in case of log loss function
 
             # epsilon
             eps = phi@self.mu
-            eps = np.tile(scs.logsumexp(eps, axis=1), (self.r, 1)).transpose() - eps
+            eps = np.tile(scs.logsumexp(eps, axis=1), (self.n_classes, 1)).transpose() - eps
 
             constraints.extend(
                 [phi[i, :, :]@low_mu + low_nu <= eps[i, :] \
@@ -174,8 +174,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             # check when the sum is zero
             zeros = np.isclose(c, 0)
             c[zeros] = 1
-            hy_x[zeros, :] = 1 / self.r
-            c = np.tile(c, (self.r, 1)).transpose()
+            hy_x[zeros, :] = 1 / self.n_classes
+            c = np.tile(c, (self.n_classes, 1)).transpose()
             hy_x = hy_x / c
 
         elif self.loss == 'log':
@@ -184,8 +184,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             v = np.dot(phi, self.mu)
 
             # Unnormalized conditional probabilityes
-            hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:,i], (self.r, 1)).transpose()), axis=1) \
-                        for i in range(self.r)).transpose()
+            hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:,i], (self.n_classes, 1)).transpose()), axis=1) \
+                        for i in range(self.n_classes)).transpose()
             hy_x = np.reciprocal(hy_x)
 
         return hy_x

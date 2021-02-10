@@ -4,7 +4,7 @@
 
 import numpy as np
 import cvxpy as cvx
-from sklearn.utils import check_array
+from sklearn.utils import check_array, check_X_y
 
 # Import the feature mapping
 from minimax_risk_classifiers.phi import *
@@ -69,7 +69,7 @@ class _MRC_():
 	def __init__(self, n_classes, equality=False, s=0.3, deterministic=False, 
 				seed=0, loss='0-1', solver='SCS', phi='gaussian', **phi_kwargs):
 
-		self.r = n_classes
+		self.n_classes = n_classes
 		self.equality = equality
 		self.s = s
 		self.deterministic = deterministic
@@ -177,11 +177,13 @@ class _MRC_():
 		if _tau is not None:
 			self._tau = _tau
 		else:
+			X_est, Y = check_X_y(X_est, Y, accept_sparse=True)
 			self._tau= self.phi.estExp(X_est,Y)
 
 		if _lambda is not None:
 			self._lambda = _lambda
 		else:
+			X_est, Y = check_X_y(X_est, Y, accept_sparse=True)
 			self._lambda = (self.s * self.phi.estStd(X_est,Y))/np.sqrt(n)
 
 		self.a = self._tau - self._lambda
@@ -312,7 +314,7 @@ class _MRC_():
 			if self.deterministic:
 				ind = np.argmax(proba, axis=1)
 			else:
-				ind = [np.random.choice(self.r, size= 1, p=pc)[0] for pc in proba]
+				ind = [np.random.choice(self.n_classes, size= 1, p=pc)[0] for pc in proba]
 
 		return ind
 

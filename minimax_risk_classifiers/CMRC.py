@@ -51,8 +51,8 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             cardS= M[:, -1]    
 
             # Number of classes in each set
-            cardS= np.arange(1, self.r+1).repeat([n*scs.comb(self.r, numVals)
-                                            for numVals in np.arange(1, self.r+1)])
+            cardS= np.arange(1, self.n_classes+1).repeat([n*scs.comb(self.n_classes, numVals)
+                                            for numVals in np.arange(1, self.n_classes+1)])
 
             # Calculate the psi function and add it to the objective function
             # First we calculate the all possible values of psi for all the points
@@ -118,8 +118,8 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 psi[i] = np.min(psi_arr_xi)
 
             # Conditional probabilities
-            hy_x = np.clip(np.ones((n,self.r)) + np.dot(phi, self.mu) + \
-                np.tile(psi, (self.r,1)).transpose(), 0., None)
+            hy_x = np.clip(np.ones((n,self.n_classes)) + np.dot(phi, self.mu) + \
+                np.tile(psi, (self.n_classes,1)).transpose(), 0., None)
 
 
             # normalization constraint
@@ -127,8 +127,8 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             # check when the sum is zero
             zeros = np.isclose(c, 0)
             c[zeros] = 1
-            hy_x[zeros, :] = 1 / self.r
-            c = np.tile(c, (self.r, 1)).transpose()
+            hy_x[zeros, :] = 1 / self.n_classes
+            c = np.tile(c, (self.n_classes, 1)).transpose()
             hy_x = hy_x / c
 
         elif self.loss == 'log':
@@ -137,8 +137,8 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             v = np.dot(phi, self.mu)
 
             # Unnormalized conditional probabilities
-            hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:,i], (self.r, 1)).transpose()), axis=1) \
-                        for i in range(self.r)).transpose()
+            hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:,i], (self.n_classes, 1)).transpose()), axis=1) \
+                        for i in range(self.n_classes)).transpose()
             hy_x = np.reciprocal(hy_x)
 
         return hy_x

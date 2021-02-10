@@ -146,68 +146,29 @@ class Phi():
 
         return X
 
-    def eval(self, X):
+    def eval(self, X, Y=None):
         """
         Evaluate the one-hot encoded features of the given instances i.e.,
-        X, phi(x,y) for all x in X and y=0,...,r-1
+        X, phi(x,y) for all x in X and y=0,...,r-1. In case labels are given,
+        the encodings are calculated corresponding to those labels 
+        and this form of eval function is used in the learning stage 
+        for estimating the expected values of phi i.e., tau and lambda
 
         Parameters
         ----------
         X : array-like of shape (n_samples, n_dimensions)
-            Unlabeled training instances for developing the feature matrix 
+            Unlabeled training instances for developing the feature matrix
 
-        Returns
-        -------
-        phi : array-like of shape (n_samples, n_classes, n_features * n_classes)
-            Matrix containing the one-hot encoded features 
-            for each class and for each instance.
-
-        """
-
-        n = X.shape[0]
-
-        # Get the features
-        X_feat = self.transform(X)
-
-        X_feat = check_array(X_feat, accept_sparse=True)
-
-        # product threshold values
-        # [[p11,...,p1m],...,[p11,...,p1m],...,[pn1,...pnm],...,[pn1,...pnm]] 
-        # where pij is the j-th prod theshold
-        # for i-th unlabeled instance, r*n_samples X phi.len
-        phi = np.zeros((n, self.n_classes, self.len), dtype=np.float)
-
-        # adding the intercept
-        phi[:, np.arange(self.n_classes), np.arange(self.n_classes)*self.m] = \
-                np.tile(np.ones(n), (self.n_classes, 1)).transpose()
-
-        # Compute the phi function
-        for dimInd in range(1, self.m):
-            phi[:, np.arange(self.n_classes), np.arange(self.n_classes) * self.m + dimInd] = \
-                np.tile(X_feat[:, dimInd-1], (self.n_classes, 1)).transpose()
-
-        return phi
-
-    def evaluate(self, X, Y):
-        """
-        Evaluate the one-hot encoded features of the given instances and labels pair 
-        (X,Y), phi(x,y) for (x,y) in (X,Y)
-
-        Used in the learning stage for estimating the expected values of phi 
-        i.e., tau and lambda
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_dimensions)
-            Unlabeled training instances.
-
-        Y : array-like of shape (n_samples,)
+        Y : array-like of shape (n_samples,), default=None
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        phi : ndarray of shape (n_samples, n_features * n_classes)
-            The evaluation of phi the the set of instances (X,Y),
+        phi : array-like of shape (n_samples, n_classes, n_features * n_classes)
+            Matrix containing the one-hot encoded features of all possible classes
+            of each instance. 
+            In case Y is given, the encoding for each instance are calculated
+            corresponding to those labels.
 
         """
 
@@ -222,14 +183,27 @@ class Phi():
         # [[p11,...,p1m],...,[p11,...,p1m],...,[pn1,...pnm],...,[pn1,...pnm]] 
         # where pij is the j-th prod theshold
         # for i-th unlabeled instance, r*n_samples X phi.len
-        phi = np.zeros((n, self.len), dtype=np.float)
+        if Y is None:
+            phi = np.zeros((n, self.n_classes, self.len), dtype=np.float)
 
-        # adding the intercept
-        phi[np.arange(n), Y * self.m] = np.ones(n)
+            # adding the intercept
+            phi[:, np.arange(self.n_classes), np.arange(self.n_classes)*self.m] = \
+                    np.tile(np.ones(n), (self.n_classes, 1)).transpose()
 
-        # Compute the phi function
-        for dimInd in range(1, self.m):
-            phi[np.arange(n), dimInd + Y * self.m] = X_feat[:, dimInd-1]
+            # Compute the phi function
+            for dimInd in range(1, self.m):
+                phi[:, np.arange(self.n_classes), np.arange(self.n_classes) * self.m + dimInd] = \
+                    np.tile(X_feat[:, dimInd-1], (self.n_classes, 1)).transpose()
+
+        else:
+            phi = np.zeros((n, self.len), dtype=np.float)
+
+            # adding the intercept
+            phi[np.arange(n), Y * self.m] = np.ones(n)
+
+            # Compute the phi function
+            for dimInd in range(1, self.m):
+                phi[np.arange(n), dimInd + Y * self.m] = X_feat[:, dimInd-1]
 
         return phi
 
@@ -254,7 +228,7 @@ class Phi():
         """
 
         X, Y = check_X_y(X, Y, accept_sparse= True)
-        return np.average(self.evaluate(X, Y), axis= 0)
+        return np.average(self.eval(X, Y), axis= 0)
 
     def estStd(self, X, Y):
         """
@@ -277,7 +251,7 @@ class Phi():
         """
 
         X, Y = check_X_y(X, Y, accept_sparse= True)
-        return np.std(self.evaluate(X, Y), axis= 0)
+        return np.std(self.eval(X, Y), axis= 0)
 
     def getAllSubsetConfig(self, F):
         """
