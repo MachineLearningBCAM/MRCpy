@@ -15,6 +15,8 @@ The variants available here are -
 From a terminal (OS X & linux), you can install minimax_risk_classifiers and its requirements directly by running the setup.py script as follows
 
 ```
+git clone https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers.git
+cd Minimax-Risk-Classifiers
 python3 setup.py install
 ```
 
@@ -84,3 +86,6 @@ By passing the values for tau and lambda
 clf = minimax_risk_classifiers.MRC(r=r).fit(X, _tau=0.5, _lambda=0.1)
 ```
 
+## Building your custom feature mappings
+
+For building your own customized feature mappings, you can follow this [example(customPhi.py)](https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers/blob/main/examples/customPhi.py) in the examples folder.
