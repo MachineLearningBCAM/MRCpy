@@ -28,7 +28,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
         """
 
         # Constants
-        m= self.phi.len
+        m= self.phi.len_
 
         # Variables
         mu = cvx.Variable(m)
@@ -88,7 +88,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
         """
 
         # Variables
-        m= self.phi.len
+        m= self.phi.len_
         low_mu = cvx.Variable(m)
         low_zhi = cvx.Variable(m)
         low_nu = cvx.Variable()

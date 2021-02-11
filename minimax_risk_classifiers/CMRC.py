@@ -32,7 +32,7 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         # Constants
         n= phi.shape[0]
-        m= self.phi.len
+        m= self.phi.len_
 
         # Variables
         mu = cvx.Variable(m)
@@ -96,7 +96,7 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         # n_instances X n_classes X phi.len
         phi= self.phi.eval(X)
-        m = self.phi.len
+        m = self.phi.len_
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function
