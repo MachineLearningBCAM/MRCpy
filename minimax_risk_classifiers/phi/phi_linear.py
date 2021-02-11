@@ -1,6 +1,8 @@
+
 # Import the feature mapping base class
 from minimax_risk_classifiers.phi.phi import Phi
 
+from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 
 class PhiLinear(Phi):
@@ -18,6 +20,9 @@ class PhiLinear(Phi):
     is_fitted_ : bool
         True if the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
+
+    len_ : int
+        Defines the length of the feature mapping vector.
 
     """
 
@@ -47,8 +52,7 @@ class PhiLinear(Phi):
         d= X.shape[1]
 
         # Defining the length of the phi
-        self.m = d+1
-        self.len = self.m*self.n_classes
+        self.len_ = (d+1) * self.n_classes
         self.is_fitted_ = True
 
         return self
@@ -72,6 +76,7 @@ class PhiLinear(Phi):
         """
 
         X = check_array(X, accept_sparse=True)
+        check_is_fitted(self, ["len_", "is_fitted_"])
         X_feat = X
 
         return X_feat

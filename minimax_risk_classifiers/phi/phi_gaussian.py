@@ -1,9 +1,9 @@
 # Import the feature mapping base class
 from minimax_risk_classifiers.phi.phi import Phi
 
+from sklearn.utils.validation import check_is_fitted
 import numpy as np
 import statistics
-import random
 from scipy.spatial import distance
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils.validation import check_is_fitted
@@ -35,6 +35,9 @@ class PhiGaussian(Phi):
     is_fitted_ : bool
         True if the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
+
+    len_ : int
+        Defines the length of the feature mapping vector.
 
     References
     ----------
@@ -98,8 +101,7 @@ class PhiGaussian(Phi):
                                             size=(d, int(self.n_components/2)))
 
         # Defining the length of the phi
-        self.m = self.n_components+1
-        self.len = self.m*self.n_classes
+        self.len_ = (self.n_components+1) * self.n_classes
         self.is_fitted_ = True
 
         return self
@@ -121,7 +123,7 @@ class PhiGaussian(Phi):
 
         """
 
-        check_is_fitted(self, "random_weights_")
+        check_is_fitted(self, "random_weights_", "len_", "is_fitted_")
         X = check_array(X, accept_sparse=True)
 
         X_trans = X@self.random_weights_

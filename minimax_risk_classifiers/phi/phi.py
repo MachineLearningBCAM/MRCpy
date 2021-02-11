@@ -7,6 +7,7 @@ from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_X_y, check_array
 import numpy as np
 import itertools as it
+import warnings
 import scipy.special as scs
 import time
 
@@ -52,6 +53,9 @@ class Phi():
     is_fitted_ : bool
         True if the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
+
+    len_ : int
+        Defines the length of the feature mapping vector.
 
     Note:
     -----
@@ -122,9 +126,7 @@ class Phi():
         else:
             # Used in case of MRC
             # Disctinct configurations for phi_x,y for x in X and y=1,...,r.
-            n= X.shape[0]
-            F= np.vstack({tuple(phi_xy) for phi_xy in phi.reshape((n,self.n_classes*self.len))})
-            F.shape = (F.shape[0], self.n_classes, int(F.shape[1] / self.n_classes))
+            F = np.unique(phi, axis=0)
 
         return F
 
@@ -179,31 +181,34 @@ class Phi():
 
         X_feat = check_array(X_feat, accept_sparse=True)
 
+        # Number of features + 1 (for the intercept being added for each class)
+        m = X_feat.shape[1]+1
+
         # product threshold values
         # [[p11,...,p1m],...,[p11,...,p1m],...,[pn1,...pnm],...,[pn1,...pnm]] 
         # where pij is the j-th prod theshold
         # for i-th unlabeled instance, r*n_samples X phi.len
         if Y is None:
-            phi = np.zeros((n, self.n_classes, self.len), dtype=np.float)
+            phi = np.zeros((n, self.n_classes, self.len_), dtype=np.float)
 
             # adding the intercept
-            phi[:, np.arange(self.n_classes), np.arange(self.n_classes)*self.m] = \
+            phi[:, np.arange(self.n_classes), np.arange(self.n_classes)*m] = \
                     np.tile(np.ones(n), (self.n_classes, 1)).transpose()
 
             # Compute the phi function
-            for dimInd in range(1, self.m):
-                phi[:, np.arange(self.n_classes), np.arange(self.n_classes) * self.m + dimInd] = \
+            for dimInd in range(1, m):
+                phi[:, np.arange(self.n_classes), np.arange(self.n_classes) * m + dimInd] = \
                     np.tile(X_feat[:, dimInd-1], (self.n_classes, 1)).transpose()
 
         else:
-            phi = np.zeros((n, self.len), dtype=np.float)
+            phi = np.zeros((n, self.len_), dtype=np.float)
 
             # adding the intercept
-            phi[np.arange(n), Y * self.m] = np.ones(n)
+            phi[np.arange(n), Y * m] = np.ones(n)
 
             # Compute the phi function
-            for dimInd in range(1, self.m):
-                phi[np.arange(n), dimInd + Y * self.m] = X_feat[:, dimInd-1]
+            for dimInd in range(1, m):
+                phi[np.arange(n), dimInd + Y * m] = X_feat[:, dimInd-1]
 
         return phi
 
@@ -273,6 +278,9 @@ class Phi():
         """
 
         n= F.shape[0]
+
+        # Supress the depreciation warnings
+        warnings.simplefilter('ignore')
 
         # Summing up the phi configurations for all possible subsets of classes for each instance
         avgF= np.vstack((np.sum(F[:, S, ], axis=1)

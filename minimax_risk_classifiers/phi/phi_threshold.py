@@ -33,6 +33,9 @@ class PhiThreshold(Phi):
         True if the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
 
+    len_ : int
+        Defines the length of the feature mapping vector.
+
     """
 
     def __init__(self, n_classes, n_thresholds=200):
@@ -67,8 +70,7 @@ class PhiThreshold(Phi):
         self.thrsDim_, self.thrsVal_ = self.d_tree_split(X, Y, self.n_thresholds)
 
         # Defining the length of the phi
-        self.m = len(self.thrsDim_) + 1
-        self.len = self.m*self.n_classes
+        self.len_ = (len(self.thrsDim_)+1) * self.n_classes
         self.is_fitted_ = True
 
         return self
@@ -123,7 +125,9 @@ class PhiThreshold(Phi):
 
     def transform(self, X):
         """
-        Compute the random fourier features from the given instances.
+        Compute the features(0/1) 
+        by comparing with the thresholds obtained in each dimension.
+        So, if X_ij < th_j, f_i(j_i) = 1 else f_i(j_i) = 0
 
         Parameters
         ----------
@@ -140,7 +144,7 @@ class PhiThreshold(Phi):
 
         n = X.shape[0]
 
-        check_is_fitted(self, ["thrsDim_", "thrsVal_"])
+        check_is_fitted(self, ["thrsDim_", "thrsVal_", "len_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
         # Store the features based on the thresholds obtained
         X_feat = np.zeros((n, len(self.thrsDim_)), dtype=int)
