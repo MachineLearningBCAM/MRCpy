@@ -4,7 +4,6 @@ Simple example of using MRC with 0-1 loss.
 """
 
 import numpy as np
-import warnings
 import time
 
 from sklearn.model_selection import StratifiedKFold
@@ -17,9 +16,6 @@ from minimax_risk_classifiers.MRC import MRC
 from datasets import load_mammographic
 
 if __name__ == '__main__':
-
-	# Supress the warnings
-	warnings.simplefilter('ignore')
 
 	# Loading the dataset
 	X, Y = load_mammographic(return_X_y=True)

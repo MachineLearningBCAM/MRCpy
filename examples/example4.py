@@ -4,7 +4,6 @@ Simple example of using CMRC with 0-1 loss.
 """
 
 import numpy as np
-import warnings
 import time
 
 from sklearn.model_selection import StratifiedKFold
@@ -18,9 +17,6 @@ from datasets import load_mammographic
 
 if __name__ == '__main__':
 
-	# Supress the warnings
-	warnings.simplefilter('ignore')
-
 	# Loading the dataset
 	X, Y = load_mammographic(return_X_y=True)
 	r = len(np.unique(Y))
@@ -30,7 +26,7 @@ if __name__ == '__main__':
 	X = trans.fit_transform(X, Y)
 
 	# Fit the MRC model
-	clf = CMRC(n_classes=r, phi='gaussian').fit(X, Y)
+	clf = CMRC(n_classes=r).fit(X, Y)
 
 	# Prediction
 	print('\n\nThe predicted values for the first 3 instances are : ')

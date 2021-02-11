@@ -4,7 +4,6 @@ Example of using CMRC with some of the common classification datasets.
 """
 
 import numpy as np
-import warnings
 import time
 
 from sklearn.model_selection import StratifiedKFold
@@ -45,7 +44,7 @@ def runCMRC(phi, loss):
 		X = trans.fit_transform(X, Y)
 
 		# Generate the partitions of the stratified cross-validation
-		cv = StratifiedKFold(n_splits=10, random_state=random_seed)
+		cv = StratifiedKFold(n_splits=10, random_state=random_seed, shuffle=True)
 
 		np.random.seed(random_seed)
 		cvError= list()
@@ -82,9 +81,6 @@ def runCMRC(phi, loss):
 			"\n ############## \n\n\n")
 
 if __name__ == '__main__':
-
-	# Supress the warnings
-	warnings.simplefilter('ignore')
 
 	print('******************** Example 2 (CMRC with the additional marginal constraints) ********************** \n\n')
 
