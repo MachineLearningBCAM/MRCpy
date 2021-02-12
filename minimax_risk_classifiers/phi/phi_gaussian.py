@@ -123,7 +123,7 @@ class PhiGaussian(Phi):
 
         """
 
-        check_is_fitted(self, "random_weights_", "len_", "is_fitted_")
+        check_is_fitted(self, ["random_weights_", "len_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
 
         X_trans = X@self.random_weights_
