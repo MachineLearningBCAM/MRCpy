@@ -80,8 +80,10 @@ class _MRC_():
 
 	"""
 
-	def __init__(self, n_classes, equality=False, s=0.3, deterministic=False, random_state=None, loss='0-1', 
-				warm_start=False, use_cvx=False, solver='SCS', max_iters = 10000, phi='gaussian', **phi_kwargs):
+	def __init__(self, n_classes, equality=False, s=0.3, \
+				deterministic=False, random_state=None, loss='0-1', \
+				warm_start=False, use_cvx=False, solver='SCS', \
+				max_iters = 10000, phi='gaussian', **phi_kwargs):
 
 		self.n_classes = n_classes
 		self.equality = equality
