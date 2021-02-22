@@ -197,7 +197,7 @@ class _MRC_():
 				# it is converted to an array of size equal to the number of features of phi
 				# it imples that the estimates for all the features is same.
 				tau_ = np.asarray([tau_]*self.phi.len_)
-			self.tau_ = check_array(tau_, accept_sparse=True)
+			self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
 
 		else:
 			X, Y = check_X_y(X, Y, accept_sparse=True)
@@ -210,7 +210,7 @@ class _MRC_():
 				# it is converted to an array of size equal to the number of features of phi
 				# it imples that the variance in the estimates for all the features is same.
 				lambda_ = np.asarray([lambda_]*self.phi.len_)
-			self.lambda_ = check_array(lambda_, accept_sparse=True)
+			self.lambda_ = check_array(lambda_, accept_sparse=True, ensure_2d=False)
 
 		else:
 			X, Y = check_X_y(X, Y, accept_sparse=True)
