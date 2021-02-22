@@ -37,7 +37,7 @@ def runMRC(phi, loss):
 		# Print the dataset name
 		print(" ############## \n" + dataName[j] + " n= " + str(n) + " , d= " + str(d) + ", cardY= "+ str(r))
 
-		clf = MRC(n_classes=r, phi=phi, loss=loss)
+		clf = MRC(n_classes=r, phi=phi, loss=loss, max_iters=10000)
 
 		# Preprocess
 		trans = SimpleImputer(strategy='median')
@@ -67,14 +67,13 @@ def runMRC(phi, loss):
 			startTime= time.time()
 
 			clf.fit(X_train, y_train)
-			upper += clf.upper
+			upper += clf.upper_
 			lower += clf.getLowerBound()
 
 			# Calculate the training time
 			auxTime+= time.time() - startTime
 
 			y_pred= clf.predict(X_test)
-
 			cvError.append(np.average(y_pred != y_test))
 
 		res_mean[j] = np.average(cvError)

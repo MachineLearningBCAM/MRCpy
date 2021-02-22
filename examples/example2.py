@@ -37,7 +37,7 @@ def runCMRC(phi, loss):
 		# Print the dataset name
 		print(" ############## \n" + dataName[j] + " n= " + str(n) + " , d= " + str(d) + ", cardY= "+ str(r))
 
-		clf = CMRC(n_classes=r, phi=phi, loss=loss)
+		clf = CMRC(n_classes=r, phi=phi, loss=loss, max_iters=2000)
 
 		# Preprocess
 		trans = SimpleImputer(strategy='median')
