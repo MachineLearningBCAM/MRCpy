@@ -27,6 +27,10 @@ class PhiGaussian(Phi):
         Number of Monte Carlo samples per original features.
         Equals the dimensionality of the computed (mapped) feature space.
 
+    random_state : int, RandomState instance, default=None
+        Used to produce the random weights 
+        used for the approximation of the gaussian kernel.
+
     Attributes
     ----------
     random_weights_ : array-like of shape (n_features, n_components/2)
@@ -48,13 +52,14 @@ class PhiGaussian(Phi):
 
     """
 
-    def __init__(self, n_classes, gamma='avg_ann_50', n_components=300):
+    def __init__(self, n_classes, gamma='avg_ann_50', n_components=300, random_state=None):
 
         # Call the base class init function.
         super().__init__(n_classes=n_classes)
 
         self.gamma = gamma
         self.n_components = n_components
+        self.random_state = random_state
 
     def fit(self, X, Y=None):
         """
@@ -96,8 +101,8 @@ class PhiGaussian(Phi):
 
         # Approximating the gaussian kernel using random features 
         # that are obtained from a normal distribution.
-        random_state = check_random_state(None)
-        self.random_weights_ = random_state.normal(0, np.sqrt(2*self.gamma_val), \
+        self.random_state = check_random_state(self.random_state)
+        self.random_weights_ = self.random_state.normal(0, np.sqrt(2*self.gamma_val), \
                                             size=(d, int(self.n_components/2)))
 
         # Defining the length of the phi
