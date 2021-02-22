@@ -166,7 +166,8 @@ class Phi():
 
         Returns
         -------
-        phi : array-like of shape (n_samples, n_classes, n_features * n_classes)
+        phi : array-like of shape (n_samples, n_classes, n_features * n_classes) or
+                                (n_samples, n_features * n_classes) if Y is given
             Matrix containing the one-hot encoded features of all possible classes
             of each instance. 
             In case Y is given, the encoding for each instance are calculated
