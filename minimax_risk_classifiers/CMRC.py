@@ -34,7 +34,23 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
         Parameters learnt by the optimization when solved using CVXpy.
         This paramter is not required in the prediction stage of MRC
 
+    params_ : a dictionary
+        Stores the optimal points and best value of the function 
+        when the warm_start=True.
+
     """
+
+    # Redefining the init function to reduce the default number for maximum iterations.
+    # In case of CMRC, the convergence is observed to be fast 
+    # and hence less iterations should be sufficient
+    def __init__(self, n_classes, equality=False, s=0.3, \
+                deterministic=False, random_state=None, loss='0-1', \
+                warm_start=False, use_cvx=False, solver='SCS', \
+                max_iters = 2000, phi='gaussian', **phi_kwargs):
+        super().__init__(n_classes, equality, deterministic, \
+                        random_state, loss, warm_start, \
+                        use_cvx, solver, max_iters, \
+                        phi, **phi_kwargs)
 
     def _minimaxRisk(self, X):
         """

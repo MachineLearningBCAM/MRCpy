@@ -49,6 +49,14 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
     lower_ : float
         Optimized lower bound of the MRC classifier.
+
+    upper_params_ : a dictionary
+        Stores the optimal points and best value for the upper bound of the function 
+        when the warm_start=True.
+
+    params_ : a dictionary
+        Stores the optimal points and best value for the lower bound of the function 
+        when the warm_start=True.
     """
 
     def _minimaxRisk(self, X):
