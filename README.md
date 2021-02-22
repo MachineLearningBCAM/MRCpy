@@ -83,7 +83,7 @@ clf = minimax_risk_classifiers.MRC(n_classes=n_classes).fit(X, Y, X_)
 
 By passing the values for tau and lambda
 ```
-clf = minimax_risk_classifiers.MRC(n_classes=n_classes).fit(X, _tau=0.5, _lambda=0.1)
+clf = minimax_risk_classifiers.MRC(n_classes=n_classes).fit(X, tau_=[0.5, 0.5, ..., 0.1] , lambda_=[0.1, 0.02, ..., 0.04)
 ```
 
 ## Building your custom feature mappings
