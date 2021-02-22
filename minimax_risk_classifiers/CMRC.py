@@ -47,10 +47,10 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 deterministic=False, random_state=None, loss='0-1', \
                 warm_start=False, use_cvx=False, solver='SCS', \
                 max_iters = 2000, phi='gaussian', **phi_kwargs):
-        super().__init__(n_classes, equality, deterministic, \
-                        random_state, loss, warm_start, \
-                        use_cvx, solver, max_iters, \
-                        phi, **phi_kwargs)
+        super().__init__(n_classes=n_classes, equality=equality, s=s, 
+                        deterministic=deterministic, random_state=random_state, loss=loss,\
+                        warm_start=warm_start, use_cvx=use_cvx, solver=solver, \
+                        max_iters=max_iters, phi=phi, **phi_kwargs)
 
     def _minimaxRisk(self, X):
         """
