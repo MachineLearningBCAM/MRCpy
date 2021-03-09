@@ -234,7 +234,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             self.mu_l_, self.zhi_l_, self.nu_l_ = self.trySolvers(objective, constraints, low_mu, low_zhi, low_nu)
 
             # Compute the lower bound
-            self.lower= (1/2)*(self.b + self.a).T@self.mu_l_ - (1/2)*(self.b - self.a).T@self.zhi_l_ + self.nu_l_
+            self.lower_= (1/2)*(self.b + self.a).T@self.mu_l_ - (1/2)*(self.b - self.a).T@self.zhi_l_ + self.nu_l_
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
