@@ -1,12 +1,12 @@
 """Sphinx configuration file."""
 
-import geomstats
+import minimax_risk_classifiers
 
 
-project = 'Geomstats'
-copyright = '2019-2020, Geomstats, Inc.'
-author = 'Geomstats Team'
-release = version = geomstats.__version__
+project = 'MRCpy'
+copyright = '2020-2021, MRCpy, Inc.'
+author = 'MRCpy Team'
+release = version = minimax_risk_classifiers.__version__
 
 extensions = [
     'nbsphinx',
@@ -34,7 +34,7 @@ nbsphinx_allow_errors = True
 
 templates_path = ['_templates']
 
-source_suffix = ['.rst', '.ipynb']
+source_suffix = ['.md', '.ipynb']
 
 master_doc = 'index'
 
@@ -45,8 +45,8 @@ exclude_patterns = ['build', 'Thumbs.db', '.DS_Store']
 pygments_style = None
 
 html_theme = 'sphinx_rtd_theme'
-html_baseurl = 'geomstats.github.io'
-htmlhelp_basename = 'geomstatsdoc'
+html_baseurl = 'https://machinelearningbcam.github.io/Minimax-Risk-Classifiers/'
+htmlhelp_basename = 'MRCpydoc'
 html_last_updated_fmt = '%c'
 
 latex_elements = {
@@ -54,18 +54,18 @@ latex_elements = {
 
 
 latex_documents = [
-    (master_doc, 'geomstats.tex', 'geomstats Documentation',
-     'Geomstats Team', 'manual'),
+    (master_doc, 'MRCpy.tex', 'MRCpy Documentation',
+     'MRCpy Team', 'manual'),
 ]
 
 man_pages = [
-    (master_doc, 'geomstats', 'geomstats Documentation',
+    (master_doc, 'MRCpy', 'MRCpy Documentation',
      [author], 1)
 ]
 
 texinfo_documents = [
-    (master_doc, 'geomstats', 'geomstats Documentation',
-     author, 'geomstats', 'One line description of project.',
+    (master_doc, 'MRCpy', 'MRCpy Documentation',
+     author, 'MRCpy', 'One line description of project.',
      'Miscellaneous'),
 ]
 
