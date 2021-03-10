@@ -34,7 +34,7 @@ nbsphinx_allow_errors = True
 
 templates_path = ['_templates']
 
-source_suffix = ['.md', '.ipynb']
+source_suffix = ['.rst', '.ipynb']
 
 master_doc = 'index'
 
@@ -54,7 +54,7 @@ latex_elements = {
 
 
 latex_documents = [
-    (master_doc, 'MRCpy.tex', 'MRCpy Documentation',
+    (master_doc, 'MRCpydoc.tex', 'MRCpy Documentation',
      'MRCpy Team', 'manual'),
 ]
 
