@@ -45,7 +45,7 @@ exclude_patterns = ['build', 'Thumbs.db', '.DS_Store']
 pygments_style = None
 
 html_theme = 'sphinx_rtd_theme'
-html_baseurl = 'https://machinelearningbcam.github.io/Minimax-Risk-Classifiers/'
+html_baseurl = 'machinelearningbcam.github.io/Minimax-Risk-Classifiers/'
 htmlhelp_basename = 'MRCpydoc'
 html_last_updated_fmt = '%c'
 
