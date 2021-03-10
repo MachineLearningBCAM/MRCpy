@@ -1,5 +1,0 @@
-*************
-Visualization
-*************
-
-Testing

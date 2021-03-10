@@ -1,6 +1,0 @@
-Geomstats
-=========
-
-Testing
-
-
