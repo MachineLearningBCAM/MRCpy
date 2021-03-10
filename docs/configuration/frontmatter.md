@@ -11,7 +11,7 @@ nav_order: 2
 ```yml
 ---
 layout: default
-title: Page Title Goes Here
+title: MRCpy
 ---
 
 ```
