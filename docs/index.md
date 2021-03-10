@@ -46,7 +46,7 @@ support for different execution backends---namely NumPy, PyTorch, and TensorFlow
 To learn how to use `geomstats`, visit the page :ref:`first_steps`.
 To contribute to `geomstats` visit the page :ref:`contributing`.
 
-<!-- .. toctree::
+.. toctree::
    :maxdepth: 1
    :caption: Getting Started
 
@@ -59,4 +59,3 @@ To contribute to `geomstats` visit the page :ref:`contributing`.
    03_simple_machine_learning_tangent_spaces.rst
    04_frechet_mean_and_tangent_pca.rst
    05_embedding_graph_structured_data_h2.rst
- -->
