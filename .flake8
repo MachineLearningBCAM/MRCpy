@@ -1,0 +1,4 @@
+[flake8]
+application_import_names = minimax_risk_classifiers
+docstring-convention = numpy
+import_order_style = smarkets
