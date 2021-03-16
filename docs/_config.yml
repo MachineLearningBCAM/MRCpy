@@ -3,7 +3,7 @@ description: Supervised Classification using Minimax Approach
 remote_theme: carlosperate/jekyll-theme-rtd
 
 # Theme settings:
-site_author: Kartheek
+site_author: Kartheek Reddy
 repo_url: "https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers"
 edit_on_github: true
 github_docs_folder: true
