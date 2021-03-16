@@ -5,6 +5,7 @@ from minimax_risk_classifiers.phi.phi import Phi
 from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
 
+
 class PhiLinear(Phi):
     """
     Phi (feature function) obtained using the linear kernel i.e.,
@@ -33,26 +34,31 @@ class PhiLinear(Phi):
         Parameters
         ----------
         X : array-like of shape (n_samples, n_dimensions)
-            Unlabeled training instances used to learn the feature configurations
+            Unlabeled training instances
+            used to learn the feature configurations
 
         Y : array-like of shape (n_samples,), default=None
-            This argument will never be used in this case. 
-            It is present in the signature for consistency 
+            This argument will never be used in this case.
+            It is present in the signature for consistency
             in the signature of the function among different feature mappings.
 
         Returns
         -------
-        self : 
+        self :
             Fitted estimator
 
         """
 
         X = check_array(X, accept_sparse=True)
 
-        d= X.shape[1]
+        d = X.shape[1]
 
         # Defining the length of the phi
-        self.len_ = (d+1) * self.n_classes
+        self.len_ = (d+1)
+        # For one-hot encoding in case of multi-class classification.
+        if self.n_classes != 2:
+            self.len_ *= self.n_classes
+
         self.is_fitted_ = True
 
         return self
@@ -70,7 +76,7 @@ class PhiLinear(Phi):
         Returns
         -------
         X_feat : array-like of shape (n_samples, n_features)
-            Transformed features from the given instances i.e., 
+            Transformed features from the given instances i.e.,
             the instances itself.
 
         """
@@ -80,5 +86,3 @@ class PhiLinear(Phi):
         X_feat = X
 
         return X_feat
-
-    

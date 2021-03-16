@@ -4,20 +4,21 @@ import csv
 import numpy as np
 from sklearn.utils import Bunch
 
+
 def normalizeLabels(origY):
     """
     Normalize the labels of the instances in the range 0,...r-1 for r classes
     """
 
-    #Map the values of Y from 0 to r-1
-    domY= np.unique(origY)
-    r= len(domY)
-    Y= np.zeros(origY.shape[0], dtype= np.int)
+    # Map the values of Y from 0 to r-1
+    domY = np.unique(origY)
+    Y = np.zeros(origY.shape[0], dtype=np.int)
 
-    for i,y in enumerate(domY):
-        Y[origY==y]= i
+    for i, y in enumerate(domY):
+        Y[origY == y] = i
 
     return Y
+
 
 def load_adult(return_X_y=False):
     """Load and return the adult incomes prediction dataset (classification).
@@ -35,7 +36,7 @@ def load_adult(return_X_y=False):
     return_X_y : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
-    
+
     Returns
     -------
     data : Bunch
@@ -61,13 +62,14 @@ def load_adult(return_X_y=False):
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
         target = np.empty((n_samples,), dtype=np.int)
-        temp = next(data_file) # names of features
+        temp = next(data_file)
+        # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=np.int)
-    
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -77,6 +79,7 @@ def load_adult(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_diabetes(return_X_y=False):
     """Load and return the Pima Indians Diabetes dataset (classification).
@@ -102,12 +105,12 @@ def load_diabetes(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
     module_path = dirname(__file__)
-    
+
     fdescr_name = join(module_path, 'descr', 'diabetes.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
@@ -137,6 +140,7 @@ def load_diabetes(return_X_y=False):
                  DESCR=descr_text,
                  filename=data_file_name)
 
+
 def load_iris(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
 
@@ -161,12 +165,12 @@ def load_iris(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
     module_path = dirname(__file__)
-    
+
     fdescr_name = join(module_path, 'descr', 'iris.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
@@ -201,6 +205,7 @@ def load_iris(return_X_y=False):
                  DESCR=descr_text,
                  filename=data_file_name)
 
+
 def load_redwine(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
 
@@ -225,12 +230,12 @@ def load_redwine(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
     module_path = dirname(__file__)
-    
+
     fdescr_name = join(module_path, 'descr', 'redwine.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
@@ -247,7 +252,8 @@ def load_redwine(return_X_y=False):
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
-            data[i] = np.asarray([np.float(i) for i in d[:-1]], dtype=np.float64)
+            data[i] = np.asarray([np.float(i) for i in d[:-1]],
+                                 dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=np.int)
 
     if return_X_y:
@@ -259,6 +265,7 @@ def load_redwine(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_forestcov(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
@@ -285,7 +292,7 @@ def load_forestcov(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
@@ -303,13 +310,14 @@ def load_forestcov(return_X_y=False):
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
         target = np.empty((n_samples,), dtype=np.int)
-        temp = next(data_file) # names of features
+        temp = next(data_file)
+        # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=np.int)
-    
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -319,6 +327,7 @@ def load_forestcov(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_letterrecog(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
@@ -343,7 +352,7 @@ def load_letterrecog(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
@@ -361,7 +370,8 @@ def load_letterrecog(return_X_y=False):
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
         target = np.empty((n_samples,), dtype=np.int)
-        temp = next(data_file) # names of features
+        temp = next(data_file)
+        # names of features
         feature_names = np.array(temp)
 
         classes = []
@@ -373,7 +383,7 @@ def load_letterrecog(return_X_y=False):
             else:
                 classes.append(d[0])
                 target[i] = np.asarray(classes.index(d[0]), dtype=np.int)
-    
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -383,6 +393,7 @@ def load_letterrecog(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_ecoli(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
@@ -408,12 +419,12 @@ def load_ecoli(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
     module_path = dirname(__file__)
-    
+
     fdescr_name = join(module_path, 'descr', 'ecoli.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
@@ -449,6 +460,7 @@ def load_ecoli(return_X_y=False):
                  DESCR=descr_text,
                  filename=data_file_name)
 
+
 def load_vehicle(return_X_y=False):
     """Load and return the Iris Plants Dataset (classification).
 
@@ -473,12 +485,12 @@ def load_vehicle(return_X_y=False):
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
-        
+
     (data, target) : tuple if ``return_X_y`` is True
 
     """
     module_path = dirname(__file__)
-    
+
     fdescr_name = join(module_path, 'descr', 'vehicle.doc')
     with open(fdescr_name) as f:
         descr_text = f.read()
@@ -506,6 +518,13 @@ def load_vehicle(return_X_y=False):
 
     if return_X_y:
         return data, normalizeLabels(target)
+    return Bunch(data=data,
+                 target=normalizeLabels(target),
+                 # last column is target value
+                 feature_names=feature_names[:-1],
+                 DESCR=descr_text,
+                 filename=data_file_name)
+
 
 def load_segment(return_X_y=False):
     """Load and return the Credit Approval prediction dataset (classification).
@@ -554,9 +573,10 @@ def load_segment(return_X_y=False):
 
         for i, d in enumerate(data_file):
             try:
-                data[i] = np.asarray([np.float(i) for i in d[:-1]], dtype=np.float64)
+                data[i] = np.asarray([np.float(i) for i in d[:-1]],
+                                     dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
@@ -568,6 +588,7 @@ def load_segment(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_satellite(return_X_y=False):
     """Load and return the Credit Approval prediction dataset (classification).
@@ -618,7 +639,7 @@ def load_satellite(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
@@ -630,6 +651,7 @@ def load_satellite(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_optdigits(return_X_y=False):
     """Load and return the Credit Approval prediction dataset (classification).
@@ -680,7 +702,7 @@ def load_optdigits(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
@@ -692,6 +714,7 @@ def load_optdigits(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_credit(return_X_y=False):
     """Load and return the Credit Approval prediction dataset (classification).
@@ -742,7 +765,7 @@ def load_credit(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
@@ -754,6 +777,7 @@ def load_credit(return_X_y=False):
                  feature_names=feature_names[:-1],
                  DESCR=descr_text,
                  filename=data_file_name)
+
 
 def load_magic(return_X_y=False):
     """Load and return the Magic Gamma Telescope dataset (classification).
@@ -814,6 +838,7 @@ def load_magic(return_X_y=False):
                  DESCR=descr_text,
                  filename=data_file_name)
 
+
 def load_glass(return_X_y=False):
     """Load and return the Glass Identification Data Set (classification).
 
@@ -861,9 +886,8 @@ def load_glass(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
-
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -881,6 +905,7 @@ def load_glass(return_X_y=False):
                                 'Ca: Calcium',
                                 'Ba: Barium',
                                 'Fe: Iron'])
+
 
 def load_haberman(return_X_y=False):
     """Load and return the Haberman's Survival Data Set (classification).
@@ -929,18 +954,18 @@ def load_haberman(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
-
 
     if return_X_y:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
                  DESCR=descr_text,
-                 feature_names=['PatientAge', 
-                                'OperationYear', 
+                 feature_names=['PatientAge',
+                                'OperationYear',
                                 'PositiveAxillaryNodesDetected'])
+
 
 def load_mammographic(return_X_y=False):
     """Load and return the Mammographic Mass Data Set (classification).
@@ -989,9 +1014,8 @@ def load_mammographic(return_X_y=False):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
-                print(i,d[:-1])
+                print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
-
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -1004,8 +1028,9 @@ def load_mammographic(return_X_y=False):
                                 'margin',
                                 'density'])
 
+
 def load_indian_liver(return_X_y=False):
-    """Load and return the Indian Liver Patient Data Set 
+    """Load and return the Indian Liver Patient Data Set
     (classification).
 
     =========================================================

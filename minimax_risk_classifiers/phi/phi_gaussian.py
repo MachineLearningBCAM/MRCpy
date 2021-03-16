@@ -4,14 +4,13 @@ from minimax_risk_classifiers.phi.phi import Phi
 from sklearn.utils.validation import check_is_fitted
 import numpy as np
 import statistics
-from scipy.spatial import distance
 from sklearn.neighbors import NearestNeighbors
-from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array, check_random_state
+
 
 class PhiGaussian(Phi):
     """
-    Phi (feature function) obtained by approximating the rbf kernel by 
+    Phi (feature function) obtained by approximating the rbf kernel by
     Random Fourier Feature map.
 
     Parameters
@@ -20,7 +19,7 @@ class PhiGaussian(Phi):
         The number of classes in the dataset.
 
     gamma : {'scale', 'avg_ann', 'avg_ann_50', float} default = 'avg_ann_50'
-        It defines the type of heuristic to be used 
+        It defines the type of heuristic to be used
         to calculate the scaling parameter for the gaussian kernel.
 
     n_components : int, default=300
@@ -28,7 +27,7 @@ class PhiGaussian(Phi):
         Equals the dimensionality of the computed (mapped) feature space.
 
     random_state : int, RandomState instance, default=None
-        Used to produce the random weights 
+        Used to produce the random weights
         used for the approximation of the gaussian kernel.
 
     Attributes
@@ -52,7 +51,8 @@ class PhiGaussian(Phi):
 
     """
 
-    def __init__(self, n_classes, gamma='avg_ann_50', n_components=300, random_state=None):
+    def __init__(self, n_classes, gamma='avg_ann_50',
+                 n_components=300, random_state=None):
 
         # Call the base class init function.
         super().__init__(n_classes=n_classes)
@@ -63,29 +63,31 @@ class PhiGaussian(Phi):
 
     def fit(self, X, Y=None):
         """
-        Learn the set of features for the given type using the given instances.
-        Also, compute the value of gamma hyperparameter if the value is not given.
+        Learn the set of features for the given type using the given instances
+        Also, compute the value of gamma hyperparameter
+        if the value is not given.
 
         Parameters
         ----------
         X : array-like of shape (n_samples, n_dimensions)
-            Unlabeled training instances used to learn the feature configurations.
+            Unlabeled training instances
+            used to learn the feature configurations.
 
         Y : array-like of shape (n_samples,), default=None
-            This argument will never be used in this case. 
-            It is present in the signature for consistency 
+            This argument will never be used in this case.
+            It is present in the signature for consistency
             in the signature of the function among different feature mappings.
 
         Returns
         -------
-        self : 
+        self :
             Fitted estimator
 
         """
 
         X = check_array(X, accept_sparse=True)
 
-        d= X.shape[1]
+        d = X.shape[1]
         # Evaluate the gamma according to the gamma type given in self.gamma
         if self.gamma == 'scale':
             self.gamma_val = 1 / (d*X.var())
@@ -99,14 +101,19 @@ class PhiGaussian(Phi):
         else:
             raise ValueError('Unexpected value for gamma ...')
 
-        # Approximating the gaussian kernel using random features 
+        # Approximating the gaussian kernel using random features
         # that are obtained from a normal distribution.
         self.random_state = check_random_state(self.random_state)
-        self.random_weights_ = self.random_state.normal(0, np.sqrt(2*self.gamma_val), \
-                                            size=(d, int(self.n_components/2)))
+        self.random_weights_ = \
+            self.random_state.normal(0, np.sqrt(2*self.gamma_val),
+                                     size=(d, int(self.n_components/2)))
 
         # Defining the length of the phi
-        self.len_ = (self.n_components+1) * self.n_classes
+        self.len_ = (self.n_components+1)
+        # For one-hot encoding in case of multi-class classification.
+        if self.n_classes != 2:
+            self.len_ *= self.n_classes
+
         self.is_fitted_ = True
 
         return self
@@ -123,7 +130,7 @@ class PhiGaussian(Phi):
         Returns
         -------
         X_feat : array-like of shape (n_samples, n_features)
-            Transformed features from the given instances i.e., 
+            Transformed features from the given instances i.e.,
             the instances itself.
 
         """
@@ -133,24 +140,27 @@ class PhiGaussian(Phi):
 
         X_trans = X@self.random_weights_
         X_feat = (1/np.sqrt(int(self.n_components/2))) * \
-                        np.hstack((np.cos(X_trans),np.sin(X_trans)))
+            np.hstack((np.cos(X_trans), np.sin(X_trans)))
 
         return X_feat
 
     def heuristic_gamma(self, X, Y):
 
         """
-        Compute the scale parameter for gaussian kernels using the heuristic - 
+        Compute the scale parameter for gaussian kernels using the heuristic -
 
-                sigma = median{ {min ||x_i-x_j|| for j|y_j != +1 } for i|y_i != -1 } 
+                sigma = median{ {min ||x_i-x_j|| for j|y_j != +1 }
+                                    for i|y_i != -1 }
 
-        for two classes {+1, -1}. For multi-class, we use the same strategy 
-        by finding median of min norm value for each class against all other classes 
+        for two classes {+1, -1}. For multi-class, we use the same strategy
+        by finding median of min norm value
+        for each class against all other classes
         and then taking the average value of the median of all the classes.
 
-        The heuristic calculates the value of sigma for gaussian kernels. 
-        So to find the gamma value for the kernel defined in our implementation, 
-        the following formula is used - 
+        The heuristic calculates the value of sigma for gaussian kernels.
+        So to find the gamma value
+        for the kernel defined in our implementation,
+        the following formula is used -
                 gamma = 1/ (2 * sigma^2)
 
         Parameters
@@ -174,13 +184,14 @@ class PhiGaussian(Phi):
         n_classes = np.max(Y) + 1
 
         for i in range(n_classes):
-            x_i = X[Y == i,:]
-            x_not_i = X[Y != i,:]
+            x_i = X[Y == i, :]
+            x_not_i = X[Y != i, :]
 
-            # Find the distance of each point of this class 
+            # Find the distance of each point of this class
             # with every other point of other class
-            norm_vec = np.linalg.norm(np.tile(x_not_i,(x_i.shape[0], 1)) - \
-                np.repeat(x_i, x_not_i.shape[0], axis=0), axis=1)
+            norm_vec = np.linalg.norm(np.tile(x_not_i, (x_i.shape[0], 1)) -
+                                      np.repeat(x_i, x_not_i.shape[0],
+                                                axis=0), axis=1)
             dist_mat = np.reshape(norm_vec, (x_not_i.shape[0], x_i.shape[0]))
 
             # Find the min distance for each point and take the median distance
@@ -197,15 +208,18 @@ class PhiGaussian(Phi):
     def rff_gamma(self, X):
 
         """
-        Function to find the scale parameter for random fourier features obtained from 
-        gaussian kernels using the heuristic given in - 
-                    
+        Function to find the scale parameter
+        for random fourier features obtained from
+        gaussian kernels using the heuristic given in -
+
                 "Compact Nonlinear Maps and Circulant Extensions"
 
-        The heuristic to calculate the sigma states that it is a value that is obtained from
-        the average distance to the 50th nearest neighbour estimated from 1000 samples of the dataset.
+        The heuristic to calculate the sigma states that
+        it is a value that is obtained from
+        the average distance to the 50th nearest neighbour estimated
+        from 1000 samples of the dataset.
 
-        Gamma value is given by - 
+        Gamma value is given by -
                 gamma = 1/ (2 * sigma^2)
 
         Parameters
@@ -225,18 +239,14 @@ class PhiGaussian(Phi):
         (https://arxiv.org/pdf/1503.03893.pdf)
 
         """
-
-        # Number of training samples
-        n = X.shape[0]
-
         neighbour_ind = 50
 
         # Find the nearest neighbors
-        nbrs = NearestNeighbors(n_neighbors=(neighbour_ind+1), algorithm='ball_tree').fit(X)
+        nbrs = NearestNeighbors(n_neighbors=(neighbour_ind+1),
+                                algorithm='ball_tree').fit(X)
         distances, indices = nbrs.kneighbors(X)
 
         # Compute the average distance to the 50th nearest neighbour
         sigma = np.average(distances[:, neighbour_ind])
 
-        return 1/ (2 * sigma * sigma)
-
+        return 1/(2 * sigma * sigma)
