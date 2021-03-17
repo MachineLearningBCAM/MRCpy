@@ -8,6 +8,7 @@ install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
   - git lfs install
+  - git lfs track "*.csv"
 
 before_script:
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
