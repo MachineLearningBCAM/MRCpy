@@ -8,8 +8,8 @@ according to your requirements.
 """
 
 import numpy as np
-from sklearn.utils import check_array
 from sklearn.datasets import load_iris
+from sklearn.utils import check_array
 
 from MRCpy import CMRC
 from MRCpy.phi import *

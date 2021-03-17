@@ -1,6 +1,7 @@
 """Simple example of using MRC with 0-1 loss."""
 
 import numpy as np
+
 from sklearn.impute import SimpleImputer
 
 from MRCpy import MRC

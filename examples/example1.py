@@ -3,9 +3,9 @@
 import time
 
 import numpy as np
+from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import StratifiedKFold
-from sklearn import preprocessing
 
 from MRCpy import MRC
 # Import the datasets
