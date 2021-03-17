@@ -88,7 +88,7 @@ clf = MRC(n_classes=n_classes).fit(X, tau_=[0.5, 0.5, ..., 0.1] , lambda_=[0.1, 
 
 ## Building your custom feature mappings
 
-For building your own customized feature mappings, you can follow this [example(customPhi.py)](https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers/blob/main/examples/customPhi.py) in the examples folder.
+For building your own customized feature mappings, you can follow this [example(customPhi.py)](https://github.com/MachineLearningBCAM/MRCpy/blob/main/examples/customPhi.py) in the examples folder.
 
 ## Using CVXpy for optimization
 
