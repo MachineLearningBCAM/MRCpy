@@ -1,11 +1,15 @@
-# Import the feature mapping base class
-from MRCpy.phi.phi import Phi
+""" Gaussian Kernel approximated using Random Features."""
 
-from sklearn.utils.validation import check_is_fitted
 import numpy as np
+
 import statistics
+
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import check_array, check_random_state
+from sklearn.utils.validation import check_is_fitted
+
+# Import the feature mapping base class
+from MRCpy.phi.phi import Phi
 
 
 class PhiGaussian(Phi):

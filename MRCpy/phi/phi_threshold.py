@@ -1,10 +1,13 @@
-# Import the feature mapping base class
-from MRCpy.phi.phi import Phi
+"""Feature mappings obtained using threshold (Half planes)."""
+
+import numpy as np
 
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array, check_X_y
-import numpy as np
+from sklearn.utils.validation import check_is_fitted
+
+# Import the feature mapping base class
+from MRCpy.phi.phi import Phi
 
 
 class PhiThreshold(Phi):

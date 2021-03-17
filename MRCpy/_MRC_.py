@@ -1,8 +1,9 @@
 """Super class for Minimax Risk Classifiers."""
+import cvxpy as cvx
 
 import numpy as np
-import cvxpy as cvx
-from sklearn.utils import check_array, check_X_y
+
+from sklearn.utils import check_X_y, check_array
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping

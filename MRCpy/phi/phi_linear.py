@@ -1,9 +1,10 @@
+"""Linear Kernel."""
+
+from sklearn.utils import check_array
+from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping base class
 from MRCpy.phi.phi import Phi
-
-from sklearn.utils.validation import check_is_fitted
-from sklearn.utils import check_array
 
 
 class PhiLinear(Phi):

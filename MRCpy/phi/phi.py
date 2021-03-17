@@ -1,12 +1,13 @@
-"""
-    Super class for the feature mapping functions
-"""
+"""Super class for the feature mapping functions."""
 
-from sklearn.utils import check_X_y, check_array
-import numpy as np
 import itertools as it
 import warnings
+
+import numpy as np
+
 import scipy.special as scs
+
+from sklearn.utils import check_X_y, check_array
 
 
 class Phi():

@@ -1,14 +1,17 @@
 """Minimax Risk Classification."""
 
-# Import the MRC super class
-from MRCpy import _MRC_
+import cvxpy as cvx
 
 import numpy as np
-import cvxpy as cvx
+
 import scipy.special as scs
+
 from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.utils.validation import check_is_fitted
 from sklearn.utils import check_array
+from sklearn.utils.validation import check_is_fitted
+
+# Import the MRC super class
+from MRCpy import _MRC_
 
 
 class MRC(BaseEstimator, ClassifierMixin, _MRC_):
