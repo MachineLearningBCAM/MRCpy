@@ -567,7 +567,7 @@ def load_segment(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -577,7 +577,7 @@ def load_segment(return_X_y=False):
                                      dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -631,7 +631,7 @@ def load_satellite(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -640,7 +640,7 @@ def load_satellite(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -694,7 +694,7 @@ def load_optdigits(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -703,7 +703,7 @@ def load_optdigits(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -757,7 +757,7 @@ def load_credit(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -766,7 +766,7 @@ def load_credit(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -880,14 +880,14 @@ def load_glass(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -948,14 +948,14 @@ def load_haberman(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -1008,14 +1008,14 @@ def load_mammographic(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=int64)
+        target = np.empty((n_samples,), dtype=np.int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=int64)
+            target[i] = np.asarray(d[-1], dtype=np.int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
