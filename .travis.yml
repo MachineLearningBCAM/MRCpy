@@ -1,7 +1,29 @@
+os: linux
+dist: xenial
+cache: pip
 language: python
 python:
   - "3.7"
 install:
   - pip install -r requirements.txt
+
+before_script:
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
+
 script:
-  - python -m unittest discover
+  - python -m unittest discover -s tests
+  - flake8 --ignore=F403,F405,W503,W504 examples/
+  - flake8 MRCpy/ tests/
+
+deploy:
+  - provider: pages
+    skip_cleanup: true
+    token: $GITHUB_PAGES_TOKEN
+    keep_history: true
+    repo: MachineLearningBCAM/MRCpy.github.io
+    target_branch: master
+    fqdn: MRCpy.github.io
+    project_name: MRCpy
+    local_dir: docs/
+    email: bkartheekreddy@gmail.com
+    name: Kartheek Reddy
