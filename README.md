@@ -1,4 +1,4 @@
-# MRCpy: Library for Supervised Classification using Minimax Approach
+# MRCpy
 
 Different variations of Minimax Risk Classifiers(MRC) using different loss functions and uncertainity set of distributions.
 
