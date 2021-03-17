@@ -8,6 +8,7 @@ from MRCpy import CMRC
 # Import the datasets
 from MRCpy.datasets import load_mammographic
 
+
 if __name__ == '__main__':
 
     # Loading the dataset
