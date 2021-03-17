@@ -1,4 +1,4 @@
-""" Simple example of using MRC with 0-1 loss. """
+"""Simple example of using MRC with 0-1 loss."""
 
 import numpy as np
 from sklearn.impute import SimpleImputer

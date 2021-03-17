@@ -14,7 +14,7 @@ before_script:
 script:
   - python -m unittest discover -s tests
   - flake8 --ignore=D,F403,F405,W503,W504 examples/
-  - flake8 MRCpy/ tests/
+  - flake8 --ignore=D MRCpy/ tests/
 
 deploy:
   - provider: pages

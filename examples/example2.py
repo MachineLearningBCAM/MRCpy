@@ -1,4 +1,4 @@
-""" Example of using CMRC with some of the common classification datasets. """
+"""Example of using CMRC with some of the common classification datasets."""
 
 import time
 

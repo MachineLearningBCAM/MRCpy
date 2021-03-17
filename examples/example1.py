@@ -1,10 +1,10 @@
-""" Example of using MRC with some of the common classification datasets. """
+"""Example of using MRC with some of the common classification datasets."""
 
 import time
 
 import numpy as np
-from sklearn.model_selection import StratifiedKFold
 from sklearn.impute import SimpleImputer
+from sklearn.model_selection import StratifiedKFold
 from sklearn import preprocessing
 
 from MRCpy import MRC
