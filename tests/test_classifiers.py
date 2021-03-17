@@ -1,6 +1,6 @@
 """ Unit tests for the minimax risk classifiers """
 
-from minimax_risk_classifiers.MRC import MRC
+from MRCpy.MRC import MRC
 # Import the dataset
 from MRCpy.datasets import load_iris
 import numpy as np

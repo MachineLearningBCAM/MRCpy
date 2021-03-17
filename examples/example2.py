@@ -1,9 +1,8 @@
-"""
-Example of using CMRC with some of the common classification datasets.
-"""
+""" Example of using CMRC with some of the common classification datasets. """
+
+import time
 
 import numpy as np
-import time
 from sklearn.model_selection import StratifiedKFold
 from sklearn.impute import SimpleImputer
 from sklearn import preprocessing
