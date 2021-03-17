@@ -7,8 +7,6 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
-  - git lfs install
-  - git lfs track "*.csv"
 
 before_script:
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -20,9 +18,9 @@ script:
 
 deploy:
   - provider: pages
-    skip_cleanup: false
+    skip_cleanup: true
     token: $GITHUB_PAGES_TOKEN
-    keep_history: false
+    keep_history: true
     repo: MachineLearningBCAM/MRCpy.github.io
     target_branch: master
     fqdn: MRCpy.github.io
