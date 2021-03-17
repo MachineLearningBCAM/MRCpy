@@ -1,3 +1,5 @@
+"""Constrained Minimax Risk Classification"""
+
 # Import the MRC super class
 from MRCpy import _MRC_
 
@@ -11,7 +13,8 @@ from sklearn.utils import check_array
 
 class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
     """
-    Minimax risk classifier
+    Constrained Minimax Risk Classifier.
+
     using the additional marginals constraints on the instances.
     It also implements two kinds of loss functions, namely 0-1 and log loss.
     This is a subclass of the super class _MRC_.
