@@ -22,7 +22,7 @@ deploy:
   - provider: pages
     skip_cleanup: true
     token: $GITHUB_PAGES_TOKEN
-    keep_history: true
+    keep_history: false
     repo: MachineLearningBCAM/MRCpy.github.io
     target_branch: master
     fqdn: MRCpy.github.io
