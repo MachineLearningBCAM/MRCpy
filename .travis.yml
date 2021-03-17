@@ -20,7 +20,7 @@ script:
 
 deploy:
   - provider: pages
-    skip_cleanup: true
+    skip_cleanup: false
     token: $GITHUB_PAGES_TOKEN
     keep_history: false
     repo: MachineLearningBCAM/MRCpy.github.io
