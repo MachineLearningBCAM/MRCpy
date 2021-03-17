@@ -165,6 +165,6 @@ class PhiThreshold(Phi):
         for thrsInd in range(len(self.thrsDim_)):
             X_feat[:, thrsInd] = \
                 np.all(X[:, self.thrsDim_[thrsInd]] <= self.thrsVal_[thrsInd],
-                       axis=1).astype(np.int)
+                       axis=1).astype(int)
 
         return X_feat

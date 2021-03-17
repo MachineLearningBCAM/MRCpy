@@ -12,7 +12,7 @@ def normalizeLabels(origY):
 
     # Map the values of Y from 0 to r-1
     domY = np.unique(origY)
-    Y = np.zeros(origY.shape[0], dtype=np.int)
+    Y = np.zeros(origY.shape[0], dtype=int)
 
     for i, y in enumerate(domY):
         Y[origY == y] = i
@@ -61,14 +61,14 @@ def load_adult(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)
         # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
-            target[i] = np.asarray(d[-1], dtype=np.int)
+            target[i] = np.asarray(d[-1], dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -122,13 +122,13 @@ def load_diabetes(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
-            target[i] = np.asarray(d[-1], dtype=np.int)
+            target[i] = np.asarray(d[-1], dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -182,7 +182,7 @@ def load_iris(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -191,10 +191,10 @@ def load_iris(return_X_y=False):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             if d[-1] in classes:
                 index = classes.index(d[-1])
-                target[i] = np.asarray(index, dtype=np.int)
+                target[i] = np.asarray(index, dtype=int)
             else:
                 classes.append(d[-1])
-                target[i] = np.asarray(classes.index(d[-1]), dtype=np.int)
+                target[i] = np.asarray(classes.index(d[-1]), dtype=int)
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -247,14 +247,14 @@ def load_redwine(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray([np.float(i) for i in d[:-1]],
                                  dtype=np.float64)
-            target[i] = np.asarray(d[-1], dtype=np.int)
+            target[i] = np.asarray(d[-1], dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -309,14 +309,14 @@ def load_forestcov(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)
         # names of features
         feature_names = np.array(temp)
 
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
-            target[i] = np.asarray(d[-1], dtype=np.int)
+            target[i] = np.asarray(d[-1], dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -369,7 +369,7 @@ def load_letterrecog(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)
         # names of features
         feature_names = np.array(temp)
@@ -379,10 +379,10 @@ def load_letterrecog(return_X_y=False):
             data[i] = np.asarray(d[1:], dtype=np.float64)
             if d[0] in classes:
                 index = classes.index(d[0])
-                target[i] = np.asarray(index, dtype=np.int)
+                target[i] = np.asarray(index, dtype=int)
             else:
                 classes.append(d[0])
-                target[i] = np.asarray(classes.index(d[0]), dtype=np.int)
+                target[i] = np.asarray(classes.index(d[0]), dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -436,7 +436,7 @@ def load_ecoli(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp[1:])
 
@@ -445,10 +445,10 @@ def load_ecoli(return_X_y=False):
             data[i] = np.asarray([float(i) for i in d[1:-1]], dtype=np.float64)
             if d[-1] in classes:
                 index = classes.index(d[-1])
-                target[i] = np.asarray(index, dtype=np.int)
+                target[i] = np.asarray(index, dtype=int)
             else:
                 classes.append(d[-1])
-                target[i] = np.asarray(classes.index(d[-1]), dtype=np.int)
+                target[i] = np.asarray(classes.index(d[-1]), dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -502,7 +502,7 @@ def load_vehicle(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int)
+        target = np.empty((n_samples,), dtype=int)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp[1:])
 
@@ -511,10 +511,10 @@ def load_vehicle(return_X_y=False):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             if d[-1] in classes:
                 index = classes.index(d[-1])
-                target[i] = np.asarray(index, dtype=np.int)
+                target[i] = np.asarray(index, dtype=int)
             else:
                 classes.append(d[-1])
-                target[i] = np.asarray(classes.index(d[-1]), dtype=np.int)
+                target[i] = np.asarray(classes.index(d[-1]), dtype=int)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -567,7 +567,7 @@ def load_segment(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -577,7 +577,7 @@ def load_segment(return_X_y=False):
                                      dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -631,7 +631,7 @@ def load_satellite(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -640,7 +640,7 @@ def load_satellite(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -694,7 +694,7 @@ def load_optdigits(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -703,7 +703,7 @@ def load_optdigits(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -757,7 +757,7 @@ def load_credit(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
         temp = next(data_file)  # names of features
         feature_names = np.array(temp)
 
@@ -766,7 +766,7 @@ def load_credit(return_X_y=False):
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -880,14 +880,14 @@ def load_glass(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -948,14 +948,14 @@ def load_haberman(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -1008,14 +1008,14 @@ def load_mammographic(return_X_y=False):
         n_samples = int(temp[0])
         n_features = int(temp[1])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples,), dtype=np.int64)
+        target = np.empty((n_samples,), dtype=int64)
 
         for i, d in enumerate(data_file):
             try:
                 data[i] = np.asarray(d[:-1], dtype=np.float64)
             except ValueError:
                 print(i, d[:-1])
-            target[i] = np.asarray(d[-1], dtype=np.int64)
+            target[i] = np.asarray(d[-1], dtype=int64)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -1069,11 +1069,11 @@ def load_indian_liver(return_X_y=False):
         n_features = int(temp[1])
         target_names = np.array(temp[2:])
         data = np.empty((n_samples, n_features))
-        target = np.empty((n_samples, ), dtype=np.int)
+        target = np.empty((n_samples, ), dtype=int)
 
         for i, ir in enumerate(data_file):
             data[i] = np.asarray(ir[:-1], dtype=np.float64)
-            target[i] = np.asarray(ir[-1], dtype=np.int)
+            target[i] = np.asarray(ir[-1], dtype=int)
     with open(join(module_path, 'descr',
                    'indianLiverPatient.rst')) as rst_file:
         fdescr = rst_file.read()

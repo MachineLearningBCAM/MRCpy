@@ -1,4 +1,4 @@
-"""Super class for Minimax Risk Classifier"""
+"""Super class for Minimax Risk Classifiers."""
 
 import numpy as np
 import cvxpy as cvx
@@ -201,7 +201,7 @@ class _MRC_():
             # Map the values of Y from 0 to n_classes-1
             origY = Y
             self.classes_ = np.unique(origY)
-            Y = np.zeros(origY.shape[0], dtype=np.int)
+            Y = np.zeros(origY.shape[0], dtype=int)
 
             for i, y in enumerate(self.classes_):
                 Y[origY == y] = i

@@ -203,7 +203,7 @@ class Phi():
 
             # One-hot encoding for multi-class classification.
             else:
-                phi = np.zeros((n, self.n_classes, self.len_), dtype=np.float)
+                phi = np.zeros((n, self.n_classes, self.len_), dtype=float)
 
                 # adding the intercept
                 phi[:, np.arange(self.n_classes),
@@ -226,7 +226,7 @@ class Phi():
 
             # One-hot encoding for multi-class classification.
             else:
-                phi = np.zeros((n, self.len_), dtype=np.float)
+                phi = np.zeros((n, self.len_), dtype=float)
 
                 # adding the intercept
                 phi[np.arange(n), Y * m] = np.ones(n)

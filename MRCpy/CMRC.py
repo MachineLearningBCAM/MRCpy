@@ -1,4 +1,4 @@
-"""Constrained Minimax Risk Classification"""
+"""Marginally Constrained Minimax Risk Classification."""
 
 # Import the MRC super class
 from MRCpy import _MRC_
