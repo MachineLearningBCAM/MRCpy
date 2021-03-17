@@ -1,9 +1,8 @@
 """ Unit tests for the minimax risk classifiers """
 
 from minimax_risk_classifiers.MRC import MRC
-from minimax_risk_classifiers.CMRC import CMRC
-#import the dataset
-from datasets import load_iris
+# Import the dataset
+from MRCpy.datasets import load_iris
 import numpy as np
 
 import unittest
@@ -22,7 +21,7 @@ class TestClassifiers(unittest.TestCase):
         clf = MRC(n_classes=r, phi='threshold', loss='0-1')
         clf.fit(self.X, self.y)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
-        self.assertTrue(clf.is_fitted_ == True)
+        self.assertTrue(clf.is_fitted_)
 
         y_pred = clf.predict(self.X)
         self.assertTrue(y_pred.shape == (self.X.shape[0],))

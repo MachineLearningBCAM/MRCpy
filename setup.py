@@ -6,7 +6,11 @@ import runpy
 from setuptools import find_packages, setup
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-minimax_risk_classifiers = runpy.run_path(os.path.join(base_dir, 'minimax_risk_classifiers', '__init__.py'))
+MRCpy = runpy.run_path(os.path.join
+                                          (base_dir,
+                                           'MRCpy',
+                                           '__init__.py'))
+
 
 def parse_requirements_file(filename):
     """
@@ -24,6 +28,7 @@ def parse_requirements_file(filename):
     with open(filename) as input_file:
         return input_file.read().splitlines()
 
+
 if __name__ == '__main__':
 
     requirements = parse_requirements_file('requirements.txt')
@@ -37,13 +42,13 @@ if __name__ == '__main__':
         long_description = fh.read()
 
     setup(
-        name="minimax_risk_classifiers",
-        version=minimax_risk_classifiers['__version__'],
+        name="MRCpy",
+        version=MRCpy['__version__'],
         install_requires=install_requires,
-        description="Minimax risk classification",
+        description="Minimax Risk Classification",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        url="https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers",
+        url="https://github.com/MachineLearningBCAM/MRCpy",
         packages=find_packages(),
         # py_modules=["MRC", "CMRC", "phi.Phi", \
                     # "phi.PhiGaussian", "phi.PhiLinear", "phi.PhiThreshold"],
