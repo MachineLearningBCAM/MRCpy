@@ -8,8 +8,8 @@ install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
 
-before_script:
-  - export PYTHONPATH=$PYTHONPATH:$(pwd)
+# before_script:
+#   - export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 script:
   - flake8 --ignore=F403,F405 examples/
