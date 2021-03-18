@@ -12,7 +12,7 @@ before_script:
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 script:
-  - flake8 --ignore=F403,F405 MRCpy examples
+  - flake8 --ignore=D,W503,W504,F403,F405 examples/
   - flake8 MRCpy/ tests/
   - python -m unittest discover -s tests
 
