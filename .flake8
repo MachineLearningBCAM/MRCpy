@@ -1,5 +1,5 @@
 [flake8]
 application_import_names = MRCpy
 docstring-convention = numpy
-ignore = D, W503, W504
+ignore = D, W503, W504, I202
 import_order_style = smarkets
