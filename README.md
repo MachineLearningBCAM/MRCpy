@@ -15,7 +15,7 @@ The variants available here are -
 From a terminal (OS X & linux), you can install ``MRCpy`` and its requirements directly by running the setup.py script as follows
 
 ```
-git clone https://github.com/MachineLearningBCAM/Minimax-Risk-Classifiers.git
+git clone https://github.com/MachineLearningBCAM/MRCpy.git
 cd Minimax-Risk-Classifiers
 python3 setup.py install
 ```
