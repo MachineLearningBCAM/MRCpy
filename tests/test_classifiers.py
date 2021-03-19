@@ -6,7 +6,7 @@ import numpy as np
 
 # Import the dataset
 from MRCpy.datasets import load_iris
-from MRCpy.MRC import MRC
+from MRCpy import MRC, CMRC
 
 
 class TestClassifiers(unittest.TestCase):
@@ -19,6 +19,17 @@ class TestClassifiers(unittest.TestCase):
     def test_MRC_train(self):
         r = np.unique(self.y).shape[0]
         clf = MRC(n_classes=r, phi='threshold', loss='0-1')
+        clf.fit(self.X, self.y)
+        self.assertTrue(hasattr(clf, 'is_fitted_'))
+        self.assertTrue(clf.is_fitted_)
+
+        y_pred = clf.predict(self.X)
+        self.assertTrue(y_pred.shape == (self.X.shape[0],))
+
+    # Simple training test for CMRC
+    def test_MRC_train(self):
+        r = np.unique(self.y).shape[0]
+        clf = CMRC(n_classes=r, phi='threshold', loss='0-1')
         clf.fit(self.X, self.y)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
         self.assertTrue(clf.is_fitted_)
