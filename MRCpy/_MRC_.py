@@ -124,7 +124,7 @@ class _MRC_():
             raise ValueError('Unexpected feature mapping type ... ')
 
         # Solver list available in cvxpy
-        self.solvers = ['GUROBI', 'MOSEK']
+        self.solvers = ['SCS', 'ECOS', 'QSQP']
 
     def fit(self, X, Y=None, X_=None, tau_=None, lambda_=None):
         """
