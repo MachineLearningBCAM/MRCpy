@@ -5,8 +5,8 @@ import unittest
 import numpy as np
 
 # Import the dataset
-from MRCpy.datasets import load_iris
 from MRCpy import CMRC, MRC
+from MRCpy.datasets import load_iris
 
 
 class TestClassifiers(unittest.TestCase):
