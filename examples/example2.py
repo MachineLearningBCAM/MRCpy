@@ -37,7 +37,7 @@ def runCMRC(phi, loss):
         print(" ############## \n" + dataName[j] + " n= " + str(n) +
               " , d= " + str(d) + ", cardY= " + str(r))
 
-        clf = CMRC(n_classes=r, phi=phi, loss=loss, use_cvx=True,
+        clf = CMRC(n_classes=r, phi=phi, loss=loss, use_cvx=False,
                    max_iters=2000, s=0.5)
 
         # Preprocess
@@ -89,8 +89,8 @@ if __name__ == '__main__':
           Example 2 (CMRC with the additional marginal constraints) \
           ********************** \n\n')
 
-    # print('\t\t 1. Using 0-1 loss and threshold feature mapping \n\n')
-    # runCMRC(phi='threshold', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and threshold feature mapping \n\n')
+    runCMRC(phi='threshold', loss='0-1')
 
     print('\t\t 2. Using log loss and threshold feature mapping \n\n')
     runCMRC(phi='threshold', loss='log')

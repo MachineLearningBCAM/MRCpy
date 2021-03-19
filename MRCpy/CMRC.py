@@ -1,11 +1,8 @@
 """Marginally Constrained Minimax Risk Classification."""
 
 import cvxpy as cvx
-
 import numpy as np
-
 import scipy.special as scs
-
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
@@ -98,17 +95,19 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
                 # We compute the learn constraints
                 # without omitting the duplicate elements
-                M = self.phi.getAllSubsetConfig(phi)
+                M_ = self.phi.getAllSubsetConfig(phi)
                 # F is the sum of phi
                 # for different subset of Y for each data point
-                F = M[:, :m]
-                cardS = M[:, -1]
+                M = M_[:, :m]
+                h = M_[:, -1]
+                M = M / (h[:, np.newaxis])
+                h = 1 - (1 / h)
 
                 # Calculate the psi function and
                 # add it to the objective function
                 # First we calculate the all possible values of psi
                 # for all the points
-                psi = (np.ones(cardS.shape[0]) - (F @ mu + cardS)) / cardS
+                psi = (-1) * (M @ mu + h)
                 for i in range(n):
                     # Get psi for each data point and
                     # add the min value to objective

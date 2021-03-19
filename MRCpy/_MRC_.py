@@ -1,16 +1,15 @@
 """Super class for Minimax Risk Classifiers."""
+
 import cvxpy as cvx
-
 import numpy as np
-
-from sklearn.utils import check_X_y, check_array
+from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping
-from MRCpy.phi import PhiGaussian, \
-                      PhiThreshold, \
+from MRCpy.phi import Phi, \
+                      PhiGaussian, \
                       PhiLinear, \
-                      Phi
+                      PhiThreshold
 
 
 class _MRC_():
@@ -124,7 +123,7 @@ class _MRC_():
             raise ValueError('Unexpected feature mapping type ... ')
 
         # Solver list available in cvxpy
-        self.solvers = ['SCS', 'ECOS', 'ECOS_BB']
+        self.solvers = ['GUROBI', 'MOSEK']
 
     def fit(self, X, Y=None, X_=None, tau_=None, lambda_=None):
         """
@@ -216,7 +215,7 @@ class _MRC_():
                 # it is converted to an array of size
                 # equal to the number of features of phi
                 # it imples that the estimates for all the features is same.
-                tau_ = np.asarray([tau_]*self.phi.len_)
+                tau_ = np.asarray([tau_] * self.phi.len_)
             self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
 
         else:
@@ -322,7 +321,7 @@ class _MRC_():
             for s in self.solvers:
                 if s != self.solver:
                     # Solve the problem
-                    _ = prob.solve(solver=s, verbose=False)
+                    prob.solve(solver=s, verbose=False)
 
                     # Check the values
                     mu_ = mu.value

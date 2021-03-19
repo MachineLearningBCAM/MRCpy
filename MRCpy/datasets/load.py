@@ -997,9 +997,9 @@ def load_mammographic(return_X_y=False):
     """
     module_path = dirname(__file__)
 
-    fdescr_name = join(module_path, 'descr', 'mammographic.rst')
-    with open(fdescr_name) as f:
-        descr_text = f.read()
+    # fdescr_name = join(module_path, 'descr', 'mammographic.rst')
+    # with open(fdescr_name) as f:
+    #     descr_text = f.read()
 
     data_file_name = join(module_path, 'data', 'mammographic.csv')
     with open(data_file_name) as f:
@@ -1021,7 +1021,7 @@ def load_mammographic(return_X_y=False):
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
-                 DESCR=descr_text,
+                 DESCR=None,
                  feature_names=['BI-RADS',
                                 'age',
                                 'shape',
@@ -1074,16 +1074,16 @@ def load_indian_liver(return_X_y=False):
         for i, ir in enumerate(data_file):
             data[i] = np.asarray(ir[:-1], dtype=np.float64)
             target[i] = np.asarray(ir[-1], dtype=int)
-    with open(join(module_path, 'descr',
-                   'indianLiverPatient.rst')) as rst_file:
-        fdescr = rst_file.read()
+    # with open(join(module_path, 'descr',
+    #                'indianLiverPatient.rst')) as rst_file:
+    #     fdescr = [line.decode('utf-8').strip() for line in rst_file.readlines()]
 
     if return_X_y:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
                  target_names=target_names,
-                 DESCR=fdescr,
+                 DESCR=None,
                  feature_names=['Age of the patient',
                                 'Gender of the patient',
                                 'Total Bilirubin',

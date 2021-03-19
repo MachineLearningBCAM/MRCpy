@@ -246,7 +246,7 @@ class PhiGaussian(Phi):
         neighbour_ind = 50
 
         # Find the nearest neighbors
-        nbrs = NearestNeighbors(n_neighbors=(neighbour_ind+1),
+        nbrs = NearestNeighbors(n_neighbors=(neighbour_ind + 1),
                                 algorithm='ball_tree').fit(X)
         distances, indices = nbrs.kneighbors(X)
 

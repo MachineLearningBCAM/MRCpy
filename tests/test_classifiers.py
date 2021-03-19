@@ -1,11 +1,11 @@
 """ Unit tests for the minimax risk classifiers """
 
-from MRCpy.MRC import MRC
+import numpy as np
+import unittest
+
 # Import the dataset
 from MRCpy.datasets import load_iris
-import numpy as np
-
-import unittest
+from MRCpy.MRC import MRC
 
 
 class TestClassifiers(unittest.TestCase):

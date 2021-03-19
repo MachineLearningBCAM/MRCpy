@@ -1,11 +1,8 @@
 """Minimax Risk Classification."""
 
 import cvxpy as cvx
-
 import numpy as np
-
 import scipy.special as scs
-
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
@@ -260,8 +257,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 eps = np.tile(scs.logsumexp(eps, axis=1),
                               (self.n_classes, 1)).transpose() - eps
 
-                constraints.extend(
-                                   [phi[i, :, :] @ low_mu + low_nu
+                constraints.extend([phi[i, :, :] @ low_mu + low_nu
                                     <= eps[i, :]
                                     for i in range(numConstr)])
 
@@ -306,8 +302,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 eps = eps.reshape((n * r,))
 
             phi = phi.reshape((n * r, m))
-            # Defining the partial objective and its gradient.
 
+            # Defining the partial objective and its gradient.
             def f_(mu):
                 return phi @ mu + eps
 

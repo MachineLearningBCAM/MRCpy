@@ -38,7 +38,7 @@ def runMRC(phi, loss):
               " , d= " + str(d) + ", cardY= " + str(r))
 
         clf = MRC(n_classes=r, phi=phi, loss=loss,
-                  use_cvx=True, max_iters=10000, s=0.3)
+                  use_cvx=False, max_iters=10000, s=0.3)
 
         # Preprocess
         trans = SimpleImputer(strategy='median')
@@ -95,8 +95,8 @@ if __name__ == '__main__':
           Example 1 (MRC with default constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and gaussian feature mapping \n\n')
-    runMRC(phi='gaussian', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and threshold feature mapping \n\n')
+    runMRC(phi='threshold', loss='0-1')
 
-    print('\t\t 2. Using log loss and gaussian feature mapping \n\n')
-    runMRC(phi='gaussian', loss='log')
+    print('\t\t 2. Using log loss and threshold feature mapping \n\n')
+    runMRC(phi='threshold', loss='log')
