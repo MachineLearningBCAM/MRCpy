@@ -7,6 +7,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -r dev-requirements.txt
+  - pip install -r ci-requirements.txt
 
 before_script:
   - export PYTHONPATH=$PYTHONPATH:$(pwd)
@@ -14,7 +15,10 @@ before_script:
 script:
   - flake8 --ignore=D,W503,W504,F403,F405 examples/
   - flake8 MRCpy/ tests/
-  - python -m unittest discover -s tests
+  - coverage run tests
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: pages
