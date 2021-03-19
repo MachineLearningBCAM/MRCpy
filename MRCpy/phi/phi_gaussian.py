@@ -1,9 +1,7 @@
 """ Gaussian Kernel approximated using Random Features."""
 
-import numpy as np
-
 import statistics
-
+import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import check_array, check_random_state
 from sklearn.utils.validation import check_is_fitted

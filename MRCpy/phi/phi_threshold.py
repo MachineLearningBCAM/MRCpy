@@ -1,7 +1,6 @@
 """Feature mappings obtained using threshold (Half planes)."""
 
 import numpy as np
-
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted

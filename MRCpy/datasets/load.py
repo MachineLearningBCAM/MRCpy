@@ -1,6 +1,6 @@
-from os.path import join, dirname
-
 import csv
+from os.path import dirname, join
+
 import numpy as np
 from sklearn.utils import Bunch
 
@@ -1076,7 +1076,8 @@ def load_indian_liver(return_X_y=False):
             target[i] = np.asarray(ir[-1], dtype=int)
     # with open(join(module_path, 'descr',
     #                'indianLiverPatient.rst')) as rst_file:
-    #     fdescr = [line.decode('utf-8').strip() for line in rst_file.readlines()]
+    #     fdescr = [line.decode('utf-8').strip() \
+    #               for line in rst_file.readlines()]
 
     if return_X_y:
         return data, normalizeLabels(target)

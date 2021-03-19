@@ -1,21 +1,21 @@
 from .load import \
     load_adult, \
     load_credit, \
-    load_magic, \
     load_diabetes, \
-    load_iris, \
-    load_vehicle, \
-    load_satellite, \
-    load_redwine, \
+    load_ecoli, \
     load_forestcov, \
     load_glass, \
     load_haberman, \
-    load_mammographic, \
     load_indian_liver, \
-    load_segment, \
-    load_ecoli, \
+    load_iris, \
+    load_letterrecog, \
+    load_magic, \
+    load_mammographic, \
     load_optdigits, \
-    load_letterrecog
+    load_redwine, \
+    load_satellite, \
+    load_segment, \
+    load_vehicle, \
 
 __all__ = ['load_adult',
            'load_iris',

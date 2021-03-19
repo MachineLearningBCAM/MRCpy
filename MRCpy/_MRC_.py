@@ -6,10 +6,11 @@ from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping
-from MRCpy.phi import Phi, \
-                      PhiGaussian, \
-                      PhiLinear, \
-                      PhiThreshold
+from MRCpy.phi import \
+    Phi, \
+    PhiGaussian, \
+    PhiLinear, \
+    PhiThreshold
 
 
 class _MRC_():
@@ -302,7 +303,7 @@ class _MRC_():
 
         # Solve the problem
         prob = cvx.Problem(objective, constraints)
-        _ = prob.solve(solver=self.solver, verbose=False)
+        prob.solve(solver=self.solver, verbose=False)
 
         mu_ = mu.value
         zhi_ = zhi.value
