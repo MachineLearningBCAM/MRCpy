@@ -1,6 +1,7 @@
 # MRCpy
 
 [![Build Status](https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.org/github/MachineLearningBCAM/MRCpy)
+[![Coverage Status](https://codecov.io/gh/MachineLearningBCAM/MRCpy/branch/master/graph/badge.svg?)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 Different variations of Minimax Risk Classifiers(MRC) using different loss functions and uncertainity set of distributions.
 
