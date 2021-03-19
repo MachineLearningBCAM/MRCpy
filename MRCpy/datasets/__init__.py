@@ -15,7 +15,7 @@ from .load import \
     load_redwine, \
     load_satellite, \
     load_segment, \
-    load_vehicle, \
+    load_vehicle
 
 __all__ = ['load_adult',
            'load_iris',

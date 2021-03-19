@@ -2,6 +2,7 @@
 
 import itertools as it
 import warnings
+
 import numpy as np
 import scipy.special as scs
 from sklearn.utils import check_array, check_X_y

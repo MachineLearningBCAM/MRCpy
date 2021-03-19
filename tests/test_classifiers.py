@@ -1,7 +1,8 @@
 """ Unit tests for the minimax risk classifiers """
 
-import numpy as np
 import unittest
+
+import numpy as np
 
 # Import the dataset
 from MRCpy.datasets import load_iris
@@ -16,7 +17,6 @@ class TestClassifiers(unittest.TestCase):
 
     # Simple training test for the MRC.
     def test_MRC_train(self):
-
         r = np.unique(self.y).shape[0]
         clf = MRC(n_classes=r, phi='threshold', loss='0-1')
         clf.fit(self.X, self.y)

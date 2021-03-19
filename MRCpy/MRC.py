@@ -298,7 +298,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # Using negative of epsilon
                 # for the nesterov accelerated optimization
                 eps = phi @ self.mu_ - \
-                      scs.logsumexp(phi @ self.mu_, axis=1)[:, np.newaxis]
+                    scs.logsumexp(phi @ self.mu_, axis=1)[:, np.newaxis]
                 eps = eps.reshape((n * r,))
 
             phi = phi.reshape((n * r, m))
