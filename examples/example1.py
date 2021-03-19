@@ -3,7 +3,6 @@
 import time
 
 import numpy as np
-
 from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import StratifiedKFold
@@ -96,8 +95,8 @@ if __name__ == '__main__':
           Example 1 (MRC with default constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and threshold feature mapping \n\n')
+    print('\t\t 1. Using 0-1 loss and gaussian feature mapping \n\n')
     runMRC(phi='gaussian', loss='0-1')
 
-    print('\t\t 2. Using log loss and threshold feature mapping \n\n')
+    print('\t\t 2. Using log loss and gaussian feature mapping \n\n')
     runMRC(phi='gaussian', loss='log')
