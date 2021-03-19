@@ -29,7 +29,7 @@ class TestMRC(unittest.TestCase):
         if loss == 'log':
             hy_x = clf.predict_proba(self.X)
             self.assertTrue(hy_x.shape == (self.X.shape[0], r))
-            self.assertTrue(np.all(np.sum(hy_x, axis=1)==1))
+            self.assertTrue(np.all(np.sum(hy_x, axis=1)))
 
         y_pred = clf.predict(self.X)
         self.assertTrue(y_pred.shape == (self.X.shape[0], ))
