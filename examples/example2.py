@@ -38,7 +38,7 @@ def runCMRC(phi, loss):
               " , d= " + str(d) + ", cardY= " + str(r))
 
         clf = CMRC(n_classes=r, phi=phi, loss=loss, use_cvx=False,
-                   max_iters=2000, s=0.5)
+                   solver='MOSEK', max_iters=2000, s=0.5)
 
         # Preprocess
         trans = SimpleImputer(strategy='median')

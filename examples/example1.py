@@ -37,7 +37,7 @@ def runMRC(phi, loss):
         print(" ############## \n" + dataName[j] + " n= " + str(n) +
               " , d= " + str(d) + ", cardY= " + str(r))
 
-        clf = MRC(n_classes=r, phi=phi, loss=loss,
+        clf = MRC(n_classes=r, phi=phi, loss=loss, solver='MOSEK',
                   use_cvx=False, max_iters=10000, s=0.3)
 
         # Preprocess
@@ -71,7 +71,6 @@ def runMRC(phi, loss):
             clf.fit(X_train, y_train)
             upper += clf.upper_
             lower += clf.getLowerBound()
-            print('The zero mu\'s are : ', np.sum(clf.mu_ == 0))
 
             # Calculate the training time
             auxTime += time.time() - startTime
