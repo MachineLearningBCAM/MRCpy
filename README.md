@@ -23,7 +23,7 @@ cd Minimax-Risk-Classifiers
 python3 setup.py install
 ```
 
-__NOTE:__ CVXpy optimization uses MOSEK optimizer which requires a license. You can get a free academic license from here(https://www.mosek.com/products/academic-licenses/).
+__NOTE:__ CVXpy optimization uses MOSEK optimizer which requires a license. You can get a free academic license from [here](https://www.mosek.com/products/academic-licenses/).
 
 # Getting started
 To use the classification models (MRC and CMRC) of the MRCpy package, you have to define the instance of that object (as we do for any other classification model in scikit-learn) for which you can define the following parameters - 
