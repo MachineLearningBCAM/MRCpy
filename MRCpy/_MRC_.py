@@ -97,7 +97,7 @@ class _MRC_():
 
     def __init__(self, n_classes, equality=False, s=0.3,
                  deterministic=False, random_state=None, loss='0-1',
-                 warm_start=False, use_cvx=False, solver='SCS',
+                 warm_start=False, use_cvx=False, solver='MOSEK',
                  max_iters=10000, phi='gaussian', **phi_kwargs):
 
         self.n_classes = n_classes
@@ -124,7 +124,7 @@ class _MRC_():
             raise ValueError('Unexpected feature mapping type ... ')
 
         # Solver list available in cvxpy
-        self.solvers = ['SCS', 'ECOS', 'QSQP']
+        self.solvers = ['MOSEK', 'SCS', 'ECOS']
 
     def fit(self, X, Y=None, X_=None, tau_=None, lambda_=None):
         """
