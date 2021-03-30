@@ -17,7 +17,8 @@ class TestCMRC(unittest.TestCase):
 
     def CMRC_training(self, phi, loss, use_cvx):
         r = np.unique(self.y).shape[0]
-        clf = CMRC(n_classes=r, phi=phi, loss=loss, use_cvx=use_cvx)
+        clf = CMRC(n_classes=r, phi=phi, loss=loss,
+                   use_cvx=use_cvx, solver='SCS')
         clf.fit(self.X, self.y)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
         self.assertTrue(clf.is_fitted_)

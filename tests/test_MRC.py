@@ -17,7 +17,8 @@ class TestMRC(unittest.TestCase):
 
     def MRC_training(self, phi, loss, use_cvx):
         r = np.unique(self.y).shape[0]
-        clf = MRC(n_classes=r, phi=phi, loss=loss, use_cvx=use_cvx)
+        clf = MRC(n_classes=r, phi=phi, loss=loss,
+                  use_cvx=use_cvx, solver='SCS')
         clf.fit(self.X, self.y)
         upper = clf.upper_
         lower = clf.getLowerBound()
