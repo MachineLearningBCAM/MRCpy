@@ -186,8 +186,6 @@ class Phi():
 
         # Adding intercept
         X_feat = np.hstack(([[1]] * n, X_feat))
-        # Number of features + 1 (for the intercept being added for each class)
-        m = X_feat.shape[1] + 1
 
         if Y is None:
 
