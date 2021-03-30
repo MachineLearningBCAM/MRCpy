@@ -38,12 +38,14 @@ class TestCMRC(unittest.TestCase):
         self.CMRC_training(phi='threshold', loss='0-1', use_cvx=False)
         self.CMRC_training(phi='linear', loss='0-1', use_cvx=False)
         self.CMRC_training(phi='gaussian', loss='0-1', use_cvx=False)
+        self.CMRC_training(phi='relu', loss='0-1', use_cvx=False)
 
     # Training test for CMRC with log loss.
     def test_CMRClog(self):
         self.CMRC_training(phi='threshold', loss='log', use_cvx=False)
         self.CMRC_training(phi='linear', loss='log', use_cvx=False)
         self.CMRC_training(phi='gaussian', loss='log', use_cvx=False)
+        self.CMRC_training(phi='relu', loss='log', use_cvx=False)
 
     # Using cvxpy
     # Training test for CMRC with 0-1 loss.
@@ -51,9 +53,11 @@ class TestCMRC(unittest.TestCase):
         self.CMRC_training(phi='threshold', loss='0-1', use_cvx=True)
         self.CMRC_training(phi='linear', loss='0-1', use_cvx=True)
         self.CMRC_training(phi='gaussian', loss='0-1', use_cvx=True)
+        self.CMRC_training(phi='relu', loss='0-1', use_cvx=True)
 
     # Training test for CMRC with log loss.
     def test_CMRClog_cvx(self):
         self.CMRC_training(phi='threshold', loss='log', use_cvx=True)
         self.CMRC_training(phi='linear', loss='log', use_cvx=True)
         self.CMRC_training(phi='gaussian', loss='log', use_cvx=True)
+        self.CMRC_training(phi='relu', loss='log', use_cvx=True)

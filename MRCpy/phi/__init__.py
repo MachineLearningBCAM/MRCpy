@@ -3,5 +3,6 @@ from MRCpy.phi.phi import Phi
 from MRCpy.phi.phi_gaussian import PhiGaussian
 from MRCpy.phi.phi_linear import PhiLinear
 from MRCpy.phi.phi_threshold import PhiThreshold
+from MRCpy.phi.phi_random_relu import PhiRandomRelu
 
-__all__ = ['Phi', 'PhiGaussian', 'PhiThreshold', 'PhiLinear']
+__all__ = ['Phi', 'PhiGaussian', 'PhiThreshold', 'PhiLinear', 'PhiRandomRelu']

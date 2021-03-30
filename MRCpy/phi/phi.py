@@ -179,13 +179,13 @@ class Phi():
 
         """
 
-        n = X.shape[0]
-
         # Get the features
         X_feat = self.transform(X)
-
         X_feat = check_array(X_feat, accept_sparse=True)
+        n = X_feat.shape[0]
 
+        # Adding intercept
+        X_feat = np.hstack(([[1]] * n, X_feat))
         # Number of features + 1 (for the intercept being added for each class)
         m = X_feat.shape[1] + 1
 
@@ -195,44 +195,25 @@ class Phi():
             # the problem can be solved using a smaller of configurations.
             # Without one-hot encoding.
             if self.n_classes == 2:
-                phi = np.repeat(np.hstack((np.ones((X_feat.shape[0], 1)),
-                                           X_feat))
-                                [:, np.newaxis, :], 2, axis=1)
-                phi[:, 1, :] *= -1
+                phi = np.kron(X_feat[:, np.newaxis, :], [[1], [-1]])
 
             # One-hot encoding for multi-class classification.
             else:
-                phi = np.zeros((n, self.n_classes, self.len_), dtype=float)
-
-                # adding the intercept
-                phi[:, np.arange(self.n_classes),
-                    np.arange(self.n_classes) * m] = \
-                    np.tile(np.ones(n), (self.n_classes, 1)).transpose()
-
-                # Compute the phi function
-                for dimInd in range(1, m):
-                    phi[:, np.arange(self.n_classes),
-                        np.arange(self.n_classes) * m + dimInd] = \
-                        np.tile(X_feat[:, dimInd - 1],
-                                (self.n_classes, 1)).transpose()
-
+                phi = np.kron(np.eye(self.n_classes),
+                              X_feat[:, np.newaxis, :])
         else:
 
             # Efficient configuration in case of binary classification.
             if self.n_classes == 2:
-                phi = np.hstack((np.ones((X_feat.shape[0], 1)), X_feat))
-                phi[Y == 1, :] *= -1
+                X_feat[Y == 1, :] *= -1
+                phi = X_feat
 
             # One-hot encoding for multi-class classification.
             else:
                 phi = np.zeros((n, self.len_), dtype=float)
-
-                # adding the intercept
-                phi[np.arange(n), Y * m] = np.ones(n)
-
-                # Compute the phi function
-                for dimInd in range(1, m):
-                    phi[np.arange(n), dimInd + Y * m] = X_feat[:, dimInd - 1]
+                tweaked_eye_mat = (np.eye(self.n_classes))[Y, :]
+                for i in range(n):
+                    phi[i, :] = np.kron(tweaked_eye_mat[i], X_feat[i, :])
 
         return phi
 

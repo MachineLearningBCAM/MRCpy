@@ -151,8 +151,7 @@ class PhiThreshold(Phi):
         Returns
         -------
         X_feat : array-like of shape (n_samples, n_features)
-            Transformed features from the given instances i.e.,
-            the instances itself.
+            Transformed features from the given instances.
 
         """
 

@@ -35,10 +35,6 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
     mu_ : array-like of shape (n_features) or float
         Parameters learnt by the optimization.
 
-    zhi_ : array-like of shape (n_features) or float
-        Parameters learnt by the optimization when solved using CVXpy.
-        This paramter is not required in the prediction stage of MRC
-
     params_ : a dictionary
         Stores the optimal points and best value of the function
         when the warm_start=True.
@@ -84,11 +80,10 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
             # Variables
             mu = cvx.Variable(m)
-            zhi = cvx.Variable(m)
 
             # Objective function
-            objective = cvx.Minimize((1 / 2) * (self.b - self.a).T @ zhi -
-                                     (1 / 2) * (self.b + self.a).T @ mu)
+            objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
+                                     self.tau_ @ mu)
 
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
@@ -98,10 +93,10 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 M_ = self.phi.getAllSubsetConfig(phi)
                 # F is the sum of phi
                 # for different subset of Y for each data point
-                M = M_[:, :m]
-                h = M_[:, -1]
-                M = M / (h[:, np.newaxis])
-                h = 1 - (1 / h)
+                F = M_[:, :m]
+                cardS = M_[:, -1]
+                M = F / (cardS[:, np.newaxis])
+                h = 1 - (1 / cardS)
 
                 # Calculate the psi function and
                 # add it to the objective function
@@ -124,10 +119,10 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                                      cvx.log_sum_exp(phi[i, :, :] @ mu))
 
             # Constraints
-            constraints = [zhi + mu >= 0, zhi - mu >= 0]
+            constraints = []
 
-            self.mu_, self.zhi_ = \
-                self.trySolvers(objective, constraints, mu, zhi)
+            self.mu_ = \
+                self.trySolvers(objective, constraints, mu)
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
@@ -139,10 +134,10 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 M_ = self.phi.getAllSubsetConfig(phi)
                 # M is the sum of phi
                 # for different subset of Y for each data point
-                M = M_[:, :m]
-                h = M_[:, -1]
-                M = M / (h[:, np.newaxis])
-                h = 1 - (1 / h)
+                F = M_[:, :m]
+                cardS = M_[:, -1]
+                M = F / (cardS[:, np.newaxis])
+                h = 1 - (1 / cardS)
 
                 # Function to calculate the psi subobjective
                 # to be added to the objective function.

@@ -10,7 +10,8 @@ from MRCpy.phi import \
     Phi, \
     PhiGaussian, \
     PhiLinear, \
-    PhiThreshold
+    PhiThreshold, \
+    PhiRandomRelu
 
 
 class _MRC_():
@@ -118,6 +119,8 @@ class _MRC_():
             self.phi = PhiLinear(n_classes=n_classes)
         elif phi == 'threshold':
             self.phi = PhiThreshold(n_classes=n_classes, **phi_kwargs)
+        elif phi == 'relu':
+            self.phi = PhiRandomRelu(n_classes=n_classes, **phi_kwargs)
         elif isinstance(phi, Phi):
             self.phi = phi
         else:
@@ -240,12 +243,6 @@ class _MRC_():
             self.lambda_ = (self.s * self.phi.estStd(X, Y)) / \
                 np.sqrt(X.shape[0])
 
-        # a and b are needed for cvxpy optimization only.
-        if self.use_cvx:
-            self.a = self.tau_ - self.lambda_
-            self.b = self.tau_ + self.lambda_
-            print('Using CVXpy for optimization ...')
-
         # Limit the number of training samples used in the optimization
         # for large datasets
         # Reduces the training time and use of memory
@@ -261,7 +258,7 @@ class _MRC_():
 
         return self
 
-    def trySolvers(self, objective, constraints, mu, zhi, nu=None):
+    def trySolvers(self, objective, constraints, mu, nu=None):
         """
         Solves the MRC problem
         using different types of solvers available in CVXpy
@@ -277,19 +274,12 @@ class _MRC_():
         mu : cvxpy array of shape (number of featuers in phi)
             Parameters used in the optimization problem
 
-        zhi : cvxpy array of shape (number of featuers in phi)
-            Parameters used in the optimization problem
-
         nu : cvxpy variable of float value, default = None
             Parameter used in the optimization problem
 
         Returns
         -------
         mu_ : cvxpy array of shape (number of featuers in phi)
-            The value of the parameters
-            corresponding to the optimum value of the objective function.
-
-        zhi_ : cvxpy array of shape (number of featuers in phi)
             The value of the parameters
             corresponding to the optimum value of the objective function.
 
@@ -301,49 +291,67 @@ class _MRC_():
             when it is passed as the argument to this function.
         """
 
+        # Reuse the solution from previous call to fit.
+        if self.warm_start:
+            # Use a previous solution if it exists.
+            try:
+                mu.value = self.mu_
+                nu.value = self.nu_
+            except AttributeError:
+                pass
+
         # Solve the problem
         prob = cvx.Problem(objective, constraints)
-        prob.solve(solver=self.solver, verbose=False)
+        prob.solve(solver=self.solver, verbose=False,
+                   warm_start=self.warm_start)
 
         mu_ = mu.value
-        zhi_ = zhi.value
 
         # Solving the constrained MRC problem
-        # which has only parameters mu and zhi
+        # which has only parameters mu
         if nu is not None:
             nu_ = nu.value
         else:
             nu_ = 0
 
         # if the solver could not find values of mu for the given solver
-        if mu_ is None or zhi_ is None or nu_ is None:
+        if mu_ is None or nu_ is None:
 
             # try with a different solver for solution
             for s in self.solvers:
                 if s != self.solver:
+
+                    # Reuse the solution from previous call to fit.
+                    if self.warm_start:
+                        # Use a previous solution if it exists.
+                        try:
+                            mu.value = self.mu_
+                            nu.value = self.nu_
+                        except AttributeError:
+                            pass
+
                     # Solve the problem
-                    prob.solve(solver=s, verbose=False)
+                    prob.solve(solver=s, verbose=False,
+                               warm_start=self.warm_start)
 
                     # Check the values
                     mu_ = mu.value
-                    zhi_ = zhi.value
                     if nu is not None:
                         nu_ = nu.value
 
                     # Break the loop once the solution is obtained
-                    if mu_ is not None and zhi_ is not None and \
-                            nu_ is not None:
+                    if mu_ is not None and nu_ is not None:
                         break
 
         # If no solution can be found for the optimization.
-        if mu_ is None or zhi_ is None:
+        if mu_ is None:
             raise ValueError('CVXpy solver couldn\'t find a solution .... \n \
                               The problem is ', prob.status)
 
         if nu is not None:
-            return mu_, zhi_, nu_
+            return mu_, nu_
         else:
-            return mu_, zhi_
+            return mu_
 
     def predict(self, X):
         """

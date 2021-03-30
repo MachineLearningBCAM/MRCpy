@@ -41,12 +41,14 @@ class TestMRC(unittest.TestCase):
         self.MRC_training(phi='threshold', loss='0-1', use_cvx=False)
         self.MRC_training(phi='linear', loss='0-1', use_cvx=False)
         self.MRC_training(phi='gaussian', loss='0-1', use_cvx=False)
+        self.MRC_training(phi='relu', loss='0-1', use_cvx=False)
 
     # Training test for MRC with log loss.
     def test_MRClog(self):
         self.MRC_training(phi='threshold', loss='log', use_cvx=False)
         self.MRC_training(phi='linear', loss='log', use_cvx=False)
         self.MRC_training(phi='gaussian', loss='log', use_cvx=False)
+        self.MRC_training(phi='relu', loss='log', use_cvx=False)
 
     # Using cvxpy
     # Training test for MRC with 0-1 loss.
@@ -54,9 +56,11 @@ class TestMRC(unittest.TestCase):
         self.MRC_training(phi='threshold', loss='0-1', use_cvx=True)
         self.MRC_training(phi='linear', loss='0-1', use_cvx=True)
         self.MRC_training(phi='gaussian', loss='0-1', use_cvx=True)
+        self.MRC_training(phi='relu', loss='0-1', use_cvx=True)
 
     # Training test for MRC with log loss.
     def test_MRClog_cvx(self):
         self.MRC_training(phi='threshold', loss='log', use_cvx=True)
         self.MRC_training(phi='linear', loss='log', use_cvx=True)
         self.MRC_training(phi='gaussian', loss='log', use_cvx=True)
+        self.MRC_training(phi='relu', loss='0-1', use_cvx=True)

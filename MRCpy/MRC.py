@@ -36,19 +36,11 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
     nu_ : float
         Parameter learnt by the optimization.
 
-    zhi_ : array-like of shape (n_features) or float
-        Parameters learnt by the optimization when solved using CVXpy.
-        This paramter is not required in the prediction stage of MRC
-
     mu_l_ : array-like of shape (n_features) or float
         Parameters learnt by solving the lower bound optimization of MRC.
 
     nu_l_ : float
         Parameter learnt by solving the lower bound optimization of MRC.
-
-    zhi_l_ : array-like of shape (n_features) or float
-        Parameter learnt by solving the lower bound optimization of MRC
-        when solved using CVXpy.
 
     upper_ : float
         Optimized upper bound of the MRC classifier.
@@ -95,18 +87,16 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
             # Variables
             mu = cvx.Variable(m)
-            zhi = cvx.Variable(m)
             nu = cvx.Variable()
 
             # Cost function
-            cost = (1 / 2) * (self.b - self.a).T @ zhi - \
-                   (1 / 2) * (self.b + self.a).T @ mu - nu
+            cost = self.lambda_ @ cvx.abs(mu) - self.tau_ @ mu - nu
 
             # Objective function
             objective = cvx.Minimize(cost)
 
             # Constraints
-            constraints = [zhi + mu >= 0, zhi - mu >= 0]
+            constraints = []
 
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
@@ -134,12 +124,12 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                                                     nu) <= 0
                                     for i in range(numConstr)])
 
-            self.mu_, self.zhi, self.nu_ = \
-                self.trySolvers(objective, constraints, mu, zhi, nu)
+            self.mu_, self.nu_ = \
+                self.trySolvers(objective, constraints, mu, nu)
 
             # Upper bound
-            self.upper_ = (1 / 2) * (self.b - self.a).T @ self.zhi - \
-                          (1 / 2) * (self.b + self.a).T @ self.mu_ - self.nu_
+            self.upper_ = self.lambda_ @ np.abs(self.mu_) - \
+                self.tau_ @ self.mu_ - self.nu_
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
@@ -215,18 +205,17 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             # Use CVXpy for the convex optimization of the MRC
 
             low_mu = cvx.Variable(m)
-            low_zhi = cvx.Variable(m)
             low_nu = cvx.Variable()
 
             # Cost function
-            cost = (1 / 2) * (self.b + self.a).T @ low_mu - \
-                   (1 / 2) * (self.b - self.a).T @ low_zhi + low_nu
+            cost = self.tau_ @ low_mu - \
+                self.lambda_ @ cvx.abs(low_mu) + low_nu
 
             # Objective function
             objective = cvx.Maximize(cost)
 
             # Constraints
-            constraints = [low_zhi + low_mu >= 0, low_zhi - low_mu >= 0]
+            constraints = []
 
             # Number of constraints.
             numConstr = phi.shape[0]
@@ -261,14 +250,13 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                                     <= eps[i, :]
                                     for i in range(numConstr)])
 
-            self.mu_l_, self.zhi_l_, self.nu_l_ = \
+            self.mu_l_, self.nu_l_ = \
                 self.trySolvers(objective, constraints,
-                                low_mu, low_zhi, low_nu)
+                                low_mu, low_nu)
 
             # Compute the lower bound
-            self.lower_ = (1 / 2) * (self.b + self.a).T @ self.mu_l_ - \
-                (1 / 2) * (self.b - self.a).T @ self.zhi_l_ + \
-                self.nu_l_
+            self.lower_ = self.tau_ @ self.mu_l_ - \
+                self.lambda_ @ np.abs(self.mu_l_) + self.nu_l_
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
