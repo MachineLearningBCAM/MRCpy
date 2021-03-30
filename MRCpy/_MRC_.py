@@ -10,8 +10,8 @@ from MRCpy.phi import \
     Phi, \
     PhiGaussian, \
     PhiLinear, \
-    PhiThreshold, \
-    PhiRandomRelu
+    PhiRandomRelu, \
+    PhiThreshold   
 
 
 class _MRC_():
