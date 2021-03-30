@@ -11,7 +11,7 @@ from MRCpy.phi import \
     PhiGaussian, \
     PhiLinear, \
     PhiRandomRelu, \
-    PhiThreshold   
+    PhiThreshold
 
 
 class _MRC_():
