@@ -201,7 +201,7 @@ class _MRC_():
         # Learn the classes
         # Classes will only be learnt if the estimates are not given
         self.classes_ = None
-        if tau_ is None and lambda_ is None:
+        if tau_ is None or lambda_ is None:
             # Map the values of Y from 0 to n_classes-1
             origY = Y
             self.classes_ = np.unique(origY)
