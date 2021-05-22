@@ -1,7 +1,7 @@
 # MRCpy
 
 [![Build Status](https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.org/github/MachineLearningBCAM/MRCpy)
-[![Coverage Status](https://codecov.io/gh/MachineLearningBCAM/MRCpy/branch/master/graph/badge.svg?)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
+[![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 Different variations of Minimax Risk Classifiers(MRC) using different loss functions and uncertainity set of distributions.
 
@@ -13,7 +13,8 @@ The variants available here are -
 4) MRC with log loss and fixed instances' marginals (CMRC.py)
 
 # Installation
-[![Generic badge](https://img.shields.io/badge/Python-2.X|3.X-blue.svg)](https://shields.io/)<br/>
+[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+<br/>
 
 From a terminal (OS X & linux), you can install ``MRCpy`` and its requirements directly by running the setup.py script as follows
 
