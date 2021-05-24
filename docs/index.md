@@ -8,14 +8,7 @@ nav_exclude: true
 
 MRCpy is an open-source Python library for Supervised Classification in Machine Learning. It provides implementation for a manifold of recent techniques based on minimax approach and different loss functions. 
 
-
-[Read The Docs](https://sphinx-rtd-theme.readthedocs.io) theme to
-[Jekyll](https://jekyllrb.com/), so that it can be used with GitHub Pages.
-
-You are previewing the theme right now, as you navigate
-[this documentation](https://carlosperate.github.io/jekyll-theme-rtd):
-
-![screenshot](assets/img/screenshot.png)
+Site under development!
 
 The original [Read The Docs](https://readthedocs.org)
 [theme]((https://sphinx-rtd-theme.readthedocs.io)) was created for the
