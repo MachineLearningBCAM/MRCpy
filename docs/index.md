@@ -4,17 +4,24 @@ title: MRCpy
 nav_exclude: true
 ---
 
-# MRCpy: A Library for Supervised Classification
+# MRCpy: A Library for Minimax Risk Classifiers
 
-MRCpy is an open-source Python library for Supervised Classification in Machine Learning. It provides implementation for a manifold of recent techniques based on minimax approach and different loss functions. 
+MRCpy is an open-source Python library for Supervised Classification in Machine Learning. It provides implementation for recently proposed Minimax Risk Classifiers (MRCs) based on robust risk minimization and 0-1-loss, and provide bounds on the classification error. It provides a unified user-friendly interface for different variant of MRCs. The library also comes with a feature mapping module that provides implementation for some recent feature mapping methods.
 
-Site under development!
+## Documentation outline
 
-The original [Read The Docs](https://readthedocs.org)
-[theme]((https://sphinx-rtd-theme.readthedocs.io)) was created for the
-[Sphinx](https://www.sphinx-doc.org/) documentation generator, and so it is
-designed specifically for docs.
+- Getting Started
+	- Installation and Setup
+	- Quick Start
 
-Combined with [GitHub Pages](https://pages.github.com) it's a great and easy
-way to document your projects!
+- User Guide
+	- What is Minimax Risk Classification
+	- Variants of MRCs
+	- Feature Mappings
+
+- Examples
+	- MRC
+	- Feature Mappings
+
+
 
