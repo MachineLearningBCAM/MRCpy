@@ -11,8 +11,8 @@ MRCpy is an open-source Python library for Supervised Classification in Machine 
 ## Documentation outline
 
 - Getting Started
-	- Installation and Setup
-	- Quick Start
+	- [Installation and Setup](installation_setup.html)
+	- [Quick Start](quick_start.html) 
 
 - User Guide
 	- What is Minimax Risk Classification
