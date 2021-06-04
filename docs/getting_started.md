@@ -6,7 +6,7 @@ nav_order: 2
 
 # Getting Started
 
-## [Installation and Setup](#installation-setup)
+## Installation and Setup
 
 
-## [Quick Start](#quick-start)
+## Quick Start
