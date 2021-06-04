@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Demo Pages Index
-nav_order: 1
+title: Quick Start
+nav_order: 2
 ---
 
 # Demo Pages Index
