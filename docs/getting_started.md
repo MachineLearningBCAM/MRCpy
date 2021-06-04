@@ -6,7 +6,6 @@ nav_order: 2
 
 # Getting Started
 
-## Installation and Setup {: #installation-setup}
-
+## <a name="installation-setup"></a>Installation and Setup
 
 ## Quick Start
