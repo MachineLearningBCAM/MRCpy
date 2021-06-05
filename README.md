@@ -1,4 +1,4 @@
-# MRCpy  1111
+# MRCpy 11
 
 [![Build Status](https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.org/github/MachineLearningBCAM/MRCpy)
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
@@ -20,7 +20,7 @@ From a terminal (OS X & linux), you can install ``MRCpy`` and its requirements d
 
 ```
 git clone https://github.com/MachineLearningBCAM/MRCpy.git
-cd Minimax-Risk-Classifiers
+cd MRCpy
 python3 setup.py install
 ```
 
