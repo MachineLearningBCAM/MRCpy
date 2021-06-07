@@ -1,0 +1,628 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.base_mrc &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Library Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>MRCpy.base_mrc</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for MRCpy.base_mrc</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Super class for Minimax Risk Classifiers.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+
+<span class="c1"># Import the feature mapping</span>
+<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> \
+    <span class="n">BasePhi</span><span class="p">,</span> \
+    <span class="n">RandomFourierPhi</span><span class="p">,</span> \
+    <span class="n">LinearPhi</span><span class="p">,</span> \
+    <span class="n">RandomReLUPhi</span><span class="p">,</span> \
+    <span class="n">ThresholdPhi</span>
+
+
+<div class="viewcode-block" id="BaseMRC"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC">[docs]</a><span class="k">class</span> <span class="nc">BaseMRC</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base Class for Minimax Risk Classifier</span>
+
+<span class="sd">    The class implements minimax risk classfication</span>
+<span class="sd">    using two types of commonly used loss functions,</span>
+<span class="sd">    namely logistic loss and 0-1 loss.</span>
+<span class="sd">    The class also provides different feature mapping functions</span>
+<span class="sd">    that can enhance the performance of the classifier for different datasets.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    loss : {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
+<span class="sd">        The type of loss function to use for the risk minimization.</span>
+
+<span class="sd">    s : float, default=0.3</span>
+<span class="sd">        For tuning the estimation of expected values</span>
+<span class="sd">        of feature mapping function(phi).</span>
+<span class="sd">        Must be a positive float value and</span>
+<span class="sd">        expected to be in the 0 to 1 in general cases.</span>
+
+<span class="sd">    deterministic : bool, default=False</span>
+<span class="sd">        For determining if the prediction of the labels</span>
+<span class="sd">        should be done in a deterministic way or not.</span>
+
+<span class="sd">    random_state : int, RandomState instance, default=None</span>
+<span class="sd">        Used when &#39;fourier&#39; option for feature mappings are used</span>
+<span class="sd">        to produce the random weights.</span>
+
+<span class="sd">    warm_start : bool, default=False</span>
+<span class="sd">        When set to True,</span>
+<span class="sd">        reuse the solution of the previous call to fit as initialization,</span>
+<span class="sd">        otherwise, just erase the previous solution.</span>
+
+<span class="sd">    use_cvx : bool, default=False</span>
+<span class="sd">        If True, use CVXpy library for the optimization</span>
+<span class="sd">        instead of the subgradient methods.</span>
+
+<span class="sd">    solver : {&#39;SCS&#39;, &#39;ECOS&#39;}, default=&#39;SCS&#39;</span>
+<span class="sd">        The type of CVX solver to use for solving the problem.</span>
+<span class="sd">        In some cases, one solver might not work,</span>
+<span class="sd">        so we might need to use the other solver from the set.</span>
+
+<span class="sd">    max_iters : int, default=10000</span>
+<span class="sd">        The maximum number of iterations to use</span>
+<span class="sd">        for finding the solution of optimization</span>
+<span class="sd">        using the subgradient approach.</span>
+
+<span class="sd">    phi : {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;} or phi instance, default=&#39;linear&#39;</span>
+<span class="sd">        The type of feature mapping function to use for mapping the input data</span>
+<span class="sd">        &#39;fourier&#39;, &#39;relu&#39; and &#39;threshold&#39;</span>
+<span class="sd">        are the currenlty available feature mapping methods.</span>
+
+<span class="sd">    **phi_kwargs : multiple optional parameters</span>
+<span class="sd">                   for the corresponding feature mappings(phi)</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    is_fitted_ : bool</span>
+<span class="sd">        True if the classifier is fitted i.e., the parameters are learnt.</span>
+
+<span class="sd">    tau_ : array-like of shape (n_features)</span>
+<span class="sd">        The mean estimates for the expectations of feature mappings.</span>
+
+<span class="sd">    lambda_ : array-like of shape (n_features)</span>
+<span class="sd">        The variance in the mean estimates for the expectations</span>
+<span class="sd">        of the feature mappings.</span>
+
+<span class="sd">    classes_ : array-like of shape (n_classes)</span>
+<span class="sd">        Labels in the given dataset.</span>
+<span class="sd">        If the labels Y are not given during fit</span>
+<span class="sd">        i.e., tau and lambda are given as input,</span>
+<span class="sd">        then this array is None.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="BaseMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">warm_start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span>
+                 <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="n">deterministic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span> <span class="o">=</span> <span class="n">warm_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span> <span class="o">=</span> <span class="n">use_cvx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
+
+        <span class="c1"># Feature mappings</span>
+        <span class="k">if</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                   <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">LinearPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ThresholdPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;relu&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomReLUPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected feature mapping type ... &#39;</span><span class="p">)</span>
+
+        <span class="c1"># Solver list available in cvxpy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tau_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lambda_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Fit the MRC model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples1, n_dimensions)</span>
+<span class="sd">            Training instances used in</span>
+<span class="sd">            - Calculating the estimates for the minimax risk classification</span>
+<span class="sd">            - Also, used in optimization when X_ is not given</span>
+
+<span class="sd">        Y_ : array-like of shape (n_samples1/n_samples2), default = None</span>
+<span class="sd">            Labels corresponding to the training instances</span>
+<span class="sd">            used to compute the estimates for the optimization.</span>
+
+<span class="sd">            If the estimates used in the MRC are already given as a parameter</span>
+<span class="sd">            to the this function, then the labels</span>
+<span class="sd">            for the instances are not required</span>
+<span class="sd">            unless and until the threshold feature mappings are used.</span>
+
+<span class="sd">            When the threshold feature mappings are used,</span>
+<span class="sd">            these labels are required to find the thresholds</span>
+<span class="sd">            using the instance, label pair.</span>
+
+<span class="sd">        X_ : array-like of shape (n_samples, n_dimensions), default = None</span>
+<span class="sd">            These instances are optional and</span>
+<span class="sd">            when given, will be used in the minimax risk optimization.</span>
+<span class="sd">            These extra instances are generally a smaller set and</span>
+<span class="sd">            give an advantage in training time.</span>
+
+<span class="sd">        n_classes : int</span>
+<span class="sd">            Number of labels in the dataset.</span>
+<span class="sd">            If the labels Y are not provided, then this argument is required.</span>
+
+<span class="sd">        tau_ : array-like of shape (n_features) or float, default=None</span>
+<span class="sd">            The mean estimates</span>
+<span class="sd">            for the expectations of feature mappings.</span>
+<span class="sd">            If a single float value is passed,</span>
+<span class="sd">            all the features in the feature mapping have the same estimates.</span>
+
+<span class="sd">        lambda_ : array-like of shape (n_features) or float, defautl=None</span>
+<span class="sd">            The variance in the mean estimates</span>
+<span class="sd">            for the expectations of the feature mappings.</span>
+<span class="sd">            If a single float value is passed,</span>
+<span class="sd">            all the features in the feature mapping</span>
+<span class="sd">            have the samve variance for the estimates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Fitted estimator</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Set the type of configuration to be learnt i.e.,</span>
+        <span class="c1"># whether to learn duplicate instances or not,</span>
+        <span class="c1"># based on the MRC/CMRC model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_learn_config_type</span><span class="p">()</span>
+
+        <span class="c1"># Check if separate instances are given for the optimization</span>
+        <span class="k">if</span> <span class="n">X_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use the training samples used to compute estimate</span>
+            <span class="c1"># for the optimization.</span>
+            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">X</span>
+
+        <span class="c1"># Learn the classes</span>
+        <span class="c1"># Classes will only be learnt if the estimates are not given</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">tau_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">lambda_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># Map the values of Y from 0 to n_classes-1</span>
+            <span class="n">origY</span> <span class="o">=</span> <span class="n">Y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">origY</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">origY</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">):</span>
+                <span class="n">Y</span><span class="p">[</span><span class="n">origY</span> <span class="o">==</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">n_classes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
+
+        <span class="k">elif</span> <span class="n">Y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected the labels </span><span class="se">\&#39;</span><span class="s2">Y</span><span class="se">\&#39;</span><span class="s2"> or &quot;</span> <span class="o">+</span>
+                             <span class="s2">&quot;a valid </span><span class="se">\&#39;</span><span class="s2">n_classes</span><span class="se">\&#39;</span><span class="s2"> argument ... &quot;</span><span class="p">)</span>
+
+        <span class="c1"># Set the number of classes in phi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span>
+
+        <span class="c1"># Fit the feature mappings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+        <span class="c1"># Set the interval estimates if they are given</span>
+        <span class="c1"># Otherwise compute the interval estimates</span>
+        <span class="k">if</span> <span class="n">tau_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                <span class="c1"># Check if the input is an array or a single value.</span>
+                <span class="c1"># If a single value is given as input,</span>
+                <span class="c1"># it is converted to an array of size</span>
+                <span class="c1"># equal to the number of features of phi</span>
+                <span class="c1"># it imples that the estimates for all the features is same.</span>
+                <span class="n">tau_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">tau_</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">lambda_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                <span class="c1"># Check if the input is an array or a single value.</span>
+                <span class="c1"># If a single value is given as input,</span>
+                <span class="c1"># it is converted to an array of size</span>
+                <span class="c1"># equal to the number of features of phi</span>
+                <span class="c1"># it imples that the variance in the estimates</span>
+                <span class="c1"># for all the features is same.</span>
+                <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">lambda_</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                       <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> \
+                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># Limit the number of training samples used in the optimization</span>
+        <span class="c1"># for large datasets</span>
+        <span class="c1"># Reduces the training time and use of memory</span>
+        <span class="n">n_max</span> <span class="o">=</span> <span class="mi">5000</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X_opt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">n_max</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n_max</span>
+
+        <span class="c1"># Fit the MRC classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">try_solvers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objective</span><span class="p">,</span> <span class="n">constraints</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">nu</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Solves the MRC problem</span>
+<span class="sd">        using different types of solvers available in CVXpy</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        objective : cvxpy variable of float value</span>
+<span class="sd">            Defines the minimization problem of the MRC.</span>
+
+<span class="sd">        constraints : array-like of shape (n_constraints)</span>
+<span class="sd">            Defines the constraints for the MRC optimization.</span>
+
+<span class="sd">        mu : cvxpy array of shape (number of featuers in phi)</span>
+<span class="sd">            Parameters used in the optimization problem</span>
+
+<span class="sd">        nu : cvxpy variable of float value, default = None</span>
+<span class="sd">            Parameter used in the optimization problem</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mu_ : cvxpy array of shape (number of featuers in phi)</span>
+<span class="sd">            The value of the parameters</span>
+<span class="sd">            corresponding to the optimum value of the objective function.</span>
+
+<span class="sd">        nu_ : cvxpy variable of float value, if None, not returned</span>
+<span class="sd">            The value of the parameter</span>
+<span class="sd">            corresponding to the optimum value of the objective function.</span>
+<span class="sd">            The parameter is not returned</span>
+<span class="sd">            in case the cvxpy variable is not defined (i.e, None) initially</span>
+<span class="sd">            when it is passed as the argument to this function.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Reuse the solution from previous call to fit.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span><span class="p">:</span>
+            <span class="c1"># Use a previous solution if it exists.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span>
+                <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># Solve the problem</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">constraints</span><span class="p">)</span>
+        <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">warm_start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span><span class="p">)</span>
+
+        <span class="n">mu_</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="c1"># Solving the constrained MRC problem</span>
+        <span class="c1"># which has only parameters mu</span>
+        <span class="k">if</span> <span class="n">nu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nu_</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nu_</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># if the solver could not find values of mu for the given solver</span>
+        <span class="k">if</span> <span class="n">mu_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">nu_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># try with a different solver for solution</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">:</span>
+
+                    <span class="c1"># Reuse the solution from previous call to fit.</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span><span class="p">:</span>
+                        <span class="c1"># Use a previous solution if it exists.</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span>
+                            <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span>
+                        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+
+                    <span class="c1"># Solve the problem</span>
+                    <span class="n">prob</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                               <span class="n">warm_start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span><span class="p">)</span>
+
+                    <span class="c1"># Check the values</span>
+                    <span class="n">mu_</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span>
+                    <span class="k">if</span> <span class="n">nu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">nu_</span> <span class="o">=</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span>
+
+                    <span class="c1"># Break the loop once the solution is obtained</span>
+                    <span class="k">if</span> <span class="n">mu_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">nu_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">break</span>
+
+        <span class="c1"># If no solution can be found for the optimization.</span>
+        <span class="k">if</span> <span class="n">mu_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;CVXpy solver couldn</span><span class="se">\&#39;</span><span class="s1">t find a solution .... </span><span class="se">\n</span><span class="s1"> </span><span class="se">\</span>
+<span class="s1">                              The problem is &#39;</span><span class="p">,</span> <span class="n">prob</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">nu</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mu_</span><span class="p">,</span> <span class="n">nu_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">mu_</span>
+
+<div class="viewcode-block" id="BaseMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the predicted classes for X samples.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Test instances for which the labels are to be predicted</span>
+<span class="sd">            by the MRC model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        y_pred : array-like of shape (n_samples, )</span>
+<span class="sd">            The predicted labels corresponding to the given instances.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+            <span class="c1"># In case of logistic loss function,</span>
+            <span class="c1"># the classification is always deterministic</span>
+
+            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+            <span class="c1"># Deterministic classification</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
+            <span class="c1"># In case of 0-1 loss function,</span>
+            <span class="c1"># the classification can be done</span>
+            <span class="c1"># in deterministic or non-deterministic way</span>
+            <span class="c1"># but by default, it is prefered to do it in non-deterministic way</span>
+            <span class="c1"># as it is designed for it.</span>
+
+            <span class="n">proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
+                <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">proba</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">y_pred</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">pc</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">pc</span> <span class="ow">in</span> <span class="n">proba</span><span class="p">]</span>
+
+        <span class="c1"># Check if any labels are learnt</span>
+        <span class="c1"># Otherwise return the default labels i.e., from 0 to n_classes-1.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">y_pred</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">y_pred</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

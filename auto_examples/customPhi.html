@@ -1,0 +1,396 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>&lt;no title&gt; &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/auto_examples/customPhi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-customphi-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<p class="sphx-glr-example-title" id="sphx-glr-auto-examples-customphi-py">An example of creating you own custom feature mappings</p>
+<p>In this example, I am extending the Phi parent class
+according to the needs of the mappings.
+You can choose the best feature mapping class for extension
+according to your requirements.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
+<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Custom phi example: Generating the linear kernel</span>
+<span class="c1"># modified by multiplying a constant</span>
+
+
+<span class="k">class</span> <span class="nc">myPhi</span><span class="p">(</span><span class="n">LinearPhi</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This constructor is by default present in the parent Phi class.</span>
+<span class="sd">    So, no need to redefine this constructor</span>
+<span class="sd">    unless you need any extra parameters from the user.</span>
+<span class="sd">    In our example here, we don&#39;t actually need this</span>
+<span class="sd">    as we are not using any extra parameters here</span>
+<span class="sd">    but it is defined here as an example.</span>
+<span class="sd">    Removing this constructor doesn&#39;t have any affect on the performance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="c1"># Calling the parent constructor.</span>
+        <span class="c1"># It is always better convention to call the parent constructor</span>
+        <span class="c1"># for primary variables initialization.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="p">)</span>
+
+        <span class="c1"># Define any extra parameters for your own features</span>
+        <span class="c1"># Example : self.add_intercept = True/False</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit any extra parameter for your feature mappings</span>
+<span class="sd">        and set the length of the feature mapping.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances</span>
+<span class="sd">            used to learn the feature configurations</span>
+
+<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Labels corresponding to the unlabeled instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Check if the array is 2D numpy matrix or not.</span>
+        <span class="c1"># X is expected to be a numpy 2D matrix.</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Defining the length of the phi</span>
+
+        <span class="c1"># Here we define the total length of the phi feature vector</span>
+        <span class="c1"># given by the class variable self.len_</span>
+        <span class="c1"># In this case, the kernel is linear,</span>
+        <span class="c1"># so the length of the kernel is d (Number of dimension of X)</span>
+        <span class="c1"># added by 1 (for the intercept).</span>
+        <span class="c1"># We one-hot encoded feature mapping</span>
+        <span class="c1"># so we multiply by number of classes for total length</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span>
+
+        <span class="c1"># A class variable. You need set it true</span>
+        <span class="c1"># after you fit your feature mapping functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Return the fitted feature mapping instance</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform the given instances to the principal features if any.</span>
+<span class="sd">        No need to give definition for this function</span>
+<span class="sd">        if you are not calling it in the eval function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed features from the given instances i.e.,</span>
+<span class="sd">            the instances itself.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># We want to use the linear kernel feature mapping (i.e., X itself)</span>
+        <span class="c1"># and transform it by multiplying by a factor 2</span>
+        <span class="c1"># Note: This is just an example of building custom feature mappings,</span>
+        <span class="c1">#       so the results after using this feature mappings</span>
+        <span class="c1">#       might not be satisfactory</span>
+        <span class="n">X_feat</span> <span class="o">=</span> <span class="n">X</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="c1"># Return the features</span>
+        <span class="k">return</span> <span class="n">X_feat</span>
+
+    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the complete feature mapping vector</span>
+<span class="sd">        corresponding to instance X.</span>
+<span class="sd">        X can be a matrix in which case</span>
+<span class="sd">        the function returns a matrix in which</span>
+<span class="sd">        the rows represent the complete feature mapping vector</span>
+<span class="sd">        corresponding to each instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances for developing the feature matrix</span>
+
+<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            Labels corresponding to the unlabeled training instances</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        phi : array-like of shape (n_samples, n_classes, n_features*n_classes)</span>
+<span class="sd">            Matrix containing the complete feature vector as rows</span>
+<span class="sd">            corresponding to each of the instance.</span>
+<span class="sd">            In case of one-hot encoding, the feature mappings are given by</span>
+<span class="sd">            calling the transform function to get the principal features and</span>
+<span class="sd">            then appending zeros for the one-hot encoding.</span>
+<span class="sd">            In case Y is given, the encoding for each instance are calculated</span>
+<span class="sd">            corresponding to those labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Here in this example,</span>
+        <span class="c1"># we want to use the one-hot encoded feature mappings.</span>
+        <span class="c1"># So, we call the parent class eval function</span>
+        <span class="c1"># which does the one-hot encoding by default</span>
+        <span class="c1"># and also adds the intercept corresponding to each class</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+        <span class="c1"># In case you don&#39;t want the one-hot encoding,</span>
+        <span class="c1"># you have to define you own eval function</span>
+        <span class="c1"># without calling the parent class eval function.</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="c1"># Loading the dataset</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="numpy.unique" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
+
+    <span class="c1"># Creating the custom phi object</span>
+    <span class="n">myphi</span> <span class="o">=</span> <span class="n">myPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="c1"># Fit the MRC model with the custom phi</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">myphi</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+    <span class="c1"># Prediction</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted values for the first 3 instances are : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
+
+    <span class="c1"># Predicted probabilities</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted probabilities for the first 3 instances are : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
+
+    <span class="c1"># Accuracy/Score of the model</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The score is : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-customphi-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../_downloads/7b8d8da5fb69a9526ec581eb3d2f4226/customPhi.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">customPhi.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../_downloads/06c49a3d11c5cd5bc6d744b10e551f38/customPhi.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">customPhi.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

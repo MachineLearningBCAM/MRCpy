@@ -1,0 +1,484 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.phi.ThresholdPhi &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="MRCpy.phi.RandomReLUPhi" href="MRCpy.phi.RandomReLUPhi.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-contents">Module Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.BasePhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.LinearPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.LinearPhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">MRCpy Library Documentation</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/generated/MRCpy.phi.ThresholdPhi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mrcpy-phi-thresholdphi">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi<a class="headerlink" href="#mrcpy-phi-thresholdphi" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">ThresholdPhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em><span class="n"><span class="pre">thrsDim_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">thrsVal_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold features</p>
+<p>A threshold feature is a funtion, f(x;t,d)=1 when x_d&lt;t and 0 otherwise.
+A product of threshold features is an indicator of a region
+and its expectancy is closely related to cumulative distributions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>The number of classes in the dataset</p>
+</dd>
+<dt><strong>n_thresholds</strong><span class="classifier">int, default=200</span></dt><dd><p>It defines the maximum number of allowed threshold values
+for each dimension.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>self.thrsVal</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>Array of all threshold values learned from the training data.</p>
+</dd>
+<dt><strong>self.thrsDim</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>Array of dimensions
+corresponding to the learned threshold value in self.thrsVal.</p>
+</dd>
+<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the feature mappings has learned its hyperparameters (if any)
+and the length of the feature mapping is set.</p>
+</dd>
+<dt><strong>len_</strong><span class="classifier">int</span></dt><dd><p>Defines the length of the feature mapping vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils align-default">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="MRCpy.phi.ThresholdPhi.d_tree_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_tree_split</span></code></a>(X,&nbsp;Y[,&nbsp;n_thresholds])</td>
+<td>Learn the univariate thresholds by using the split points of decision trees for each dimension of data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_exp" title="MRCpy.phi.ThresholdPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
+<td>Average value of phi in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of phi, tau</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_std" title="MRCpy.phi.ThresholdPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
+<td>Standard deviation of phi in the supervised dataset (X,Y) Used in the learning stage to estimate the bounds of the expected value.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval" title="MRCpy.phi.ThresholdPhi.eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code></a>(X[,&nbsp;Y])</td>
+<td>Evaluate the one-hot encoded features of the given instances i.e., X, phi(x,y) for all x in X and y=0,…,r-1.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.fit" title="MRCpy.phi.ThresholdPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
+<td>Learn the set of features using the thresholds obtained from the dataset.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
+<td>Compute the features(0/1) by comparing with the thresholds obtained in each dimension.</td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em><span class="n"><span class="pre">thrsDim_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">thrsVal_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.d_tree_split">
+<code class="sig-name descname"><span class="pre">d_tree_split</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em>, <em><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.d_tree_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn the univariate thresholds
+by using the split points of decision trees
+for each dimension of data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled instances.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the instances.</p>
+</dd>
+<dt><strong>n_thresholds</strong><span class="classifier">int, default = None</span></dt><dd><p>Maximum limit on the number of thresholds obtained</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>prodThrsDim</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>The dimension in which the thresholds are defined.</p>
+</dd>
+<dt><strong>prodThrsVal</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>The threshold value in the corresponding dimension.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_exp">
+<code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average value of phi in the supervised dataset (X,Y)
+Used in the learning stage as an estimate
+of the expected value of phi, tau</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>tau</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_std">
+<code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviation of phi in the supervised dataset (X,Y)
+Used in the learning stage
+to estimate the bounds of the expected value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>lambda</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.eval">
+<code class="sig-name descname"><span class="pre">eval</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the one-hot encoded features of the given instances i.e.,
+X, phi(x,y) for all x in X and y=0,…,r-1. In case labels are given,
+the encodings are calculated corresponding to those labels
+and this form of eval function is used in the learning stage
+for estimating the expected values of phi i.e., tau and lambda</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
+<div><p>(n_samples, n_classes, n_features * n_classes) or
+(n_samples, n_features * n_classes) if Y is given</p>
+</div></blockquote>
+<p>Matrix containing the one-hot encoded features
+of all possible classes of each instance.
+In case Y is given, the encoding for each instance are calculated
+corresponding to those labels.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.fit">
+<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn the set of features using the thresholds obtained
+from the dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances
+used to learn the feature configurations.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Labels corresponding to the unlabeled instances X,
+used for finding the thresholds from the dataset.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>self :</dt><dd><p>Fitted estimator</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.transform">
+<code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the features(0/1)
+by comparing with the thresholds obtained in each dimension.
+So, if X_ij &lt; th_j, f_i(j_i) = 1 else f_i(j_i) = 0</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_feat</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Transformed features from the given instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.phi.RandomReLUPhi.html" class="btn btn-neutral float-left" title="MRCpy.phi.RandomReLUPhi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
