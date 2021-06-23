@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -42,6 +41,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -103,7 +103,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.BasePhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.LinearPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.LinearPhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.ThresholdPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
@@ -184,22 +183,26 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi<a class="headerlink" href="#mrcpy-phi-randomreluphi" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">RandomReLUPhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">RandomReLUPhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi" title="Permalink to this definition">¶</a></dt>
 <dd><p>ReLU features</p>
-<dl class="docutils">
-<dt>ReLU features are given by -</dt><dd>Relu(w^t * (1/gamma,x))</dd>
-</dl>
+<p>ReLU features are given by -</p>
+<div class="math notranslate nohighlight">
+\[\max(w^t * (1/gamma,x), 0)\]</div>
 <p>where w is a vector(dimension d) of random weights uniformly distributed
 over a sphere of unit radius.</p>
-<dl class="docutils">
-<dt>Relu function is defined as -</dt><dd>f(x) = max(0, x)</dd>
-</dl>
+<p>Relu function is defined as -</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \max(0, x)\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>The number of classes in the dataset.</p>
+</dd>
+<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept.
+If set to false, no intercept will be used in calculations
+(i.e. data is expected to be already centered).</p>
 </dd>
 <dt><strong>gamma</strong><span class="classifier">{‘scale’, ‘avg_ann’, ‘avg_ann_50’, float} default = ‘avg_ann_50’</span></dt><dd><p>It defines the type of heuristic to be used
 to calculate the scaling parameter.</p>
@@ -250,26 +253,29 @@ and the length of the feature mapping is set.</p>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_std" title="MRCpy.phi.RandomReLUPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
 <td>Standard deviation of phi in the supervised dataset (X,Y) Used in the learning stage to estimate the bounds of the expected value.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval" title="MRCpy.phi.RandomReLUPhi.eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code></a>(X[,&nbsp;Y])</td>
-<td>Evaluate the one-hot encoded features of the given instances i.e., X, phi(x,y) for all x in X and y=0,…,r-1.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="MRCpy.phi.RandomReLUPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and all the labels.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.fit" title="MRCpy.phi.RandomReLUPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="MRCpy.phi.RandomReLUPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X,&nbsp;Y)</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and y in Y.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.fit" title="MRCpy.phi.RandomReLUPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
 <td>Get the set of random weights for computing the features space.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.heuristic_gamma" title="MRCpy.phi.RandomReLUPhi.heuristic_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heuristic_gamma</span></code></a>(X,&nbsp;Y)</td>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.heuristic_gamma" title="MRCpy.phi.RandomReLUPhi.heuristic_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heuristic_gamma</span></code></a>(X,&nbsp;Y)</td>
 <td>Compute the scale parameter for gaussian kernels using the heuristic -</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.rff_gamma" title="MRCpy.phi.RandomReLUPhi.rff_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_gamma</span></code></a>(X)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.rff_gamma" title="MRCpy.phi.RandomReLUPhi.rff_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_gamma</span></code></a>(X)</td>
 <td>Function to find the scale parameter for random fourier features obtained from gaussian kernels using the heuristic given in -</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
 <td>Compute the ReLu Random Features from the given instances.</td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -330,13 +336,44 @@ to estimate the bounds of the expected value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval">
-<code class="sig-name descname"><span class="pre">eval</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluate the one-hot encoded features of the given instances i.e.,
-X, phi(x,y) for all x in X and y=0,…,r-1. In case labels are given,
-the encodings are calculated corresponding to those labels
-and this form of eval function is used in the learning stage
-for estimating the expected values of phi i.e., tau and lambda</p>
+<dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_x">
+<code class="sig-name descname"><span class="pre">eval_x</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
+X, phi(x,y) for each x in X and all the labels. The output is 3D matrix
+that is composed of 2D matrices corresponding to each of the instance.
+These 2D matrices are the one-hot encodings corresponding to
+all the possible labels in our dataset.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
+<div><p>(n_samples, n_classes, n_features * n_classes)</p>
+</div></blockquote>
+<p>Matrix containing the one-hot encoding for all the classes
+for each of the instances given.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_xy">
+<code class="sig-name descname"><span class="pre">eval_xy</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
+X, phi(x,y) for each x in X and y in Y. The encodings are calculated,
+corresponding to the given labels, which is used by the learning stage
+for estimating the expected values of phi i.e., tau and lambda.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -344,20 +381,17 @@ for estimating the expected values of phi i.e., tau and lambda</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples), default=None</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
-<div><p>(n_samples, n_classes, n_features * n_classes) or
-(n_samples, n_features * n_classes) if Y is given</p>
+<div><p>(n_samples, n_features * n_classes)</p>
 </div></blockquote>
-<p>Matrix containing the one-hot encoded features
-of all possible classes of each instance.
-In case Y is given, the encoding for each instance are calculated
-corresponding to those labels.</p>
+<p>Matrix containing the one-hot encoding
+with respect to the labels given for all the instances.</p>
 </dd>
 </dl>
 </td>

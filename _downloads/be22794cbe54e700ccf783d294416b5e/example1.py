@@ -63,8 +63,9 @@ def runMRC(phi, loss):
             # Save start time for computing training time
             startTime = time.time()
 
-            clf.fit(X_train, y_train)
+            clf.fit(X_train, y_train, X_=X_train)
             upper += clf.upper_
+            print('upper : ', upper)
             lower += clf.get_lower_bound()
 
             # Calculate the training time
@@ -89,8 +90,8 @@ if __name__ == '__main__':
           Example 1 (MRC with default constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and linear feature mapping \n\n')
+    runMRC(phi='linear', loss='0-1')
 
-    print('\t\t 2. Using log loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='log')
+    print('\t\t 2. Using log loss and linear feature mapping \n\n')
+    runMRC(phi='linear', loss='log')

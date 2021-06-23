@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -165,6 +164,8 @@
   <h1>Source code for MRCpy.base_mrc</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Super class for Minimax Risk Classifiers.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 <span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
@@ -175,7 +176,6 @@
 <span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> \
     <span class="n">BasePhi</span><span class="p">,</span> \
     <span class="n">RandomFourierPhi</span><span class="p">,</span> \
-    <span class="n">LinearPhi</span><span class="p">,</span> \
     <span class="n">RandomReLUPhi</span><span class="p">,</span> \
     <span class="n">ThresholdPhi</span>
 
@@ -192,7 +192,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    loss : {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
+<span class="sd">    loss : `str` {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
 <span class="sd">        The type of loss function to use for the risk minimization.</span>
 
 <span class="sd">    s : float, default=0.3</span>
@@ -208,6 +208,11 @@
 <span class="sd">    random_state : int, RandomState instance, default=None</span>
 <span class="sd">        Used when &#39;fourier&#39; option for feature mappings are used</span>
 <span class="sd">        to produce the random weights.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">            Whether to calculate the intercept for MRCs</span>
+<span class="sd">            If set to false, no intercept will be used in calculations</span>
+<span class="sd">            (i.e. data is expected to be already centered).</span>
 
 <span class="sd">    warm_start : bool, default=False</span>
 <span class="sd">        When set to True,</span>
@@ -228,14 +233,22 @@
 <span class="sd">        for finding the solution of optimization</span>
 <span class="sd">        using the subgradient approach.</span>
 
-<span class="sd">    phi : {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;} or phi instance, default=&#39;linear&#39;</span>
+<span class="sd">    phi : `str` {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;} or</span>
+<span class="sd">           `BasePhi` instance, default=&#39;linear&#39;</span>
 <span class="sd">        The type of feature mapping function to use for mapping the input data</span>
 <span class="sd">        &#39;fourier&#39;, &#39;relu&#39; and &#39;threshold&#39;</span>
 <span class="sd">        are the currenlty available feature mapping methods.</span>
 
-<span class="sd">    **phi_kwargs : multiple optional parameters</span>
-<span class="sd">                   for the corresponding feature mappings(phi)</span>
+<span class="sd">    **phi_kwargs : Groups the multiple optional parameters</span>
+<span class="sd">                   for the corresponding feature mappings(phi).</span>
 
+<span class="sd">                   For example in case of fourier features,</span>
+<span class="sd">                   the number of components is given by `n_components`</span>
+<span class="sd">                   parameter which can be passed as argument - </span>
+<span class="sd">                   `MRC(loss=&#39;log&#39;, phi=&#39;fourier&#39;, n_components=500)`</span>
+<span class="sd">                   </span>
+<span class="sd">                   The list of arguments for each feature mappings class</span>
+<span class="sd">                   can be found in the corresponding documentation.</span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    is_fitted_ : bool</span>
@@ -257,13 +270,14 @@
 
 <div class="viewcode-block" id="BaseMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">warm_start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span>
-                 <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
+                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">warm_start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">s</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="n">deterministic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="o">=</span> <span class="n">fit_intercept</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span> <span class="o">=</span> <span class="n">warm_start</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span> <span class="o">=</span> <span class="n">use_cvx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
@@ -272,13 +286,21 @@
         <span class="c1"># Feature mappings</span>
         <span class="k">if</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                   <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+                                        <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">LinearPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">BasePhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                               <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ThresholdPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ThresholdPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                    <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                    <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;relu&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomReLUPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomReLUPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                     <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                     <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                                     <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
         <span class="k">else</span><span class="p">:</span>
@@ -298,7 +320,7 @@
 <span class="sd">            - Calculating the estimates for the minimax risk classification</span>
 <span class="sd">            - Also, used in optimization when X_ is not given</span>
 
-<span class="sd">        Y_ : array-like of shape (n_samples1/n_samples2), default = None</span>
+<span class="sd">        Y_ : array-like of shape (n_samples1), default = None</span>
 <span class="sd">            Labels corresponding to the training instances</span>
 <span class="sd">            used to compute the estimates for the optimization.</span>
 
@@ -311,7 +333,7 @@
 <span class="sd">            these labels are required to find the thresholds</span>
 <span class="sd">            using the instance, label pair.</span>
 
-<span class="sd">        X_ : array-like of shape (n_samples, n_dimensions), default = None</span>
+<span class="sd">        X_ : array-like of shape (n_samples2, n_dimensions), default = None</span>
 <span class="sd">            These instances are optional and</span>
 <span class="sd">            when given, will be used in the minimax risk optimization.</span>
 <span class="sd">            These extra instances are generally a smaller set and</span>
@@ -321,13 +343,15 @@
 <span class="sd">            Number of labels in the dataset.</span>
 <span class="sd">            If the labels Y are not provided, then this argument is required.</span>
 
-<span class="sd">        tau_ : array-like of shape (n_features) or float, default=None</span>
+<span class="sd">        tau_ : array-like of shape (n_features * n_classes) or float,</span>
+<span class="sd">               default=None</span>
 <span class="sd">            The mean estimates</span>
 <span class="sd">            for the expectations of feature mappings.</span>
 <span class="sd">            If a single float value is passed,</span>
 <span class="sd">            all the features in the feature mapping have the same estimates.</span>
 
-<span class="sd">        lambda_ : array-like of shape (n_features) or float, defautl=None</span>
+<span class="sd">        lambda_ : array-like of shape (n_features * n_classes) or float,</span>
+<span class="sd">                  defautl=None</span>
 <span class="sd">            The variance in the mean estimates</span>
 <span class="sd">            for the expectations of the feature mappings.</span>
 <span class="sd">            If a single float value is passed,</span>
@@ -343,19 +367,15 @@
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="c1"># Set the type of configuration to be learnt i.e.,</span>
-        <span class="c1"># whether to learn duplicate instances or not,</span>
-        <span class="c1"># based on the MRC/CMRC model</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_learn_config_type</span><span class="p">()</span>
-
         <span class="c1"># Check if separate instances are given for the optimization</span>
         <span class="k">if</span> <span class="n">X_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
+            <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Use the training samples used to compute estimate</span>
             <span class="c1"># for the optimization.</span>
             <span class="n">X_opt</span> <span class="o">=</span> <span class="n">X</span>
+            <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Learn the classes</span>
         <span class="c1"># Classes will only be learnt if the estimates are not given</span>
@@ -416,19 +436,26 @@
                                        <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> \
-                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> \
+                            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> \
+                            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
         <span class="c1"># Limit the number of training samples used in the optimization</span>
         <span class="c1"># for large datasets</span>
         <span class="c1"># Reduces the training time and use of memory</span>
         <span class="n">n_max</span> <span class="o">=</span> <span class="mi">5000</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">X_opt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">n_max</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">not_all_instances</span> <span class="ow">and</span> <span class="n">n_max</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="n">n_max</span>
 
+        <span class="c1"># Get the feature mapping corresponding to the training instances</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X_opt</span><span class="p">[:</span><span class="n">n</span><span class="p">])</span>
+
+        <span class="c1"># Supress the depreciation warnings</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
         <span class="c1"># Fit the MRC classifier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">[:</span><span class="n">n</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -541,19 +568,20 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        y_pred : array-like of shape (n_samples, )</span>
+<span class="sd">        y_pred : array-like of shape (n_samples)</span>
 <span class="sd">            The predicted labels corresponding to the given instances.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
             <span class="c1"># In case of logistic loss function,</span>
             <span class="c1"># the classification is always deterministic</span>
 
-            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
             <span class="c1"># Deterministic classification</span>
             <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>

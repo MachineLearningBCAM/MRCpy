@@ -23,7 +23,6 @@ Feature Mappings
    :template: class.rst
 
    MRCpy.phi.BasePhi
-   MRCpy.phi.LinearPhi
    MRCpy.phi.RandomFourierPhi
    MRCpy.phi.RandomReLUPhi
    MRCpy.phi.ThresholdPhi

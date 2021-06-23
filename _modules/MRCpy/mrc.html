@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -165,6 +164,8 @@
   <h1>Source code for MRCpy.mrc</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Minimax Risk Classification.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+
 <span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
@@ -185,7 +186,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    loss : {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
+<span class="sd">    loss : `str` {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
 <span class="sd">        The type of loss function to use for the risk minimization.</span>
 
 <span class="sd">    s : float, default=0.3</span>
@@ -201,6 +202,11 @@
 <span class="sd">    random_state : int, RandomState instance, default=None</span>
 <span class="sd">        Used when &#39;fourier&#39; option for feature mappings are used</span>
 <span class="sd">        to produce the random weights.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">            Whether to calculate the intercept for MRCs</span>
+<span class="sd">            If set to false, no intercept will be used in calculations</span>
+<span class="sd">            (i.e. data is expected to be already centered).</span>
 
 <span class="sd">    warm_start : bool, default=False</span>
 <span class="sd">        When set to True,</span>
@@ -221,13 +227,22 @@
 <span class="sd">        for finding the solution of optimization</span>
 <span class="sd">        using the subgradient approach.</span>
 
-<span class="sd">    phi : {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;} or phi instance, default=&#39;linear&#39;</span>
-<span class="sd">        The type of feature mapping function to use for mapping the input data</span>
+<span class="sd">    phi : `str` {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;} or</span>
+<span class="sd">          `BasePhi` instance, default=&#39;linear&#39;</span>
+<span class="sd">        The type of feature mapping function to use for mapping the input data.</span>
+<span class="sd">        Currently available feature mapping methods are - </span>
 <span class="sd">        &#39;fourier&#39;, &#39;relu&#39; and &#39;threshold&#39;</span>
-<span class="sd">        are the currenlty available feature mapping methods.</span>
 
-<span class="sd">    **phi_kwargs : multiple optional parameters</span>
-<span class="sd">                   for the corresponding feature mappings(phi)</span>
+<span class="sd">    **phi_kwargs : Groups the multiple optional parameters</span>
+<span class="sd">                   for the corresponding feature mappings.</span>
+
+<span class="sd">                   For example in case of fourier features,</span>
+<span class="sd">                   the number of components is given by `n_components`</span>
+<span class="sd">                   parameter which can be passed as argument - </span>
+<span class="sd">                   `MRC(loss=&#39;log&#39;, phi=&#39;fourier&#39;, n_components=500)`</span>
+<span class="sd">                   </span>
+<span class="sd">                   The list of arguments for each feature mappings class</span>
+<span class="sd">                   can be found in the corresponding documentation.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -271,7 +286,7 @@
 <span class="sd">        when the warm_start=True.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="MRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="MRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Solves the minimax risk problem</span>
 <span class="sd">        for different types of loss (0-1 and log loss).</span>
@@ -280,19 +295,36 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples1, n_dimensions)</span>
-<span class="sd">            Training instances used in the optimization.</span>
+<span class="sd">        phi : array-like of shape(n_samples, n_classes, n_features * n_classes)</span>
+<span class="sd">            Feature mappings used in the optimization.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Constants</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="c1"># Get the learn configurations of phi (feature mapping)</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">learn_config</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">learn_duplicates</span><span class="p">)</span>
+        <span class="c1"># Constants</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Save the phi configurations for finding the lower bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span> <span class="o">=</span> <span class="n">phi</span>
+
+        <span class="c1"># In case of 0-1 loss, learn constraints using the phi</span>
+        <span class="c1"># These constraints are used in the optimization instead of phi</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
+            <span class="c1"># Summing up the phi configurations</span>
+            <span class="c1"># for all possible subsets of classes for each instance</span>
+            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
+                                                    <span class="n">numVals</span><span class="p">)))</span>
+
+            <span class="c1"># Compute the corresponding length of the subset of classes</span>
+            <span class="c1"># for which sums computed for each instance</span>
+            <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
             <span class="c1"># Use CVXpy for the convex optimization of the MRC.</span>
@@ -312,16 +344,7 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
                 <span class="c1"># Constraints in case of 0-1 loss function</span>
-
-                <span class="c1"># Exponential number in num_class of linear constraints</span>
-                <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">get_all_subset_config</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-
-                <span class="c1"># F is the sum of phi</span>
-                <span class="c1"># for different subset of Y</span>
-                <span class="c1"># for each data point</span>
-                <span class="n">F</span> <span class="o">=</span> <span class="n">M</span><span class="p">[:,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span>
-                <span class="n">cardS</span> <span class="o">=</span> <span class="n">M</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">numConstr</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">numConstr</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">constraints</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">F</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span>
                                     <span class="n">cardS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">+</span>
                                     <span class="n">cardS</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="mi">1</span>
@@ -329,7 +352,6 @@
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
                 <span class="c1"># Constraints in case of log loss function</span>
-
                 <span class="n">numConstr</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">constraints</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">cvx</span><span class="o">.</span><span class="n">log_sum_exp</span><span class="p">(</span><span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span>
                                                     <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)</span> <span class="o">*</span>
@@ -347,13 +369,8 @@
             <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
-                <span class="c1"># Get the constraint matrix M and</span>
-                <span class="c1"># the corresponding norm of the class subset h</span>
-                <span class="n">M_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">get_all_subset_config</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
-                <span class="n">M</span> <span class="o">=</span> <span class="n">M_</span><span class="p">[:,</span> <span class="p">:</span><span class="n">m</span><span class="p">]</span>
-                <span class="n">h</span> <span class="o">=</span> <span class="n">M_</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                <span class="n">M</span> <span class="o">=</span> <span class="n">M</span> <span class="o">/</span> <span class="p">(</span><span class="n">h</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-                <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">h</span><span class="p">)</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
 
                 <span class="c1"># Define the subobjective function and</span>
                 <span class="c1"># its gradient for the 0-1 loss function.</span>
@@ -404,14 +421,12 @@
 <span class="sd">            The lower bound of the error for the fitted classifier.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Variables</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span>
-
         <span class="c1"># Learned feature mappings</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span>
 
         <span class="c1"># Variables</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
             <span class="c1"># Use CVXpy for the convex optimization of the MRC</span>
@@ -489,7 +504,7 @@
                 <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">-</span> <span class="mi">1</span>
 
                 <span class="c1"># Reshape it for the optimization function</span>
-                <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">r</span><span class="p">,))</span>
+                <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,))</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
 
@@ -499,9 +514,9 @@
                 <span class="c1"># for the nesterov accelerated optimization</span>
                 <span class="n">eps</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span> <span class="o">-</span> \
                     <span class="n">scs</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-                <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">r</span><span class="p">,))</span>
+                <span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,))</span>
 
-            <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="n">r</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
 
             <span class="c1"># Defining the partial objective and its gradient.</span>
             <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
@@ -592,7 +607,7 @@
             <span class="n">w_k_prev</span> <span class="o">=</span> <span class="n">params_</span><span class="p">[</span><span class="s1">&#39;w_k_prev&#39;</span><span class="p">]</span>
 
             <span class="c1"># Length of the points array might change</span>
-            <span class="c1"># depending on the new dataset</span>
+            <span class="c1"># depending on the new dataset in case of warm_start=True,</span>
             <span class="c1"># as the length of feature mapping might</span>
             <span class="c1"># change with the new dataset.</span>
             <span class="n">old_m</span> <span class="o">=</span> <span class="n">y_k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -729,8 +744,9 @@
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
 
-        <span class="c1"># n_instances X n_classes X phi.len</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
             <span class="c1"># Constraints in case of 0-1 loss function</span>
@@ -758,17 +774,7 @@
                              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">hy_x</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">hy_x</span></div>
-
-    <span class="k">def</span> <span class="nf">set_learn_config_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Avoid the duplicate configuration while learning the constraints</span>
-<span class="sd">        in case of this default MRC. Duplicate configuration are observed</span>
-<span class="sd">        when the dataset contains duplication entries which are not of any use</span>
-<span class="sd">        and increase the computation time</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">learn_duplicates</span> <span class="o">=</span> <span class="kc">False</span></div>
+        <span class="k">return</span> <span class="n">hy_x</span></div></div>
 </pre></div>
 
            </div>

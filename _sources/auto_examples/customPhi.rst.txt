@@ -25,7 +25,7 @@ according to the needs of the mappings.
 You can choose the best feature mapping class for extension
 according to your requirements.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-174
+.. GENERATED FROM PYTHON SOURCE LINES 9-191
 
 .. code-block:: default
 
@@ -34,14 +34,14 @@ according to your requirements.
     from sklearn.datasets import load_iris
     from sklearn.utils import check_array
 
-    from MRCpy import CMRC
+    from MRCpy import MRC, CMRC
     from MRCpy.phi import *
 
     # Custom phi example: Generating the linear kernel
     # modified by multiplying a constant
 
 
-    class myPhi(LinearPhi):
+    class myPhi(BasePhi):
 
         """
         This constructor is by default present in the parent Phi class.
@@ -177,23 +177,40 @@ according to your requirements.
         X, Y = load_iris(return_X_y=True)
         r = len(np.unique(Y))
 
+        X = np.asarray([[1,2,3],[3,4,5],[8,9,5]])
+
+        n = X.shape[0]
+        y = np.asarray([0,1,2])
+        r=2
+
+        print('The instances are : ', X)
+        print('The labels are : ', y)
+
         # Creating the custom phi object
-        myphi = myPhi(n_classes=r)
+        # myphi = myPhi(n_classes=r)
+        # phi1 = BasePhi(n_classes=2, fit_intercept=False).fit(X,y)
+
+        # print(phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0])))
+        # phi = phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0]))
+        # print(phi.shape)
+        # phi = np.reshape(phi, (n, r, phi1.len_))
+        # print(phi)
 
         # Fit the MRC model with the custom phi
-        clf = CMRC(n_classes=r, phi=myphi).fit(X, Y)
+        clf = CMRC(phi='linear', fit_intercept=False).fit(X, y)
 
+        print(clf.phi.eval_x(X))
         # Prediction
-        print('\n\nThe predicted values for the first 3 instances are : ')
-        print(clf.predict(X[:3, :]))
+        # print('\n\nThe predicted values for the first 3 instances are : ')
+        # print(clf.predict(X[:3, :]))
 
         # Predicted probabilities
-        print('\n\nThe predicted probabilities for the first 3 instances are : ')
-        print(clf.predict_proba(X[:3, :]))
+        # print('\n\nThe predicted probabilities for the first 3 instances are : ')
+        # print(clf.predict_proba(X[:3, :]))
 
         # Accuracy/Score of the model
-        print('\n\nThe score is : ')
-        print(clf.score(X, Y))
+        # print('\n\nThe score is : ')
+        # print(clf.score(X, Y))
 
 
 .. rst-class:: sphx-glr-timing

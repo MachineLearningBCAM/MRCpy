@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -233,8 +232,9 @@ to download the full example code</p>
             <span class="c1"># Save start time for computing training time</span>
             <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
 
-            <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="n">X_train</span><span class="p">)</span>
             <span class="n">upper</span> <span class="o">+=</span> <span class="n">clf</span><span class="o">.</span><span class="n">upper_</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;upper : &#39;</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
             <span class="n">lower</span> <span class="o">+=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">()</span>
 
             <span class="c1"># Calculate the training time</span>
@@ -259,11 +259,11 @@ to download the full example code</p>
 <span class="s1">          Example 1 (MRC with default constraints) </span><span class="se">\</span>
 <span class="s1">          ********************** </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1"> 1. Using 0-1 loss and relu feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1"> 1. Using 0-1 loss and linear feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1"> 2. Using log loss and relu feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t\t</span><span class="s1"> 2. Using log loss and linear feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>

@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -165,12 +164,13 @@
   <h1>Source code for MRCpy.phi.base_phi</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Super class for the feature mapping functions.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 
 <div class="viewcode-block" id="BasePhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi">[docs]</a><span class="k">class</span> <span class="nc">BasePhi</span><span class="p">():</span>
@@ -178,68 +178,77 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Base Class for Feature Mappings</span>
 
-<span class="sd">    The class implements some feature functions</span>
-<span class="sd">    that can be used by the MRC to map the input instances to these features.</span>
-<span class="sd">    It also provides the user to define his own custom feature functions.</span>
-
-<span class="sd">    Implementation for following types of feature functions are provided -</span>
-
-<span class="sd">    1) Linear kernel - The features are the instances itself i.e.,</span>
-<span class="sd">        there is no mapping function except</span>
-<span class="sd">        the one-hot encoding of the instances.</span>
-
-<span class="sd">    2) Thresholding kernel - The end features are defined as binary numbers</span>
-<span class="sd">        which are obtained by comparing</span>
-<span class="sd">        with the threshold values in each dimension.</span>
-<span class="sd">        These threshold values are obtained from the training dataset.</span>
-<span class="sd">        In this case, the number of features depend upon</span>
-<span class="sd">        the number of thresholds obtained</span>
-<span class="sd">        and each of the threshold is defined for one of the dimensions.</span>
-
-<span class="sd">    3) Gaussian kernel - The features are defined using the gaussian kernel.</span>
-<span class="sd">        The gaussian kernel is defined as -</span>
-<span class="sd">                        K(x1,x2) = exp( -1 * gamma * |x1-x2|^2 )</span>
-
-<span class="sd">    4) Custom kernel - These feature functions are defined by the user.</span>
-<span class="sd">        The user needs to define a function which takes instances as input</span>
-<span class="sd">        and returns the mapped features for those instances.</span>
-<span class="sd">        This class then uses that function</span>
-<span class="sd">        to map the instances to the features</span>
-<span class="sd">        and develop a one-hot encoding of those features.</span>
+<span class="sd">    The class provides a base for different feature mapping functions</span>
+<span class="sd">    that can be used with the MRC to map the input instances.</span>
+<span class="sd">    The class provides the basic definition for the functions that are</span>
+<span class="sd">    used by the MRCs in the library. It corresponds</span>
+<span class="sd">    to the usual identity feature map referred to as Linear feature map.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n_classes : int</span>
-<span class="sd">      The number of classes in the dataset</span>
+<span class="sd">        The number of classes in the dataset</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">            Whether to calculate the intercept.</span>
+<span class="sd">            If set to false, no intercept will be used in calculations</span>
+<span class="sd">            (i.e. data is expected to be already centered)</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    is_fitted_ : bool</span>
-<span class="sd">      True if the feature mappings has learned its hyperparameters (if any)</span>
-<span class="sd">      and the length of the feature mapping is set.</span>
+<span class="sd">        True if the feature mappings has learned its hyperparameters (if any)</span>
+<span class="sd">        and the length of the feature mapping is set.</span>
 
 <span class="sd">    len_ : int</span>
-<span class="sd">      Defines the length of the feature mapping vector.</span>
+<span class="sd">        Defines the length of the feature mapping vector.</span>
 
-<span class="sd">    Note:</span>
+<span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This is a base class for all the feature mappings.</span>
-<span class="sd">    To create a new feature mapping,</span>
+<span class="sd">    To create a new feature mapping to use MRCs,</span>
 <span class="sd">    it is expected to extend this class and</span>
-<span class="sd">    then define the functions transform and</span>
-<span class="sd">    fit if it is required to learn any hyper parameters</span>
-<span class="sd">    for the feature mappings</span>
+<span class="sd">    then re-define the functions - </span>
+
+<span class="sd">        1) `fit` - learns the required parameters for feature transformation</span>
+<span class="sd">        2) `transform` - transforms the input instances to the features</span>
+
+<span class="sd">    The above functions are principal components of the feature transformation.</span>
+<span class="sd">    Apart from these functions, the users can also manipulate other functions</span>
+<span class="sd">    according to their need.</span>
+
+<span class="sd">    The definition of `fit` and `transform` in this class correspond to the</span>
+<span class="sd">    usual identity feature map referred to as Linear feature map.</span>
+<span class="sd"> </span>
+<span class="sd">    The `transform` function is only used by the `eval_xy` function</span>
+<span class="sd">    in the BasePhi to get the one-hot encoded features.</span>
+<span class="sd">    If the user defines his own `eval_xy` function without the need</span>
+<span class="sd">    of `transform` function, then the transform function can be omitted.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="BasePhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<div class="viewcode-block" id="BasePhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="o">=</span> <span class="n">fit_intercept</span></div>
 
 <div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Learn the hyperparameters</span>
-<span class="sd">        required for the feature mapping function from the training instances.</span>
+<span class="sd">        required for the feature mapping function from the training instances</span>
+<span class="sd">        and set the length of the feature mapping using the output of </span>
+<span class="sd">        &#39;eval&#39; function.</span>
+
+<span class="sd">        Note: If a user defines his own feature mapping and his own &#39;fit&#39;</span>
+<span class="sd">              function, it is recommended to call this &#39;fit&#39; function</span>
+<span class="sd">              at the end of his own &#39;fit&#39; function to automatically set</span>
+<span class="sd">              the length of the feature mapping.</span>
+<span class="sd">              This &#39;fit&#39; function can be called in a subclass as follows -</span>
+
+<span class="sd">                                super().fit(X,Y)</span>
+
+<span class="sd">              Feature mappings implemented in this library follow this</span>
+<span class="sd">              same approach.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -257,46 +266,14 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Defining the length of the phi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
         <span class="k">return</span> <span class="bp">self</span></div>
-
-    <span class="k">def</span> <span class="nf">learn_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">duplicate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Learn all the configurations of x in X for every value of y.</span>
-<span class="sd">        Duplicate configurations are obtained</span>
-<span class="sd">        if the duplicate parameter is True.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
-<span class="sd">            Unlabeled training instances</span>
-<span class="sd">            used to learn the feature configurations.</span>
-
-<span class="sd">        duplicate : bool, default = False</span>
-<span class="sd">            Learn the configurations of phi with duplicate instances if exists</span>
-<span class="sd">            if the value is true.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        F : array-like of shape (n_samples, n_classes,</span>
-<span class="sd">                            length of features (n_features * n_classes))</span>
-<span class="sd">            The learned configurations from the given instances.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-        <span class="c1"># Used in the definition of the constraints/objective of the MRC</span>
-        <span class="c1"># F is a tuple of floats with dimension n_intances X n_classes X m</span>
-        <span class="k">if</span> <span class="n">duplicate</span><span class="p">:</span>
-            <span class="c1"># Used in case of CMRC</span>
-            <span class="n">F</span> <span class="o">=</span> <span class="n">phi</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Used in case of MRC</span>
-            <span class="c1"># Disctinct configurations for phi_x,y for x in X and y=1,...,r.</span>
-            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">F</span>
 
 <div class="viewcode-block" id="BasePhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -314,70 +291,89 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">X</span></div>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
+        <span class="n">X_feat</span> <span class="o">=</span> <span class="n">X</span>
 
-<div class="viewcode-block" id="BasePhi.eval"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">X_feat</span></div>
+
+<div class="viewcode-block" id="BasePhi.eval_xy"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_xy">[docs]</a>    <span class="k">def</span> <span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate the one-hot encoded features of the given instances i.e.,</span>
-<span class="sd">        X, phi(x,y) for all x in X and y=0,...,r-1. In case labels are given,</span>
-<span class="sd">        the encodings are calculated corresponding to those labels</span>
-<span class="sd">        and this form of eval function is used in the learning stage</span>
-<span class="sd">        for estimating the expected values of phi i.e., tau and lambda</span>
+<span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
+<span class="sd">        X, phi(x,y) for each x in X and y in Y. The encodings are calculated,</span>
+<span class="sd">        corresponding to the given labels, which is used by the learning stage</span>
+<span class="sd">        for estimating the expected values of phi i.e., tau and lambda.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Unlabeled training instances for developing the feature matrix</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">        Y : array-like of shape (n_samples), default=None</span>
 <span class="sd">            Labels corresponding to the unlabeled training instances</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        phi : array-like of shape</span>
-<span class="sd">              (n_samples, n_classes, n_features * n_classes) or</span>
-<span class="sd">              (n_samples, n_features * n_classes) if Y is given</span>
-<span class="sd">            Matrix containing the one-hot encoded features</span>
-<span class="sd">            of all possible classes of each instance.</span>
-<span class="sd">            In case Y is given, the encoding for each instance are calculated</span>
-<span class="sd">            corresponding to those labels.</span>
+<span class="sd">              (n_samples, n_features * n_classes)</span>
+<span class="sd">            Matrix containing the one-hot encoding</span>
+<span class="sd">            with respect to the labels given for all the instances.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Get the features</span>
         <span class="n">X_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-        <span class="n">X_feat</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_feat</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Adding intercept</span>
-        <span class="n">X_feat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">X_feat</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">:</span>
+            <span class="n">X_feat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">X_feat</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="n">Y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Efficient configuration in case of binary classification.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">X_feat</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">X_feat</span>
 
-            <span class="c1"># For binary case,</span>
-            <span class="c1"># the problem can be solved using a smaller of configurations.</span>
-            <span class="c1"># Without one-hot encoding.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">X_feat</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:],</span> <span class="p">[[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
-
-            <span class="c1"># One-hot encoding for multi-class classification.</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
-                            <span class="n">X_feat</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:])</span>
+        <span class="c1"># One-hot encoding for multi-class classification.</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="o">*</span><span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">tweaked_eye_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))[</span><span class="n">Y</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">tweaked_eye_mat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">X_feat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
 
-            <span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="c1"># Efficient configuration in case of binary classification.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">X_feat</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">X_feat</span>
+        <span class="k">return</span> <span class="n">phi</span></div>
 
-            <span class="c1"># One-hot encoding for multi-class classification.</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-                <span class="n">tweaked_eye_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))[</span><span class="n">Y</span><span class="p">,</span> <span class="p">:]</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                    <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">tweaked_eye_mat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">X_feat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+<div class="viewcode-block" id="BasePhi.eval_x"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_x">[docs]</a>    <span class="k">def</span> <span class="nf">eval_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
+<span class="sd">        X, phi(x,y) for each x in X and all the labels. The output is 3D matrix</span>
+<span class="sd">        that is composed of 2D matrices corresponding to each of the instance.</span>
+<span class="sd">        These 2D matrices are the one-hot encodings corresponding to</span>
+<span class="sd">        all the possible labels in our dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances for developing the feature matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        phi : array-like of shape</span>
+<span class="sd">              (n_samples, n_classes, n_features * n_classes)</span>
+<span class="sd">            Matrix containing the one-hot encoding for all the classes</span>
+<span class="sd">            for each of the instances given.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Compute the one-hot encodings</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span>
+
+        <span class="c1"># Reshape to 3D matrix for easy multiplication in the MRC optimization</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">phi</span></div>
 
@@ -403,7 +399,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span> <span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -427,53 +423,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-
-    <span class="k">def</span> <span class="nf">get_all_subset_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the sum of the feature configuration vectors</span>
-<span class="sd">        for all possible subsets</span>
-<span class="sd">        that can be obtained from n_classes for each of the instances i.e.,</span>
-<span class="sd">        sum{ phi(x,yi) } for yi in C subset of Y and for x in X</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        F : array-like of shape (n_samples, n_classes, n_features * n_classes)</span>
-<span class="sd">            One-hot encoded feature matrix</span>
-<span class="sd">            for each instance and each class in n_classes.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        M : array-like of shape (n_samples, n_features * n_classes)</span>
-<span class="sd">            Matrix containing the subset sum of feature configures</span>
-<span class="sd">            for each instances</span>
-<span class="sd">            and for all possible of n_classes.</span>
-<span class="sd">            The last column of the matrix defines</span>
-<span class="sd">            the number of classes in that subset</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">n</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="c1"># Supress the depreciation warnings</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Summing up the phi configurations</span>
-        <span class="c1"># for all possible subsets of classes for each instance</span>
-        <span class="n">avgF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">F</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                          <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                          <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
-                                                   <span class="n">numVals</span><span class="p">)))</span>
-
-        <span class="c1"># Compute the corresponding length of the subset of classes</span>
-        <span class="c1"># for which sums computed for each instance</span>
-        <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
-            <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-
-        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">avgF</span><span class="p">,</span> <span class="n">cardS</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">M</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

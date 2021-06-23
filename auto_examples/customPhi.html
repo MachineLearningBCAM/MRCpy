@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -178,14 +177,14 @@ according to your requirements.</p>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span><span class="p">,</span> <span class="n">CMRC</span>
 <span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Custom phi example: Generating the linear kernel</span>
 <span class="c1"># modified by multiplying a constant</span>
 
 
-<span class="k">class</span> <span class="nc">myPhi</span><span class="p">(</span><span class="n">LinearPhi</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">myPhi</span><span class="p">(</span><span class="n">BasePhi</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This constructor is by default present in the parent Phi class.</span>
@@ -321,23 +320,40 @@ according to your requirements.</p>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="numpy.unique" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
 
+    <span class="n">X</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">5</span><span class="p">]])</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">r</span><span class="o">=</span><span class="mi">2</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The instances are : &#39;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The labels are : &#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
     <span class="c1"># Creating the custom phi object</span>
-    <span class="n">myphi</span> <span class="o">=</span> <span class="n">myPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+    <span class="c1"># myphi = myPhi(n_classes=r)</span>
+    <span class="c1"># phi1 = BasePhi(n_classes=2, fit_intercept=False).fit(X,y)</span>
+
+    <span class="c1"># print(phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0])))</span>
+    <span class="c1"># phi = phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0]))</span>
+    <span class="c1"># print(phi.shape)</span>
+    <span class="c1"># phi = np.reshape(phi, (n, r, phi1.len_))</span>
+    <span class="c1"># print(phi)</span>
 
     <span class="c1"># Fit the MRC model with the custom phi</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">myphi</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
     <span class="c1"># Prediction</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted values for the first 3 instances are : &#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
+    <span class="c1"># print(&#39;\n\nThe predicted values for the first 3 instances are : &#39;)</span>
+    <span class="c1"># print(clf.predict(X[:3, :]))</span>
 
     <span class="c1"># Predicted probabilities</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted probabilities for the first 3 instances are : &#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
+    <span class="c1"># print(&#39;\n\nThe predicted probabilities for the first 3 instances are : &#39;)</span>
+    <span class="c1"># print(clf.predict_proba(X[:3, :]))</span>
 
     <span class="c1"># Accuracy/Score of the model</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The score is : &#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
+    <span class="c1"># print(&#39;\n\nThe score is : &#39;)</span>
+    <span class="c1"># print(clf.score(X, Y))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>

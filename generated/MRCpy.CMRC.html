@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -185,7 +184,7 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC<a class="headerlink" href="#mrcpy-cmrc" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.CMRC">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.</span></code><code class="sig-name descname"><span class="pre">CMRC</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.</span></code><code class="sig-name descname"><span class="pre">CMRC</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrained Minimax Risk Classifier</p>
 <p>MRCs using the additional marginals constraints on the instances.
 It also implements two kinds of loss functions, namely 0-1 and log loss.
@@ -195,7 +194,7 @@ This is a subclass of the super class BaseMRC.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>loss</strong><span class="classifier">{‘0-1’, ‘log’}, default=’0-1’</span></dt><dd><p>The type of loss function to use for the risk minimization.</p>
+<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default=’0-1’</span></dt><dd><p>The type of loss function to use for the risk minimization.</p>
 </dd>
 <dt><strong>s</strong><span class="classifier">float, default=0.3</span></dt><dd><p>For tuning the estimation of expected values
 of feature mapping function(phi).
@@ -207,6 +206,10 @@ should be done in a deterministic way or not.</p>
 </dd>
 <dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used when ‘fourier’ option for feature mappings are used
 to produce the random weights.</p>
+</dd>
+<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept for MRCs
+If set to false, no intercept will be used in calculations
+(i.e. data is expected to be already centered).</p>
 </dd>
 <dt><strong>warm_start</strong><span class="classifier">bool, default=False</span></dt><dd><p>When set to True,
 reuse the solution of the previous call to fit as initialization,
@@ -223,11 +226,20 @@ so we might need to use the other solver from the set.</p>
 for finding the solution of optimization
 using the subgradient approach.</p>
 </dd>
-<dt><strong>phi</strong><span class="classifier">{‘fourier’, ‘relu’, ‘threshold’} or phi instance, default=’linear’</span></dt><dd><p>The type of feature mapping function to use for mapping the input data
-‘fourier’, ‘relu’ and ‘threshold’
-are the currenlty available feature mapping methods.</p>
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘fourier’, ‘relu’, ‘threshold’} or</span></dt><dd><blockquote>
+<div><p><a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default=’linear’</p>
+</div></blockquote>
+<p>The type of feature mapping function to use for mapping the input data.
+Currently available feature mapping methods are - 
+‘fourier’, ‘relu’ and ‘threshold’</p>
 </dd>
-<dt><strong>**phi_kwargs</strong><span class="classifier">multiple optional parameters</span></dt><dd><p>for the corresponding feature mappings(phi)</p>
+<dt><strong>**phi_kwargs</strong><span class="classifier">Groups the multiple optional parameters</span></dt><dd><p>for the corresponding feature mappings(phi).</p>
+<p>For example in case of fourier features,
+the number of components is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
+parameter which can be passed as argument - 
+<code class="xref any docutils literal notranslate"><span class="pre">MRC(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=500)</span></code></p>
+<p>The list of arguments for each feature mappings class
+can be found in the corresponding documentation.</p>
 </dd>
 </dl>
 </td>
@@ -264,7 +276,7 @@ when the warm_start=True.</p>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.CMRC.get_params" title="MRCpy.CMRC.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</td>
 <td>Get parameters for this estimator.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.CMRC.minimax_risk" title="MRCpy.CMRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.CMRC.minimax_risk" title="MRCpy.CMRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(phi)</td>
 <td>Solves the marginally constrained minimax risk problem for different types of loss (0-1 and log loss).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.CMRC.predict" title="MRCpy.CMRC.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
@@ -283,7 +295,7 @@ when the warm_start=True.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.CMRC.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'gaussian'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -300,7 +312,7 @@ when the warm_start=True.</p>
 - Calculating the estimates for the minimax risk classification
 - Also, used in optimization when <a href="#id4"><span class="problematic" id="id5">X_</span></a> is not given</p>
 </dd>
-<dt><strong>Y_</strong><span class="classifier">array-like of shape (n_samples1/n_samples2), default = None</span></dt><dd><p>Labels corresponding to the training instances
+<dt><strong>Y_</strong><span class="classifier">array-like of shape (n_samples1), default = None</span></dt><dd><p>Labels corresponding to the training instances
 used to compute the estimates for the optimization.</p>
 <p>If the estimates used in the MRC are already given as a parameter
 to the this function, then the labels
@@ -310,7 +322,7 @@ unless and until the threshold feature mappings are used.</p>
 these labels are required to find the thresholds
 using the instance, label pair.</p>
 </dd>
-<dt><strong>X_</strong><span class="classifier">array-like of shape (n_samples, n_dimensions), default = None</span></dt><dd><p>These instances are optional and
+<dt><strong>X_</strong><span class="classifier">array-like of shape (n_samples2, n_dimensions), default = None</span></dt><dd><p>These instances are optional and
 when given, will be used in the minimax risk optimization.
 These extra instances are generally a smaller set and
 give an advantage in training time.</p>
@@ -318,12 +330,18 @@ give an advantage in training time.</p>
 <dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>Number of labels in the dataset.
 If the labels Y are not provided, then this argument is required.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features) or float, default=None</span></dt><dd><p>The mean estimates
+<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes) or float,</span></dt><dd><blockquote>
+<div><p>default=None</p>
+</div></blockquote>
+<p>The mean estimates
 for the expectations of feature mappings.
 If a single float value is passed,
 all the features in the feature mapping have the same estimates.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features) or float, defautl=None</span></dt><dd><p>The variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes) or float,</span></dt><dd><blockquote>
+<div><p>defautl=None</p>
+</div></blockquote>
+<p>The variance in the mean estimates
 for the expectations of the feature mappings.
 If a single float value is passed,
 all the features in the feature mapping
@@ -369,7 +387,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.CMRC.minimax_risk">
-<code class="sig-name descname"><span class="pre">minimax_risk</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.minimax_risk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.minimax_risk" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">minimax_risk</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.minimax_risk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.minimax_risk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the marginally constrained minimax risk problem
 for different types of loss (0-1 and log loss).</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -377,7 +395,7 @@ for different types of loss (0-1 and log loss).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples1, n_dimensions)</span></dt><dd><p>Training instances used in the optimization.</p>
+<dt><strong>phi</strong><span class="classifier">array-like of shape(n_samples, n_classes, n_features * n_classes)</span></dt><dd><p>Feature mappings used in the optimization.</p>
 </dd>
 </dl>
 </td>
@@ -402,7 +420,7 @@ by the MRC model.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples, )</span></dt><dd><p>The predicted labels corresponding to the given instances.</p>
+<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>The predicted labels corresponding to the given instances.</p>
 </dd>
 </dl>
 </td>

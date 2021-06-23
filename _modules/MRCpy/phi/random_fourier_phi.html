@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html class="writer-html4" lang="en" >
 <head>
@@ -181,12 +180,23 @@
 <span class="sd">    Fourier features </span>
 
 <span class="sd">    Features obtained by approximating the rbf kernel by</span>
-<span class="sd">    Random Fourier Feature map.</span>
+<span class="sd">    Random Fourier Feature map - </span>
+
+<span class="sd">    .. math:: z(x) = \sqrt{(2/D)} * [\cos(w_1^t * x), ..., \cos(w_D^t * x),\sin(w_1^t * x), ..., \sin(w_D^t * x)]</span>
+
+<span class="sd">    where w is a vector(dimension d) of random weights </span>
+<span class="sd">    from gaussian distribution and D is the number of components </span>
+<span class="sd">    in the resulting feature map.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n_classes : int</span>
 <span class="sd">        The number of classes in the dataset.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">            Whether to calculate the intercept.</span>
+<span class="sd">            If set to false, no intercept will be used in calculations</span>
+<span class="sd">            (i.e. data is expected to be already centered).</span>
 
 <span class="sd">    gamma : {&#39;scale&#39;, &#39;avg_ann&#39;, &#39;avg_ann_50&#39;, float} default = &#39;avg_ann_50&#39;</span>
 <span class="sd">        It defines the type of heuristic to be used</span>
@@ -221,11 +231,11 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RandomFourierPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;avg_ann_50&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="RandomFourierPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;avg_ann_50&#39;</span><span class="p">,</span>
                  <span class="n">n_components</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="c1"># Call the base class init function.</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
@@ -277,13 +287,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_val</span><span class="p">),</span>
                                      <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
 
-        <span class="c1"># Defining the length of the phi</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># For one-hot encoding in case of multi-class classification.</span>
-        <span class="c1"># if self.n_classes != 2:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Sets the length of the feature mapping</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -303,7 +308,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;random_weights_&quot;</span><span class="p">,</span> <span class="s2">&quot;len_&quot;</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;random_weights_&quot;</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">X_trans</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span>
@@ -407,7 +412,10 @@
 <span class="sd">        (https://arxiv.org/pdf/1503.03893.pdf)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="mi">50</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">50</span><span class="p">:</span>
+            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="n">X_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="mi">50</span>
 
         <span class="c1"># Find the nearest neighbors</span>
         <span class="n">nbrs</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="p">(</span><span class="n">neighbour_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
