@@ -6,21 +6,29 @@ from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping base class
-from MRCpy.phi.phi import Phi
+from MRCpy.phi import BasePhi
 
 
-class PhiThreshold(Phi):
+class ThresholdPhi(BasePhi):
     """
-    Phi (feature function) composed
-    by products of (univariate) threshold features.
-    A threshold feature is a funtion, f(x;t,d)=1 when x_d<t and 0 otherwise.
+    Threshold features
+
+    A threshold feature is a funtion, f(x_d,t)=1 when x_d<t and 0 otherwise,
+    for a given x in dimension d and threshold t in that dimension.
     A product of threshold features is an indicator of a region
     and its expectancy is closely related to cumulative distributions.
+    This class obtains the thresholds fitting multiple one-dimensional
+    decision stumps on the training data.
 
     Parameters
     ----------
     n_classes : int
         The number of classes in the dataset
+
+    fit_intercept : bool, default=True
+            Whether to calculate the intercept.
+            If set to false, no intercept will be used in calculations
+            (i.e. data is expected to be already centered).
 
     n_thresholds : int, default=200
         It defines the maximum number of allowed threshold values
@@ -44,10 +52,12 @@ class PhiThreshold(Phi):
 
     """
 
-    def __init__(self, n_classes, n_thresholds=200):
+    def __init__(self, n_classes, fit_intercept=True,
+                 n_thresholds=200):
 
         # Call the base class init function.
-        super().__init__(n_classes=n_classes)
+        super().__init__(n_classes=n_classes, fit_intercept=fit_intercept)
+
         self.n_thresholds = n_thresholds
 
     def fit(self, X, Y=None):
@@ -78,13 +88,8 @@ class PhiThreshold(Phi):
         self.thrsDim_, self.thrsVal_ = self.d_tree_split(X, Y,
                                                          self.n_thresholds)
 
-        # Defining the length of the phi
-        self.len_ = (len(self.thrsDim_) + 1)
-        # For one-hot encoding in case of multi-class classification.
-        if self.n_classes != 2:
-            self.len_ *= self.n_classes
-
-        self.is_fitted_ = True
+        # Sets the length of the feature mapping
+        super().fit(X, Y)
 
         return self
 
@@ -157,8 +162,9 @@ class PhiThreshold(Phi):
 
         n = X.shape[0]
 
-        check_is_fitted(self, ["thrsDim_", "thrsVal_", "len_", "is_fitted_"])
+        check_is_fitted(self, ["thrsDim_", "thrsVal_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
+
         # Store the features based on the thresholds obtained
         X_feat = np.zeros((n, len(self.thrsDim_)), dtype=int)
 

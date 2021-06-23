@@ -1,8 +1,7 @@
 """ Feature mapping functions used in MRC """
-from MRCpy.phi.phi import Phi
-from MRCpy.phi.phi_gaussian import PhiGaussian
-from MRCpy.phi.phi_linear import PhiLinear
-from MRCpy.phi.phi_random_relu import PhiRandomRelu
-from MRCpy.phi.phi_threshold import PhiThreshold
+from MRCpy.phi.base_phi import BasePhi
+from MRCpy.phi.random_fourier_phi import RandomFourierPhi
+from MRCpy.phi.random_relu_phi import RandomReLUPhi
+from MRCpy.phi.threshold_phi import ThresholdPhi
 
-__all__ = ['Phi', 'PhiGaussian', 'PhiThreshold', 'PhiLinear', 'PhiRandomRelu']
+__all__ = ['BasePhi', 'RandomFourierPhi', 'ThresholdPhi', 'RandomReLUPhi']

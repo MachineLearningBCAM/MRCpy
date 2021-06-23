@@ -1,4 +1,4 @@
-""" Gaussian Kernel approximated using Random Features."""
+""" Random Relu Features. """
 
 import statistics
 
@@ -8,25 +8,40 @@ from sklearn.utils import check_array, check_random_state
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping base class
-from MRCpy.phi.phi import Phi
+from MRCpy.phi import BasePhi
 
 
-class PhiGaussian(Phi):
+class RandomReLUPhi(BasePhi):
     """
-    Phi (feature function) obtained by approximating the rbf kernel by
-    Random Fourier Feature map.
+    ReLU features 
+
+    ReLU features are given by -
+
+    .. math::   \max(w^t * (1/gamma,x), 0)
+
+    where w is a vector(dimension d) of random weights uniformly distributed
+    over a sphere of unit radius.
+
+    Relu function is defined as -
+
+    .. math::           f(x) = \max(0, x)
 
     Parameters
     ----------
     n_classes : int
         The number of classes in the dataset.
 
+    fit_intercept : bool, default=True
+            Whether to calculate the intercept.
+            If set to false, no intercept will be used in calculations
+            (i.e. data is expected to be already centered).
+
     gamma : {'scale', 'avg_ann', 'avg_ann_50', float} default = 'avg_ann_50'
         It defines the type of heuristic to be used
-        to calculate the scaling parameter for the gaussian kernel.
+        to calculate the scaling parameter.
 
     n_components : int, default=300
-        Number of Monte Carlo samples per original features.
+        Number of Monte Carlo samples for the original features.
         Equals the dimensionality of the computed (mapped) feature space.
 
     random_state : int, RandomState instance, default=None
@@ -47,18 +62,18 @@ class PhiGaussian(Phi):
 
     References
     ----------
-    [1] Random Features for Large-Scale Kernel Machines.
-    Ali Rahimi and Ben Recht.
-    In NIPS 2007.
-    (https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf)
+    [1] On the Approximation Properties of Random ReLU Features.
+    Yitong Sun, Anna Gilbert and Ambuj Tewari.
+    arXiv: Machine Learning.
+    (https://arxiv.org/pdf/1810.04374.pdf)
 
     """
 
-    def __init__(self, n_classes, gamma='avg_ann_50',
+    def __init__(self, n_classes, fit_intercept=True, gamma='avg_ann_50',
                  n_components=300, random_state=None):
 
         # Call the base class init function.
-        super().__init__(n_classes=n_classes)
+        super().__init__(n_classes=n_classes, fit_intercept=fit_intercept)
 
         self.gamma = gamma
         self.n_components = n_components
@@ -78,8 +93,8 @@ class PhiGaussian(Phi):
 
         Y : array-like of shape (n_samples,), default=None
             This argument will never be used in this case.
-            It is present in the signature for consistency
-            in the signature of the function among different feature mappings.
+            It is present for the consistency of signature of function
+            among different feature mappings.
 
         Returns
         -------
@@ -104,25 +119,25 @@ class PhiGaussian(Phi):
         else:
             raise ValueError('Unexpected value for gamma ...')
 
-        # Obtain the random weight from a normal distribution.
+        # Obtain the random weights uniformly distributed on
+        # sphere of unit radius in dimension d.
+        # Step 1 Generate samples distributed with unit variance
+        #        in each dimension using the gaussian distribution.
         self.random_state = check_random_state(self.random_state)
         self.random_weights_ = \
-            self.random_state.normal(0, np.sqrt(2 * self.gamma_val),
-                                     size=(d, int(self.n_components / 2)))
+            self.random_state.normal(0, 1, size=(d + 1, self.n_components))
+        # Step 2 Normalize the samples so that they are on a unit sphere.
+        self.random_weights_ = self.random_weights_ / \
+            np.linalg.norm(self.random_weights_, axis=0)
 
-        # Defining the length of the phi
-        self.len_ = (self.n_components + 1)
-        # For one-hot encoding in case of multi-class classification.
-        if self.n_classes != 2:
-            self.len_ *= self.n_classes
-
-        self.is_fitted_ = True
+        # Sets the length of the feature mapping
+        super().fit(X, Y)
 
         return self
 
     def transform(self, X):
         """
-        Compute the random fourier features from the given instances.
+        Compute the ReLu Random Features from the given instances.
 
         Parameters
         ----------
@@ -136,12 +151,16 @@ class PhiGaussian(Phi):
 
         """
 
-        check_is_fitted(self, ["random_weights_", "len_", "is_fitted_"])
+        check_is_fitted(self, ["random_weights_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
+        n = X.shape[0]
 
-        X_trans = X @ self.random_weights_
-        X_feat = (1 / np.sqrt(int(self.n_components / 2))) * \
-            np.hstack((np.cos(X_trans), np.sin(X_trans)))
+        # Adding scaling parameter
+        X = np.hstack(([[1 / self.gamma_val]] * n, X))
+        X_feat = X @ self.random_weights_
+
+        # ReLu on the computed feature matrix
+        X_feat[X_feat < 0] = 0
 
         return X_feat
 
@@ -240,7 +259,10 @@ class PhiGaussian(Phi):
         (https://arxiv.org/pdf/1503.03893.pdf)
 
         """
-        neighbour_ind = 50
+        if X.shape[0]<50:
+            neighbour_ind = X_shape[0]-2
+        else:
+            neighbour_ind = 50
 
         # Find the nearest neighbors
         nbrs = NearestNeighbors(n_neighbors=(neighbour_ind + 1),

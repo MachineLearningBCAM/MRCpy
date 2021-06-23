@@ -1,7 +1,7 @@
-__version__ = '0.1.0'
+__version__ = '0.1.1'
 
-from MRCpy._MRC_ import _MRC_
-from MRCpy.CMRC import CMRC
-from MRCpy.MRC import MRC
+from MRCpy.base_mrc import BaseMRC
+from MRCpy.cmrc import CMRC
+from MRCpy.mrc import MRC
 
-__all__ = ['_MRC_', 'MRC', 'CMRC']
+__all__ = ['BaseMRC', 'MRC', 'CMRC']

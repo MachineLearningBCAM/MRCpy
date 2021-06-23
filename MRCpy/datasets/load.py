@@ -3,6 +3,7 @@ from os.path import dirname, join
 
 import numpy as np
 from sklearn.utils import Bunch
+from sklearn.impute import SimpleImputer
 
 
 def normalizeLabels(origY):
@@ -70,6 +71,9 @@ def load_adult(return_X_y=False):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=int)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -129,6 +133,9 @@ def load_diabetes(return_X_y=False):
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=int)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -195,6 +202,10 @@ def load_iris(return_X_y=False):
             else:
                 classes.append(d[-1])
                 target[i] = np.asarray(classes.index(d[-1]), dtype=int)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -255,6 +266,9 @@ def load_redwine(return_X_y=False):
             data[i] = np.asarray([np.float(i) for i in d[:-1]],
                                  dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=int)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -317,6 +331,9 @@ def load_forestcov(return_X_y=False):
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=int)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -384,6 +401,9 @@ def load_letterrecog(return_X_y=False):
                 classes.append(d[0])
                 target[i] = np.asarray(classes.index(d[0]), dtype=int)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -449,6 +469,9 @@ def load_ecoli(return_X_y=False):
             else:
                 classes.append(d[-1])
                 target[i] = np.asarray(classes.index(d[-1]), dtype=int)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -516,6 +539,9 @@ def load_vehicle(return_X_y=False):
                 classes.append(d[-1])
                 target[i] = np.asarray(classes.index(d[-1]), dtype=int)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
     return Bunch(data=data,
@@ -578,6 +604,9 @@ def load_segment(return_X_y=False):
             except ValueError:
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -642,6 +671,9 @@ def load_satellite(return_X_y=False):
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -704,6 +736,9 @@ def load_optdigits(return_X_y=False):
             except ValueError:
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -768,6 +803,9 @@ def load_credit(return_X_y=False):
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -827,6 +865,9 @@ def load_magic(return_X_y=False):
         for i, d in enumerate(data_file):
             data[i] = np.asarray(d[:-1], dtype=np.float64)
             target[i] = np.asarray(d[-1], dtype=np.str)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -888,6 +929,9 @@ def load_glass(return_X_y=False):
             except ValueError:
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -957,6 +1001,9 @@ def load_haberman(return_X_y=False):
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
 
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
     if return_X_y:
         return data, normalizeLabels(target)
 
@@ -1016,6 +1063,9 @@ def load_mammographic(return_X_y=False):
             except ValueError:
                 print(i, d[:-1])
             target[i] = np.asarray(d[-1], dtype=np.int64)
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)
@@ -1078,6 +1128,9 @@ def load_indian_liver(return_X_y=False):
     #                'indianLiverPatient.rst')) as rst_file:
     #     fdescr = [line.decode('utf-8').strip() \
     #               for line in rst_file.readlines()]
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
 
     if return_X_y:
         return data, normalizeLabels(target)

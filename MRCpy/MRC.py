@@ -1,21 +1,84 @@
 """Minimax Risk Classification."""
 
+import itertools as it
+
 import cvxpy as cvx
 import numpy as np
 import scipy.special as scs
-from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 
 # Import the MRC super class
-from MRCpy import _MRC_
+from MRCpy import BaseMRC
 
 
-class MRC(BaseEstimator, ClassifierMixin, _MRC_):
+class MRC(BaseMRC):
     """
-    Minimax risk classifier using the default constraints and
+    Minimax Risk Classifier
+
+    MRCs using the default constraints and
     implements two kinds of loss functions, namely 0-1 and log loss.
-    This is a subclass of the super class _MRC_.
+    This is a subclass of the super class BaseMRC.
+
+    Parameters
+    ----------
+    loss : `str` {'0-1', 'log'}, default='0-1'
+        The type of loss function to use for the risk minimization.
+
+    s : float, default=0.3
+        For tuning the estimation of expected values
+        of feature mapping function(phi).
+        Must be a positive float value and
+        expected to be in the 0 to 1 in general cases.
+
+    deterministic : bool, default=False
+        For determining if the prediction of the labels
+        should be done in a deterministic way or not.
+
+    random_state : int, RandomState instance, default=None
+        Used when 'fourier' option for feature mappings are used
+        to produce the random weights.
+
+    fit_intercept : bool, default=True
+            Whether to calculate the intercept for MRCs
+            If set to false, no intercept will be used in calculations
+            (i.e. data is expected to be already centered).
+
+    warm_start : bool, default=False
+        When set to True,
+        reuse the solution of the previous call to fit as initialization,
+        otherwise, just erase the previous solution.
+
+    use_cvx : bool, default=False
+        If True, use CVXpy library for the optimization
+        instead of the subgradient methods.
+
+    solver : {'SCS', 'ECOS'}, default='SCS'
+        The type of CVX solver to use for solving the problem.
+        In some cases, one solver might not work,
+        so we might need to use the other solver from the set.
+
+    max_iters : int, default=10000
+        The maximum number of iterations to use
+        for finding the solution of optimization
+        using the subgradient approach.
+
+    phi : `str` {'fourier', 'relu', 'threshold'} or
+          `BasePhi` instance, default='linear'
+        The type of feature mapping function to use for mapping the input data.
+        Currently available feature mapping methods are - 
+        'fourier', 'relu' and 'threshold'
+
+    **phi_kwargs : Groups the multiple optional parameters
+                   for the corresponding feature mappings.
+
+                   For example in case of fourier features,
+                   the number of features is given by `n_components`
+                   parameter which can be passed as argument - 
+                   `MRC(loss='log', phi='fourier', n_components=500)`
+                   
+                   The list of arguments for each feature mappings class
+                   can be found in the corresponding documentation.
 
     Attributes
     ----------
@@ -59,7 +122,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
         when the warm_start=True.
     """
 
-    def _minimaxRisk(self, X):
+    def minimax_risk(self, phi):
         """
         Solves the minimax risk problem
         for different types of loss (0-1 and log loss).
@@ -68,19 +131,36 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples1, n_dimensions)
-            Training instances used in the optimization.
+        phi : array-like of shape(n_samples, n_classes, n_features * n_classes)
+            Feature mappings used in the optimization.
 
         """
 
-        # Constants
-        m = self.phi.len_
+        phi = np.unique(phi, axis=0)
 
-        # Get the learn configurations of phi (feature mapping)
-        phi = self.phi.learnConfig(X, self.learn_duplicates)
+        # Constants
+        m = phi.shape[2]
+        n = phi.shape[0]
 
         # Save the phi configurations for finding the lower bounds
         self.lowerPhiConfigs = phi
+
+        # In case of 0-1 loss, learn constraints using the phi
+        # These constraints are used in the optimization instead of phi
+        if self.loss == '0-1':
+            # Summing up the phi configurations
+            # for all possible subsets of classes for each instance
+            F = np.vstack((np.sum(phi[:, S, ], axis=1)
+                           for numVals in range(1, self.n_classes + 1)
+                           for S in it.combinations(np.arange(self.n_classes),
+                                                    numVals)))
+
+            # Compute the corresponding length of the subset of classes
+            # for which sums computed for each instance
+            cardS = np.arange(1, self.n_classes + 1).\
+                repeat([n * scs.comb(self.n_classes, numVals)
+                        for numVals in np.arange(1,
+                        self.n_classes + 1)])
 
         if self.use_cvx:
             # Use CVXpy for the convex optimization of the MRC.
@@ -100,16 +180,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
-
-                # Exponential number in num_class of linear constraints
-                M = self.phi.getAllSubsetConfig(phi)
-
-                # F is the sum of phi
-                # for different subset of Y
-                # for each data point
-                F = M[:, :m]
-                cardS = M[:, -1]
-                numConstr = M.shape[0]
+                numConstr = F.shape[0]
                 constraints.extend([F[i, :] @ mu +
                                     cardS[i] * nu +
                                     cardS[i] * 1 <= 1
@@ -117,7 +188,6 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
-
                 numConstr = phi.shape[0]
                 constraints.extend([cvx.log_sum_exp(phi[i, :, :] @ mu +
                                                     np.ones(self.n_classes) *
@@ -125,7 +195,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                                     for i in range(numConstr)])
 
             self.mu_, self.nu_ = \
-                self.trySolvers(objective, constraints, mu, nu)
+                self.try_solvers(objective, constraints, mu, nu)
 
             # Upper bound
             self.upper_ = self.lambda_ @ np.abs(self.mu_) - \
@@ -135,13 +205,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             # Use the subgradient approach for the convex optimization of MRC
 
             if self.loss == '0-1':
-                # Get the constraint matrix M and
-                # the corresponding norm of the class subset h
-                M_ = self.phi.getAllSubsetConfig(phi)
-                M = M_[:, :m]
-                h = M_[:, -1]
-                M = M / (h[:, np.newaxis])
-                h = 1 - (1 / h)
+                M = F / (cardS[:, np.newaxis])
+                h = 1 - (1 / cardS)
 
                 # Define the subobjective function and
                 # its gradient for the 0-1 loss function.
@@ -170,21 +235,21 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # Start from a previous solution.
                 try:
                     self.upper_params_ = \
-                        self.nesterovOptimization(m, self.upper_params_,
+                        self.nesterov_optimization(m, self.upper_params_,
                                                   f_, g_)
                 except AttributeError:
-                    self.upper_params_ = self.nesterovOptimization(m, None,
+                    self.upper_params_ = self.nesterov_optimization(m, None,
                                                                    f_, g_)
             else:
-                self.upper_params_ = self.nesterovOptimization(m, None, f_, g_)
+                self.upper_params_ = self.nesterov_optimization(m, None, f_, g_)
 
             self.mu_ = self.upper_params_['mu']
             self.nu_ = self.upper_params_['nu']
             self.upper_ = self.upper_params_['best_value']
 
-    def getLowerBound(self):
+    def get_lower_bound(self):
         """
-        Obtains the lower bound of the fitted classifier: unbounded...
+        Obtains the lower bound of the fitted classifier.
 
         Returns
         -------
@@ -192,14 +257,12 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             The lower bound of the error for the fitted classifier.
         """
 
-        # Variables
-        m = self.phi.len_
-
         # Learned feature mappings
         phi = self.lowerPhiConfigs
 
         # Variables
-        n, r, m = phi.shape
+        n = phi.shape[0]
+        m = phi.shape[2]
 
         if self.use_cvx:
             # Use CVXpy for the convex optimization of the MRC
@@ -251,7 +314,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                                     for i in range(numConstr)])
 
             self.mu_l_, self.nu_l_ = \
-                self.trySolvers(objective, constraints,
+                self.try_solvers(objective, constraints,
                                 low_mu, low_nu)
 
             # Compute the lower bound
@@ -277,7 +340,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 eps = eps - 1
 
                 # Reshape it for the optimization function
-                eps = eps.reshape((n * r,))
+                eps = eps.reshape((n * self.n_classes,))
 
             elif self.loss == 'log':
 
@@ -287,9 +350,9 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # for the nesterov accelerated optimization
                 eps = phi @ self.mu_ - \
                     scs.logsumexp(phi @ self.mu_, axis=1)[:, np.newaxis]
-                eps = eps.reshape((n * r,))
+                eps = eps.reshape((n * self.n_classes,))
 
-            phi = phi.reshape((n * r, m))
+            phi = phi.reshape((n * self.n_classes, m))
 
             # Defining the partial objective and its gradient.
             def f_(mu):
@@ -305,14 +368,14 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # Start from a previous solution.
                 try:
                     self.lower_params_ = \
-                        self.nesterovOptimization(m, self.lower_params_,
+                        self.nesterov_optimization(m, self.lower_params_,
                                                   f_, g_)
                 except AttributeError:
                     self.lower_params_ = \
-                        self.nesterovOptimization(m, None, f_, g_)
+                        self.nesterov_optimization(m, None, f_, g_)
             else:
                 self.lower_params_ = \
-                    self.nesterovOptimization(m, None, f_, g_)
+                    self.nesterov_optimization(m, None, f_, g_)
 
             self.mu_l_ = self.lower_params_['mu']
             self.nu_l_ = self.lower_params_['nu']
@@ -324,8 +387,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         return self.lower_
 
-    def nesterovOptimization(self, m, params_, f_, g_):
-        """
+    def nesterov_optimization(self, m, params_, f_, g_):
+        '''
         Solution of the MRC convex optimization(minimization)
         using the Nesterov accelerated approach.
 
@@ -366,8 +429,8 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
         f_best_value : float
             The optimized value of the function in consideration i.e.,
             the upper bound of the minimax risk classification.
-
-        """
+        '''
+        
 
         # Initial values for the parameters
         theta_k = 1
@@ -380,7 +443,7 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             w_k_prev = params_['w_k_prev']
 
             # Length of the points array might change
-            # depending on the new dataset
+            # depending on the new dataset in case of warm_start=True,
             # as the length of feature mapping might
             # change with the new dataset.
             old_m = y_k.shape[0]
@@ -517,8 +580,9 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
 
-        # n_instances X n_classes X phi.len
-        phi = self.phi.eval(X)
+        n = X.shape[0]
+
+        phi = self.phi.eval_x(X)
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function
@@ -547,12 +611,3 @@ class MRC(BaseEstimator, ClassifierMixin, _MRC_):
             hy_x = np.reciprocal(hy_x)
 
         return hy_x
-
-    def setLearnConfigType(self):
-        """
-        Avoid the duplicate configuration while learning the constraints
-        in case of this default MRC. Duplicate configuration are observed
-        when the dataset contains duplication entries which are not of any use
-        and increase the computation time
-        """
-        self.learn_duplicates = False

@@ -1,22 +1,24 @@
 """Super class for Minimax Risk Classifiers."""
 
+import warnings
+
 import cvxpy as cvx
 import numpy as np
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping
 from MRCpy.phi import \
-    Phi, \
-    PhiGaussian, \
-    PhiLinear, \
-    PhiRandomRelu, \
-    PhiThreshold
+    BasePhi, \
+    RandomFourierPhi, \
+    RandomReLUPhi, \
+    ThresholdPhi
 
 
-class _MRC_():
-    """
-    Minimax Risk Classifier
+class BaseMRC(BaseEstimator, ClassifierMixin):
+    '''
+    Base Class for Minimax Risk Classifier
 
     The class implements minimax risk classfication
     using two types of commonly used loss functions,
@@ -26,16 +28,8 @@ class _MRC_():
 
     Parameters
     ----------
-    n_classes : int
-        The number of classes in the dataset
-        used to determine the type constraints to be used
-        during the optimization
-        i.e., to use linear or nonlinear number of constraints
-        to reduce the complexity.
-
-    equality : bool, default=False
-        The type of Learning. If true the LPC is asymptotically calibrated,
-        if false the LPC is approximately calibrated.
+    loss : `str` {'0-1', 'log'}, default='0-1'
+        The type of loss function to use for the risk minimization.
 
     s : float, default=0.3
         For tuning the estimation of expected values
@@ -48,11 +42,18 @@ class _MRC_():
         should be done in a deterministic way or not.
 
     random_state : int, RandomState instance, default=None
-        Used when 'gaussian' option for feature mappings are used
+        Used when 'fourier' option for feature mappings are used
         to produce the random weights.
 
-    loss : {'0-1', 'log'}, default='0-1'
-        The type of loss function to use for the risk minimization.
+    fit_intercept : bool, default=True
+            Whether to calculate the intercept for MRCs
+            If set to false, no intercept will be used in calculations
+            (i.e. data is expected to be already centered).
+
+    warm_start : bool, default=False
+        When set to True,
+        reuse the solution of the previous call to fit as initialization,
+        otherwise, just erase the previous solution.
 
     use_cvx : bool, default=False
         If True, use CVXpy library for the optimization
@@ -68,60 +69,75 @@ class _MRC_():
         for finding the solution of optimization
         using the subgradient approach.
 
-    warm_start : bool
-            When set to True,
-            reuse the solution of the previous call to fit as initialization,
-            otherwise, just erase the previous solution.
-
-    phi : {'gaussian','linear','threshold'} or phi instance, default='linear'
+    phi : `str` {'fourier', 'relu', 'threshold'} or
+           `BasePhi` instance, default='linear'
         The type of feature mapping function to use for mapping the input data
-        The 'gaussian', 'linear' and 'threshold'are predefined feature mapping
-        If the type is 'custom',
-        it means that the user has to define his own feature mapping function
+        'fourier', 'relu' and 'threshold'
+        are the currenlty available feature mapping methods.
 
-    **phi_kwargs : multiple optional parameters
-                   for the corresponding feature mappings(phi)
+    **phi_kwargs : Groups the multiple optional parameters
+                   for the corresponding feature mappings(phi).
 
+                   For example in case of fourier features,
+                   the number of features is given by `n_components`
+                   parameter which can be passed as argument - 
+                   `MRC(loss='log', phi='fourier', n_components=500)`
+                   
+                   The list of arguments for each feature mappings class
+                   can be found in the corresponding documentation.
     Attributes
     ----------
     is_fitted_ : bool
         True if the classifier is fitted i.e., the parameters are learnt.
 
-    tau_ : array-like of shape (n_features) or float
+    tau_ : array-like of shape (n_features)
         The mean estimates for the expectations of feature mappings.
 
-    lambda_ : array-like of shape (n_features) or float
+    lambda_ : array-like of shape (n_features)
         The variance in the mean estimates for the expectations
         of the feature mappings.
 
-    """
+    classes_ : array-like of shape (n_classes)
+        Labels in the given dataset.
+        If the labels Y are not given during fit
+        i.e., tau and lambda are given as input,
+        then this array is None.
+    '''
 
-    def __init__(self, n_classes, equality=False, s=0.3,
-                 deterministic=False, random_state=None, loss='0-1',
-                 warm_start=False, use_cvx=False, solver='MOSEK',
-                 max_iters=10000, phi='gaussian', **phi_kwargs):
+    def __init__(self, loss='0-1', s=0.3,
+                 deterministic=False, random_state=None,
+                 fit_intercept=True, warm_start=False, use_cvx=False,
+                 solver='MOSEK', max_iters=10000, phi='linear', **phi_kwargs):
 
-        self.n_classes = n_classes
-        self.equality = equality
+        self.loss = loss
         self.s = s
         self.deterministic = deterministic
         self.random_state = random_state
-        self.loss = loss
-        self.solver = solver
-        self.use_cvx = use_cvx
-        self.max_iters = max_iters
+        self.fit_intercept = fit_intercept
         self.warm_start = warm_start
+        self.use_cvx = use_cvx
+        self.solver = solver
+        self.max_iters = max_iters
 
-        if phi == 'gaussian':
-            self.phi = PhiGaussian(n_classes=n_classes,
-                                   random_state=random_state, **phi_kwargs)
+        # Feature mappings
+        if phi == 'fourier':
+            self.phi = RandomFourierPhi(n_classes=2,
+                                        fit_intercept=fit_intercept,
+                                        random_state=random_state,
+                                        **phi_kwargs)
         elif phi == 'linear':
-            self.phi = PhiLinear(n_classes=n_classes)
+            self.phi = BasePhi(n_classes=2,
+                               fit_intercept=fit_intercept)
         elif phi == 'threshold':
-            self.phi = PhiThreshold(n_classes=n_classes, **phi_kwargs)
+            self.phi = ThresholdPhi(n_classes=2,
+                                    fit_intercept=fit_intercept,
+                                    **phi_kwargs)
         elif phi == 'relu':
-            self.phi = PhiRandomRelu(n_classes=n_classes, **phi_kwargs)
-        elif isinstance(phi, Phi):
+            self.phi = RandomReLUPhi(n_classes=2,
+                                     fit_intercept=fit_intercept,
+                                     random_state=random_state,
+                                     **phi_kwargs)
+        elif isinstance(phi, BasePhi):
             self.phi = phi
         else:
             raise ValueError('Unexpected feature mapping type ... ')
@@ -129,8 +145,8 @@ class _MRC_():
         # Solver list available in cvxpy
         self.solvers = ['MOSEK', 'SCS', 'ECOS']
 
-    def fit(self, X, Y=None, X_=None, tau_=None, lambda_=None):
-        """
+    def fit(self, X, Y=None, X_=None, n_classes=None, tau_=None, lambda_=None):
+        '''
         Fit the MRC model.
 
         Parameters
@@ -140,7 +156,7 @@ class _MRC_():
             - Calculating the estimates for the minimax risk classification
             - Also, used in optimization when X_ is not given
 
-        Y_ : array-like of shape (n_samples1/n_samples2), default = None
+        Y_ : array-like of shape (n_samples1), default = None
             Labels corresponding to the training instances
             used to compute the estimates for the optimization.
 
@@ -153,19 +169,25 @@ class _MRC_():
             these labels are required to find the thresholds
             using the instance, label pair.
 
-        X_ : array-like of shape (n_samples, n_dimensions), default = None
+        X_ : array-like of shape (n_samples2, n_dimensions), default = None
             These instances are optional and
             when given, will be used in the minimax risk optimization.
             These extra instances are generally a smaller set and
             give an advantage in training time.
 
-        tau_ : array-like of shape (n_features) or float, default=None
+        n_classes : int
+            Number of labels in the dataset.
+            If the labels Y are not provided, then this argument is required.
+
+        tau_ : array-like of shape (n_features * n_classes) or float,
+               default=None
             The mean estimates
             for the expectations of feature mappings.
             If a single float value is passed,
             all the features in the feature mapping have the same estimates.
 
-        lambda_ : array-like of shape (n_features) or float, defautl=None
+        lambda_ : array-like of shape (n_features * n_classes) or float,
+                  defautl=None
             The variance in the mean estimates
             for the expectations of the feature mappings.
             If a single float value is passed,
@@ -177,38 +199,50 @@ class _MRC_():
         self :
             Fitted estimator
 
-        """
+        '''
 
         X = check_array(X, accept_sparse=True)
-
-        # Set the type of configuration to be learnt i.e.,
-        # whether to learn duplicate instances or not,
-        # based on the MRC/CMRC model
-        self.setLearnConfigType()
 
         # Check if separate instances are given for the optimization
         if X_ is not None:
             X_opt = check_array(X_, accept_sparse=True)
-
+            not_all_instances = False
         else:
             # Use the training samples used to compute estimate
             # for the optimization.
             X_opt = X
-
-        # Fit the feature mappings
-        self.phi.fit(X, Y)
+            not_all_instances = True
 
         # Learn the classes
         # Classes will only be learnt if the estimates are not given
         self.classes_ = None
         if tau_ is None or lambda_ is None:
+            X, Y = check_X_y(X, Y, accept_sparse=True)
+
             # Map the values of Y from 0 to n_classes-1
             origY = Y
             self.classes_ = np.unique(origY)
+            self.n_classes = len(self.classes_)
             Y = np.zeros(origY.shape[0], dtype=int)
 
             for i, y in enumerate(self.classes_):
                 Y[origY == y] = i
+
+        elif type(n_classes) == int:
+            self.n_classes = n_classes
+
+        elif Y is not None:
+            self.n_classes = len(np.unique(Y))
+
+        else:
+            raise ValueError("Expected the labels \'Y\' or " +
+                             "a valid \'n_classes\' argument ... ")
+
+        # Set the number of classes in phi
+        self.phi.n_classes = self.n_classes
+
+        # Fit the feature mappings
+        self.phi.fit(X, Y)
 
         # Set the interval estimates if they are given
         # Otherwise compute the interval estimates
@@ -223,8 +257,7 @@ class _MRC_():
             self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
 
         else:
-            X, Y = check_X_y(X, Y, accept_sparse=True)
-            self.tau_ = self.phi.estExp(X, Y)
+            self.tau_ = self.phi.est_exp(X, Y)
 
         if lambda_ is not None:
             if isinstance(lambda_, (float, int)):
@@ -239,27 +272,33 @@ class _MRC_():
                                        ensure_2d=False)
 
         else:
-            X, Y = check_X_y(X, Y, accept_sparse=True)
-            self.lambda_ = (self.s * self.phi.estStd(X, Y)) / \
-                np.sqrt(X.shape[0])
+            self.lambda_ = (self.s * \
+                            self.phi.est_std(X, Y)) / \
+                            np.sqrt(X.shape[0])
 
         # Limit the number of training samples used in the optimization
         # for large datasets
         # Reduces the training time and use of memory
         n_max = 5000
         n = X_opt.shape[0]
-        if n_max < n:
+        if not_all_instances and n_max < n:
             n = n_max
 
+        # Get the feature mapping corresponding to the training instances
+        phi = self.phi.eval_x(X_opt[:n])
+
+        # Supress the depreciation warnings
+        warnings.simplefilter('ignore')
+
         # Fit the MRC classifier
-        self._minimaxRisk(X_opt[:n, :])
+        self.minimax_risk(phi)
 
         self.is_fitted_ = True
 
         return self
 
-    def trySolvers(self, objective, constraints, mu, nu=None):
-        """
+    def try_solvers(self, objective, constraints, mu, nu=None):
+        '''
         Solves the MRC problem
         using different types of solvers available in CVXpy
 
@@ -289,7 +328,7 @@ class _MRC_():
             The parameter is not returned
             in case the cvxpy variable is not defined (i.e, None) initially
             when it is passed as the argument to this function.
-        """
+        '''
 
         # Reuse the solution from previous call to fit.
         if self.warm_start:
@@ -354,7 +393,7 @@ class _MRC_():
             return mu_
 
     def predict(self, X):
-        """
+        '''
         Returns the predicted classes for X samples.
 
         Parameters
@@ -365,19 +404,20 @@ class _MRC_():
 
         Returns
         -------
-        y_pred : array-like of shape (n_samples, )
+        y_pred : array-like of shape (n_samples)
             The predicted labels corresponding to the given instances.
 
-        """
+        '''
 
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
+        n = X.shape[0]
 
         if self.loss == 'log':
             # In case of logistic loss function,
             # the classification is always deterministic
 
-            phi = self.phi.eval(X)
+            phi = self.phi.eval_x(X)
 
             # Deterministic classification
             v = np.dot(phi, self.mu_)

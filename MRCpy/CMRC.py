@@ -1,23 +1,84 @@
 """Marginally Constrained Minimax Risk Classification."""
 
+import itertools as it
+
 import cvxpy as cvx
 import numpy as np
 import scipy.special as scs
-from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 
 # Import the MRC super class
-from MRCpy import _MRC_
+from MRCpy import BaseMRC
 
 
-class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
+class CMRC(BaseMRC):
     """
-    Constrained Minimax Risk Classifier.
+    Constrained Minimax Risk Classifier
 
-    using the additional marginals constraints on the instances.
+    MRCs using the additional marginals constraints on the instances.
     It also implements two kinds of loss functions, namely 0-1 and log loss.
-    This is a subclass of the super class _MRC_.
+    This is a subclass of the super class BaseMRC.
+
+    Parameters
+    ----------
+    loss : `str` {'0-1', 'log'}, default='0-1'
+        The type of loss function to use for the risk minimization.
+
+    s : float, default=0.3
+        For tuning the estimation of expected values
+        of feature mapping function(phi).
+        Must be a positive float value and
+        expected to be in the 0 to 1 in general cases.
+
+    deterministic : bool, default=False
+        For determining if the prediction of the labels
+        should be done in a deterministic way or not.
+
+    random_state : int, RandomState instance, default=None
+        Used when 'fourier' option for feature mappings are used
+        to produce the random weights.
+
+    fit_intercept : bool, default=True
+            Whether to calculate the intercept for MRCs
+            If set to false, no intercept will be used in calculations
+            (i.e. data is expected to be already centered).
+
+    warm_start : bool, default=False
+        When set to True,
+        reuse the solution of the previous call to fit as initialization,
+        otherwise, just erase the previous solution.
+
+    use_cvx : bool, default=False
+        If True, use CVXpy library for the optimization
+        instead of the subgradient methods.
+
+    solver : {'SCS', 'ECOS'}, default='SCS'
+        The type of CVX solver to use for solving the problem.
+        In some cases, one solver might not work,
+        so we might need to use the other solver from the set.
+
+    max_iters : int, default=10000
+        The maximum number of iterations to use
+        for finding the solution of optimization
+        using the subgradient approach.
+
+    phi : `str` {'fourier', 'relu', 'threshold'} or
+          `BasePhi` instance, default='linear'
+        The type of feature mapping function to use for mapping the input data.
+        Currently available feature mapping methods are - 
+        'fourier', 'relu' and 'threshold'
+
+    **phi_kwargs : Groups the multiple optional parameters
+                   for the corresponding feature mappings(phi).
+
+                   For example in case of fourier features,
+                   the number of features is given by `n_components`
+                   parameter which can be passed as argument - 
+                   `MRC(loss='log', phi='fourier', n_components=500)`
+
+                   The list of arguments for each feature mappings class
+                   can be found in the corresponding documentation.
 
     Attributes
     ----------
@@ -45,35 +106,54 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
     # to reduce the default number for maximum iterations.
     # In case of CMRC, the convergence is observed to be fast
     # and hence less iterations should be sufficient
-    def __init__(self, n_classes, equality=False, s=0.3,
-                 deterministic=False, random_state=None, loss='0-1',
-                 warm_start=False, use_cvx=False, solver='SCS',
-                 max_iters=2000, phi='gaussian', **phi_kwargs):
-        super().__init__(n_classes=n_classes, equality=equality, s=s,
+    def __init__(self, loss='0-1', s=0.3,
+                 deterministic=False, random_state=None,
+                 fit_intercept=True, warm_start=False, use_cvx=False,
+                 solver='SCS', max_iters=2000, phi='gaussian', **phi_kwargs):
+        super().__init__(loss=loss,
+                         s=s,
                          deterministic=deterministic,
-                         random_state=random_state, loss=loss,
-                         warm_start=warm_start, use_cvx=use_cvx,
-                         solver=solver, max_iters=max_iters,
+                         random_state=random_state,
+                         fit_intercept=fit_intercept,
+                         warm_start=warm_start,
+                         use_cvx=use_cvx, 
+                         solver=solver,
+                         max_iters=max_iters,
                          phi=phi, **phi_kwargs)
 
-    def _minimaxRisk(self, X):
+    def minimax_risk(self, phi):
         """
         Solves the marginally constrained minimax risk problem
         for different types of loss (0-1 and log loss).
 
         Parameters
         ----------
-        X : array-like of shape (n_samples1, n_dimensions)
-            Training instances used in the optimization.
+        phi : array-like of shape(n_samples, n_classes, n_features * n_classes)
+            Feature mappings used in the optimization.
 
         """
 
-        # Get the learn configurations of phi (feature mapping)
-        phi = self.phi.learnConfig(X, self.learn_duplicates)
-
         # Constants
         n = phi.shape[0]
-        m = self.phi.len_
+        m = phi.shape[2]
+
+        # In case of 0-1 loss, learn constraints using the phi
+        # These constraints are used in the optimization instead of phi
+
+        if self.loss == '0-1':
+            # Summing up the phi configurations
+            # for all possible subsets of classes for each instance
+            F = np.vstack((np.sum(phi[:, S, ], axis=1)
+                           for numVals in range(1, self.n_classes + 1)
+                           for S in it.combinations(np.arange(self.n_classes),
+                                                    numVals)))
+
+            # Compute the corresponding length of the subset of classes
+            # for which sums computed for each instance
+            cardS = np.arange(1, self.n_classes + 1).\
+                repeat([n * scs.comb(self.n_classes, numVals)
+                        for numVals in np.arange(1,
+                        self.n_classes + 1)])
 
         if self.use_cvx:
             # Use CVXpy for the convex optimization of the MRC.
@@ -88,13 +168,6 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
 
-                # We compute the learn constraints
-                # without omitting the duplicate elements
-                M_ = self.phi.getAllSubsetConfig(phi)
-                # F is the sum of phi
-                # for different subset of Y for each data point
-                F = M_[:, :m]
-                cardS = M_[:, -1]
                 M = F / (cardS[:, np.newaxis])
                 h = 1 - (1 / cardS)
 
@@ -122,7 +195,7 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             constraints = []
 
             self.mu_ = \
-                self.trySolvers(objective, constraints, mu)
+                self.try_solvers(objective, constraints, mu)
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
@@ -131,11 +204,6 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # Define the objective function and
                 # the gradient for the 0-1 loss function.
 
-                M_ = self.phi.getAllSubsetConfig(phi)
-                # M is the sum of phi
-                # for different subset of Y for each data point
-                F = M_[:, :m]
-                cardS = M_[:, -1]
                 M = F / (cardS[:, np.newaxis])
                 h = 1 - (1 / cardS)
 
@@ -185,17 +253,17 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
                 # Start from a previous solution.
                 try:
                     self.params_ = \
-                        self.nesterovOptimization(m, self.params_, f_, g_)
+                        self.nesterov_optimization(m, self.params_, f_, g_)
                 except AttributeError:
-                    self.params_ = self.nesterovOptimization(m, None, f_, g_)
+                    self.params_ = self.nesterov_optimization(m, None, f_, g_)
             else:
                 self.params_ = \
-                    self.nesterovOptimization(m, None, f_, g_)
+                    self.nesterov_optimization(m, None, f_, g_)
 
             self.mu_ = self.params_['mu']
 
-    def nesterovOptimization(self, m, params_, f_, g_):
-        """
+    def nesterov_optimization(self, m, params_, f_, g_):
+        '''
         Solution of the CMRC convex optimization(minimization)
         using the Nesterov accelerated approach.
 
@@ -232,8 +300,7 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         f_best_value : float
             The optimized value of the function in consideration.
-
-        """
+        '''
 
         # Initial values for the parameters
         theta_k = 1
@@ -376,18 +443,26 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
 
         n = X.shape[0]
 
-        # n_instances X n_classes X phi.len
-        phi = self.phi.eval(X)
-        m = self.phi.len_
+        phi = self.phi.eval_x(X)
+
+        m = phi.shape[2]
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function
 
-            M = self.phi.getAllSubsetConfig(phi)
-            # F is the sum of phi
-            # for different subset of Y for each data point
-            F = M[:, :m]
-            cardS = M[:, -1]
+            # Summing up the phi configurations
+            # for all possible subsets of classes for each instance
+            F = np.vstack((np.sum(phi[:, S, ], axis=1)
+                           for numVals in range(1, self.n_classes + 1)
+                           for S in it.combinations(np.arange(self.n_classes),
+                                                    numVals)))
+
+            # Compute the corresponding length of the subset of classes
+            # for which sums computed for each instance
+            cardS = np.arange(1, self.n_classes + 1).\
+                repeat([n * scs.comb(self.n_classes, numVals)
+                        for numVals in np.arange(1,
+                        self.n_classes + 1)])[:, np.newaxis]
 
             # Compute psi
             psi = np.zeros(n)
@@ -430,11 +505,3 @@ class CMRC(BaseEstimator, ClassifierMixin, _MRC_):
             hy_x = np.reciprocal(hy_x)
 
         return hy_x
-
-    def setLearnConfigType(self):
-        """
-        Learn the duplicate configuration to be used in the objective function
-        in case of this constrained MRC. Duplicate configuration are observed
-        when the dataset contains duplication entries.
-        """
-        self.learn_duplicates = True
