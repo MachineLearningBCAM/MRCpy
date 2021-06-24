@@ -61,18 +61,9 @@ class myPhi(BasePhi):
 
         # Defining the length of the phi
 
-        # Here we define the total length of the phi feature vector
-        # given by the class variable self.len_
-        # In this case, the kernel is linear,
-        # so the length of the kernel is d (Number of dimension of X)
-        # added by 1 (for the intercept).
-        # We one-hot encoded feature mapping
-        # so we multiply by number of classes for total length
-        self.len_ = (d + 1) * self.n_classes
-
-        # A class variable. You need set it true
-        # after you fit your feature mapping functions
-        self.is_fitted_ = True
+        # Defines the total length of the feature mapping automatically
+        # It is recommended to call this function at the end of fit
+        super().fit(X,Y)
 
         # Return the fitted feature mapping instance
         return self
@@ -107,7 +98,7 @@ class myPhi(BasePhi):
         # Return the features
         return X_feat
 
-    def eval(self, X, Y=None):
+    def eval_xy(self, X, Y):
 
         """
         Computes the complete feature mapping vector
@@ -122,26 +113,24 @@ class myPhi(BasePhi):
         X : array-like of shape (n_samples, n_dimensions)
             Unlabeled training instances for developing the feature matrix
 
-        Y : array-like of shape (n_samples,), default=None
+        Y : array-like of shape (n_samples,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
         phi : array-like of shape (n_samples, n_classes, n_features*n_classes)
             Matrix containing the complete feature vector as rows
-            corresponding to each of the instance.
-            In case of one-hot encoding, the feature mappings are given by
-            calling the transform function to get the principal features and
-            then appending zeros for the one-hot encoding.
-            In case Y is given, the encoding for each instance are calculated
-            corresponding to those labels.
+            corresponding to each of the instance and their labels.
+            The `eval` function of the BasePhi computes the feature mappings
+            by calling the transform function to get the principal features
+            and then appending zeros for the one-hot encoding.
         """
         # Here in this example,
         # we want to use the one-hot encoded feature mappings.
         # So, we call the parent class eval function
         # which does the one-hot encoding by default
         # and also adds the intercept corresponding to each class
-        return super().eval(X, Y)
+        return super().eval_xy(X, Y)
 
         # In case you don't want the one-hot encoding,
         # you have to define you own eval function
@@ -154,37 +143,20 @@ if __name__ == '__main__':
     X, Y = load_iris(return_X_y=True)
     r = len(np.unique(Y))
 
-    X = np.asarray([[1,2,3],[3,4,5],[8,9,5]])
-
-    n = X.shape[0]
-    y = np.asarray([0,1,2])
-    r=2
-
-    print('The instances are : ', X)
-    print('The labels are : ', y)
-
     # Creating the custom phi object
-    # myphi = myPhi(n_classes=r)
-    # phi1 = BasePhi(n_classes=2, fit_intercept=False).fit(X,y)
-
-    # print(phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0])))
-    # phi = phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0]))
-    # print(phi.shape)
-    # phi = np.reshape(phi, (n, r, phi1.len_))
-    # print(phi)
+    myphi = myPhi(n_classes=r)
 
     # Fit the MRC model with the custom phi
-    clf = CMRC(phi='linear', fit_intercept=False).fit(X, y)
+    clf = CMRC(phi=myphi, fit_intercept=False).fit(X, Y)
 
-    print(clf.phi.eval_x(X))
     # Prediction
-    # print('\n\nThe predicted values for the first 3 instances are : ')
-    # print(clf.predict(X[:3, :]))
+    print('\n\nThe predicted values for the first 3 instances are : ')
+    print(clf.predict(X[:3, :]))
 
     # Predicted probabilities
-    # print('\n\nThe predicted probabilities for the first 3 instances are : ')
-    # print(clf.predict_proba(X[:3, :]))
+    print('\n\nThe predicted probabilities for the first 3 instances are : ')
+    print(clf.predict_proba(X[:3, :]))
 
     # Accuracy/Score of the model
-    # print('\n\nThe score is : ')
-    # print(clf.score(X, Y))
+    print('\n\nThe score is : ')
+    print(clf.score(X, Y))

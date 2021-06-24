@@ -227,18 +227,9 @@ according to your requirements.</p>
 
         <span class="c1"># Defining the length of the phi</span>
 
-        <span class="c1"># Here we define the total length of the phi feature vector</span>
-        <span class="c1"># given by the class variable self.len_</span>
-        <span class="c1"># In this case, the kernel is linear,</span>
-        <span class="c1"># so the length of the kernel is d (Number of dimension of X)</span>
-        <span class="c1"># added by 1 (for the intercept).</span>
-        <span class="c1"># We one-hot encoded feature mapping</span>
-        <span class="c1"># so we multiply by number of classes for total length</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span>
-
-        <span class="c1"># A class variable. You need set it true</span>
-        <span class="c1"># after you fit your feature mapping functions</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1"># Defines the total length of the feature mapping automatically</span>
+        <span class="c1"># It is recommended to call this function at the end of fit</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Return the fitted feature mapping instance</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -273,7 +264,7 @@ according to your requirements.</p>
         <span class="c1"># Return the features</span>
         <span class="k">return</span> <span class="n">X_feat</span>
 
-    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Computes the complete feature mapping vector</span>
@@ -288,26 +279,24 @@ according to your requirements.</p>
 <span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Unlabeled training instances for developing the feature matrix</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">        Y : array-like of shape (n_samples,)</span>
 <span class="sd">            Labels corresponding to the unlabeled training instances</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        phi : array-like of shape (n_samples, n_classes, n_features*n_classes)</span>
 <span class="sd">            Matrix containing the complete feature vector as rows</span>
-<span class="sd">            corresponding to each of the instance.</span>
-<span class="sd">            In case of one-hot encoding, the feature mappings are given by</span>
-<span class="sd">            calling the transform function to get the principal features and</span>
-<span class="sd">            then appending zeros for the one-hot encoding.</span>
-<span class="sd">            In case Y is given, the encoding for each instance are calculated</span>
-<span class="sd">            corresponding to those labels.</span>
+<span class="sd">            corresponding to each of the instance and their labels.</span>
+<span class="sd">            The `eval` function of the BasePhi computes the feature mappings</span>
+<span class="sd">            by calling the transform function to get the principal features</span>
+<span class="sd">            and then appending zeros for the one-hot encoding.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Here in this example,</span>
         <span class="c1"># we want to use the one-hot encoded feature mappings.</span>
         <span class="c1"># So, we call the parent class eval function</span>
         <span class="c1"># which does the one-hot encoding by default</span>
         <span class="c1"># and also adds the intercept corresponding to each class</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># In case you don&#39;t want the one-hot encoding,</span>
         <span class="c1"># you have to define you own eval function</span>
@@ -320,40 +309,23 @@ according to your requirements.</p>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="numpy.unique" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
 
-    <span class="n">X</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],[</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">5</span><span class="p">]])</span>
-
-    <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">y</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-    <span class="n">r</span><span class="o">=</span><span class="mi">2</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The instances are : &#39;</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The labels are : &#39;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
     <span class="c1"># Creating the custom phi object</span>
-    <span class="c1"># myphi = myPhi(n_classes=r)</span>
-    <span class="c1"># phi1 = BasePhi(n_classes=2, fit_intercept=False).fit(X,y)</span>
-
-    <span class="c1"># print(phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0])))</span>
-    <span class="c1"># phi = phi1.eval_x(np.repeat(X,r,axis=0), np.tile(np.arange(r), X.shape[0]))</span>
-    <span class="c1"># print(phi.shape)</span>
-    <span class="c1"># phi = np.reshape(phi, (n, r, phi1.len_))</span>
-    <span class="c1"># print(phi)</span>
+    <span class="n">myphi</span> <span class="o">=</span> <span class="n">myPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
 
     <span class="c1"># Fit the MRC model with the custom phi</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">myphi</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
     <span class="c1"># Prediction</span>
-    <span class="c1"># print(&#39;\n\nThe predicted values for the first 3 instances are : &#39;)</span>
-    <span class="c1"># print(clf.predict(X[:3, :]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted values for the first 3 instances are : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
 
     <span class="c1"># Predicted probabilities</span>
-    <span class="c1"># print(&#39;\n\nThe predicted probabilities for the first 3 instances are : &#39;)</span>
-    <span class="c1"># print(clf.predict_proba(X[:3, :]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted probabilities for the first 3 instances are : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]))</span>
 
     <span class="c1"># Accuracy/Score of the model</span>
-    <span class="c1"># print(&#39;\n\nThe score is : &#39;)</span>
-    <span class="c1"># print(clf.score(X, Y))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The score is : &#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>

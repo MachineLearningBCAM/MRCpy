@@ -85,8 +85,8 @@ if __name__ == '__main__':
           Example 2 (CMRC with the additional marginal constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and linear feature mapping \n\n')
-    runCMRC(phi='linear', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
+    runCMRC(phi='relu', loss='0-1')
 
     print('\t\t 2. Using log loss and relu feature mapping \n\n')
-    runCMRC(phi='linear', loss='log')
+    runCMRC(phi='relu', loss='log')
