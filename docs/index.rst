@@ -22,7 +22,13 @@ Documentation outline
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   getting_started
+
+.. toctree::
+   :maxdepth: 2
+
+   api
 
 .. |Travis-CI Build Status| image:: https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main
    :target: https://travis-ci.org/github/MachineLearningBCAM/MRCpy

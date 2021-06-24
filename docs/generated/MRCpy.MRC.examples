@@ -1,0 +1,61 @@
+
+
+Examples using ``MRCpy.MRC``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Simple example of using MRC with 0-1 loss.">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_example3_thumb.png
+     :alt: Simple example of using MRC with 0-1 loss.
+
+     :ref:`sphx_glr_auto_examples_example3.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_example3.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="A simple example for the paper">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_example_for_paper_thumb.png
+     :alt: A simple example for the paper
+
+     :ref:`sphx_glr_auto_examples_example_for_paper.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_example_for_paper.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets.">
+
+.. only:: html
+
+ .. figure:: /auto_examples/images/thumb/sphx_glr_example1_thumb.png
+     :alt: Example of using MRC with some of the common classification datasets.
+
+     :ref:`sphx_glr_auto_examples_example1.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_example1.py`

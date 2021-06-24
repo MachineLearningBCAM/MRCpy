@@ -50,7 +50,7 @@ if __name__ == '__main__':
         long_description_content_type="text/markdown",
         url="https://github.com/MachineLearningBCAM/MRCpy",
         packages=find_packages(),
-        # py_modules=["MRC", "CMRC", "phi.Phi", \
+        # py_modules=["MRCpy", "MRCpy.phi"],
                     # "phi.PhiGaussian", "phi.PhiLinear", "phi.PhiThreshold"],
         # package_dir={'': 'minimax_risk_classifiers'},
         classifiers=[
@@ -68,6 +68,7 @@ if __name__ == '__main__':
         data_files=[
             "README.md"
         ],
+        test_suite='tests',
         include_package_data=True,
         package_data={'': ['datasets/data/*', 'datasets/descr/*']},
         python_requires='>=3.6',
