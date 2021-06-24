@@ -145,7 +145,7 @@ class BasePhi():
         X : array-like of shape (n_samples, n_dimensions)
             Unlabeled training instances for developing the feature matrix
 
-        Y : array-like of shape (n_samples), default=None
+        Y : array-like of shape (n_samples)
             Labels corresponding to the unlabeled training instances
 
         Returns
