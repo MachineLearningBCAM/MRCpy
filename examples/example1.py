@@ -4,7 +4,6 @@ import time
 
 import numpy as np
 from sklearn import preprocessing
-from sklearn.impute import SimpleImputer
 from sklearn.model_selection import StratifiedKFold
 
 from MRCpy import MRC
@@ -12,10 +11,10 @@ from MRCpy import MRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman,
-           load_indian_liver, load_diabetes, load_credit]
-dataName = ["mammographic", "haberman",
-            "indian_liver", "diabetes", "credit"]
+loaders = [load_mammographic, load_haberman, load_indian_liver,
+           load_diabetes, load_credit]
+dataName = ["mammographic", "haberman", "indian_liver",
+            "diabetes", "credit"]
 
 
 def runMRC(phi, loss):
@@ -37,12 +36,8 @@ def runMRC(phi, loss):
         print(" ############## \n" + dataName[j] + " n= " + str(n) +
               " , d= " + str(d) + ", cardY= " + str(r))
 
-        clf = MRC(n_classes=r, phi=phi, loss=loss, solver='MOSEK',
-                  use_cvx=False, max_iters=10000, s=0.3)
-
-        # Preprocess
-        trans = SimpleImputer(strategy='median')
-        X = trans.fit_transform(X, Y)
+        clf = MRC(phi=phi, loss=loss, solver='MOSEK',
+                  use_cvx=True, max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -68,9 +63,10 @@ def runMRC(phi, loss):
             # Save start time for computing training time
             startTime = time.time()
 
-            clf.fit(X_train, y_train)
+            clf.fit(X_train, y_train, X_=X_train)
             upper += clf.upper_
-            lower += clf.getLowerBound()
+            print('upper : ', upper)
+            lower += clf.get_lower_bound()
 
             # Calculate the training time
             auxTime += time.time() - startTime
@@ -94,8 +90,8 @@ if __name__ == '__main__':
           Example 1 (MRC with default constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and threshold feature mapping \n\n')
-    runMRC(phi='threshold', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
+    runMRC(phi='relu', loss='0-1')
 
-    print('\t\t 2. Using log loss and threshold feature mapping \n\n')
-    runMRC(phi='threshold', loss='log')
+    print('\t\t 2. Using log loss and relu feature mapping \n\n')
+    runMRC(phi='relu', loss='log')

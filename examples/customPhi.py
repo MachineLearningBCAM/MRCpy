@@ -11,14 +11,14 @@ import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.utils import check_array
 
-from MRCpy import CMRC
+from MRCpy import MRC, CMRC
 from MRCpy.phi import *
 
 # Custom phi example: Generating the linear kernel
 # modified by multiplying a constant
 
 
-class myPhi(Phi):
+class myPhi(BasePhi):
 
     """
     This constructor is by default present in the parent Phi class.
@@ -29,7 +29,7 @@ class myPhi(Phi):
     but it is defined here as an example.
     Removing this constructor doesn't have any affect on the performance.
     """
-    def __init__(self, n_classes):
+    def __init__(self, n_classes, b=5):
         # Calling the parent constructor.
         # It is always better convention to call the parent constructor
         # for primary variables initialization.
@@ -61,18 +61,9 @@ class myPhi(Phi):
 
         # Defining the length of the phi
 
-        # Here we define the total length of the phi feature vector
-        # given by the class variable self.len_
-        # In this case, the kernel is linear,
-        # so the length of the kernel is d (Number of dimension of X)
-        # added by 1 (for the intercept).
-        # We one-hot encoded feature mapping
-        # so we multiply by number of classes for total length
-        self.len_ = (d + 1) * self.n_classes
-
-        # A class variable. You need set it true
-        # after you fit your feature mapping functions
-        self.is_fitted_ = True
+        # Defines the total length of the feature mapping automatically
+        # It is recommended to call this function at the end of fit
+        super().fit(X,Y)
 
         # Return the fitted feature mapping instance
         return self
@@ -107,7 +98,7 @@ class myPhi(Phi):
         # Return the features
         return X_feat
 
-    def eval(self, X, Y=None):
+    def eval_xy(self, X, Y):
 
         """
         Computes the complete feature mapping vector
@@ -122,26 +113,24 @@ class myPhi(Phi):
         X : array-like of shape (n_samples, n_dimensions)
             Unlabeled training instances for developing the feature matrix
 
-        Y : array-like of shape (n_samples,), default=None
+        Y : array-like of shape (n_samples,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
         phi : array-like of shape (n_samples, n_classes, n_features*n_classes)
             Matrix containing the complete feature vector as rows
-            corresponding to each of the instance.
-            In case of one-hot encoding, the feature mappings are given by
-            calling the transform function to get the principal features and
-            then appending zeros for the one-hot encoding.
-            In case Y is given, the encoding for each instance are calculated
-            corresponding to those labels.
+            corresponding to each of the instance and their labels.
+            The `eval` function of the BasePhi computes the feature mappings
+            by calling the transform function to get the principal features
+            and then appending zeros for the one-hot encoding.
         """
         # Here in this example,
         # we want to use the one-hot encoded feature mappings.
         # So, we call the parent class eval function
         # which does the one-hot encoding by default
         # and also adds the intercept corresponding to each class
-        return super().eval(X, Y)
+        return super().eval_xy(X, Y)
 
         # In case you don't want the one-hot encoding,
         # you have to define you own eval function
@@ -158,7 +147,7 @@ if __name__ == '__main__':
     myphi = myPhi(n_classes=r)
 
     # Fit the MRC model with the custom phi
-    clf = CMRC(n_classes=r, phi=myphi).fit(X, Y)
+    clf = CMRC(phi=myphi, fit_intercept=False).fit(X, Y)
 
     # Prediction
     print('\n\nThe predicted values for the first 3 instances are : ')

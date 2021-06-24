@@ -1,7 +1,6 @@
 """Simple example of using CMRC with 0-1 loss."""
 
 import numpy as np
-from sklearn.impute import SimpleImputer
 
 from MRCpy import CMRC
 # Import the datasets
@@ -12,14 +11,9 @@ if __name__ == '__main__':
 
     # Loading the dataset
     X, Y = load_mammographic(return_X_y=True)
-    r = len(np.unique(Y))
-
-    # Preprocess
-    trans = SimpleImputer(strategy='median')
-    X = trans.fit_transform(X, Y)
 
     # Fit the MRC model
-    clf = CMRC(n_classes=r).fit(X, Y)
+    clf = CMRC().fit(X, Y)
 
     # Prediction
     print('\n\nThe predicted values for the first 3 instances are : ')
