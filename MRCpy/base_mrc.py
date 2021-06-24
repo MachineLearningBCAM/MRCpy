@@ -211,7 +211,14 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             # Use the training samples used to compute estimate
             # for the optimization.
             X_opt = X
-            not_all_instances = True
+
+            # If the labels are not given, then these instances
+            # are assumed to be given for optimization only and 
+            # hence all the instances will be used.
+            if Y is None:
+                not_all_instances = False
+            else:
+                not_all_instances = True
 
         # Learn the classes
         # Classes will only be learnt if the estimates are not given
