@@ -260,7 +260,7 @@ class RandomReLUPhi(BasePhi):
 
         """
         if X.shape[0]<50:
-            neighbour_ind = X_shape[0]-2
+            neighbour_ind = X.shape[0]-2
         else:
             neighbour_ind = 50
 
