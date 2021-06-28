@@ -249,7 +249,8 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi.n_classes = self.n_classes
 
         # Fit the feature mappings
-        self.phi.fit(X, Y)
+        if tau_ is None and lambda_ is None:
+            self.phi.fit(X, Y)
 
         # Set the interval estimates if they are given
         # Otherwise compute the interval estimates
