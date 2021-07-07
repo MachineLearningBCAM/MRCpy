@@ -109,7 +109,7 @@ class CMRC(BaseMRC):
     def __init__(self, loss='0-1', s=0.3,
                  deterministic=False, random_state=None,
                  fit_intercept=True, warm_start=False, use_cvx=False,
-                 solver='SCS', max_iters=2000, phi='gaussian', **phi_kwargs):
+                 solver='SCS', max_iters=2000, phi='linear', **phi_kwargs):
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
