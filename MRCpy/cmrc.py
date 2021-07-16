@@ -155,7 +155,7 @@ class CMRC(BaseMRC):
                         for numVals in np.arange(1,
                         self.n_classes + 1)])
 
-       if self.use_cvx:
+        if self.use_cvx:
             # Use CVXpy for the convex optimization of the MRC.
 
             # Variables
