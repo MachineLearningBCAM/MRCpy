@@ -155,11 +155,7 @@ class CMRC(BaseMRC):
                         for numVals in np.arange(1,
                         self.n_classes + 1)])
 
-        # print('The F is : ')
-        # print(F)
-
-        # exit()
-        if self.use_cvx:
+       if self.use_cvx:
             # Use CVXpy for the convex optimization of the MRC.
 
             # Variables
@@ -200,7 +196,6 @@ class CMRC(BaseMRC):
 
             self.mu_ = \
                 self.try_solvers(objective, constraints, mu)
-            self.objective = self.lambda_ @ np.abs(self.mu_) - self.tau_ @ self.mu_
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
