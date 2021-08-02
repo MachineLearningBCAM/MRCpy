@@ -15,91 +15,71 @@ from MRCpy import BaseMRC
 class CMRC(BaseMRC):
     """
     Constrained Minimax Risk Classifier
-
     MRCs using the additional marginals constraints on the instances.
     It also implements two kinds of loss functions, namely 0-1 and log loss.
     This is a subclass of the super class BaseMRC.
-
     Parameters
     ----------
     loss : `str` {'0-1', 'log'}, default='0-1'
         The type of loss function to use for the risk minimization.
-
     s : float, default=0.3
         For tuning the estimation of expected values
         of feature mapping function(phi).
         Must be a positive float value and
         expected to be in the 0 to 1 in general cases.
-
     deterministic : bool, default=False
         For determining if the prediction of the labels
         should be done in a deterministic way or not.
-
     random_state : int, RandomState instance, default=None
         Used when 'fourier' option for feature mappings are used
         to produce the random weights.
-
     fit_intercept : bool, default=True
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
-
     warm_start : bool, default=False
         When set to True,
         reuse the solution of the previous call to fit as initialization,
         otherwise, just erase the previous solution.
-
     use_cvx : bool, default=False
         If True, use CVXpy library for the optimization
         instead of the subgradient methods.
-
     solver : {'SCS', 'ECOS'}, default='SCS'
         The type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
         so we might need to use the other solver from the set.
-
     max_iters : int, default=10000
         The maximum number of iterations to use
         for finding the solution of optimization
         using the subgradient approach.
-
     phi : `str` {'fourier', 'relu', 'threshold'} or
           `BasePhi` instance, default='linear'
         The type of feature mapping function to use for mapping the input data.
         Currently available feature mapping methods are - 
         'fourier', 'relu' and 'threshold'
-
     **phi_kwargs : Groups the multiple optional parameters
                    for the corresponding feature mappings(phi).
-
                    For example in case of fourier features,
                    the number of features is given by `n_components`
                    parameter which can be passed as argument - 
                    `MRC(loss='log', phi='fourier', n_components=500)`
-
                    The list of arguments for each feature mappings class
                    can be found in the corresponding documentation.
-
     Attributes
     ----------
     is_fitted_ : bool
         True if the classifier is fitted i.e., the parameters are learnt.
-
     tau_ : array-like of shape (n_features) or float
         The mean estimates
         for the expectations of feature mappings.
-
     lambda_ : array-like of shape (n_features) or float
         The variance in the mean estimates
         for the expectations of the feature mappings.
-
     mu_ : array-like of shape (n_features) or float
         Parameters learnt by the optimization.
-
     params_ : a dictionary
         Stores the optimal points and best value of the function
         when the warm_start=True.
-
     """
 
     # Redefining the init function
@@ -125,12 +105,10 @@ class CMRC(BaseMRC):
         """
         Solves the marginally constrained minimax risk problem
         for different types of loss (0-1 and log loss).
-
         Parameters
         ----------
         phi : array-like of shape(n_samples, n_classes, n_features * n_classes)
             Feature mappings used in the optimization.
-
         """
 
         # Constants
@@ -161,10 +139,6 @@ class CMRC(BaseMRC):
             # Variables
             mu = cvx.Variable(m)
 
-            # Objective function
-            objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
-                                     self.tau_ @ mu)
-
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
 
@@ -175,27 +149,30 @@ class CMRC(BaseMRC):
                 # add it to the objective function
                 # First we calculate the all possible values of psi
                 # for all the points
-                psi = (-1) * (M @ mu + h)
+                psi = M @ mu + h
+                psi_all = 0
                 for i in range(n):
                     # Get psi for each data point and
                     # add the min value to objective
                     psi_xi = psi[np.arange(i, psi.shape[0], n)]
-                    objective = objective + \
-                        cvx.Minimize((-1 / n) * cvx.min((psi_xi)))
+                    psi_all = psi_all + (1 / n) * cvx.min((psi_xi))
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
-
+                psi_all = 0
                 for i in range(n):
-                    objective = objective + \
-                        cvx.Minimize((1 / n) *
-                                     cvx.log_sum_exp(phi[i, :, :] @ mu))
+                    psi_all = psi_all + \
+                        (1 / n) * cvx.log_sum_exp(phi[i, :, :] @ mu)
 
-            # Constraints
-            constraints = []
+            # Objective function
+            objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
+                                     self.tau_ @ mu + psi_all)
+
+            # # Constraints
+            # constraints = []
 
             self.mu_ = \
-                self.try_solvers(objective, constraints, mu)
+                self.try_solvers(objective, None, mu)
 
         elif not self.use_cvx:
             # Use the subgradient approach for the convex optimization of MRC
@@ -266,24 +243,20 @@ class CMRC(BaseMRC):
         '''
         Solution of the CMRC convex optimization(minimization)
         using the Nesterov accelerated approach.
-
         Parameters
         ----------
         m : int
             Length of the feature mapping vector
-
         params_ : a dictionary
             A dictionary of parameters values
             obtained from the previous call to fit
             used as the initial values for the current optimization
             when warm_start is True.
-
         f_ : a lambda function/ function of the form - f_(mu)
             It is expected to be a lambda function or a function
             calculating a part of the objective function
             depending on the type of loss function chosen
             by taking the parameters(mu) of the optimization as input.
-
         g_ : a lambda function of the form - g_(mu, idx)
             It is expected to be a lambda function
             calculating the part of the subgradient of the objective function
@@ -292,12 +265,10 @@ class CMRC(BaseMRC):
             parameters (mu) of the optimization and
             the indices corresponding to the maximum value of subobjective
             for a given subset of Y (set of labels).
-
         Return
         ------
         mu : array-like, shape (m,)
             The parameters corresponding to the optimized function value
-
         f_best_value : float
             The optimized value of the function in consideration.
         '''
@@ -424,19 +395,16 @@ class CMRC(BaseMRC):
         """
         Conditional probabilities corresponding
         to each class for each unlabeled instance
-
         Parameters
         ----------
         X : array-like of shape (n_samples, n_dimensions)
             Testing instances for which
             the prediction probabilities are calculated for each class.
-
         Returns
         -------
         hy_x : ndarray of shape (n_samples, n_classes)
             The probabilities (p(y|x)) corresponding to the predictions
             for each class.
-
         """
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")

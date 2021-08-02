@@ -247,9 +247,21 @@ class MRC(BaseMRC):
             self.nu_ = self.upper_params_['nu']
             self.upper_ = self.upper_params_['best_value']
 
+    def get_upper_bound(self):
+        """
+        Returns the upper bound on the expected loss for the fitted classifier.
+
+        Returns
+        -------
+        upper : float value
+            The upper bound of the expected loss for the fitted classifier.
+        """
+
+        return self.upper_
+
     def get_lower_bound(self):
         """
-        Obtains the lower bound of the fitted classifier.
+        Obtains the lower bound on the expected loss for the fitted classifier.
 
         Returns
         -------
