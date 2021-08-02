@@ -155,7 +155,7 @@ class CMRC(BaseMRC):
                     # Get psi for each data point and
                     # add the min value to objective
                     psi_xi = psi[np.arange(i, psi.shape[0], n)]
-                    psi_all = psi_all + (1 / n) * cvx.min((psi_xi))
+                    psi_all = psi_all + (1 / n) * cvx.max((psi_xi))
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
