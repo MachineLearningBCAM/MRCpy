@@ -63,7 +63,7 @@ class myPhi(BasePhi):
 
         # Defines the total length of the feature mapping automatically
         # It is recommended to call this function at the end of fit
-        super().fit(X,Y)
+        super().fit(X, Y)
 
         # Return the fitted feature mapping instance
         return self

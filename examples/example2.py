@@ -11,10 +11,8 @@ from MRCpy import CMRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver,
-           load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver",
-            "diabetes", "credit"]
+loaders = [load_mammographic, load_haberman, load_indian_liver, load_diabetes, load_credit]
+dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
 
 def runCMRC(phi, loss):
@@ -36,8 +34,8 @@ def runCMRC(phi, loss):
         print(" ############## \n" + dataName[j] + " n= " + str(n) +
               " , d= " + str(d) + ", cardY= " + str(r))
 
-        clf = CMRC(phi=phi, loss=loss, use_cvx=True,
-                   solver='MOSEK', max_iters=2000, s=0.3)
+        clf = CMRC(phi=phi, loss=loss, use_cvx=False,
+                   solver='MOSEK', max_iters=400000, s=0.3)
 
 
         # Generate the partitions of the stratified cross-validation
@@ -82,11 +80,11 @@ def runCMRC(phi, loss):
 if __name__ == '__main__':
 
     print('******************** \
-          Example 2 (CMRC with the additional marginal constraints) \
+          Example 2 (CMRC with the additional marginal constraints) testing using nesterov (400000)\
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
-    runCMRC(phi='relu', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and linear feature mapping \n\n')
+    runCMRC(phi='linear', loss='0-1')
 
-    print('\t\t 2. Using log loss and relu feature mapping \n\n')
-    runCMRC(phi='relu', loss='log')
+    print('\t\t 2. Using log loss and linear feature mapping \n\n')
+    runCMRC(phi='linear', loss='log')

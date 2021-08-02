@@ -1,7 +1,5 @@
 """Simple example of using CMRC with 0-1 loss."""
 
-import numpy as np
-
 from MRCpy import CMRC
 # Import the datasets
 from MRCpy.datasets import load_mammographic
@@ -13,7 +11,10 @@ if __name__ == '__main__':
     X, Y = load_mammographic(return_X_y=True)
 
     # Fit the MRC model
-    clf = CMRC().fit(X, Y)
+    clf = CMRC(loss='log', phi='linear').fit(X, Y)
+
+    print(clf.phi.eval_xy(X[[0], :], np.asarray([1])))
+    print(clf.mu_[0])
 
     # Prediction
     print('\n\nThe predicted values for the first 3 instances are : ')
