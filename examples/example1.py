@@ -11,13 +11,9 @@ from MRCpy import MRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [ \
-           # load_mammographic, load_haberman, load_indian_liver, \
-           load_redwine, load_ecoli, load_optdigits , load_adult, load_magic, \
+loaders = [load_mammographic, load_haberman, load_indian_liver,
            load_diabetes, load_credit]
-dataName = [ \
-            # "mammographic", "haberman", "indian_liver", \
-            "redwine", "ecoli", "optdigits", "adult", "magic", \
+dataName = ["mammographic", "haberman", "indian_liver",
             "diabetes", "credit"]
 
 

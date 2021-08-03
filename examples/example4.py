@@ -1,6 +1,7 @@
 """Simple example of using CMRC with 0-1 loss."""
 
 import numpy as np
+
 from MRCpy import CMRC
 # Import the datasets
 from MRCpy.datasets import load_mammographic
