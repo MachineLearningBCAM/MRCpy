@@ -11,9 +11,13 @@ from MRCpy import MRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver,
+loaders = [ \
+           # load_mammographic, load_haberman, load_indian_liver, \
+           load_redwine, load_ecoli, load_optdigits , load_adult, load_magic, \
            load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver",
+dataName = [ \
+            # "mammographic", "haberman", "indian_liver", \
+            "redwine", "ecoli", "optdigits", "adult", "magic", \
             "diabetes", "credit"]
 
 
@@ -37,7 +41,7 @@ def runMRC(phi, loss):
               " , d= " + str(d) + ", cardY= " + str(r))
 
         clf = MRC(phi=phi, loss=loss, solver='MOSEK',
-                  use_cvx=True, max_iters=10000, s=0.3)
+                  use_cvx=False, max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -65,7 +69,8 @@ def runMRC(phi, loss):
 
             clf.fit(X_train, y_train, X_=X_train)
             upper += clf.upper_
-            lower += clf.get_lower_bound()
+            lower += 0
+            # lower += clf.get_lower_bound()
 
             # Calculate the training time
             auxTime += time.time() - startTime
@@ -90,7 +95,7 @@ if __name__ == '__main__':
           ********************** \n\n')
 
     print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='0-1')
+    runMRC(phi='linear', loss='0-1')
 
     print('\t\t 2. Using log loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='log')
+    runMRC(phi='linear', loss='log')

@@ -11,7 +11,8 @@ from MRCpy import CMRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver, load_diabetes, load_credit]
+loaders = [load_mammographic, load_haberman, load_indian_liver, \
+           load_diabetes, load_credit]
 dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
 
@@ -36,7 +37,6 @@ def runCMRC(phi, loss):
 
         clf = CMRC(phi=phi, loss=loss, use_cvx=False,
                    solver='MOSEK', max_iters=400000, s=0.3)
-
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -80,7 +80,7 @@ def runCMRC(phi, loss):
 if __name__ == '__main__':
 
     print('******************** \
-          Example 2 (CMRC with the additional marginal constraints) testing using nesterov (400000)\
+          Example 2 (CMRC with the additional marginal constraints) \
           ********************** \n\n')
 
     print('\t\t 1. Using 0-1 loss and linear feature mapping \n\n')
