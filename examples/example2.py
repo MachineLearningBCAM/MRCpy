@@ -11,7 +11,7 @@ from MRCpy import CMRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver, \
+loaders = [load_mammographic, load_haberman, load_indian_liver,
            load_diabetes, load_credit]
 dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
