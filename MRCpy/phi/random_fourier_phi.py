@@ -13,15 +13,17 @@ from MRCpy.phi import BasePhi
 
 class RandomFourierPhi(BasePhi):
     """
-    Fourier features 
+    Fourier features
 
     Features obtained by approximating the rbf kernel by
-    Random Fourier Feature map - 
+    Random Fourier Feature map -
 
-    .. math:: z(x) = \sqrt{(2/D)} * [\cos(w_1^t * x), ..., \cos(w_D^t * x),\sin(w_1^t * x), ..., \sin(w_D^t * x)]
+    .. math:: z(x) = \sqrt{(2/D)} *
+                        [\cos(w_1^t * x), ..., \cos(w_D^t * x),
+                         \sin(w_1^t * x), ..., \sin(w_D^t * x)]
 
-    where w is a vector(dimension d) of random weights 
-    from gaussian distribution and D is the number of components 
+    where w is a vector(dimension d) of random weights
+    from gaussian distribution and D is the number of components
     in the resulting feature map.
 
     Parameters
@@ -248,8 +250,8 @@ class RandomFourierPhi(BasePhi):
         (https://arxiv.org/pdf/1503.03893.pdf)
 
         """
-        if X.shape[0]<50:
-            neighbour_ind = X.shape[0]-2
+        if X.shape[0] < 50:
+            neighbour_ind = X.shape[0] - 2
         else:
             neighbour_ind = 50
 

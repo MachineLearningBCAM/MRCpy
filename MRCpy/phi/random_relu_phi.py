@@ -13,7 +13,7 @@ from MRCpy.phi import BasePhi
 
 class RandomReLUPhi(BasePhi):
     """
-    ReLU features 
+    ReLU features
 
     ReLU features are given by -
 
@@ -259,8 +259,8 @@ class RandomReLUPhi(BasePhi):
         (https://arxiv.org/pdf/1503.03893.pdf)
 
         """
-        if X.shape[0]<50:
-            neighbour_ind = X.shape[0]-2
+        if X.shape[0] < 50:
+            neighbour_ind = X.shape[0] - 2
         else:
             neighbour_ind = 50
 

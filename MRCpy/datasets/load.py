@@ -2,8 +2,8 @@ import csv
 from os.path import dirname, join
 
 import numpy as np
-from sklearn.utils import Bunch
 from sklearn.impute import SimpleImputer
+from sklearn.utils import Bunch
 
 
 def normalizeLabels(origY):

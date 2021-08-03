@@ -66,7 +66,7 @@ class MRC(BaseMRC):
     phi : `str` {'fourier', 'relu', 'threshold'} or
           `BasePhi` instance, default='linear'
         The type of feature mapping function to use for mapping the input data.
-        Currently available feature mapping methods are - 
+        Currently available feature mapping methods are -
         'fourier', 'relu' and 'threshold'
 
     **phi_kwargs : Groups the multiple optional parameters
@@ -74,9 +74,9 @@ class MRC(BaseMRC):
 
                    For example in case of fourier features,
                    the number of features is given by `n_components`
-                   parameter which can be passed as argument - 
+                   parameter which can be passed as argument -
                    `MRC(loss='log', phi='fourier', n_components=500)`
-                   
+
                    The list of arguments for each feature mappings class
                    can be found in the corresponding documentation.
 
@@ -236,12 +236,13 @@ class MRC(BaseMRC):
                 try:
                     self.upper_params_ = \
                         self.nesterov_optimization(m, self.upper_params_,
-                                                  f_, g_)
+                                                   f_, g_)
                 except AttributeError:
                     self.upper_params_ = self.nesterov_optimization(m, None,
-                                                                   f_, g_)
+                                                                    f_, g_)
             else:
-                self.upper_params_ = self.nesterov_optimization(m, None, f_, g_)
+                self.upper_params_ = self.nesterov_optimization(m, None,
+                                                                f_, g_)
 
             self.mu_ = self.upper_params_['mu']
             self.nu_ = self.upper_params_['nu']
@@ -327,7 +328,7 @@ class MRC(BaseMRC):
 
             self.mu_l_, self.nu_l_ = \
                 self.try_solvers(objective, constraints,
-                                low_mu, low_nu)
+                                 low_mu, low_nu)
 
             # Compute the lower bound
             self.lower_ = self.tau_ @ self.mu_l_ - \
@@ -381,7 +382,7 @@ class MRC(BaseMRC):
                 try:
                     self.lower_params_ = \
                         self.nesterov_optimization(m, self.lower_params_,
-                                                  f_, g_)
+                                                   f_, g_)
                 except AttributeError:
                     self.lower_params_ = \
                         self.nesterov_optimization(m, None, f_, g_)
@@ -442,7 +443,6 @@ class MRC(BaseMRC):
             The optimized value of the function in consideration i.e.,
             the upper bound of the minimax risk classification.
         '''
-        
 
         # Initial values for the parameters
         theta_k = 1
@@ -591,8 +591,6 @@ class MRC(BaseMRC):
 
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
-
-        n = X.shape[0]
 
         phi = self.phi.eval_x(X)
 

@@ -1,10 +1,6 @@
 """Super class for the feature mapping functions."""
 
-import warnings
-import itertools as it
-
 import numpy as np
-import scipy.special as scs
 from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
@@ -44,7 +40,7 @@ class BasePhi():
     This is a base class for all the feature mappings.
     To create a new feature mapping to use MRCs,
     it is expected to extend this class and
-    then re-define the functions - 
+    then re-define the functions -
 
         1) `fit` - learns the required parameters for feature transformation
         2) `transform` - transforms the input instances to the features
@@ -55,7 +51,7 @@ class BasePhi():
 
     The definition of `fit` and `transform` in this class correspond to the
     usual identity feature map referred to as Linear feature map.
- 
+
     The `transform` function is only used by the `eval_xy` function
     in the BasePhi to get the one-hot encoded features.
     If the user defines his own `eval_xy` function without the need
@@ -72,7 +68,7 @@ class BasePhi():
         """
         Learn the hyperparameters
         required for the feature mapping function from the training instances
-        and set the length of the feature mapping using the output of 
+        and set the length of the feature mapping using the output of
         'eval' function.
 
         Note: If a user defines his own feature mapping and his own 'fit'
@@ -107,7 +103,7 @@ class BasePhi():
         self.is_fitted_ = True
 
         # Defining the length of the phi
-        self.len_ = self.eval_xy(X[0:1,:], np.asarray([0])).shape[1]
+        self.len_ = self.eval_xy(X[0:1, :], np.asarray([0])).shape[1]
 
         return self
 
@@ -173,7 +169,7 @@ class BasePhi():
 
         # One-hot encoding for multi-class classification.
         else:
-            phi = np.zeros((n, self.n_classes*X_feat.shape[1]), dtype=float)
+            phi = np.zeros((n, self.n_classes * X_feat.shape[1]), dtype=float)
             tweaked_eye_mat = (np.eye(self.n_classes))[Y, :]
             for i in range(n):
                 phi[i, :] = np.kron(tweaked_eye_mat[i], X_feat[i, :])
@@ -206,7 +202,7 @@ class BasePhi():
 
         # Compute the one-hot encodings
         phi = self.eval_xy(np.repeat(X, self.n_classes, axis=0),
-                            np.tile(np.arange(self.n_classes), n))
+                           np.tile(np.arange(self.n_classes), n))
 
         # Reshape to 3D matrix for easy multiplication in the MRC optimization
         phi = np.reshape(phi, (n, self.n_classes, self.len_))

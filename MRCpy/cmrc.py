@@ -55,13 +55,13 @@ class CMRC(BaseMRC):
     phi : `str` {'fourier', 'relu', 'threshold'} or
           `BasePhi` instance, default='linear'
         The type of feature mapping function to use for mapping the input data.
-        Currently available feature mapping methods are - 
+        Currently available feature mapping methods are -
         'fourier', 'relu' and 'threshold'
     **phi_kwargs : Groups the multiple optional parameters
                    for the corresponding feature mappings(phi).
                    For example in case of fourier features,
                    the number of features is given by `n_components`
-                   parameter which can be passed as argument - 
+                   parameter which can be passed as argument -
                    `MRC(loss='log', phi='fourier', n_components=500)`
                    The list of arguments for each feature mappings class
                    can be found in the corresponding documentation.
@@ -96,7 +96,7 @@ class CMRC(BaseMRC):
                          random_state=random_state,
                          fit_intercept=fit_intercept,
                          warm_start=warm_start,
-                         use_cvx=use_cvx, 
+                         use_cvx=use_cvx,
                          solver=solver,
                          max_iters=max_iters,
                          phi=phi, **phi_kwargs)
@@ -412,8 +412,6 @@ class CMRC(BaseMRC):
         n = X.shape[0]
 
         phi = self.phi.eval_x(X)
-
-        m = phi.shape[2]
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function

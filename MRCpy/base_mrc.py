@@ -80,9 +80,9 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
                    For example in case of fourier features,
                    the number of features is given by `n_components`
-                   parameter which can be passed as argument - 
+                   parameter which can be passed as argument -
                    `MRC(loss='log', phi='fourier', n_components=500)`
-                   
+
                    The list of arguments for each feature mappings class
                    can be found in the corresponding documentation.
     Attributes
@@ -213,7 +213,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             X_opt = X
 
             # If the labels are not given, then these instances
-            # are assumed to be given for optimization only and 
+            # are assumed to be given for optimization only and
             # hence all the instances will be used.
             if Y is None:
                 not_all_instances = False
@@ -280,9 +280,9 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
                                        ensure_2d=False)
 
         else:
-            self.lambda_ = (self.s * \
+            self.lambda_ = (self.s *
                             self.phi.est_std(X, Y)) / \
-                            np.sqrt(X.shape[0])
+                np.sqrt(X.shape[0])
 
         # Limit the number of training samples used in the optimization
         # for large datasets
@@ -419,7 +419,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
-        n = X.shape[0]
 
         if self.loss == 'log':
             # In case of logistic loss function,
