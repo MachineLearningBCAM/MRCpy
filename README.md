@@ -31,7 +31,7 @@ To use the classification models (MRC and CMRC) of the MRCpy package, you have t
 
 ``loss`` : The type of loss function to use
 
-``phi`` : Feature mapping type string or object (in case of the custom feature mappings)
+``phi`` : Feature mapping type string or object (in case of the custom feature mapping)
 
 
 ## Fitting the models
