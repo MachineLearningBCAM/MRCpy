@@ -19,7 +19,7 @@
 
 Example of using MRC with some of the common classification datasets.
 
-.. GENERATED FROM PYTHON SOURCE LINES 2-98
+.. GENERATED FROM PYTHON SOURCE LINES 2-97
 
 .. code-block:: default
 
@@ -87,9 +87,8 @@ Example of using MRC with some of the common classification datasets.
                 # Save start time for computing training time
                 startTime = time.time()
 
-                clf.fit(X_train, y_train, X_=X_train)
-                upper += clf.upper_
-                print('upper : ', upper)
+                clf.fit(X_train, y_train)
+                upper += clf.get_upper_bound()
                 lower += clf.get_lower_bound()
 
                 # Calculate the training time

@@ -1,7 +1,5 @@
 """Simple example of using MRC with 0-1 loss."""
 
-import numpy as np
-
 from MRCpy import MRC
 # Import the datasets
 from MRCpy.datasets import load_mammographic

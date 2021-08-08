@@ -162,7 +162,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for MRCpy.phi.random_relu_phi</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; Random Relu Features. &quot;&quot;&quot;</span>
+<span></span><span class="sd">&#39;&#39;&#39; Random Relu Features. &#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">statistics</span>
 
@@ -176,15 +176,17 @@
 
 
 <div class="viewcode-block" id="RandomReLUPhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi">[docs]</a><span class="k">class</span> <span class="nc">RandomReLUPhi</span><span class="p">(</span><span class="n">BasePhi</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    ReLU features </span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ReLU features</span>
 
 <span class="sd">    ReLU features are given by -</span>
 
-<span class="sd">    .. math::   \max(w^t * (1/gamma,x), 0)</span>
+<span class="sd">    .. math::  z(x) = \max(w^t * (1/\gamma,x), 0)</span>
 
 <span class="sd">    where w is a vector(dimension d) of random weights uniformly distributed</span>
-<span class="sd">    over a sphere of unit radius.</span>
+<span class="sd">    over a sphere of unit radius and</span>
+<span class="sd">    :math:`\gamma` is the scaling parameter similar</span>
+<span class="sd">    to the one in random fourier features.</span>
 
 <span class="sd">    Relu function is defined as -</span>
 
@@ -200,9 +202,11 @@
 <span class="sd">            If set to false, no intercept will be used in calculations</span>
 <span class="sd">            (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    gamma : {&#39;scale&#39;, &#39;avg_ann&#39;, &#39;avg_ann_50&#39;, float} default = &#39;avg_ann_50&#39;</span>
+<span class="sd">    gamma : str {&#39;scale&#39;, &#39;avg_ann&#39;, &#39;avg_ann_50&#39;} or float,</span>
+<span class="sd">            default = &#39;avg_ann_50&#39;</span>
 <span class="sd">        It defines the type of heuristic to be used</span>
-<span class="sd">        to calculate the scaling parameter.</span>
+<span class="sd">        to calculate the scaling parameter using the data or</span>
+<span class="sd">        a float value for the parameter.</span>
 
 <span class="sd">    n_components : int, default=300</span>
 <span class="sd">        Number of Monte Carlo samples for the original features.</span>
@@ -231,7 +235,7 @@
 <span class="sd">    arXiv: Machine Learning.</span>
 <span class="sd">    (https://arxiv.org/pdf/1810.04374.pdf)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="RandomReLUPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;avg_ann_50&#39;</span><span class="p">,</span>
                  <span class="n">n_components</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -244,10 +248,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span></div>
 
 <div class="viewcode-block" id="RandomReLUPhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the set of random weights for computing the features space.</span>
-<span class="sd">        Also, compute the value of gamma hyperparameter</span>
-<span class="sd">        if the value is not given.</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Learns the set of random weights for computing the features space.</span>
+<span class="sd">        Also, compute the scaling parameter if the value is not given.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -265,7 +268,7 @@
 <span class="sd">        self :</span>
 <span class="sd">            Fitted estimator</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -300,7 +303,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="RandomReLUPhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the ReLu Random Features from the given instances.</span>
 
 <span class="sd">        Parameters</span>
@@ -313,7 +316,7 @@
 <span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
 <span class="sd">            Transformed features from the given instances.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;random_weights_&quot;</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -330,22 +333,19 @@
 
 <div class="viewcode-block" id="RandomReLUPhi.heuristic_gamma"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.heuristic_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">heuristic_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the scale parameter for gaussian kernels using the heuristic -</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">                sigma = median{ {min ||x_i-x_j|| for j|y_j != +1 }</span>
-<span class="sd">                                    for i|y_i != -1 }</span>
+<span class="sd">        Computes the scaling parameter for relu features</span>
+<span class="sd">        using the heuristic -</span>
+
+<span class="sd">        .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)</span>
+
+<span class="sd">        .. math::   \gamma = 1 / (2 * \sigma^2)</span>
 
 <span class="sd">        for two classes {+1, -1}. For multi-class, we use the same strategy</span>
-<span class="sd">        by finding median of min norm value</span>
-<span class="sd">        for each class against all other classes</span>
-<span class="sd">        and then taking the average value of the median of all the classes.</span>
-
-<span class="sd">        The heuristic calculates the value of sigma for gaussian kernels.</span>
-<span class="sd">        So to find the gamma value</span>
-<span class="sd">        for the kernel defined in our implementation,</span>
-<span class="sd">        the following formula is used -</span>
-<span class="sd">                gamma = 1/ (2 * sigma^2)</span>
+<span class="sd">        by finding median of minimum distances between the points of</span>
+<span class="sd">        each class against all other classes</span>
+<span class="sd">        and then taking the average value of the medians of all the classes.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -358,9 +358,9 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        gamma : float value</span>
-<span class="sd">            Gamma value computed using the heuristic from the instances.</span>
+<span class="sd">            Scaling parameter computed using the heuristic.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># List to store the median of min norm value for each class</span>
         <span class="n">dist_x_i</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -391,20 +391,16 @@
 
 <div class="viewcode-block" id="RandomReLUPhi.rff_gamma"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.rff_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">rff_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function to find the scale parameter</span>
-<span class="sd">        for random fourier features obtained from</span>
-<span class="sd">        gaussian kernels using the heuristic given in -</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        Computes the scaling parameter for the relu features</span>
+<span class="sd">        using the heuristic given in the paper -</span>
 
 <span class="sd">                &quot;Compact Nonlinear Maps and Circulant Extensions&quot;</span>
 
-<span class="sd">        The heuristic to calculate the sigma states that</span>
-<span class="sd">        it is a value that is obtained from</span>
+<span class="sd">        The heuristic states that the scaling parameter is obtained as</span>
 <span class="sd">        the average distance to the 50th nearest neighbour estimated</span>
 <span class="sd">        from 1000 samples of the dataset.</span>
-
-<span class="sd">        Gamma value is given by -</span>
-<span class="sd">                gamma = 1/ (2 * sigma^2)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -414,7 +410,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        gamma : float value</span>
-<span class="sd">            Gamma value computed using the heuristic from the instances.</span>
+<span class="sd">            Scaling parameter computed using the heuristic.</span>
 
 <span class="sd">        References</span>
 <span class="sd">        ----------</span>
@@ -422,9 +418,9 @@
 <span class="sd">        Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang</span>
 <span class="sd">        (https://arxiv.org/pdf/1503.03893.pdf)</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="mi">50</span><span class="p">:</span>
-            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="n">X_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="mi">50</span>
 
@@ -436,7 +432,9 @@
         <span class="c1"># Compute the average distance to the 50th nearest neighbour</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">distances</span><span class="p">[:,</span> <span class="n">neighbour_ind</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span></div></div>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gamma</span></div></div>
 </pre></div>
 
            </div>

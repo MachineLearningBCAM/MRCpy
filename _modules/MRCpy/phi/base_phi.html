@@ -162,25 +162,21 @@
            <div itemprop="articleBody">
             
   <h1>Source code for MRCpy.phi.base_phi</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Super class for the feature mapping functions.&quot;&quot;&quot;</span>
-
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
+<span></span><span class="sd">&#39;&#39;&#39;Super class for the feature mapping functions.&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 
 <div class="viewcode-block" id="BasePhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi">[docs]</a><span class="k">class</span> <span class="nc">BasePhi</span><span class="p">():</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base Class for Feature Mappings</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Base class for feature mappings</span>
 
 <span class="sd">    The class provides a base for different feature mapping functions</span>
-<span class="sd">    that can be used with the MRC to map the input instances.</span>
-<span class="sd">    The class provides the basic definition for the functions that are</span>
+<span class="sd">    that can be used with the MRC.</span>
+<span class="sd">    This class provides definition for some utility functions that are</span>
 <span class="sd">    used by the MRCs in the library. It corresponds</span>
 <span class="sd">    to the usual identity feature map referred to as Linear feature map.</span>
 
@@ -206,26 +202,28 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    This is a base class for all the feature mappings.</span>
-<span class="sd">    To create a new feature mapping to use MRCs,</span>
-<span class="sd">    it is expected to extend this class and</span>
-<span class="sd">    then re-define the functions - </span>
+<span class="sd">    To create a new feature mapping that can be used with MRC objects,</span>
+<span class="sd">    the user can extend this class and</span>
+<span class="sd">    then implement the functions -</span>
 
 <span class="sd">        1) `fit` - learns the required parameters for feature transformation</span>
 <span class="sd">        2) `transform` - transforms the input instances to the features</span>
 
-<span class="sd">    The above functions are principal components of the feature transformation.</span>
-<span class="sd">    Apart from these functions, the users can also manipulate other functions</span>
-<span class="sd">    according to their need.</span>
+<span class="sd">    The above functions are principal components</span>
+<span class="sd">    for different feature transformation.</span>
+<span class="sd">    Apart from these functions, the users can also re-define other functions</span>
+<span class="sd">    in this class according to their need.</span>
 
 <span class="sd">    The definition of `fit` and `transform` in this class correspond to the</span>
 <span class="sd">    usual identity feature map referred to as Linear feature map.</span>
-<span class="sd"> </span>
-<span class="sd">    The `transform` function is only used by the `eval_xy` function</span>
-<span class="sd">    in the BasePhi to get the one-hot encoded features.</span>
-<span class="sd">    If the user defines his own `eval_xy` function without the need</span>
-<span class="sd">    of `transform` function, then the transform function can be omitted.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    The `transform` function is only used by the `eval_xy` function</span>
+<span class="sd">    of this class to get the one-hot encoded features.</span>
+<span class="sd">    If the user defines his own `eval_xy` function</span>
+<span class="sd">    that returns the features directly without the need</span>
+<span class="sd">    of `transform` function, then the `transform` function can be omitted.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="BasePhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
@@ -233,19 +231,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="o">=</span> <span class="n">fit_intercept</span></div>
 
 <div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Learn the hyperparameters</span>
-<span class="sd">        required for the feature mapping function from the training instances</span>
-<span class="sd">        and set the length of the feature mapping using the output of </span>
-<span class="sd">        &#39;eval&#39; function.</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Learns the required hyperparameters</span>
+<span class="sd">        for the feature mapping transformation</span>
+<span class="sd">        from the training instances</span>
+<span class="sd">        and set the length of the feature mapping (one-hot encoded)</span>
+<span class="sd">        obtained from the `eval_xy` function.</span>
 
-<span class="sd">        Note: If a user defines his own feature mapping and his own &#39;fit&#39;</span>
-<span class="sd">              function, it is recommended to call this &#39;fit&#39; function</span>
-<span class="sd">              at the end of his own &#39;fit&#39; function to automatically set</span>
+<span class="sd">        Note: If a user implements `fit` function in his own feature mapping,</span>
+<span class="sd">              then it is recommended to call this `fit` function</span>
+<span class="sd">              at the end of his own function to automatically set</span>
 <span class="sd">              the length of the feature mapping.</span>
-<span class="sd">              This &#39;fit&#39; function can be called in a subclass as follows -</span>
+<span class="sd">              This `fit` function can be called in a subclass as follows -</span>
 
-<span class="sd">                                super().fit(X,Y)</span>
+<span class="sd">                                `super().fit(X,Y)`</span>
 
 <span class="sd">              Feature mappings implemented in this library follow this</span>
 <span class="sd">              same approach.</span>
@@ -264,19 +263,18 @@
 <span class="sd">        self :</span>
 <span class="sd">            Fitted estimator</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Defining the length of the phi</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,:],</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">len_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="BasePhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transform the given instances to the features.</span>
 
 <span class="sd">        Parameters</span>
@@ -289,7 +287,7 @@
 <span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
 <span class="sd">            Transformed features from the given instances.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
@@ -298,11 +296,15 @@
         <span class="k">return</span> <span class="n">X_feat</span></div>
 
 <div class="viewcode-block" id="BasePhi.eval_xy"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_xy">[docs]</a>    <span class="k">def</span> <span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
-<span class="sd">        X, phi(x,y) for each x in X and y in Y. The encodings are calculated,</span>
+<span class="sd">        X, :math:`\phi(x,y)`, x</span>
+<span class="sd">        :math:`\in` X and y :math:`\in` Y.</span>
+<span class="sd">        The encodings are calculated,</span>
 <span class="sd">        corresponding to the given labels, which is used by the learning stage</span>
-<span class="sd">        for estimating the expected values of phi i.e., tau and lambda.</span>
+<span class="sd">        for estimating the expected values of :math:`\phi`,</span>
+<span class="sd">        :math:`{\\tau}`</span>
+<span class="sd">        and :math:`\lambda`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -319,7 +321,7 @@
 <span class="sd">            Matrix containing the one-hot encoding</span>
 <span class="sd">            with respect to the labels given for all the instances.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Get the features</span>
         <span class="n">X_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -337,7 +339,7 @@
 
         <span class="c1"># One-hot encoding for multi-class classification.</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="o">*</span><span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">*</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
             <span class="n">tweaked_eye_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))[</span><span class="n">Y</span><span class="p">,</span> <span class="p">:]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">tweaked_eye_mat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">X_feat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
@@ -345,12 +347,13 @@
         <span class="k">return</span> <span class="n">phi</span></div>
 
 <div class="viewcode-block" id="BasePhi.eval_x"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_x">[docs]</a>    <span class="k">def</span> <span class="nf">eval_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
-<span class="sd">        X, phi(x,y) for each x in X and all the labels. The output is 3D matrix</span>
+<span class="sd">        X, :math:`\phi(x,y)`, x</span>
+<span class="sd">        :math:`\in` X and all the labels. The output is 3D matrix</span>
 <span class="sd">        that is composed of 2D matrices corresponding to each of the instance.</span>
-<span class="sd">        These 2D matrices are the one-hot encodings corresponding to</span>
-<span class="sd">        all the possible labels in our dataset.</span>
+<span class="sd">        These 2D matrices are the one-hot encodings of the instances&#39; features</span>
+<span class="sd">        corresponding to all the possible labels in the data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -364,24 +367,25 @@
 <span class="sd">            Matrix containing the one-hot encoding for all the classes</span>
 <span class="sd">            for each of the instances given.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Compute the one-hot encodings</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
-                            <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span>
+                           <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span> <span class="n">n</span><span class="p">))</span>
 
+        <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="c1"># Reshape to 3D matrix for easy multiplication in the MRC optimization</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">len_</span><span class="p">))</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">phi</span></div>
 
 <div class="viewcode-block" id="BasePhi.est_exp"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_exp">[docs]</a>    <span class="k">def</span> <span class="nf">est_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Average value of phi in the supervised dataset (X,Y)</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Average value of :math:`\phi` in the supervised dataset (X,Y)</span>
 <span class="sd">        Used in the learning stage as an estimate</span>
-<span class="sd">        of the expected value of phi, tau</span>
+<span class="sd">        of the expected value of :math:`\phi`, :math:`{\\tau}`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -393,19 +397,20 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        tau : array-like of shape (n_features * n_classes)</span>
+<span class="sd">        tau_ : array-like of shape (n_features * n_classes)</span>
 <span class="sd">            Average value of phi</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span> <span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Standard deviation of phi in the supervised dataset (X,Y)</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Standard deviation of :math:`\phi` in the supervised dataset (X,Y)</span>
 <span class="sd">        Used in the learning stage</span>
-<span class="sd">        to estimate the bounds of the expected value.</span>
+<span class="sd">        to estimate the variance in the expected value of</span>
+<span class="sd">        :math:`\phi`, :math:`\lambda`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -417,10 +422,10 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        lambda : array-like of shape (n_features * n_classes)</span>
+<span class="sd">        lambda_ : array-like of shape (n_features * n_classes)</span>
 <span class="sd">            Standard deviation of phi</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div></div>

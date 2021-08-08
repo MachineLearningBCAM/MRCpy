@@ -177,7 +177,7 @@ according to your requirements.</p>
 <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span><span class="p">,</span> <span class="n">CMRC</span>
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
 <span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Custom phi example: Generating the linear kernel</span>
@@ -223,13 +223,11 @@ according to your requirements.</p>
         <span class="c1"># X is expected to be a numpy 2D matrix.</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
         <span class="c1"># Defining the length of the phi</span>
 
         <span class="c1"># Defines the total length of the feature mapping automatically</span>
         <span class="c1"># It is recommended to call this function at the end of fit</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Return the fitted feature mapping instance</span>
         <span class="k">return</span> <span class="bp">self</span>

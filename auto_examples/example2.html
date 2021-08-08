@@ -182,8 +182,7 @@ to download the full example code</p>
 <span class="c1"># Data sets</span>
 <span class="n">loaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_mammographic</span><span class="p">,</span> <span class="n">load_haberman</span><span class="p">,</span> <span class="n">load_indian_liver</span><span class="p">,</span>
            <span class="n">load_diabetes</span><span class="p">,</span> <span class="n">load_credit</span><span class="p">]</span>
-<span class="n">dataName</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mammographic&quot;</span><span class="p">,</span> <span class="s2">&quot;haberman&quot;</span><span class="p">,</span> <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">]</span>
+<span class="n">dataName</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mammographic&quot;</span><span class="p">,</span> <span class="s2">&quot;haberman&quot;</span><span class="p">,</span> <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span> <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
@@ -206,8 +205,7 @@ to download the full example code</p>
               <span class="s2">&quot; , d= &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, cardY= &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
 
         <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                   <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
-
+                   <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
 
         <span class="c1"># Generate the partitions of the stratified cross-validation</span>
         <span class="n">cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>

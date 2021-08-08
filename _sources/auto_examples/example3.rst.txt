@@ -19,12 +19,10 @@
 
 Simple example of using MRC with 0-1 loss.
 
-.. GENERATED FROM PYTHON SOURCE LINES 2-28
+.. GENERATED FROM PYTHON SOURCE LINES 2-26
 
 .. code-block:: default
 
-
-    import numpy as np
 
     from MRCpy import MRC
     # Import the datasets

@@ -182,7 +182,10 @@ to download the full example code</p>
     <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># Fit the MRC model</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">[[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.asarray.html#numpy.asarray" title="numpy.asarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">asarray</span></a><span class="p">([</span><span class="mi">1</span><span class="p">])))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">mu_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="c1"># Prediction</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">The predicted values for the first 3 instances are : &#39;</span><span class="p">)</span>

@@ -41,6 +41,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -183,10 +184,11 @@
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">ThresholdPhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Threshold features</p>
-<p>A threshold feature is a funtion, f(x_d,t)=1 when x_d&lt;t and 0 otherwise,
+<p>A threshold feature is a function, <span class="math notranslate nohighlight">\(f(x_d,t)=1\)</span>
+when <span class="math notranslate nohighlight">\(x_d&lt;t\)</span> and 0 otherwise,
 for a given x in dimension d and threshold t in that dimension.
 A product of threshold features is an indicator of a region
-and its expectancy is closely related to cumulative distributions.
+and its expectation is closely related to cumulative distributions.
 This class obtains the thresholds fitting multiple one-dimensional
 decision stumps on the training data.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -233,22 +235,22 @@ and the length of the feature mapping is set.</p>
 <td>Learn the univariate thresholds by using the split points of decision trees for each dimension of data.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_exp" title="MRCpy.phi.ThresholdPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
-<td>Average value of phi in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of phi, tau</td>
+<td>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_std" title="MRCpy.phi.ThresholdPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
-<td>Standard deviation of phi in the supervised dataset (X,Y) Used in the learning stage to estimate the bounds of the expected value.</td>
+<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage to estimate the variance in the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_x" title="MRCpy.phi.ThresholdPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and all the labels.</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="MRCpy.phi.ThresholdPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X,&nbsp;Y)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and y in Y.</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.fit" title="MRCpy.phi.ThresholdPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
-<td>Learn the set of features using the thresholds obtained from the dataset.</td>
+<td>Learns the set of thresholds using one-dimensional decision stumps obtained from the dataset.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
-<td>Compute the features(0/1) by comparing with the thresholds obtained in each dimension.</td>
+<td>Compute the threshold features(0/1) by comparing with the thresholds obtained in each dimension.</td>
 </tr>
 </tbody>
 </table>
@@ -293,9 +295,9 @@ for each dimension of data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_exp">
 <code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Average value of phi in the supervised dataset (X,Y)
+<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
 Used in the learning stage as an estimate
-of the expected value of phi, tau</p>
+of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -309,7 +311,7 @@ of the expected value of phi, tau</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tau</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
+<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
 </dd>
 </dl>
 </td>
@@ -321,9 +323,10 @@ of the expected value of phi, tau</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_std">
 <code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_std" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standard deviation of phi in the supervised dataset (X,Y)
+<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
 Used in the learning stage
-to estimate the bounds of the expected value.</p>
+to estimate the variance in the expected value of
+<span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -337,7 +340,7 @@ to estimate the bounds of the expected value.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>lambda</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
+<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
 </dd>
 </dl>
 </td>
@@ -350,10 +353,11 @@ to estimate the bounds of the expected value.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.eval_x">
 <code class="sig-name descname"><span class="pre">eval_x</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, phi(x,y) for each x in X and all the labels. The output is 3D matrix
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
 that is composed of 2D matrices corresponding to each of the instance.
-These 2D matrices are the one-hot encodings corresponding to
-all the possible labels in our dataset.</p>
+These 2D matrices are the one-hot encodings of the instances’ features
+corresponding to all the possible labels in the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -382,9 +386,13 @@ for each of the instances given.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.eval_xy">
 <code class="sig-name descname"><span class="pre">eval_xy</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, phi(x,y) for each x in X and y in Y. The encodings are calculated,
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
+The encodings are calculated,
 corresponding to the given labels, which is used by the learning stage
-for estimating the expected values of phi i.e., tau and lambda.</p>
+for estimating the expected values of <span class="math notranslate nohighlight">\(\phi\)</span>,
+<span class="math notranslate nohighlight">\({\tau}\)</span>
+and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -414,8 +422,8 @@ with respect to the labels given for all the instances.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.fit">
 <code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learn the set of features using the thresholds obtained
-from the dataset.</p>
+<dd><p>Learns the set of thresholds using one-dimensional decision stumps
+obtained from the dataset.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -443,9 +451,8 @@ used for finding the thresholds from the dataset.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.transform">
 <code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the features(0/1)
-by comparing with the thresholds obtained in each dimension.
-So, if X_ij &lt; th_j, f_i(j_i) = 1 else f_i(j_i) = 0</p>
+<dd><p>Compute the threshold features(0/1)
+by comparing with the thresholds obtained in each dimension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

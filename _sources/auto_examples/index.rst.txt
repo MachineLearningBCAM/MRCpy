@@ -52,27 +52,6 @@ README
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="A simple example for the paper">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_example_for_paper_thumb.png
-     :alt: A simple example for the paper
-
-     :ref:`sphx_glr_auto_examples_example_for_paper.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/example_for_paper
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets.">
 
 .. only:: html

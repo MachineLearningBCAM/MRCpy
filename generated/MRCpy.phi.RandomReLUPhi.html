@@ -187,9 +187,11 @@
 <dd><p>ReLU features</p>
 <p>ReLU features are given by -</p>
 <div class="math notranslate nohighlight">
-\[\max(w^t * (1/gamma,x), 0)\]</div>
+\[z(x) = \max(w^t * (1/\gamma,x), 0)\]</div>
 <p>where w is a vector(dimension d) of random weights uniformly distributed
-over a sphere of unit radius.</p>
+over a sphere of unit radius and
+<span class="math notranslate nohighlight">\(\gamma\)</span> is the scaling parameter similar
+to the one in random fourier features.</p>
 <p>Relu function is defined as -</p>
 <div class="math notranslate nohighlight">
 \[f(x) = \max(0, x)\]</div>
@@ -204,8 +206,12 @@ over a sphere of unit radius.</p>
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
-<dt><strong>gamma</strong><span class="classifier">{‘scale’, ‘avg_ann’, ‘avg_ann_50’, float} default = ‘avg_ann_50’</span></dt><dd><p>It defines the type of heuristic to be used
-to calculate the scaling parameter.</p>
+<dt><strong>gamma</strong><span class="classifier">str {‘scale’, ‘avg_ann’, ‘avg_ann_50’} or float,</span></dt><dd><blockquote>
+<div><p>default = ‘avg_ann_50’</p>
+</div></blockquote>
+<p>It defines the type of heuristic to be used
+to calculate the scaling parameter using the data or
+a float value for the parameter.</p>
 </dd>
 <dt><strong>n_components</strong><span class="classifier">int, default=300</span></dt><dd><p>Number of Monte Carlo samples for the original features.
 Equals the dimensionality of the computed (mapped) feature space.</p>
@@ -248,25 +254,25 @@ and the length of the feature mapping is set.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="MRCpy.phi.RandomReLUPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
-<td>Average value of phi in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of phi, tau</td>
+<td>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_std" title="MRCpy.phi.RandomReLUPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
-<td>Standard deviation of phi in the supervised dataset (X,Y) Used in the learning stage to estimate the bounds of the expected value.</td>
+<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage to estimate the variance in the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="MRCpy.phi.RandomReLUPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and all the labels.</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="MRCpy.phi.RandomReLUPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X,&nbsp;Y)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, phi(x,y) for each x in X and y in Y.</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.fit" title="MRCpy.phi.RandomReLUPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
-<td>Get the set of random weights for computing the features space.</td>
+<td>Learns the set of random weights for computing the features space.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.heuristic_gamma" title="MRCpy.phi.RandomReLUPhi.heuristic_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heuristic_gamma</span></code></a>(X,&nbsp;Y)</td>
-<td>Compute the scale parameter for gaussian kernels using the heuristic -</td>
+<td>Computes the scaling parameter for relu features using the heuristic -</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.rff_gamma" title="MRCpy.phi.RandomReLUPhi.rff_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_gamma</span></code></a>(X)</td>
-<td>Function to find the scale parameter for random fourier features obtained from gaussian kernels using the heuristic given in -</td>
+<td>Computes the scaling parameter for the relu features using the heuristic given in the paper -</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
 <td>Compute the ReLu Random Features from the given instances.</td>
@@ -282,9 +288,9 @@ and the length of the feature mapping is set.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.est_exp">
 <code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Average value of phi in the supervised dataset (X,Y)
+<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
 Used in the learning stage as an estimate
-of the expected value of phi, tau</p>
+of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -298,7 +304,7 @@ of the expected value of phi, tau</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tau</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
+<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
 </dd>
 </dl>
 </td>
@@ -310,9 +316,10 @@ of the expected value of phi, tau</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.est_std">
 <code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_std" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standard deviation of phi in the supervised dataset (X,Y)
+<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
 Used in the learning stage
-to estimate the bounds of the expected value.</p>
+to estimate the variance in the expected value of
+<span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -326,7 +333,7 @@ to estimate the bounds of the expected value.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>lambda</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
+<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
 </dd>
 </dl>
 </td>
@@ -339,10 +346,11 @@ to estimate the bounds of the expected value.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_x">
 <code class="sig-name descname"><span class="pre">eval_x</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, phi(x,y) for each x in X and all the labels. The output is 3D matrix
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
 that is composed of 2D matrices corresponding to each of the instance.
-These 2D matrices are the one-hot encodings corresponding to
-all the possible labels in our dataset.</p>
+These 2D matrices are the one-hot encodings of the instances’ features
+corresponding to all the possible labels in the data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -371,9 +379,13 @@ for each of the instances given.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_xy">
 <code class="sig-name descname"><span class="pre">eval_xy</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, phi(x,y) for each x in X and y in Y. The encodings are calculated,
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
+The encodings are calculated,
 corresponding to the given labels, which is used by the learning stage
-for estimating the expected values of phi i.e., tau and lambda.</p>
+for estimating the expected values of <span class="math notranslate nohighlight">\(\phi\)</span>,
+<span class="math notranslate nohighlight">\({\tau}\)</span>
+and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -403,9 +415,8 @@ with respect to the labels given for all the instances.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.fit">
 <code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the set of random weights for computing the features space.
-Also, compute the value of gamma hyperparameter
-if the value is not given.</p>
+<dd><p>Learns the set of random weights for computing the features space.
+Also, compute the scaling parameter if the value is not given.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -434,22 +445,16 @@ among different feature mappings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.heuristic_gamma">
 <code class="sig-name descname"><span class="pre">heuristic_gamma</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.heuristic_gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.heuristic_gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the scale parameter for gaussian kernels using the heuristic -</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>sigma = median{ {min ||x_i-x_j|| for j|y_j != +1 }</dt><dd>for i|y_i != -1 }</dd>
-</dl>
-</div></blockquote>
+<dd><p>Computes the scaling parameter for relu features
+using the heuristic -</p>
+<div class="math notranslate nohighlight">
+\[\sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)\]</div>
+<div class="math notranslate nohighlight">
+\[\gamma = 1 / (2 * \sigma^2)\]</div>
 <p>for two classes {+1, -1}. For multi-class, we use the same strategy
-by finding median of min norm value
-for each class against all other classes
-and then taking the average value of the median of all the classes.</p>
-<p>The heuristic calculates the value of sigma for gaussian kernels.
-So to find the gamma value
-for the kernel defined in our implementation,
-the following formula is used -</p>
-<blockquote>
-<div>gamma = 1/ (2 * sigma^2)</div></blockquote>
+by finding median of minimum distances between the points of
+each class against all other classes
+and then taking the average value of the medians of all the classes.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -463,7 +468,7 @@ the following formula is used -</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Gamma value computed using the heuristic from the instances.</p>
+<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Scaling parameter computed using the heuristic.</p>
 </dd>
 </dl>
 </td>
@@ -475,18 +480,13 @@ the following formula is used -</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.rff_gamma">
 <code class="sig-name descname"><span class="pre">rff_gamma</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.rff_gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.rff_gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to find the scale parameter
-for random fourier features obtained from
-gaussian kernels using the heuristic given in -</p>
+<dd><p>Computes the scaling parameter for the relu features
+using the heuristic given in the paper -</p>
 <blockquote>
 <div>“Compact Nonlinear Maps and Circulant Extensions”</div></blockquote>
-<p>The heuristic to calculate the sigma states that
-it is a value that is obtained from
+<p>The heuristic states that the scaling parameter is obtained as
 the average distance to the 50th nearest neighbour estimated
 from 1000 samples of the dataset.</p>
-<dl class="docutils">
-<dt>Gamma value is given by -</dt><dd>gamma = 1/ (2 * sigma^2)</dd>
-</dl>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -498,7 +498,7 @@ from 1000 samples of the dataset.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Gamma value computed using the heuristic from the instances.</p>
+<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Scaling parameter computed using the heuristic.</p>
 </dd>
 </dl>
 </td>

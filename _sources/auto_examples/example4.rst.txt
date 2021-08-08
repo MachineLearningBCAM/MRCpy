@@ -19,7 +19,7 @@
 
 Simple example of using CMRC with 0-1 loss.
 
-.. GENERATED FROM PYTHON SOURCE LINES 2-28
+.. GENERATED FROM PYTHON SOURCE LINES 2-31
 
 .. code-block:: default
 
@@ -37,7 +37,10 @@ Simple example of using CMRC with 0-1 loss.
         X, Y = load_mammographic(return_X_y=True)
 
         # Fit the MRC model
-        clf = CMRC().fit(X, Y)
+        clf = CMRC(loss='log', phi='linear').fit(X, Y)
+
+        print(clf.phi.eval_xy(X[[0], :], np.asarray([1])))
+        print(clf.mu_[0])
 
         # Prediction
         print('\n\nThe predicted values for the first 3 instances are : ')

@@ -13,8 +13,7 @@ from MRCpy.datasets import *
 # Data sets
 loaders = [load_mammographic, load_haberman, load_indian_liver,
            load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver",
-            "diabetes", "credit"]
+dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
 
 def runCMRC(phi, loss):
@@ -37,8 +36,7 @@ def runCMRC(phi, loss):
               " , d= " + str(d) + ", cardY= " + str(r))
 
         clf = CMRC(phi=phi, loss=loss, use_cvx=True,
-                   solver='MOSEK', max_iters=2000, s=0.3)
-
+                   solver='MOSEK', max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
