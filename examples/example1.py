@@ -37,7 +37,7 @@ def runMRC(phi, loss):
               " , d= " + str(d) + ", cardY= " + str(r))
 
         clf = MRC(phi=phi, loss=loss, solver='MOSEK',
-                  use_cvx=False, max_iters=10000, s=0.3)
+                  use_cvx=True, max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -63,10 +63,9 @@ def runMRC(phi, loss):
             # Save start time for computing training time
             startTime = time.time()
 
-            clf.fit(X_train, y_train, X_=X_train)
+            clf.fit(X_train, y_train)
             upper += clf.upper_
-            lower += 0
-            # lower += clf.get_lower_bound()
+            lower += clf.get_lower_bound()
 
             # Calculate the training time
             auxTime += time.time() - startTime
@@ -91,7 +90,7 @@ if __name__ == '__main__':
           ********************** \n\n')
 
     print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
-    runMRC(phi='linear', loss='0-1')
+    runMRC(phi='relu', loss='0-1')
 
     print('\t\t 2. Using log loss and relu feature mapping \n\n')
-    runMRC(phi='linear', loss='log')
+    runMRC(phi='relu', loss='log')

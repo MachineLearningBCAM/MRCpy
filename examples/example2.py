@@ -35,8 +35,8 @@ def runCMRC(phi, loss):
         print(" ############## \n" + dataName[j] + " n= " + str(n) +
               " , d= " + str(d) + ", cardY= " + str(r))
 
-        clf = CMRC(phi=phi, loss=loss, use_cvx=False,
-                   solver='MOSEK', max_iters=400000, s=0.3)
+        clf = CMRC(phi=phi, loss=loss, use_cvx=True,
+                   solver='MOSEK', max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -83,8 +83,8 @@ if __name__ == '__main__':
           Example 2 (CMRC with the additional marginal constraints) \
           ********************** \n\n')
 
-    print('\t\t 1. Using 0-1 loss and linear feature mapping \n\n')
-    runCMRC(phi='linear', loss='0-1')
+    print('\t\t 1. Using 0-1 loss and relu feature mapping \n\n')
+    runCMRC(phi='relu', loss='0-1')
 
-    print('\t\t 2. Using log loss and linear feature mapping \n\n')
-    runCMRC(phi='linear', loss='log')
+    print('\t\t 2. Using log loss and relu feature mapping \n\n')
+    runCMRC(phi='relu', loss='log')
