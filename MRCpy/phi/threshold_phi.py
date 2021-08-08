@@ -1,4 +1,4 @@
-"""Feature mappings obtained using threshold (Half planes)."""
+'''Feature mappings obtained using threshold (Half planes).'''
 
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -10,13 +10,14 @@ from MRCpy.phi import BasePhi
 
 
 class ThresholdPhi(BasePhi):
-    """
+    '''
     Threshold features
 
-    A threshold feature is a funtion, f(x_d,t)=1 when x_d<t and 0 otherwise,
+    A threshold feature is a function, :math:`f(x_d,t)=1`
+    when :math:`x_d<t` and 0 otherwise,
     for a given x in dimension d and threshold t in that dimension.
     A product of threshold features is an indicator of a region
-    and its expectancy is closely related to cumulative distributions.
+    and its expectation is closely related to cumulative distributions.
     This class obtains the thresholds fitting multiple one-dimensional
     decision stumps on the training data.
 
@@ -50,7 +51,7 @@ class ThresholdPhi(BasePhi):
     len_ : int
         Defines the length of the feature mapping vector.
 
-    """
+    '''
 
     def __init__(self, n_classes, fit_intercept=True,
                  n_thresholds=200):
@@ -61,9 +62,9 @@ class ThresholdPhi(BasePhi):
         self.n_thresholds = n_thresholds
 
     def fit(self, X, Y=None):
-        """
-        Learn the set of features using the thresholds obtained
-        from the dataset.
+        '''
+        Learns the set of thresholds using one-dimensional decision stumps
+        obtained from the dataset.
 
         Parameters
         ----------
@@ -80,7 +81,7 @@ class ThresholdPhi(BasePhi):
         self :
             Fitted estimator
 
-        """
+        '''
 
         X, Y = check_X_y(X, Y, accept_sparse=True)
 
@@ -94,7 +95,7 @@ class ThresholdPhi(BasePhi):
         return self
 
     def d_tree_split(self, X, Y, n_thresholds=None):
-        """
+        '''
         Learn the univariate thresholds
         by using the split points of decision trees
         for each dimension of data.
@@ -118,7 +119,7 @@ class ThresholdPhi(BasePhi):
         prodThrsVal : array-like of shape (n_thresholds)
             The threshold value in the corresponding dimension.
 
-        """
+        '''
 
         (n, d) = X.shape
 
@@ -143,10 +144,9 @@ class ThresholdPhi(BasePhi):
         return prodThrsDim, prodThrsVal
 
     def transform(self, X):
-        """
-        Compute the features(0/1)
+        '''
+        Compute the threshold features(0/1)
         by comparing with the thresholds obtained in each dimension.
-        So, if X_ij < th_j, f_i(j_i) = 1 else f_i(j_i) = 0
 
         Parameters
         ----------
@@ -158,7 +158,7 @@ class ThresholdPhi(BasePhi):
         X_feat : array-like of shape (n_samples, n_features)
             Transformed features from the given instances.
 
-        """
+        '''
 
         n = X.shape[0]
 

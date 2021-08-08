@@ -1,5 +1,6 @@
-"""Marginally Constrained Minimax Risk Classification."""
+'''Marginally Constrained Minimax Risk Classification.'''
 
+import warnings
 import itertools as it
 
 import cvxpy as cvx
@@ -13,58 +14,86 @@ from MRCpy import BaseMRC
 
 
 class CMRC(BaseMRC):
-    """
+    '''
     Constrained Minimax Risk Classifier
+
     MRCs using the additional marginals constraints on the instances.
     It also implements two kinds of loss functions, namely 0-1 and log loss.
     This is a subclass of the super class BaseMRC.
+
     Parameters
     ----------
     loss : `str` {'0-1', 'log'}, default='0-1'
         The type of loss function to use for the risk minimization.
+
     s : float, default=0.3
         For tuning the estimation of expected values
-        of feature mapping function(phi).
+        of feature mapping function.
         Must be a positive float value and
         expected to be in the 0 to 1 in general cases.
-    deterministic : bool, default=False
+
+    deterministic : bool, default=None
         For determining if the prediction of the labels
         should be done in a deterministic way or not.
+        For '0-1' loss, the non-deterministic ('False') approach
+        works well.
+        For 'log' loss, the deterministic ('True') approach
+        works well.
+        If the user doesnot specify the value, the default value
+        is set according to loss function.
+
     random_state : int, RandomState instance, default=None
-        Used when 'fourier' option for feature mappings are used
+        Used when 'fourier' and 'relu' options for feature mappings are used
         to produce the random weights.
+
     fit_intercept : bool, default=True
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
+
     warm_start : bool, default=False
         When set to True,
         reuse the solution of the previous call to fit as initialization,
         otherwise, just erase the previous solution.
+
     use_cvx : bool, default=False
         If True, use CVXpy library for the optimization
         instead of the subgradient methods.
-    solver : {'SCS', 'ECOS'}, default='SCS'
+
+    solver : str {'SCS', 'ECOS', 'MOSEK'}, default='MOSEK'
         The type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
-        so we might need to use the other solver from the set.
-    max_iters : int, default=10000
+        so you might need to change solver depending on the problem.
+        'MOSEK' is a commercial solver for which one might need to
+        request for a license. A free license can be requested
+        `here <https://www.mosek.com/products/academic-licenses/>`_
+
+    max_iters : int, default=2000
         The maximum number of iterations to use
         for finding the solution of optimization
         using the subgradient approach.
-    phi : `str` {'fourier', 'relu', 'threshold'} or
-          `BasePhi` instance, default='linear'
-        The type of feature mapping function to use for mapping the input data.
-        Currently available feature mapping methods are -
-        'fourier', 'relu' and 'threshold'
+
+    phi : str {'fourier', 'relu', 'threshold', 'linear'} or
+           `BasePhi` instance (custom features), default='linear'
+        The type of feature mapping function to use for mapping the input data
+        'fourier', 'relu', 'threshold' and 'linear'
+        are the currenlty available feature mapping methods.
+        The users can also implement their own feature mapping object
+        (should be a `BasePhi` instance) and pass it to this argument.
+        To implement a feature mapping, please go through the
+        :ref:`Feature Mapping` section.
+
     **phi_kwargs : Groups the multiple optional parameters
                    for the corresponding feature mappings(phi).
+
                    For example in case of fourier features,
                    the number of features is given by `n_components`
                    parameter which can be passed as argument -
-                   `MRC(loss='log', phi='fourier', n_components=500)`
+                   `CMRC(loss='log', phi='fourier', n_components=500)`
+
                    The list of arguments for each feature mappings class
                    can be found in the corresponding documentation.
+
     Attributes
     ----------
     is_fitted_ : bool
@@ -80,7 +109,7 @@ class CMRC(BaseMRC):
     params_ : a dictionary
         Stores the optimal points and best value of the function
         when the warm_start=True.
-    """
+    '''
 
     # Redefining the init function
     # to reduce the default number for maximum iterations.
@@ -101,19 +130,49 @@ class CMRC(BaseMRC):
                          max_iters=max_iters,
                          phi=phi, **phi_kwargs)
 
-    def minimax_risk(self, phi):
-        """
-        Solves the marginally constrained minimax risk problem
-        for different types of loss (0-1 and log loss).
+    def minimax_risk(self, X, tau_, lambda_, n_classes):
+        '''
+        Solves the marginally constrained minimax risk
+        optimization problem for
+        different types of loss (0-1 and log loss).
+
         Parameters
         ----------
-        phi : array-like of shape(n_samples, n_classes, n_features * n_classes)
-            Feature mappings used in the optimization.
-        """
+        X : array-like of shape (n_samples, n_dimensions)
+            Training instances used for solving
+            the minimax risk optimization problem.
+
+        tau_ : array-like of shape (n_features * n_classes)
+            The mean estimates
+            for the expectations of feature mappings.
+
+        lambda_ : array-like of shape (n_features * n_classes)
+            The variance in the mean estimates
+            for the expectations of the feature mappings.
+
+        n_classes : int
+            Number of labels in the dataset.
+
+        Returns
+        -------
+        self :
+            Fitted estimator
+
+        '''
+
+        # Set the parameters for the optimization
+        self.n_classes = n_classes
+        self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
+        self.lambda_ = check_array(lambda_, accept_sparse=True,
+                                   ensure_2d=False)
+        phi = self.phi.eval_x(X)
 
         # Constants
         n = phi.shape[0]
         m = phi.shape[2]
+
+        # Supress the depreciation warnings
+        warnings.simplefilter('ignore')
 
         # In case of 0-1 loss, learn constraints using the phi
         # These constraints are used in the optimization instead of phi
@@ -150,28 +209,25 @@ class CMRC(BaseMRC):
                 # First we calculate the all possible values of psi
                 # for all the points
                 psi = M @ mu + h
-                psi_all = 0
+                sum_psi = 0
                 for i in range(n):
                     # Get psi for each data point and
                     # add the min value to objective
                     psi_xi = psi[np.arange(i, psi.shape[0], n)]
-                    psi_all = psi_all + (1 / n) * cvx.max((psi_xi))
+                    sum_psi = sum_psi + (1 / n) * cvx.max((psi_xi))
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
-                psi_all = 0
+                sum_psi = 0
                 for i in range(n):
-                    psi_all = psi_all + \
+                    sum_psi = sum_psi + \
                         (1 / n) * cvx.log_sum_exp(phi[i, :, :] @ mu)
 
             # Objective function
             objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
-                                     self.tau_ @ mu + psi_all)
+                                     self.tau_ @ mu + sum_psi)
 
-            # # Constraints
-            # constraints = []
-
-            self.mu_ = \
+            self.mu_, obj_value = \
                 self.try_solvers(objective, None, mu)
 
         elif not self.use_cvx:
@@ -239,10 +295,15 @@ class CMRC(BaseMRC):
 
             self.mu_ = self.params_['mu']
 
+        self.is_fitted_ = True
+
+        return self
+
     def nesterov_optimization(self, m, params_, f_, g_):
         '''
         Solution of the CMRC convex optimization(minimization)
         using the Nesterov accelerated approach.
+
         Parameters
         ----------
         m : int
@@ -265,12 +326,21 @@ class CMRC(BaseMRC):
             parameters (mu) of the optimization and
             the indices corresponding to the maximum value of subobjective
             for a given subset of Y (set of labels).
+
         Return
         ------
         mu : array-like, shape (m,)
             The parameters corresponding to the optimized function value
         f_best_value : float
             The optimized value of the function in consideration.
+
+        References
+        ----------
+        [1] The strength of Nesterov’s extrapolation
+        in the individual convergence of nonsmooth optimization.
+        Wei Tao, Zhisong Pan, Gao wei Wu, and Qing Tao.
+        In IEEE Transactions on Neural Networks and Learning System.
+        (https://ieeexplore.ieee.org/document/8822632)
         '''
 
         # Initial values for the parameters
@@ -392,20 +462,23 @@ class CMRC(BaseMRC):
         return new_params_
 
     def predict_proba(self, X):
-        """
-        Conditional probabilities corresponding
-        to each class for each unlabeled instance
+        '''
+        Computes conditional probabilities corresponding
+        to each class for the given unlabeled instances.
+
         Parameters
         ----------
         X : array-like of shape (n_samples, n_dimensions)
             Testing instances for which
             the prediction probabilities are calculated for each class.
+
         Returns
         -------
-        hy_x : ndarray of shape (n_samples, n_classes)
-            The probabilities (p(y|x)) corresponding to the predictions
-            for each class.
-        """
+        hy_x : array-like of shape (n_samples, n_classes)
+            The conditional probabilities (p(y|x))
+            corresponding to each class.
+        '''
+
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
 
@@ -458,16 +531,25 @@ class CMRC(BaseMRC):
             c = np.tile(c, (self.n_classes, 1)).transpose()
             hy_x = hy_x / c
 
+            # Set the approach for prediction to non-deterministic
+            # if not provided by user.
+            if self.deterministic is None:
+                self.deterministic = False
+
         elif self.loss == 'log':
             # Constraints in case of log loss function
 
             v = np.dot(phi, self.mu_)
 
-            # Unnormalized conditional probabilities
+            # Normalizing conditional probabilities
             hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:, i],
                              (self.n_classes, 1)).transpose()), axis=1)
                              for i in range(self.n_classes)).transpose()
-
             hy_x = np.reciprocal(hy_x)
+
+            # Set the approach for prediction to deterministic
+            # if not provided by user.
+            if self.deterministic is None:
+                self.deterministic = True
 
         return hy_x

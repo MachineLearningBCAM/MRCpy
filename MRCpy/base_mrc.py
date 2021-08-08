@@ -1,6 +1,4 @@
-"""Super class for Minimax Risk Classifiers."""
-
-import warnings
+'''Super class for Minimax Risk Classifiers.'''
 
 import cvxpy as cvx
 import numpy as np
@@ -18,13 +16,11 @@ from MRCpy.phi import \
 
 class BaseMRC(BaseEstimator, ClassifierMixin):
     '''
-    Base Class for Minimax Risk Classifier
+    Base class for different minimax risk classifiers.
 
-    The class implements minimax risk classfication
-    using two types of commonly used loss functions,
-    namely logistic loss and 0-1 loss.
-    The class also provides different feature mapping functions
-    that can enhance the performance of the classifier for different datasets.
+    This class is a parent class for different MRCs
+    implemented in the library.
+    It defines the different parameters and the layout.
 
     Parameters
     ----------
@@ -33,16 +29,22 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
     s : float, default=0.3
         For tuning the estimation of expected values
-        of feature mapping function(phi).
+        of feature mapping function.
         Must be a positive float value and
         expected to be in the 0 to 1 in general cases.
 
-    deterministic : bool, default=False
+    deterministic : bool, default=None
         For determining if the prediction of the labels
         should be done in a deterministic way or not.
+        For '0-1' loss, the non-deterministic ('False') approach
+        works well.
+        For 'log' loss, the deterministic ('True') approach
+        works well.
+        If the user does not specify the value, the default value
+        is set according to loss function.
 
     random_state : int, RandomState instance, default=None
-        Used when 'fourier' option for feature mappings are used
+        Used when 'fourier' and 'relu' options for feature mappings are used
         to produce the random weights.
 
     fit_intercept : bool, default=True
@@ -59,21 +61,28 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         If True, use CVXpy library for the optimization
         instead of the subgradient methods.
 
-    solver : {'SCS', 'ECOS'}, default='SCS'
+    solver : str {'SCS', 'ECOS', 'MOSEK'}, default='MOSEK'
         The type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
-        so we might need to use the other solver from the set.
+        so you might need to change solver depending on the problem.
+        'MOSEK' is a commercial solver for which one might need to
+        request for a license. A free license can be requested
+        `here <https://www.mosek.com/products/academic-licenses/>`_
 
     max_iters : int, default=10000
         The maximum number of iterations to use
         for finding the solution of optimization
         using the subgradient approach.
 
-    phi : `str` {'fourier', 'relu', 'threshold'} or
-           `BasePhi` instance, default='linear'
+    phi : str {'fourier', 'relu', 'threshold', 'linear'} or
+          `BasePhi` instance (custom features), default='linear'
         The type of feature mapping function to use for mapping the input data
-        'fourier', 'relu' and 'threshold'
+        'fourier', 'relu', 'threshold' and 'linear'
         are the currenlty available feature mapping methods.
+        The users can also implement their own feature mapping object
+        (should be a `BasePhi` instance) and pass it to this argument.
+        To implement a feature mapping, please go through the
+        :ref:`Feature Mapping` section.
 
     **phi_kwargs : Groups the multiple optional parameters
                    for the corresponding feature mappings(phi).
@@ -105,7 +114,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
     '''
 
     def __init__(self, loss='0-1', s=0.3,
-                 deterministic=False, random_state=None,
+                 deterministic=None, random_state=None,
                  fit_intercept=True, warm_start=False, use_cvx=False,
                  solver='MOSEK', max_iters=10000, phi='linear', **phi_kwargs):
 
@@ -145,54 +154,29 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         # Solver list available in cvxpy
         self.solvers = ['MOSEK', 'SCS', 'ECOS']
 
-    def fit(self, X, Y=None, X_=None, n_classes=None, tau_=None, lambda_=None):
+    def fit(self, X, Y):
         '''
         Fit the MRC model.
 
+        Computes the parameters required for the minimax risk optimization
+        and then calls the `minimax_risk` function to solve the optimization.
+
         Parameters
         ----------
-        X : array-like of shape (n_samples1, n_dimensions)
+        X : array-like of shape (n_samples, n_dimensions)
             Training instances used in
-            - Calculating the estimates for the minimax risk classification
-            - Also, used in optimization when X_ is not given
 
-        Y_ : array-like of shape (n_samples1), default = None
+            - Calculating the expectation estimates
+              that constrain the uncertainty set
+              for the minimax risk classification
+            - Solving the minimax risk optimization problem.
+
+            n_samples is the number of samples and
+            n_features is the number of features.
+
+        Y : array-like of shape (n_samples1), default = None
             Labels corresponding to the training instances
-            used to compute the estimates for the optimization.
-
-            If the estimates used in the MRC are already given as a parameter
-            to the this function, then the labels
-            for the instances are not required
-            unless and until the threshold feature mappings are used.
-
-            When the threshold feature mappings are used,
-            these labels are required to find the thresholds
-            using the instance, label pair.
-
-        X_ : array-like of shape (n_samples2, n_dimensions), default = None
-            These instances are optional and
-            when given, will be used in the minimax risk optimization.
-            These extra instances are generally a smaller set and
-            give an advantage in training time.
-
-        n_classes : int
-            Number of labels in the dataset.
-            If the labels Y are not provided, then this argument is required.
-
-        tau_ : array-like of shape (n_features * n_classes) or float,
-               default=None
-            The mean estimates
-            for the expectations of feature mappings.
-            If a single float value is passed,
-            all the features in the feature mapping have the same estimates.
-
-        lambda_ : array-like of shape (n_features * n_classes) or float,
-                  defautl=None
-            The variance in the mean estimates
-            for the expectations of the feature mappings.
-            If a single float value is passed,
-            all the features in the feature mapping
-            have the samve variance for the estimates.
+            used only to compute the expectation estimates.
 
         Returns
         -------
@@ -201,111 +185,84 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         '''
 
-        X = check_array(X, accept_sparse=True)
+        X, Y = check_X_y(X, Y, accept_sparse=True)
 
-        # Check if separate instances are given for the optimization
-        if X_ is not None:
-            X_opt = check_array(X_, accept_sparse=True)
-            not_all_instances = False
-        else:
-            # Use the training samples used to compute estimate
-            # for the optimization.
-            X_opt = X
+        # Obtaining the number of classes and mapping the labels to integers
+        origY = Y
+        self.classes_ = np.unique(origY)
+        n_classes = len(self.classes_)
+        Y = np.zeros(origY.shape[0], dtype=int)
 
-            # If the labels are not given, then these instances
-            # are assumed to be given for optimization only and
-            # hence all the instances will be used.
-            if Y is None:
-                not_all_instances = False
-            else:
-                not_all_instances = True
-
-        # Learn the classes
-        # Classes will only be learnt if the estimates are not given
-        self.classes_ = None
-        if tau_ is None or lambda_ is None:
-            X, Y = check_X_y(X, Y, accept_sparse=True)
-
-            # Map the values of Y from 0 to n_classes-1
-            origY = Y
-            self.classes_ = np.unique(origY)
-            self.n_classes = len(self.classes_)
-            Y = np.zeros(origY.shape[0], dtype=int)
-
-            for i, y in enumerate(self.classes_):
-                Y[origY == y] = i
-
-        elif type(n_classes) == int:
-            self.n_classes = n_classes
-
-        elif Y is not None:
-            self.n_classes = len(np.unique(Y))
-
-        else:
-            raise ValueError("Expected the labels \'Y\' or " +
-                             "a valid \'n_classes\' argument ... ")
+        # Map the values of Y from 0 to n_classes-1
+        for i, y in enumerate(self.classes_):
+            Y[origY == y] = i
 
         # Set the number of classes in phi
-        self.phi.n_classes = self.n_classes
+        self.phi.n_classes = n_classes
 
         # Fit the feature mappings
-        if tau_ is None and lambda_ is None:
-            self.phi.fit(X, Y)
+        self.phi.fit(X, Y)
 
-        # Set the interval estimates if they are given
-        # Otherwise compute the interval estimates
-        if tau_ is not None:
-            if isinstance(tau_, (float, int)):
-                # Check if the input is an array or a single value.
-                # If a single value is given as input,
-                # it is converted to an array of size
-                # equal to the number of features of phi
-                # it imples that the estimates for all the features is same.
-                tau_ = np.asarray([tau_] * self.phi.len_)
-            self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
-
-        else:
-            self.tau_ = self.phi.est_exp(X, Y)
-
-        if lambda_ is not None:
-            if isinstance(lambda_, (float, int)):
-                # Check if the input is an array or a single value.
-                # If a single value is given as input,
-                # it is converted to an array of size
-                # equal to the number of features of phi
-                # it imples that the variance in the estimates
-                # for all the features is same.
-                lambda_ = np.asarray([lambda_] * self.phi.len_)
-            self.lambda_ = check_array(lambda_, accept_sparse=True,
-                                       ensure_2d=False)
-
-        else:
-            self.lambda_ = (self.s *
-                            self.phi.est_std(X, Y)) / \
-                np.sqrt(X.shape[0])
+        # Compute the expectation estimates
+        tau_ = self.phi.est_exp(X, Y)
+        lambda_ = (self.s * self.phi.est_std(X, Y)) / \
+            np.sqrt(X.shape[0])
 
         # Limit the number of training samples used in the optimization
         # for large datasets
         # Reduces the training time and use of memory
         n_max = 5000
-        n = X_opt.shape[0]
-        if not_all_instances and n_max < n:
+        n = X.shape[0]
+        if n_max < n:
             n = n_max
 
-        # Get the feature mapping corresponding to the training instances
-        phi = self.phi.eval_x(X_opt[:n])
-
-        # Supress the depreciation warnings
-        warnings.simplefilter('ignore')
-
         # Fit the MRC classifier
-        self.minimax_risk(phi)
-
-        self.is_fitted_ = True
+        self.minimax_risk(X[:n], tau_, lambda_, n_classes)
 
         return self
 
-    def try_solvers(self, objective, constraints, mu, nu=None):
+    def minimax_risk(self, X, tau_, lambda_, n_classes):
+        '''
+        Abstract function for sub-classes implementing
+        the different MRCs.
+
+        Solves the minimax risk optimization problem
+        for the corresponding variant of MRC.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_dimensions)
+            Training instances used for solving
+            the minimax risk optimization problem.
+
+        tau_ : array-like of shape (n_features * n_classes)
+            The mean estimates
+            for the expectations of feature mappings.
+
+        lambda_ : array-like of shape (n_features * n_classes)
+            The variance in the mean estimates
+            for the expectations of the feature mappings.
+
+        n_classes : int
+            Number of labels in the dataset.
+
+        Returns
+        -------
+        self :
+            Fitted estimator
+
+        '''
+
+        # Variants of MRCs inheriting from this class should
+        # extend this function to implement the solution to their
+        # minimax risk optimization problem.
+
+        raise NotImplementedError('BaseMRC is not an implemented classifier.' +
+                                  ' It is base class for different MRCs.' +
+                                  ' This functions needs to be implemented' +
+                                  ' by a sub-class implementing a MRC.')
+
+    def try_solvers(self, objective, constraints, mu):
         '''
         Solves the MRC problem
         using different types of solvers available in CVXpy
@@ -321,21 +278,15 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         mu : cvxpy array of shape (number of featuers in phi)
             Parameters used in the optimization problem
 
-        nu : cvxpy variable of float value, default = None
-            Parameter used in the optimization problem
-
         Returns
         -------
-        mu_ : cvxpy array of shape (number of featuers in phi)
+        mu_ : array-like of shape (number of featuers in phi)
             The value of the parameters
             corresponding to the optimum value of the objective function.
 
-        nu_ : cvxpy variable of float value, if None, not returned
-            The value of the parameter
-            corresponding to the optimum value of the objective function.
-            The parameter is not returned
-            in case the cvxpy variable is not defined (i.e, None) initially
-            when it is passed as the argument to this function.
+        objective_value : float
+            The optimized objective value.
+
         '''
 
         # Reuse the solution from previous call to fit.
@@ -343,7 +294,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             # Use a previous solution if it exists.
             try:
                 mu.value = self.mu_
-                nu.value = self.nu_
             except AttributeError:
                 pass
 
@@ -354,15 +304,8 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         mu_ = mu.value
 
-        # Solving the constrained MRC problem
-        # which has only parameters mu
-        if nu is not None:
-            nu_ = nu.value
-        else:
-            nu_ = 0
-
         # if the solver could not find values of mu for the given solver
-        if mu_ is None or nu_ is None:
+        if mu_ is None:
 
             # try with a different solver for solution
             for s in self.solvers:
@@ -373,7 +316,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
                         # Use a previous solution if it exists.
                         try:
                             mu.value = self.mu_
-                            nu.value = self.nu_
                         except AttributeError:
                             pass
 
@@ -383,26 +325,53 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
                     # Check the values
                     mu_ = mu.value
-                    if nu is not None:
-                        nu_ = nu.value
 
                     # Break the loop once the solution is obtained
-                    if mu_ is not None and nu_ is not None:
+                    if mu_ is not None:
                         break
 
         # If no solution can be found for the optimization.
         if mu_ is None:
-            raise ValueError('CVXpy solver couldn\'t find a solution .... \n \
-                              The problem is ', prob.status)
+            raise ValueError('CVXpy solver couldn\'t find a solution .... ' +
+                             'The problem is ', prob.status)
 
-        if nu is not None:
-            return mu_, nu_
-        else:
-            return mu_
+        objective_value = prob.value
+        return mu_, objective_value
+
+    def predict_proba(self, X):
+        '''
+        Abstract function for sub-classes implementing
+        the different MRCs.
+
+        Computes conditional probabilities corresponding
+        to each class for the given unlabeled instances.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_dimensions)
+            Testing instances for which
+            the prediction probabilities are calculated for each class.
+
+        Returns
+        -------
+        hy_x : array-like of shape (n_samples, n_classes)
+            The conditional probabilities (p(y|x))
+            corresponding to each class.
+        '''
+
+        # Variants of MRCs inheriting from this class
+        # implement this function to compute the conditional
+        # probabilities using the classifier obtained from minimax risk
+
+        raise NotImplementedError('BaseMRC is not an implemented classifier.' +
+                                  ' It is base class for different MRCs.' +
+                                  ' This functions needs to be implemented' +
+                                  ' by a sub-class implementing a MRC.')
 
     def predict(self, X):
         '''
-        Returns the predicted classes for X samples.
+        Returns the predicted classes for the given instances
+        using the probabilities given by the function `predict_proba`.
 
         Parameters
         ----------
@@ -420,34 +389,19 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
 
-        if self.loss == 'log':
-            # In case of logistic loss function,
-            # the classification is always deterministic
+        # Get the prediction probabilities for the classifier
+        proba = self.predict_proba(X)
 
-            phi = self.phi.eval_x(X)
+        if self.deterministic:
+            y_pred = np.argmax(proba, axis=1)
+        else:
+            y_pred = [np.random.choice(self.n_classes, size=1, p=pc)[0]
+                      for pc in proba]
 
-            # Deterministic classification
-            v = np.dot(phi, self.mu_)
-            y_pred = np.argmax(v, axis=1)
-
-        elif self.loss == '0-1':
-            # In case of 0-1 loss function,
-            # the classification can be done
-            # in deterministic or non-deterministic way
-            # but by default, it is prefered to do it in non-deterministic way
-            # as it is designed for it.
-
-            proba = self.predict_proba(X)
-
-            if self.deterministic:
-                y_pred = np.argmax(proba, axis=1)
-            else:
-                y_pred = [np.random.choice(self.n_classes, size=1, p=pc)[0]
-                          for pc in proba]
-
-        # Check if any labels are learnt
+        # Check if the labels were provided for fitting
+        # (labels might be omitted if fitting is done through minimax_risk)
         # Otherwise return the default labels i.e., from 0 to n_classes-1.
-        if self.classes_ is not None:
+        if hasattr(self, 'classes_'):
             y_pred = np.asarray([self.classes_[label] for label in y_pred])
 
         return y_pred

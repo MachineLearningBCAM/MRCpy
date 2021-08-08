@@ -1,4 +1,4 @@
-""" Gaussian Kernel approximated using Random Features."""
+''' Gaussian Kernel approximated using Random Features.'''
 
 import statistics
 
@@ -12,7 +12,7 @@ from MRCpy.phi import BasePhi
 
 
 class RandomFourierPhi(BasePhi):
-    """
+    '''
     Fourier features
 
     Features obtained by approximating the rbf kernel by
@@ -23,8 +23,14 @@ class RandomFourierPhi(BasePhi):
                          \sin(w_1^t * x), ..., \sin(w_D^t * x)]
 
     where w is a vector(dimension d) of random weights
-    from gaussian distribution and D is the number of components
-    in the resulting feature map.
+    from gaussian distribution with mean 0 and variance
+    :math:`\sqrt(2 * \gamma)` and
+    D is the number of components in the resulting feature map.
+    The parameter :math:`\gamma`
+    in the variance is similar to the scaling parameter
+    of the radial basis function kernel -
+
+    .. math:: K(x, x\') = \exp(-\gamma * \| x-x\'\|^2)
 
     Parameters
     ----------
@@ -36,9 +42,11 @@ class RandomFourierPhi(BasePhi):
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    gamma : {'scale', 'avg_ann', 'avg_ann_50', float} default = 'avg_ann_50'
+    gamma : str {'scale', 'avg_ann', 'avg_ann_50'} or float,
+            default = 'avg_ann_50'
         It defines the type of heuristic to be used
-        to calculate the scaling parameter for the gaussian kernel.
+        to calculate the scaling parameter using the data or
+        a float value for the parameter.
 
     n_components : int, default=300
         Number of Monte Carlo samples per original features.
@@ -67,7 +75,7 @@ class RandomFourierPhi(BasePhi):
     In NIPS 2007.
     (https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf)
 
-    """
+    '''
 
     def __init__(self, n_classes, fit_intercept=True, gamma='avg_ann_50',
                  n_components=300, random_state=None):
@@ -80,10 +88,9 @@ class RandomFourierPhi(BasePhi):
         self.random_state = random_state
 
     def fit(self, X, Y=None):
-        """
-        Get the set of random weights for computing the features space.
-        Also, compute the value of gamma hyperparameter
-        if the value is not given.
+        '''
+        Learns the set of random weights for computing the features.
+        Also, compute the scaling parameter if the value is not given.
 
         Parameters
         ----------
@@ -101,7 +108,7 @@ class RandomFourierPhi(BasePhi):
         self :
             Fitted estimator
 
-        """
+        '''
 
         X = check_array(X, accept_sparse=True)
 
@@ -131,7 +138,7 @@ class RandomFourierPhi(BasePhi):
         return self
 
     def transform(self, X):
-        """
+        '''
         Compute the random fourier features from the given instances.
 
         Parameters
@@ -144,7 +151,7 @@ class RandomFourierPhi(BasePhi):
         X_feat : array-like of shape (n_samples, n_features)
             Transformed features from the given instances.
 
-        """
+        '''
 
         check_is_fitted(self, ["random_weights_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
@@ -157,22 +164,18 @@ class RandomFourierPhi(BasePhi):
 
     def heuristic_gamma(self, X, Y):
 
-        """
-        Compute the scale parameter for gaussian kernels using the heuristic -
+        '''
+        Computes the scaling parameter for relu features
+        using the heuristic -
 
-                sigma = median{ {min ||x_i-x_j|| for j|y_j != +1 }
-                                    for i|y_i != -1 }
+        .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)
+
+        .. math::   \gamma = 1 / (2 * \sigma^2)
 
         for two classes {+1, -1}. For multi-class, we use the same strategy
-        by finding median of min norm value
-        for each class against all other classes
-        and then taking the average value of the median of all the classes.
-
-        The heuristic calculates the value of sigma for gaussian kernels.
-        So to find the gamma value
-        for the kernel defined in our implementation,
-        the following formula is used -
-                gamma = 1/ (2 * sigma^2)
+        by finding median of minimum distances between the points of
+        each class against all other classes
+        and then taking the average value of the medians of all the classes.
 
         Parameters
         ----------
@@ -185,9 +188,9 @@ class RandomFourierPhi(BasePhi):
         Returns
         -------
         gamma : float value
-            Gamma value computed using the heuristic from the instances.
+            Scaling parameter computed using the heuristic.
 
-        """
+        '''
 
         # List to store the median of min norm value for each class
         dist_x_i = list()
@@ -218,20 +221,15 @@ class RandomFourierPhi(BasePhi):
 
     def rff_gamma(self, X):
 
-        """
-        Function to find the scale parameter
-        for random fourier features obtained from
-        gaussian kernels using the heuristic given in -
+        '''
+        Computes the scaling parameter for the fourier features
+        using the heuristic given in the paper -
 
                 "Compact Nonlinear Maps and Circulant Extensions"
 
-        The heuristic to calculate the sigma states that
-        it is a value that is obtained from
+        The heuristic states that the scaling parameter is obtained as
         the average distance to the 50th nearest neighbour estimated
         from 1000 samples of the dataset.
-
-        Gamma value is given by -
-                gamma = 1/ (2 * sigma^2)
 
         Parameters
         ----------
@@ -241,7 +239,7 @@ class RandomFourierPhi(BasePhi):
         Returns
         -------
         gamma : float value
-            Gamma value computed using the heuristic from the instances.
+            Scaling parameter computed using the heuristic.
 
         References
         ----------
@@ -249,7 +247,7 @@ class RandomFourierPhi(BasePhi):
         Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
         (https://arxiv.org/pdf/1503.03893.pdf)
 
-        """
+        '''
         if X.shape[0] < 50:
             neighbour_ind = X.shape[0] - 2
         else:
@@ -263,4 +261,6 @@ class RandomFourierPhi(BasePhi):
         # Compute the average distance to the 50th nearest neighbour
         sigma = np.average(distances[:, neighbour_ind])
 
-        return 1 / (2 * sigma * sigma)
+        gamma = 1 / (2 * sigma * sigma)
+
+        return gamma
