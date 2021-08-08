@@ -1,7 +1,7 @@
 '''Minimax Risk Classification.'''
 
-import warnings
 import itertools as it
+import warnings
 
 import cvxpy as cvx
 import numpy as np
