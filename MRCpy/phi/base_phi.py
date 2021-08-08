@@ -138,9 +138,7 @@ class BasePhi():
         :math:`\in` X and y :math:`\in` Y.
         The encodings are calculated,
         corresponding to the given labels, which is used by the learning stage
-        for estimating the expected values of :math:`\phi`,
-        :math:`{\\tau}`
-        and :math:`\lambda`.
+        for estimating the expectation of :math:`\phi(x,y)`.
 
         Parameters
         ----------
@@ -219,9 +217,9 @@ class BasePhi():
 
     def est_exp(self, X, Y):
         '''
-        Average value of :math:`\phi` in the supervised dataset (X,Y)
-        Used in the learning stage as an estimate
-        of the expected value of :math:`\phi`, :math:`{\\tau}`
+        Average value of :math:`\phi(x,y)` in the supervised dataset (X,Y).
+        Used in the learning stage to estimate
+        the expectation of :math:`\phi(x,y)`, denoted by :math:`{\\tau}`
 
         Parameters
         ----------
@@ -243,10 +241,11 @@ class BasePhi():
 
     def est_std(self, X, Y):
         '''
-        Standard deviation of :math:`\phi` in the supervised dataset (X,Y)
+        Standard deviation of :math:`\phi(x,y)`
+        in the supervised dataset (X,Y).
         Used in the learning stage
-        to estimate the variance in the expected value of
-        :math:`\phi`, :math:`\lambda`
+        to estimate the variance in the expectation of
+        :math:`\phi(x,y)`, denoted by :math:`\lambda`
 
         Parameters
         ----------

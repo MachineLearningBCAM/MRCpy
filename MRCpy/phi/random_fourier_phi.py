@@ -139,7 +139,7 @@ class RandomFourierPhi(BasePhi):
 
     def transform(self, X):
         '''
-        Compute the random fourier features from the given instances.
+        Compute the random Fourier features ((:math:`z(x)`)).
 
         Parameters
         ----------

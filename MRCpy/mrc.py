@@ -83,16 +83,17 @@ class MRC(BaseMRC):
         To implement a feature mapping, please go through the
         :ref:`Feature Mapping` section.
 
-    **phi_kwargs : Groups the multiple optional parameters
-                   for the corresponding feature mappings.
+    **phi_kwargs : Additional parameters for feature mappings.
+                Groups the multiple optional parameters
+                for the corresponding feature mappings(phi).
 
-                   For example in case of fourier features,
-                   the number of features is given by `n_components`
-                   parameter which can be passed as argument -
-                   `MRC(loss='log', phi='fourier', n_components=500)`
+                For example in case of fourier features,
+                the number of features is given by `n_components`
+                parameter which can be passed as argument -
+                `MRC(loss='log', phi='fourier', n_components=500)`
 
-                   The list of arguments for each feature mappings class
-                   can be found in the corresponding documentation.
+                The list of arguments for each feature mappings class
+                can be found in the corresponding documentation.
 
     Attributes
     ----------

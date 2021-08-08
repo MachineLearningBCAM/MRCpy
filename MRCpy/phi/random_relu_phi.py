@@ -22,9 +22,9 @@ class RandomReLUPhi(BasePhi):
     where w is a vector(dimension d) of random weights uniformly distributed
     over a sphere of unit radius and
     :math:`\gamma` is the scaling parameter similar
-    to the one in random fourier features.
+    to the one in random Fourier features.
 
-    Relu function is defined as -
+    ReLU function is defined as -
 
     .. math::           f(x) = \max(0, x)
 
@@ -140,7 +140,7 @@ class RandomReLUPhi(BasePhi):
 
     def transform(self, X):
         '''
-        Compute the ReLu Random Features from the given instances.
+        Compute the ReLU random features (:math:`z(x)`).
 
         Parameters
         ----------
@@ -171,7 +171,7 @@ class RandomReLUPhi(BasePhi):
 
         '''
 
-        Computes the scaling parameter for relu features
+        Computes the scaling parameter for ReLU features
         using the heuristic -
 
         .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)
@@ -229,7 +229,7 @@ class RandomReLUPhi(BasePhi):
 
         '''
 
-        Computes the scaling parameter for the relu features
+        Computes the scaling parameter for the ReLU features
         using the heuristic given in the paper -
 
                 "Compact Nonlinear Maps and Circulant Extensions"
