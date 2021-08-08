@@ -64,7 +64,7 @@ def runMRC(phi, loss):
             startTime = time.time()
 
             clf.fit(X_train, y_train)
-            upper += clf.upper_
+            upper += clf.get_upper_bound()
             lower += clf.get_lower_bound()
 
             # Calculate the training time
