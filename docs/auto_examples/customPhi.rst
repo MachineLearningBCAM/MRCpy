@@ -25,7 +25,7 @@ according to the needs of the mappings.
 You can choose the best feature mapping class for extension
 according to your requirements.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-163
+.. GENERATED FROM PYTHON SOURCE LINES 9-161
 
 .. code-block:: default
 
@@ -34,7 +34,7 @@ according to your requirements.
     from sklearn.datasets import load_iris
     from sklearn.utils import check_array
 
-    from MRCpy import MRC, CMRC
+    from MRCpy import CMRC
     from MRCpy.phi import *
 
     # Custom phi example: Generating the linear kernel
@@ -80,13 +80,11 @@ according to your requirements.
             # X is expected to be a numpy 2D matrix.
             X = check_array(X, accept_sparse=True)
 
-            d = X.shape[1]
-
             # Defining the length of the phi
 
             # Defines the total length of the feature mapping automatically
             # It is recommended to call this function at the end of fit
-            super().fit(X,Y)
+            super().fit(X, Y)
 
             # Return the fitted feature mapping instance
             return self

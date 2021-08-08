@@ -15,6 +15,8 @@ Minimax Risk Classifiers
    MRCpy.MRC
    MRCpy.CMRC
 
+.. _Feature Mapping:
+
 Feature Mappings
 ----------------
 

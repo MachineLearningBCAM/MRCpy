@@ -19,7 +19,7 @@
 
 Example of using CMRC with some of the common classification datasets.
 
-.. GENERATED FROM PYTHON SOURCE LINES 2-93
+.. GENERATED FROM PYTHON SOURCE LINES 2-91
 
 .. code-block:: default
 
@@ -37,8 +37,7 @@ Example of using CMRC with some of the common classification datasets.
     # Data sets
     loaders = [load_mammographic, load_haberman, load_indian_liver,
                load_diabetes, load_credit]
-    dataName = ["mammographic", "haberman", "indian_liver",
-                "diabetes", "credit"]
+    dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
 
     def runCMRC(phi, loss):
@@ -61,8 +60,7 @@ Example of using CMRC with some of the common classification datasets.
                   " , d= " + str(d) + ", cardY= " + str(r))
 
             clf = CMRC(phi=phi, loss=loss, use_cvx=True,
-                       solver='MOSEK', max_iters=2000, s=0.3)
-
+                       solver='MOSEK', max_iters=10000, s=0.3)
 
             # Generate the partitions of the stratified cross-validation
             cv = StratifiedKFold(n_splits=10, random_state=random_seed,
