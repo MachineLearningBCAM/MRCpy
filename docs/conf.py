@@ -19,8 +19,8 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = u'MRCpy'
-copyright = (u'2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez')
-author = (u'Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez')
+copyright = (u'2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez')
+author = (u'Kartheek Bondugula, Santiago Mazuelas and Aritz Perez')
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
