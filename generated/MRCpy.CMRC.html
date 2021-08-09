@@ -246,11 +246,12 @@ The users can also implement their own feature mapping object
 To implement a feature mapping, please go through the
 <a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
 </dd>
-<dt><strong>**phi_kwargs</strong><span class="classifier">Groups the multiple optional parameters</span></dt><dd><p>for the corresponding feature mappings(phi).</p>
+<dt><strong>**phi_kwargs</strong><span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
+for the corresponding feature mappings(phi).</p>
 <p>For example in case of fourier features,
 the number of features is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
 parameter which can be passed as argument -
-<code class="xref any docutils literal notranslate"><span class="pre">CMRC(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=500)</span></code></p>
+<code class="xref any docutils literal notranslate"><span class="pre">MRC(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=500)</span></code></p>
 <p>The list of arguments for each feature mappings class
 can be found in the corresponding documentation.</p>
 </dd>
@@ -554,7 +555,7 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
 
     </p>
   </div>

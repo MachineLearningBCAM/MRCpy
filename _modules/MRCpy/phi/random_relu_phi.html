@@ -186,9 +186,9 @@
 <span class="sd">    where w is a vector(dimension d) of random weights uniformly distributed</span>
 <span class="sd">    over a sphere of unit radius and</span>
 <span class="sd">    :math:`\gamma` is the scaling parameter similar</span>
-<span class="sd">    to the one in random fourier features.</span>
+<span class="sd">    to the one in random Fourier features.</span>
 
-<span class="sd">    Relu function is defined as -</span>
+<span class="sd">    ReLU function is defined as -</span>
 
 <span class="sd">    .. math::           f(x) = \max(0, x)</span>
 
@@ -304,7 +304,7 @@
 
 <div class="viewcode-block" id="RandomReLUPhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compute the ReLu Random Features from the given instances.</span>
+<span class="sd">        Compute the ReLU random features (:math:`z(x)`).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -335,7 +335,7 @@
 
         <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">        Computes the scaling parameter for relu features</span>
+<span class="sd">        Computes the scaling parameter for ReLU features</span>
 <span class="sd">        using the heuristic -</span>
 
 <span class="sd">        .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)</span>
@@ -393,7 +393,7 @@
 
         <span class="sd">&#39;&#39;&#39;</span>
 
-<span class="sd">        Computes the scaling parameter for the relu features</span>
+<span class="sd">        Computes the scaling parameter for the ReLU features</span>
 <span class="sd">        using the heuristic given in the paper -</span>
 
 <span class="sd">                &quot;Compact Nonlinear Maps and Circulant Extensions&quot;</span>
@@ -446,7 +446,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
 
     </p>
   </div>

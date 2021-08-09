@@ -190,7 +190,7 @@ It defines the different parameters and the layout.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default=’0-1’</span></dt><dd><p>The type of loss function to use for the risk minimization.</p>
 </dd>
 <dt><strong>s</strong><span class="classifier">float, default=0.3</span></dt><dd><p>For tuning the estimation of expected values
@@ -243,7 +243,8 @@ The users can also implement their own feature mapping object
 To implement a feature mapping, please go through the
 <a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
 </dd>
-<dt><strong>**phi_kwargs</strong><span class="classifier">Groups the multiple optional parameters</span></dt><dd><p>for the corresponding feature mappings(phi).</p>
+<dt><strong>**phi_kwargs</strong><span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
+for the corresponding feature mappings(phi).</p>
 <p>For example in case of fourier features,
 the number of features is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
 parameter which can be passed as argument -
@@ -251,8 +252,10 @@ parameter which can be passed as argument -
 <p>The list of arguments for each feature mappings class
 can be found in the corresponding documentation.</p>
 </dd>
-<dt><strong>Attributes</strong></dt><dd></dd>
-<dt><strong>———-</strong></dt><dd></dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the classifier is fitted i.e., the parameters are learnt.</p>
 </dd>
 <dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features)</span></dt><dd><p>The mean estimates for the expectations of feature mappings.</p>
@@ -536,7 +539,7 @@ component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
 
     </p>
   </div>
