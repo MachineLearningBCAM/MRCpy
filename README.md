@@ -71,23 +71,18 @@ y_pred = clf.predict(X[:2,:])
 
 ```
 clf = MRC().fit(X, Y)
-upper_bound = clf.upper_
+upper_bound = clf.get_upper_bound()
 lower_bound = clf.get_lower_bound()
 ```
 
 Only available for the MRC class
 
 
-## Using different instances for setting interval estimates and optimization
+## Customizing the MRCs learning process using your own interval estimates for optimization
 
-Using instances X and Y to calculate ``tau`` and ``lambda`` and X_ for optimization
+By passing the values for ``tau`` and ``lambda`` (interval estimates), you set the constraint for the uncertainty sets. For this purpose, you can use the ``minimax_risk`` function for fitting the classifier instead of ``fit``.
 ```
-clf = MRC().fit(X, Y, X_)
-```
-
-By passing the values for ``tau`` and ``lambda``
-```
-clf = MRC().fit(X, tau_=[0.5, 0.5, ..., 0.1] , lambda_=[0.1, 0.02, ..., 0.04)
+clf = MRC().minimax_risk(X, tau_=[0.5, 0.5, ..., 0.1] , lambda_=[0.1, 0.02, ..., 0.04], n_classes=2)
 ```
 
 ## Building your custom feature mappings
@@ -98,14 +93,18 @@ For building your own customized feature mappings, you can follow this [example(
 
 By default, the classifier uses the subgradient methods for optimization. To use the CVXpy for optimization, set the ``use_cvx=True``.
 ```
-clf = MRC(use_cvx=True).fit(X, Y, X_)
+clf = MRC(use_cvx=True).fit(X, Y)
 ```
 
 ## Reusing previous solution of fit as initialization to the next call to fit (warm_start)
 
 Reuse the solution of the previous call to fit as initialization in the next fit by setting ``warm_start=True``. This option is useful for faster convergence when you have to fit your classifier to an increasing dataset again and again.
 ```
-clf = MRC(warm_start=True).fit(X, Y, X_)
+clf = MRC(warm_start=True).fit(X, Y)
 ```
 
+See the [documentation](https://MachineLearningBCAM.github.io/MRCpy/) for more details about the API and its usage.
 
+# Updates and Discussion
+
+You can subscribe to the MRCpy's mailing [list](https://mail.python.org/mailman3/lists/mrcpy.python.org/) for updates and discussion.
