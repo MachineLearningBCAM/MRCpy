@@ -259,10 +259,10 @@ and the length of the feature mapping is set.</p>
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.est_exp" title="MRCpy.phi.RandomFourierPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
-<td>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage as an estimate of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></td>
+<td>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.est_std" title="MRCpy.phi.RandomFourierPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
-<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y) Used in the learning stage to estimate the variance in the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></td>
+<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.eval_x" title="MRCpy.phi.RandomFourierPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
 <td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</td>
@@ -280,7 +280,7 @@ and the length of the feature mapping is set.</p>
 <td>Computes the scaling parameter for the fourier features using the heuristic given in the paper -</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.transform" title="MRCpy.phi.RandomFourierPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
-<td>Compute the random fourier features from the given instances.</td>
+<td>Compute the random Fourier features ((<span class="math notranslate nohighlight">\(z(x)\)</span>)).</td>
 </tr>
 </tbody>
 </table>
@@ -293,9 +293,9 @@ and the length of the feature mapping is set.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.est_exp">
 <code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.est_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
-Used in the learning stage as an estimate
-of the expected value of <span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\({\tau}\)</span></p>
+<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).
+Used in the learning stage to estimate
+the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\({\tau}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -321,10 +321,11 @@ of the expected value of <span class="math notranslate nohighlight">\(\phi\)</sp
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.est_std">
 <code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.est_std" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi\)</span> in the supervised dataset (X,Y)
+<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>
+in the supervised dataset (X,Y).
 Used in the learning stage
-to estimate the variance in the expected value of
-<span class="math notranslate nohighlight">\(\phi\)</span>, <span class="math notranslate nohighlight">\(\lambda\)</span></p>
+to estimate the variance in the expectation of
+<span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\(\lambda\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -388,9 +389,7 @@ X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
 <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
 The encodings are calculated,
 corresponding to the given labels, which is used by the learning stage
-for estimating the expected values of <span class="math notranslate nohighlight">\(\phi\)</span>,
-<span class="math notranslate nohighlight">\({\tau}\)</span>
-and <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+for estimating the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -519,7 +518,7 @@ Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.transform">
 <code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the random fourier features from the given instances.</p>
+<dd><p>Compute the random Fourier features ((<span class="math notranslate nohighlight">\(z(x)\)</span>)).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -558,7 +557,7 @@ Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
 
     </p>
   </div>

@@ -302,9 +302,7 @@
 <span class="sd">        :math:`\in` X and y :math:`\in` Y.</span>
 <span class="sd">        The encodings are calculated,</span>
 <span class="sd">        corresponding to the given labels, which is used by the learning stage</span>
-<span class="sd">        for estimating the expected values of :math:`\phi`,</span>
-<span class="sd">        :math:`{\\tau}`</span>
-<span class="sd">        and :math:`\lambda`.</span>
+<span class="sd">        for estimating the expectation of :math:`\phi(x,y)`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -383,9 +381,9 @@
 
 <div class="viewcode-block" id="BasePhi.est_exp"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_exp">[docs]</a>    <span class="k">def</span> <span class="nf">est_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Average value of :math:`\phi` in the supervised dataset (X,Y)</span>
-<span class="sd">        Used in the learning stage as an estimate</span>
-<span class="sd">        of the expected value of :math:`\phi`, :math:`{\\tau}`</span>
+<span class="sd">        Average value of :math:`\phi(x,y)` in the supervised dataset (X,Y).</span>
+<span class="sd">        Used in the learning stage to estimate</span>
+<span class="sd">        the expectation of :math:`\phi(x,y)`, denoted by :math:`{\\tau}`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -407,10 +405,11 @@
 
 <div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span> <span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Standard deviation of :math:`\phi` in the supervised dataset (X,Y)</span>
+<span class="sd">        Standard deviation of :math:`\phi(x,y)`</span>
+<span class="sd">        in the supervised dataset (X,Y).</span>
 <span class="sd">        Used in the learning stage</span>
-<span class="sd">        to estimate the variance in the expected value of</span>
-<span class="sd">        :math:`\phi`, :math:`\lambda`</span>
+<span class="sd">        to estimate the variance in the expectation of</span>
+<span class="sd">        :math:`\phi(x,y)`, denoted by :math:`\lambda`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -440,7 +439,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Reddy Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
 
     </p>
   </div>
