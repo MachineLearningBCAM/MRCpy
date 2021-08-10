@@ -40,7 +40,7 @@ using 0-1 loss (i.e., the default loss).
 
     # Bounds on the classification error (only for MRC)
     lower_error = clf.get_lower_bound()
-    upper_error = clf.upper_
+    upper_error = clf.get_upper_bound()
 
     # Compute the accuracy on the test set
     accuracy = clf.score(X_test, y_test)
