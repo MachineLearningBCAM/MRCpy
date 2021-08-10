@@ -203,7 +203,7 @@ using 0-1 loss (i.e., the default loss).</p>
 
 <span class="c1"># Bounds on the classification error (only for MRC)</span>
 <span class="n">lower_error</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">()</span>
-<span class="n">upper_error</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">upper_</span>
+<span class="n">upper_error</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_upper_bound</span><span class="p">()</span>
 
 <span class="c1"># Compute the accuracy on the test set</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>

@@ -194,8 +194,6 @@
 <span class="sd">    s : float, default=0.3</span>
 <span class="sd">        For tuning the estimation of expected values</span>
 <span class="sd">        of feature mapping function.</span>
-<span class="sd">        Must be a positive float value and</span>
-<span class="sd">        expected to be in the 0 to 1 in general cases.</span>
 
 <span class="sd">    deterministic : bool, default=None</span>
 <span class="sd">        For determining if the prediction of the labels</span>
@@ -293,31 +291,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span> <span class="o">=</span> <span class="n">use_cvx</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
-
-        <span class="c1"># Feature mappings</span>
-        <span class="k">if</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                        <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                                        <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-                                        <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">BasePhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                               <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ThresholdPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                    <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                                    <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;relu&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomReLUPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                                     <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                                     <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-                                     <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected feature mapping type ... &#39;</span><span class="p">)</span>
-
-        <span class="c1"># Solver list available in cvxpy</span>
+        <span class="c1"># Feature mapping and its parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span> <span class="o">=</span> <span class="n">phi_kwargs</span>
+        <span class="c1"># Solver list for cvxpy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
@@ -363,8 +340,26 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">):</span>
             <span class="n">Y</span><span class="p">[</span><span class="n">origY</span> <span class="o">==</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
 
-        <span class="c1"># Set the number of classes in phi</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
+        <span class="c1"># Feature mappings</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                                        <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                        <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                                        <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">BasePhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                               <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ThresholdPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                                    <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                    <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;relu&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomReLUPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                                     <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                     <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                                     <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected feature mapping type ... &#39;</span><span class="p">)</span>
 
         <span class="c1"># Fit the feature mappings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
