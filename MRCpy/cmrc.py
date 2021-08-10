@@ -117,7 +117,7 @@ class CMRC(BaseMRC):
     # In case of CMRC, the convergence is observed to be fast
     # and hence less iterations should be sufficient
     def __init__(self, loss='0-1', s=0.3,
-                 deterministic=False, random_state=None,
+                 deterministic=None, random_state=None,
                  fit_intercept=True, warm_start=False, use_cvx=False,
                  solver='SCS', max_iters=2000, phi='linear', **phi_kwargs):
         super().__init__(loss=loss,
@@ -228,7 +228,7 @@ class CMRC(BaseMRC):
             objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
                                      self.tau_ @ mu + sum_psi)
 
-            self.mu_, obj_value = \
+            self.mu_, self.obj_value = \
                 self.try_solvers(objective, None, mu)
 
         elif not self.use_cvx:
