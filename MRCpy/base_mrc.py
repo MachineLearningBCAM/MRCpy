@@ -30,8 +30,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
     s : float, default=0.3
         For tuning the estimation of expected values
         of feature mapping function.
-        Must be a positive float value and
-        expected to be in the 0 to 1 in general cases.
 
     deterministic : bool, default=None
         For determining if the prediction of the labels
@@ -129,31 +127,10 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.use_cvx = use_cvx
         self.solver = solver
         self.max_iters = max_iters
-
-        # Feature mappings
-        if phi == 'fourier':
-            self.phi = RandomFourierPhi(n_classes=2,
-                                        fit_intercept=fit_intercept,
-                                        random_state=random_state,
-                                        **phi_kwargs)
-        elif phi == 'linear':
-            self.phi = BasePhi(n_classes=2,
-                               fit_intercept=fit_intercept)
-        elif phi == 'threshold':
-            self.phi = ThresholdPhi(n_classes=2,
-                                    fit_intercept=fit_intercept,
-                                    **phi_kwargs)
-        elif phi == 'relu':
-            self.phi = RandomReLUPhi(n_classes=2,
-                                     fit_intercept=fit_intercept,
-                                     random_state=random_state,
-                                     **phi_kwargs)
-        elif isinstance(phi, BasePhi):
-            self.phi = phi
-        else:
-            raise ValueError('Unexpected feature mapping type ... ')
-
-        # Solver list available in cvxpy
+        # Feature mapping and its parameters
+        self.phi = phi
+        self.phi_kwargs = phi_kwargs
+        # Solver list for cvxpy
         self.solvers = ['MOSEK', 'SCS', 'ECOS']
 
     def fit(self, X, Y):
@@ -199,8 +176,26 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         for i, y in enumerate(self.classes_):
             Y[origY == y] = i
 
-        # Set the number of classes in phi
-        self.phi.n_classes = n_classes
+        # Feature mappings
+        if self.phi == 'fourier':
+            self.phi = RandomFourierPhi(n_classes=n_classes,
+                                        fit_intercept=self.fit_intercept,
+                                        random_state=self.random_state,
+                                        **self.phi_kwargs)
+        elif self.phi == 'linear':
+            self.phi = BasePhi(n_classes=n_classes,
+                               fit_intercept=self.fit_intercept)
+        elif self.phi == 'threshold':
+            self.phi = ThresholdPhi(n_classes=n_classes,
+                                    fit_intercept=self.fit_intercept,
+                                    **self.phi_kwargs)
+        elif self.phi == 'relu':
+            self.phi = RandomReLUPhi(n_classes=n_classes,
+                                     fit_intercept=self.fit_intercept,
+                                     random_state=self.random_state,
+                                     **self.phi_kwargs)
+        elif not isinstance(self.phi, BasePhi):
+            raise ValueError('Unexpected feature mapping type ... ')
 
         # Fit the feature mappings
         self.phi.fit(X, Y)

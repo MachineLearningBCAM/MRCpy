@@ -29,8 +29,6 @@ class MRC(BaseMRC):
     s : float, default=0.3
         For tuning the estimation of expected values
         of feature mapping function.
-        Must be a positive float value and
-        expected to be in the 0 to 1 in general cases.
 
     deterministic : bool, default=None
         For determining if the prediction of the labels
