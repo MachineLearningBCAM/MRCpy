@@ -37,6 +37,11 @@ class RandomReLUPhi(BasePhi):
             Whether to calculate the intercept.
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
+            
+    one-hot : bool, default=False
+        Only applies in the binary case, namely, only when there are two
+        classes. If set to true, one-hot-encoding will be used. If set to
+        false a more efficient shorcut will be performed.
 
     gamma : str {'scale', 'avg_ann', 'avg_ann_50'} or float,
             default = 'avg_ann_50'
@@ -74,7 +79,7 @@ class RandomReLUPhi(BasePhi):
     '''
 
     def __init__(self, n_classes, fit_intercept=True, gamma='avg_ann_50',
-                 n_components=300, random_state=None):
+                 n_components=300, random_state=None, one_hot=False):
 
         # Call the base class init function.
         super().__init__(n_classes=n_classes, fit_intercept=fit_intercept)
@@ -82,6 +87,7 @@ class RandomReLUPhi(BasePhi):
         self.gamma = gamma
         self.n_components = n_components
         self.random_state = random_state
+        self.one_hot = one_hot
 
     def fit(self, X, Y=None):
         '''

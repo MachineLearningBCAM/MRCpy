@@ -30,6 +30,11 @@ class ThresholdPhi(BasePhi):
             Whether to calculate the intercept.
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
+            
+    one-hot : bool, default=False
+        Only applies in the binary case, namely, only when there are two
+        classes. If set to true, one-hot-encoding will be used. If set to
+        false a more efficient shorcut will be performed.
 
     n_thresholds : int, default=200
         It defines the maximum number of allowed threshold values
@@ -54,12 +59,13 @@ class ThresholdPhi(BasePhi):
     '''
 
     def __init__(self, n_classes, fit_intercept=True,
-                 n_thresholds=200):
+                 n_thresholds=200, one_hot=False):
 
         # Call the base class init function.
         super().__init__(n_classes=n_classes, fit_intercept=fit_intercept)
 
         self.n_thresholds = n_thresholds
+        self.one_hot = one_hot
 
     def fit(self, X, Y=None):
         '''
