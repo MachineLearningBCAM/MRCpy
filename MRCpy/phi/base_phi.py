@@ -26,6 +26,11 @@ class BasePhi():
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered)
 
+    one-hot : bool, default=False
+        Only applies in the binary case, namely, only when there are two
+        classes. If set to true, one-hot-encoding will be used. If set to
+        false a more efficient shorcut will be performed.
+
     Attributes
     ----------
     is_fitted_ : bool
