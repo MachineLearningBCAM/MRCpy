@@ -61,10 +61,11 @@ class BasePhi():
 
     '''
 
-    def __init__(self, n_classes, fit_intercept=True):
+    def __init__(self, n_classes, fit_intercept=True, one_hot=False):
 
         self.n_classes = n_classes
         self.fit_intercept = fit_intercept
+        self.one_hot=one_hot
 
     def fit(self, X, Y=None):
         '''
@@ -167,7 +168,7 @@ class BasePhi():
             X_feat = np.hstack(([[1]] * n, X_feat))
 
         # Efficient configuration in case of binary classification.
-        if self.n_classes == 2:
+        if self.n_classes == 2 and not self.one_hot:
             X_feat[Y == 1, :] *= -1
             phi = X_feat
 

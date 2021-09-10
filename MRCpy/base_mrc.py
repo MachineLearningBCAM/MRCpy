@@ -184,7 +184,8 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
                                         **self.phi_kwargs)
         elif self.phi == 'linear':
             self.phi = BasePhi(n_classes=n_classes,
-                               fit_intercept=self.fit_intercept)
+                               fit_intercept=self.fit_intercept,
+							   **self.phi_kwargs)
         elif self.phi == 'threshold':
             self.phi = ThresholdPhi(n_classes=n_classes,
                                     fit_intercept=self.fit_intercept,
