@@ -41,15 +41,12 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MRCpy.phi.RandomReLUPhi" href="MRCpy.phi.RandomReLUPhi.html" />
-    <link rel="prev" title="MRCpy.phi.BasePhi" href="MRCpy.phi.BasePhi.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -97,19 +94,8 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-contents">Module Contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.BasePhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.ThresholdPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a></li>
 </ul>
 
             
@@ -158,8 +144,6 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../api.html">MRCpy Library Documentation</a> &raquo;</li>
-        
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</li>
     
     
@@ -181,366 +165,6 @@
             
   <div class="section" id="mrcpy-phi-randomfourierphi">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi<a class="headerlink" href="#mrcpy-phi-randomfourierphi" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">RandomFourierPhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fourier features</p>
-<p>Features obtained by approximating the rbf kernel by
-Random Fourier Feature map -</p>
-<div class="math notranslate nohighlight">
-\[z(x) = \sqrt{(2/D)} *
-[\cos(w_1^t * x), ..., \cos(w_D^t * x),
- \sin(w_1^t * x), ..., \sin(w_D^t * x)]\]</div>
-<p>where w is a vector(dimension d) of random weights
-from gaussian distribution with mean 0 and variance
-<span class="math notranslate nohighlight">\(\sqrt(2 * \gamma)\)</span> and
-D is the number of components in the resulting feature map.
-The parameter <span class="math notranslate nohighlight">\(\gamma\)</span>
-in the variance is similar to the scaling parameter
-of the radial basis function kernel -</p>
-<div class="math notranslate nohighlight">
-\[K(x, x') = \exp(-\gamma * \| x-x'\|^2)\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>The number of classes in the dataset.</p>
-</dd>
-<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept.
-If set to false, no intercept will be used in calculations
-(i.e. data is expected to be already centered).</p>
-</dd>
-<dt><strong>gamma</strong><span class="classifier">str {‘scale’, ‘avg_ann’, ‘avg_ann_50’} or float,</span></dt><dd><blockquote>
-<div><p>default = ‘avg_ann_50’</p>
-</div></blockquote>
-<p>It defines the type of heuristic to be used
-to calculate the scaling parameter using the data or
-a float value for the parameter.</p>
-</dd>
-<dt><strong>n_components</strong><span class="classifier">int, default=300</span></dt><dd><p>Number of Monte Carlo samples per original features.
-Equals the dimensionality of the computed (mapped) feature space.</p>
-</dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used to produce the random weights
-used for the approximation of the gaussian kernel.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">References</p>
-<p>[1] Random Features for Large-Scale Kernel Machines.
-Ali Rahimi and Ben Recht.
-In NIPS 2007.
-(<a class="reference external" href="https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf">https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf</a>)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>random_weights_</strong><span class="classifier">array-like of shape (n_features, n_components/2)</span></dt><dd><p>The sampled basis.</p>
-</dd>
-<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the feature mappings has learned its hyperparameters (if any)
-and the length of the feature mapping is set.</p>
-</dd>
-<dt><strong>len_</strong><span class="classifier">int</span></dt><dd><p>Defines the length of the feature mapping vector.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils align-default">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.est_exp" title="MRCpy.phi.RandomFourierPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
-<td>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.est_std" title="MRCpy.phi.RandomFourierPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
-<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.eval_x" title="MRCpy.phi.RandomFourierPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.eval_xy" title="MRCpy.phi.RandomFourierPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X,&nbsp;Y)</td>
-<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.fit" title="MRCpy.phi.RandomFourierPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
-<td>Learns the set of random weights for computing the features.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.heuristic_gamma" title="MRCpy.phi.RandomFourierPhi.heuristic_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">heuristic_gamma</span></code></a>(X,&nbsp;Y)</td>
-<td>Computes the scaling parameter for relu features using the heuristic -</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.rff_gamma" title="MRCpy.phi.RandomFourierPhi.rff_gamma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_gamma</span></code></a>(X)</td>
-<td>Computes the scaling parameter for the fourier features using the heuristic given in the paper -</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.transform" title="MRCpy.phi.RandomFourierPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
-<td>Compute the random Fourier features ((<span class="math notranslate nohighlight">\(z(x)\)</span>)).</td>
-</tr>
-</tbody>
-</table>
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'avg_ann_50'</span></span></em>, <em><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">300</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.est_exp">
-<code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.est_exp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).
-Used in the learning stage to estimate
-the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\({\tau}\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.est_std">
-<code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.est_std" title="Permalink to this definition">¶</a></dt>
-<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>
-in the supervised dataset (X,Y).
-Used in the learning stage
-to estimate the variance in the expectation of
-<span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\(\lambda\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.eval_x">
-<code class="sig-name descname"><span class="pre">eval_x</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.eval_x" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
-<span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
-that is composed of 2D matrices corresponding to each of the instance.
-These 2D matrices are the one-hot encodings of the instances’ features
-corresponding to all the possible labels in the data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
-<div><p>(n_samples, n_classes, n_features * n_classes)</p>
-</div></blockquote>
-<p>Matrix containing the one-hot encoding for all the classes
-for each of the instances given.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.eval_xy">
-<code class="sig-name descname"><span class="pre">eval_xy</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.eval_xy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
-X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
-<span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
-The encodings are calculated,
-corresponding to the given labels, which is used by the learning stage
-for estimating the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
-<div><p>(n_samples, n_features * n_classes)</p>
-</div></blockquote>
-<p>Matrix containing the one-hot encoding
-with respect to the labels given for all the instances.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.fit">
-<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.fit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learns the set of random weights for computing the features.
-Also, compute the scaling parameter if the value is not given.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances
-used to learn the feature configurations.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>This argument will never be used in this case.
-It is present in the signature for consistency
-in the signature of the function among different feature mappings.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>self :</dt><dd><p>Fitted estimator</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.heuristic_gamma">
-<code class="sig-name descname"><span class="pre">heuristic_gamma</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.heuristic_gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.heuristic_gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the scaling parameter for relu features
-using the heuristic -</p>
-<div class="math notranslate nohighlight">
-\[\sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)\]</div>
-<div class="math notranslate nohighlight">
-\[\gamma = 1 / (2 * \sigma^2)\]</div>
-<p>for two classes {+1, -1}. For multi-class, we use the same strategy
-by finding median of minimum distances between the points of
-each class against all other classes
-and then taking the average value of the medians of all the classes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled instances.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the instances.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Scaling parameter computed using the heuristic.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.rff_gamma">
-<code class="sig-name descname"><span class="pre">rff_gamma</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.rff_gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.rff_gamma" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes the scaling parameter for the fourier features
-using the heuristic given in the paper -</p>
-<blockquote>
-<div>“Compact Nonlinear Maps and Circulant Extensions”</div></blockquote>
-<p>The heuristic states that the scaling parameter is obtained as
-the average distance to the 50th nearest neighbour estimated
-from 1000 samples of the dataset.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled instances.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>gamma</strong><span class="classifier">float value</span></dt><dd><p>Scaling parameter computed using the heuristic.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">References</p>
-<p>[1] Compact Nonlinear Maps and Circulant Extensions
-Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
-(<a class="reference external" href="https://arxiv.org/pdf/1503.03893.pdf">https://arxiv.org/pdf/1503.03893.pdf</a>)</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.transform">
-<code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the random Fourier features ((<span class="math notranslate nohighlight">\(z(x)\)</span>)).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_feat</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Transformed features from the given instances.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
 <div style='clear:both'></div></div>
 
 
@@ -548,10 +172,6 @@ Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="MRCpy.phi.RandomReLUPhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.RandomReLUPhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="MRCpy.phi.BasePhi.html" class="btn btn-neutral float-left" title="MRCpy.phi.BasePhi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

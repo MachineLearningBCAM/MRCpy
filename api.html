@@ -47,7 +47,6 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MRCpy.BaseMRC" href="generated/MRCpy.BaseMRC.html" />
     <link rel="prev" title="Getting started" href="getting_started.html" /> 
 </head>
 
@@ -99,19 +98,8 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">MRCpy Library Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-contents">Module Contents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.BaseMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.BaseMRC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.MRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.MRC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.CMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#feature-mappings">Feature Mappings</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.phi.BasePhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
-<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.phi.ThresholdPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feature-mappings">Feature Mappings</a></li>
 </ul>
 </li>
 </ul>
@@ -194,15 +182,6 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC" title="MRCpy.BaseMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.BaseMRC</span></code></a>([loss,&nbsp;s,&nbsp;deterministic,&nbsp;…])</td>
-<td>Base class for different minimax risk classifiers.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a>([loss,&nbsp;s,&nbsp;deterministic,&nbsp;…])</td>
-<td>Minimax Risk Classifier</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a>([loss,&nbsp;s,&nbsp;deterministic,&nbsp;…])</td>
-<td>Constrained Minimax Risk Classifier</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -214,18 +193,6 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.phi.BasePhi</span></code></a>(n_classes[,&nbsp;fit_intercept])</td>
-<td>Base class for feature mappings</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.phi.RandomFourierPhi</span></code></a>(n_classes[,&nbsp;…])</td>
-<td>Fourier features</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.phi.RandomReLUPhi</span></code></a>(n_classes[,&nbsp;…])</td>
-<td>ReLU features</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi" title="MRCpy.phi.ThresholdPhi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.phi.ThresholdPhi</span></code></a>(n_classes[,&nbsp;…])</td>
-<td>Threshold features</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -237,7 +204,6 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="generated/MRCpy.BaseMRC.html" class="btn btn-neutral float-right" title="MRCpy.BaseMRC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
