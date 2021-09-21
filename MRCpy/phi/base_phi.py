@@ -70,7 +70,7 @@ class BasePhi():
 
         self.n_classes = n_classes
         self.fit_intercept = fit_intercept
-        self.one_hot=one_hot
+        self.one_hot = one_hot
 
     def fit(self, X, Y=None):
         '''

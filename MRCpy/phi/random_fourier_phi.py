@@ -41,7 +41,7 @@ class RandomFourierPhi(BasePhi):
             Whether to calculate the intercept.
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
-            
+
     one_hot : bool, default=False
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to
@@ -86,7 +86,8 @@ class RandomFourierPhi(BasePhi):
                  n_components=300, random_state=None, one_hot=False):
 
         # Call the base class init function.
-        super().__init__(n_classes=n_classes, fit_intercept=fit_intercept, one_hot=one_hot)
+        super().__init__(n_classes=n_classes, fit_intercept=fit_intercept,
+                         one_hot=one_hot)
 
         self.gamma = gamma
         self.n_components = n_components
