@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.phi.random_relu_phi &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">MRCpy Library Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>MRCpy.phi.random_relu_phi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for MRCpy.phi.random_relu_phi</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39; Random Relu Features. &#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">statistics</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">NearestNeighbors</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_random_state</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+
+<span class="c1"># Import the feature mapping base class</span>
+<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> <span class="n">BasePhi</span>
+
+
+<div class="viewcode-block" id="RandomReLUPhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi">[docs]</a><span class="k">class</span> <span class="nc">RandomReLUPhi</span><span class="p">(</span><span class="n">BasePhi</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    ReLU features</span>
+
+<span class="sd">    ReLU features are given by -</span>
+
+<span class="sd">    .. math::  z(x) = \max(w^t * (1/\gamma,x), 0)</span>
+
+<span class="sd">    where w is a vector(dimension d) of random weights uniformly distributed</span>
+<span class="sd">    over a sphere of unit radius and</span>
+<span class="sd">    :math:`\gamma` is the scaling parameter similar</span>
+<span class="sd">    to the one in random Fourier features.</span>
+
+<span class="sd">    ReLU function is defined as -</span>
+
+<span class="sd">    .. math::           f(x) = \max(0, x)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_classes : int</span>
+<span class="sd">        The number of classes in the dataset.</span>
+
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">            Whether to calculate the intercept.</span>
+<span class="sd">            If set to false, no intercept will be used in calculations</span>
+<span class="sd">            (i.e. data is expected to be already centered).</span>
+<span class="sd">            </span>
+<span class="sd">    one_hot : bool, default=False</span>
+<span class="sd">        Only applies in the binary case, namely, only when there are two</span>
+<span class="sd">        classes. If set to true, one-hot-encoding will be used. If set to</span>
+<span class="sd">        false a more efficient shorcut will be performed.</span>
+
+<span class="sd">    gamma : str {&#39;scale&#39;, &#39;avg_ann&#39;, &#39;avg_ann_50&#39;} or float,</span>
+<span class="sd">            default = &#39;avg_ann_50&#39;</span>
+<span class="sd">        It defines the type of heuristic to be used</span>
+<span class="sd">        to calculate the scaling parameter using the data or</span>
+<span class="sd">        a float value for the parameter.</span>
+
+<span class="sd">    n_components : int, default=300</span>
+<span class="sd">        Number of Monte Carlo samples for the original features.</span>
+<span class="sd">        Equals the dimensionality of the computed (mapped) feature space.</span>
+
+<span class="sd">    random_state : int, RandomState instance, default=None</span>
+<span class="sd">        Used to produce the random weights</span>
+<span class="sd">        used for the approximation of the gaussian kernel.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    random_weights_ : array-like of shape (n_features, n_components/2)</span>
+<span class="sd">        The sampled basis.</span>
+
+<span class="sd">    is_fitted_ : bool</span>
+<span class="sd">        True if the feature mappings has learned its hyperparameters (if any)</span>
+<span class="sd">        and the length of the feature mapping is set.</span>
+
+<span class="sd">    len_ : int</span>
+<span class="sd">        Defines the length of the feature mapping vector.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    [1] On the Approximation Properties of Random ReLU Features.</span>
+<span class="sd">    Yitong Sun, Anna Gilbert and Ambuj Tewari.</span>
+<span class="sd">    arXiv: Machine Learning.</span>
+<span class="sd">    (https://arxiv.org/pdf/1810.04374.pdf)</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="RandomReLUPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="s1">&#39;avg_ann_50&#39;</span><span class="p">,</span>
+                 <span class="n">n_components</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="c1"># Call the base class init function.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span></div>
+
+<div class="viewcode-block" id="RandomReLUPhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Learns the set of random weights for computing the features space.</span>
+<span class="sd">        Also, compute the scaling parameter if the value is not given.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances</span>
+<span class="sd">            used to learn the feature configurations.</span>
+
+<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">            This argument will never be used in this case.</span>
+<span class="sd">            It is present for the consistency of signature of function</span>
+<span class="sd">            among different feature mappings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self :</span>
+<span class="sd">            Fitted estimator</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Evaluate the gamma according to the gamma type given in self.gamma</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">==</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gamma_val</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">var</span><span class="p">())</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">==</span> <span class="s1">&#39;avg_ann_50&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gamma_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rff_gamma</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gamma_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected value for gamma ...&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Obtain the random weights uniformly distributed on</span>
+        <span class="c1"># sphere of unit radius in dimension d.</span>
+        <span class="c1"># Step 1 Generate samples distributed with unit variance</span>
+        <span class="c1">#        in each dimension using the gaussian distribution.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span> <span class="o">=</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">))</span>
+        <span class="c1"># Step 2 Normalize the samples so that they are on a unit sphere.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span> <span class="o">/</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Sets the length of the feature mapping</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="RandomReLUPhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the ReLU random features (:math:`z(x)`).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled training instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Transformed features from the given instances.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;random_weights_&quot;</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">])</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Adding scaling parameter</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([[</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma_val</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+        <span class="n">X_feat</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span>
+
+        <span class="c1"># ReLu on the computed feature matrix</span>
+        <span class="n">X_feat</span><span class="p">[</span><span class="n">X_feat</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">X_feat</span></div>
+
+<div class="viewcode-block" id="RandomReLUPhi.heuristic_gamma"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.heuristic_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">heuristic_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        Computes the scaling parameter for ReLU features</span>
+<span class="sd">        using the heuristic -</span>
+
+<span class="sd">        .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)</span>
+
+<span class="sd">        .. math::   \gamma = 1 / (2 * \sigma^2)</span>
+
+<span class="sd">        for two classes {+1, -1}. For multi-class, we use the same strategy</span>
+<span class="sd">        by finding median of minimum distances between the points of</span>
+<span class="sd">        each class against all other classes</span>
+<span class="sd">        and then taking the average value of the medians of all the classes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled instances.</span>
+
+<span class="sd">        Y : array-like of shape (n_samples,)</span>
+<span class="sd">            Labels corresponding to the instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gamma : float value</span>
+<span class="sd">            Scaling parameter computed using the heuristic.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># List to store the median of min norm value for each class</span>
+        <span class="n">dist_x_i</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="n">n_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_classes</span><span class="p">):</span>
+            <span class="n">x_i</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="n">x_not_i</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">!=</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+
+            <span class="c1"># Find the distance of each point of this class</span>
+            <span class="c1"># with every other point of other class</span>
+            <span class="n">norm_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">x_not_i</span><span class="p">,</span> <span class="p">(</span><span class="n">x_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span>
+                                      <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x_i</span><span class="p">,</span> <span class="n">x_not_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">norm_vec</span><span class="p">,</span> <span class="p">(</span><span class="n">x_not_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_i</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+            <span class="c1"># Find the min distance for each point and take the median distance</span>
+            <span class="n">minDist_x_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dist_mat</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">dist_x_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">minDist_x_i</span><span class="p">))</span>
+
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">dist_x_i</span><span class="p">)</span>
+
+        <span class="c1"># Evaluate gamma</span>
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gamma</span></div>
+
+<div class="viewcode-block" id="RandomReLUPhi.rff_gamma"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi.rff_gamma">[docs]</a>    <span class="k">def</span> <span class="nf">rff_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+
+        <span class="sd">&#39;&#39;&#39;</span>
+
+<span class="sd">        Computes the scaling parameter for the ReLU features</span>
+<span class="sd">        using the heuristic given in the paper -</span>
+
+<span class="sd">                &quot;Compact Nonlinear Maps and Circulant Extensions&quot;</span>
+
+<span class="sd">        The heuristic states that the scaling parameter is obtained as</span>
+<span class="sd">        the average distance to the 50th nearest neighbour estimated</span>
+<span class="sd">        from 1000 samples of the dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Unlabeled instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gamma : float value</span>
+<span class="sd">            Scaling parameter computed using the heuristic.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        [1] Compact Nonlinear Maps and Circulant Extensions</span>
+<span class="sd">        Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang</span>
+<span class="sd">        (https://arxiv.org/pdf/1503.03893.pdf)</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">neighbour_ind</span> <span class="o">=</span> <span class="mi">50</span>
+
+        <span class="c1"># Find the nearest neighbors</span>
+        <span class="n">nbrs</span> <span class="o">=</span> <span class="n">NearestNeighbors</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="p">(</span><span class="n">neighbour_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+                                <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;ball_tree&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">distances</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">kneighbors</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+        <span class="c1"># Compute the average distance to the 50th nearest neighbour</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">distances</span><span class="p">[:,</span> <span class="n">neighbour_ind</span><span class="p">])</span>
+
+        <span class="n">gamma</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">gamma</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -41,12 +41,15 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MRCpy.phi.RandomFourierPhi" href="MRCpy.phi.RandomFourierPhi.html" />
+    <link rel="prev" title="MRCpy.CMRC" href="MRCpy.CMRC.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -94,8 +97,19 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#module-contents">Module Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.ThresholdPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -144,6 +158,8 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
+          <li><a href="../api.html">MRCpy Library Documentation</a> &raquo;</li>
+        
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</li>
     
     
@@ -165,6 +181,299 @@
             
   <div class="section" id="mrcpy-phi-basephi">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi<a class="headerlink" href="#mrcpy-phi-basephi" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></code><code class="sig-name descname"><span class="pre">BasePhi</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for feature mappings</p>
+<p>The class provides a base for different feature mapping functions
+that can be used with the MRC.
+This class provides definition for some utility functions that are
+used by the MRCs in the library. It corresponds
+to the usual identity feature map referred to as Linear feature map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>The number of classes in the dataset</p>
+</dd>
+<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept.
+If set to false, no intercept will be used in calculations
+(i.e. data is expected to be already centered)</p>
+</dd>
+<dt><strong>one_hot</strong><span class="classifier">bool, default=False</span></dt><dd><p>Only applies in the binary case, namely, only when there are two
+classes. If set to true, one-hot-encoding will be used. If set to
+false a more efficient shorcut will be performed.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This is a base class for all the feature mappings.
+To create a new feature mapping that can be used with MRC objects,
+the user can extend this class and
+then implement the functions -</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> - learns the required parameters for feature transformation</li>
+<li><a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> - transforms the input instances to the features</li>
+</ol>
+</div></blockquote>
+<p>The above functions are principal components
+for different feature transformation.
+Apart from these functions, the users can also re-define other functions
+in this class according to their need.</p>
+<p>The definition of <a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> and <a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> in this class correspond to the
+usual identity feature map referred to as Linear feature map.</p>
+<p>The <a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> function is only used by the <a class="reference internal" href="#MRCpy.phi.BasePhi.eval_xy" title="MRCpy.phi.BasePhi.eval_xy"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">eval_xy</span></code></a> function
+of this class to get the one-hot encoded features.
+If the user defines his own <a class="reference internal" href="#MRCpy.phi.BasePhi.eval_xy" title="MRCpy.phi.BasePhi.eval_xy"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">eval_xy</span></code></a> function
+that returns the features directly without the need
+of <a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> function, then the <a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> function can be omitted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the feature mappings has learned its hyperparameters (if any)
+and the length of the feature mapping is set.</p>
+</dd>
+<dt><strong>len_</strong><span class="classifier">int</span></dt><dd><p>Defines the length of the feature mapping vector.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table border="1" class="longtable docutils align-default">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.est_exp" title="MRCpy.phi.BasePhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X,&nbsp;Y)</td>
+<td>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.est_std" title="MRCpy.phi.BasePhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X,&nbsp;Y)</td>
+<td>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.eval_x" title="MRCpy.phi.BasePhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.eval_xy" title="MRCpy.phi.BasePhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X,&nbsp;Y)</td>
+<td>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[,&nbsp;Y])</td>
+<td>Learns the required hyperparameters for the feature mapping transformation from the training instances and set the length of the feature mapping (one-hot encoded) obtained from the <a class="reference internal" href="#MRCpy.phi.BasePhi.eval_xy" title="MRCpy.phi.BasePhi.eval_xy"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">eval_xy</span></code></a> function.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
+<td>Transform the given instances to the features.</td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">n_classes</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.est_exp">
+<code class="sig-name descname"><span class="pre">est_exp</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.est_exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.est_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).
+Used in the learning stage to estimate
+the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\({\tau}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.est_std">
+<code class="sig-name descname"><span class="pre">est_std</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.est_std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.est_std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>
+in the supervised dataset (X,Y).
+Used in the learning stage
+to estimate the variance in the expectation of
+<span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\(\lambda\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.eval_x">
+<code class="sig-name descname"><span class="pre">eval_x</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.eval_x"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.eval_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
+that is composed of 2D matrices corresponding to each of the instance.
+These 2D matrices are the one-hot encodings of the instances’ features
+corresponding to all the possible labels in the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
+<div><p>(n_samples, n_classes, n_features * n_classes)</p>
+</div></blockquote>
+<p>Matrix containing the one-hot encoding for all the classes
+for each of the instances given.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.eval_xy">
+<code class="sig-name descname"><span class="pre">eval_xy</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.eval_xy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.eval_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
+X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
+<span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
+The encodings are calculated,
+corresponding to the given labels, which is used by the learning stage
+for estimating the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
+<div><p>(n_samples, n_features * n_classes)</p>
+</div></blockquote>
+<p>Matrix containing the one-hot encoding
+with respect to the labels given for all the instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.fit">
+<code class="sig-name descname"><span class="pre">fit</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em>, <em><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learns the required hyperparameters
+for the feature mapping transformation
+from the training instances
+and set the length of the feature mapping (one-hot encoded)
+obtained from the <a class="reference internal" href="#MRCpy.phi.BasePhi.eval_xy" title="MRCpy.phi.BasePhi.eval_xy"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">eval_xy</span></code></a> function.</p>
+<dl class="docutils">
+<dt>Note: If a user implements <a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> function in his own feature mapping,</dt><dd><p>then it is recommended to call this <a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> function
+at the end of his own function to automatically set
+the length of the feature mapping.
+This <a class="reference internal" href="#MRCpy.phi.BasePhi.fit" title="MRCpy.phi.BasePhi.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> function can be called in a subclass as follows -</p>
+<blockquote>
+<div><code class="xref any docutils literal notranslate"><span class="pre">super().fit(X,Y)</span></code></div></blockquote>
+<p>Feature mappings implemented in this library follow this
+same approach.</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances
+used to learn the feature configurations</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>Labels corresponding to the unlabeled instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>self :</dt><dd><p>Fitted estimator</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.BasePhi.transform">
+<code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/base_phi.html#BasePhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.BasePhi.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the given instances to the features.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>X_feat</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Transformed features from the given instances.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <div style='clear:both'></div></div>
 
 
@@ -172,6 +481,10 @@
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.phi.RandomFourierPhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.RandomFourierPhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.CMRC.html" class="btn btn-neutral float-left" title="MRCpy.CMRC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 
