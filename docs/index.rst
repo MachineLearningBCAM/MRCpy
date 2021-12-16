@@ -17,6 +17,8 @@ MRCpy: A Library for Minimax Risk Classifiers
 
 `MRCpy <https://github.com/MachineLearningBCAM/MRCpy>`_ is an open-source Python library for Supervised Classification in Machine Learning. It provides implementation for recently proposed Minimax Risk Classifiers (MRCs) based on robust risk minimization and 0-1-loss, and provide bounds on the classification error. It provides a unified user-friendly interface for different variant of MRCs. The library also comes with a feature mapping module that provides implementation for some recent feature mapping methods.
 
+
+
 Documentation outline
 ---------------------
 
@@ -29,6 +31,70 @@ Documentation outline
    :maxdepth: 2
 
    api
+
+.. toctree::
+   :maxdepth: 2
+
+   auto_examples/index
+   
+   .. toctree::
+      :maxdepth: 2
+
+      basic_examples
+
+   .. toctree::
+      :maxdepth: 2
+      
+      further_applications
+
+References
+----------
+
+ For more information about the MRC method and the MRCpy library, one can refer to the following resources:
+
+   - [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+
+         ::
+         
+               @article{mazuelas2020minimax,
+                  title={Minimax Classification with 0-1 Loss and Performance Guarantees},
+                  author={Mazuelas, Santiago and Zanoni, Andrea and P{\'e}rez, Aritz},
+                  journal={Advances in Neural Information Processing Systems},
+                  volume={33},
+                  pages={302--312},
+                  year={2020}
+               }
+
+   - [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447. <https://arxiv.org/abs/2007.05447>`_
+
+         ::
+
+               @article{mazuelas2020generalized,
+                  title={Generalized Maximum Entropy for Supervised Classification},
+                  author={Mazuelas, Santiago and Shen, Yuan and P{\'e}rez, Aritz},
+                  journal={arXiv preprint arXiv:2007.05447},
+                  year={2020}
+               }
+
+   - [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. <https://arxiv.org/abs/2108.01952>`_
+
+         ::
+
+               @article{bondugula2021mrcpy,
+                  title={MRCpy: A Library for Minimax Risk Classifiers},
+                  author={Bondugula, Kartheek and Mazuelas, Santiago and P{\'e}rez, Aritz},
+                  journal={arXiv preprint arXiv:2108.01952},
+                  year={2021}
+               }
+
+Funding
+^^^^^^^^
+Research carried out under the project **PID2019-105058GA-I00** funded by
+**MCIN/AEI/10.13039/501100011033**.
+
+.. image:: fund_logo.png
+  :width: 150
+  :alt: Research carried out under the project PID2019-105058GA-I00 funded by MCIN/ AEI /10.13039/501100011033
 
 .. |Travis-CI Build Status| image:: https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main
    :target: https://travis-ci.org/github/MachineLearningBCAM/MRCpy

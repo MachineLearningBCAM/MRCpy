@@ -6,7 +6,7 @@
 .. autoclass:: BasePhi
    :members:
    :undoc-members:
-   :exclude-members: nesterov_optimization, try_solvers, set_learn_config_type, learn_config, get_all_subset_config
+   :exclude-members: nesterov_optimization, nesterov_optimization_minimized, try_solvers, set_learn_config_type, learn_config, get_all_subset_config
    :inherited-members:
    :special-members: __init__
 

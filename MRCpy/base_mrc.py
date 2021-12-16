@@ -1,4 +1,7 @@
-'''Super class for Minimax Risk Classifiers.'''
+'''
+.. _base_mrc:
+Super class for Minimax Risk Classifiers.
+'''
 
 import cvxpy as cvx
 import numpy as np
@@ -16,75 +19,133 @@ from MRCpy.phi import \
 
 class BaseMRC(BaseEstimator, ClassifierMixin):
     '''
-    Base class for different minimax risk classifiers.
+    Base class for different minimax risk classifiers
 
     This class is a parent class for different MRCs
     implemented in the library.
     It defines the different parameters and the layout.
 
+    .. seealso:: For more information about MRC, one can refer to the following resources:
+                        
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
+                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
+                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_ 
+                    
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
+                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                    <https://arxiv.org/abs/2108.01952>`_
+
     Parameters
     ----------
-    loss : `str` {'0-1', 'log'}, default='0-1'
-        The type of loss function to use for the risk minimization.
+    loss : `str`, default = '0-1'
+        Type of loss function to use for the risk 
+        minimization.
+        The options are 0-1 loss and logaritmic loss.
+        '0-1' 
+            0-1 loss quantifies the probability of classification 
+            error at a certain example for a certain rule. 
+        'log'
+            Log-loss quantifies the minus log-likelihood at a
+            certain example for a certain rule.
 
-    s : float, default=0.3
-        For tuning the estimation of expected values
-        of feature mapping function.
+    s : `float`, default = `0.3`
+        Parameter that tunes the estimation of expected values
+        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates
+        for the expectations of the feature mappings) in the following way
 
-    deterministic : bool, default=None
-        For determining if the prediction of the labels
-        should be done in a deterministic way or not.
-        For '0-1' loss, the non-deterministic ('False') approach
-        works well.
-        For 'log' loss, the deterministic ('True') approach
-        works well.
-        If the user does not specify the value, the default value
-        is set according to loss function.
+        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     
+        
+        where (X,Y) is the dataset of training samples and their labels respectively and
+        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
 
-    random_state : int, RandomState instance, default=None
-        Used when 'fourier' and 'relu' options for feature mappings are used
+    sigma : `str` or `float`, default = `None`
+        When given a string, it defines the type of heuristic to be used
+        to calculate the scaling parameter `sigma` used in some feature mappings such
+        as Random Fourier or ReLU featuress.
+        For comparison its relation with parameter `gamma` used in 
+        other methods is :math:`\gamma=1/(2\sigma^2)`.
+        When given a float, it is the value for the scaling parameter.
+
+        'scale'
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
+            so that 
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            variance function.
+
+        'avg_ann_50'
+            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            nearest neighbour estimated from 1000 samples of the dataset using
+            the function `rff_sigma`. 
+
+    deterministic : `bool`, default = `True`
+        Whether the prediction of the labels
+        should be done in a deterministic way (given a fixed `random_state` 
+        in the case of using random Fourier or random ReLU features).
+
+    random_state : `int`, RandomState instance, default = `None`
+        Random seed used when 'fourier' and 'relu' options for feature mappings are used
         to produce the random weights.
 
-    fit_intercept : bool, default=True
+    fit_intercept : `bool`, default = `True`
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    warm_start : bool, default=False
-        When set to True,
-        reuse the solution of the previous call to fit as initialization,
-        otherwise, just erase the previous solution.
-
-    use_cvx : bool, default=False
-        If True, use CVXpy library for the optimization
+    use_cvx : `bool`, default = `False`
+        When set to True, use CVXpy library for the optimization
         instead of the subgradient methods.
 
-    solver : str {'SCS', 'ECOS', 'MOSEK'}, default='MOSEK'
-        The type of CVX solver to use for solving the problem.
+    solver : `str`, default = 'MOSEK'
+        Type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
         so you might need to change solver depending on the problem.
-        'MOSEK' is a commercial solver for which one might need to
-        request for a license. A free license can be requested
-        `here <https://www.mosek.com/products/academic-licenses/>`_
+        
+        'SCS'
+            It uses Splitting Conic Solver (SCS).
 
-    max_iters : int, default=10000
-        The maximum number of iterations to use
-        for finding the solution of optimization
+        'ECOS'
+            It uses Embedded Eonic Eolver (ECOS).
+
+        'MOSEK'
+            MOSEK is a commercial solver for which one might need to
+            request for a license. A free license can be requested
+            `here <https://www.mosek.com/products/academic-licenses/>`_.
+
+    max_iters : `int`, default = `10000`
+        Maximum number of iterations to use
+        for finding the solution of optimization when
         using the subgradient approach.
 
-    phi : str {'fourier', 'relu', 'threshold', 'linear'} or
-          `BasePhi` instance (custom features), default='linear'
-        The type of feature mapping function to use for mapping the input data
-        'fourier', 'relu', 'threshold' and 'linear'
-        are the currenlty available feature mapping methods.
+    phi : `str` or `BasePhi` instance, default = 'linear'
+        Type of feature mapping function to use for mapping the input data.
+        The currenlty available feature mapping methods are 
+        'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
         To implement a feature mapping, please go through the
         :ref:`Feature Mapping` section.
 
+        'linear'
+            It uses the identity feature map referred to as Linear feature map.
+            See class `BasePhi`.
+
+        'fourier'
+            It uses Random Fourier Feature map. See class `RandomFourierPhi`.
+
+        'relu'
+            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.
+
+        'threshold'
+            It uses Feature mappings obtained using a threshold. 
+            See class `ThresholdPhi`.
+
     **phi_kwargs : Additional parameters for feature mappings.
                 Groups the multiple optional parameters
-                for the corresponding feature mappings(phi).
+                for the corresponding feature mappings (`phi`).
 
                 For example in case of fourier features,
                 the number of features is given by `n_components`
@@ -96,17 +157,17 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
     Attributes
     ----------
-    is_fitted_ : bool
-        True if the classifier is fitted i.e., the parameters are learnt.
+    is_fitted_ : `bool`
+        Whether the classifier is fitted i.e., the parameters are learnt.
 
-    tau_ : array-like of shape (n_features)
-        The mean estimates for the expectations of feature mappings.
+    tau_ : `array`-like of shape (`n_features`)
+        Mean estimates for the expectations of feature mappings.
 
-    lambda_ : array-like of shape (n_features)
-        The variance in the mean estimates for the expectations
+    lambda_ : `array`-like of shape (`n_features`)
+        Variance in the mean estimates for the expectations
         of the feature mappings.
 
-    classes_ : array-like of shape (n_classes)
+    classes_ : `array`-like of shape (`n_classes`)
         Labels in the given dataset.
         If the labels Y are not given during fit
         i.e., tau and lambda are given as input,
@@ -114,16 +175,17 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
     '''
 
     def __init__(self, loss='0-1', s=0.3,
-                 deterministic=None, random_state=None,
-                 fit_intercept=True, warm_start=False, use_cvx=False,
-                 solver='MOSEK', max_iters=10000, phi='linear', **phi_kwargs):
+                 deterministic=True, random_state=None,
+                 fit_intercept=True, use_cvx=False,
+                 solver='MOSEK', max_iters=10000, phi='linear',
+                 sigma=None, **phi_kwargs):
 
         self.loss = loss
         self.s = s
+        self.sigma = sigma
         self.deterministic = deterministic
         self.random_state = random_state
         self.fit_intercept = fit_intercept
-        self.warm_start = warm_start
         self.use_cvx = use_cvx
         self.solver = solver
         self.max_iters = max_iters
@@ -142,7 +204,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Training instances used in
 
             - Calculating the expectation estimates
@@ -150,10 +212,10 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
               for the minimax risk classification
             - Solving the minimax risk optimization problem.
 
-            n_samples is the number of samples and
-            n_features is the number of features.
+            `n_samples` is the number of training samples and
+            `n_features` is the number of features.
 
-        Y : array-like of shape (n_samples1), default = None
+        Y : `array`-like of shape (`n_samples`, 1), default = `None`
             Labels corresponding to the training instances
             used only to compute the expectation estimates.
 
@@ -229,19 +291,19 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Training instances used for solving
             the minimax risk optimization problem.
 
-        tau_ : array-like of shape (n_features * n_classes)
-            The mean estimates
+        tau_ : `array`-like of shape (`n_features` * `n_classes`)
+            Mean estimates
             for the expectations of feature mappings.
 
-        lambda_ : array-like of shape (n_features * n_classes)
-            The variance in the mean estimates
+        lambda_ : `array`-like of shape (`n_features` * `n_classes`)
+            Variance in the mean estimates
             for the expectations of the feature mappings.
 
-        n_classes : int
+        n_classes : `int`
             Number of labels in the dataset.
 
         Returns
@@ -267,38 +329,30 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         Parameters
         ----------
-        objective : cvxpy variable of float value
-            Defines the minimization problem of the MRC.
+        objective : `cvxpy` variable of `float` value
+            Minimization objective function of the
+            problem of the MRC.
 
-        constraints : array-like of shape (n_constraints)
-            Defines the constraints for the MRC optimization.
+        constraints : `array`-like of shape (`n_constraints`)
+            Constraints for the MRC optimization.
 
-        mu : cvxpy array of shape (number of featuers in phi)
+        mu : `cvxpy` array of shape (number of featuers in `phi`)
             Parameters used in the optimization problem
 
         Returns
         -------
-        mu_ : array-like of shape (number of featuers in phi)
-            The value of the parameters
+        mu_ : `array`-like of shape (number of featuers in `phi`)
+            Value of the parameters
             corresponding to the optimum value of the objective function.
 
-        objective_value : float
-            The optimized objective value.
+        objective_value : `float`
+            Optimized objective value.
 
         '''
 
-        # Reuse the solution from previous call to fit.
-        if self.warm_start:
-            # Use a previous solution if it exists.
-            try:
-                mu.value = self.mu_
-            except AttributeError:
-                pass
-
         # Solve the problem
         prob = cvx.Problem(objective, constraints)
-        prob.solve(solver=self.solver, verbose=False,
-                   warm_start=self.warm_start)
+        prob.solve(solver=self.solver, verbose=False)
 
         mu_ = mu.value
 
@@ -309,17 +363,8 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             for s in self.solvers:
                 if s != self.solver:
 
-                    # Reuse the solution from previous call to fit.
-                    if self.warm_start:
-                        # Use a previous solution if it exists.
-                        try:
-                            mu.value = self.mu_
-                        except AttributeError:
-                            pass
-
                     # Solve the problem
-                    prob.solve(solver=s, verbose=False,
-                               warm_start=self.warm_start)
+                    prob.solve(solver=s, verbose=False)
 
                     # Check the values
                     mu_ = mu.value
@@ -346,14 +391,14 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Testing instances for which
             the prediction probabilities are calculated for each class.
 
         Returns
         -------
-        hy_x : array-like of shape (n_samples, n_classes)
-            The conditional probabilities (p(y|x))
+        hy_x : `array`-like of shape (`n_samples`, `n_classes`)
+            Conditional probabilities (:math:`p(y|x)`)
             corresponding to each class.
         '''
 
@@ -368,19 +413,21 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
     def predict(self, X):
         '''
-        Returns the predicted classes for the given instances
+        Predicts classes for new instances using a fitted model.
+
+        Returns the predicted classes for the given instances in `X`
         using the probabilities given by the function `predict_proba`.
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Test instances for which the labels are to be predicted
             by the MRC model.
 
         Returns
         -------
-        y_pred : array-like of shape (n_samples)
-            The predicted labels corresponding to the given instances.
+        y_pred : `array`-like of shape (`n_samples`)
+            Predicted labels corresponding to the given instances.
 
         '''
 

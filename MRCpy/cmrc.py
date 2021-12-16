@@ -17,73 +17,130 @@ class CMRC(BaseMRC):
     '''
     Constrained Minimax Risk Classifier
 
-    MRCs using the additional marginals constraints on the instances.
-    It also implements two kinds of loss functions, namely 0-1 and log loss.
+    The class CMRC implements the method Minimimax Risk Classification (MRC) proposed in :ref:`[1] <ref1>` 
+    using the additional marginals constraints on the instances. It also implements two kinds of loss functions, namely 0-1 and log loss.
+    
     This is a subclass of the super class BaseMRC.
+
+    See :ref:`Examples of use` for futher applications of this class and its methods.
+
+    .. seealso:: For more information about MRC, one can refer to the following resources:
+                    
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
+                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
+                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_ 
+                    
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
+                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                    <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
     ----------
-    loss : `str` {'0-1', 'log'}, default='0-1'
-        The type of loss function to use for the risk minimization.
+    loss : `str` {'0-1', 'log'}, default = '0-1'
+        Type of loss function to use for the risk minimization. 0-1 loss
+        quantifies the probability of classification error at a certain example
+        for a certain rule. Log-loss quantifies the minus log-likelihood at a
+        certain example for a certain rule.
 
-    s : float, default=0.3
-        For tuning the estimation of expected values
-        of feature mapping function.
+    s : `float`, default = `0.3`
+        Parameter that tunes the estimation of expected values
+        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates
+        for the expectations of the feature mappings) in the following way
 
-    deterministic : bool, default=None
-        For determining if the prediction of the labels
-        should be done in a deterministic way or not.
-        For '0-1' loss, the non-deterministic ('False') approach
-        works well.
-        For 'log' loss, the deterministic ('True') approach
-        works well.
-        If the user doesnot specify the value, the default value
-        is set according to loss function.
+        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     
+        
+        where (X,Y) is the dataset of training samples and their labels respectively and
+        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y). 
 
-    random_state : int, RandomState instance, default=None
+    sigma : `str` or `float`, default = `None`
+        When given a string, it defines the type of heuristic to be used
+        to calculate the scaling parameter `sigma` used in some feature mappings such
+        as Random Fourier or ReLU featuress.
+        For comparison its relation with parameter `gamma` used in 
+        other methods is :math:`\gamma=1/(2\sigma^2)`.
+        When given a float, it is the value for the scaling parameter.
+
+        'scale'
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
+            so that 
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            variance function.
+
+        'avg_ann_50'
+            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            nearest neighbour estimated from 1000 samples of the dataset using
+            the function `rff_sigma`. 
+
+    deterministic : `bool`, default = `True`
+        Whether the prediction of the labels
+        should be done in a deterministic way (given a fixed `random_state` 
+        in the case of using random Fourier or random ReLU features).
+
+    random_state : `int`, RandomState instance, default = `None`
         Used when 'fourier' and 'relu' options for feature mappings are used
         to produce the random weights.
 
-    fit_intercept : bool, default=True
+    fit_intercept : `bool`, default = `True`
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    warm_start : bool, default=False
-        When set to True,
-        reuse the solution of the previous call to fit as initialization,
-        otherwise, just erase the previous solution.
-
-    use_cvx : bool, default=False
+    use_cvx : `bool`, default = `False`
         If True, use CVXpy library for the optimization
         instead of the subgradient methods.
 
-    solver : str {'SCS', 'ECOS', 'MOSEK'}, default='MOSEK'
+    solver : `str`, default = 'MOSEK'
         The type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
         so you might need to change solver depending on the problem.
-        'MOSEK' is a commercial solver for which one might need to
-        request for a license. A free license can be requested
-        `here <https://www.mosek.com/products/academic-licenses/>`_
+        
+        'SCS'
+            It uses Splitting Conic Solver (SCS).
 
-    max_iters : int, default=2000
+        'ECOS'
+            It uses Embedded Eonic Eolver (ECOS).
+
+        'MOSEK'
+            MOSEK is a commercial solver for which one might need to
+            request for a license. A free license can be requested
+            `here <https://www.mosek.com/products/academic-licenses/>`_.
+
+
+    max_iters : `int`, default = `2000`
         The maximum number of iterations to use
-        for finding the solution of optimization
+        for finding the solution of optimization when
         using the subgradient approach.
 
-    phi : str {'fourier', 'relu', 'threshold', 'linear'} or
-           `BasePhi` instance (custom features), default='linear'
-        The type of feature mapping function to use for mapping the input data
-        'fourier', 'relu', 'threshold' and 'linear'
-        are the currenlty available feature mapping methods.
+    phi : `str` or `BasePhi` instance, default = 'linear'
+        The type of feature mapping function to use for mapping the input data.
+        The currenlty available feature mapping methods are 
+        'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
         To implement a feature mapping, please go through the
         :ref:`Feature Mapping` section.
 
+        'linear'
+            It uses the identity feature map referred to as Linear feature map.
+            See class `BasePhi`.
+
+        'fourier'
+            It uses Random Fourier Feature map. See class `RandomFourierPhi`.
+
+        'relu'
+            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.
+
+        'threshold'
+            It uses Feature mappings obtained using a threshold. 
+            See class `ThresholdPhi`.
+
     **phi_kwargs : Additional parameters for feature mappings.
                 Groups the multiple optional parameters
-                for the corresponding feature mappings(phi).
+                for the corresponding feature mappings(`phi`).
 
                 For example in case of fourier features,
                 the number of features is given by `n_components`
@@ -95,19 +152,65 @@ class CMRC(BaseMRC):
 
     Attributes
     ----------
-    is_fitted_ : bool
-        True if the classifier is fitted i.e., the parameters are learnt.
-    tau_ : array-like of shape (n_features) or float
-        The mean estimates
+    is_fitted_ : `bool`
+        Whether the classifier is fitted i.e., the parameters are learnt.
+    tau_ : `array`-like of shape (`n_features`) or `float`
+        Mean estimates
         for the expectations of feature mappings.
-    lambda_ : array-like of shape (n_features) or float
-        The variance in the mean estimates
+    lambda_ : `array`-like of shape (`n_features`) or `float`
+        Variance in the mean estimates
         for the expectations of the feature mappings.
-    mu_ : array-like of shape (n_features) or float
+    mu_ : `array`-like of shape (`n_features`) or `float`
         Parameters learnt by the optimization.
-    params_ : a dictionary
-        Stores the optimal points and best value of the function
-        when the warm_start=True.
+    params_ : `dict`
+        Dictionary that stores the optimal points and best value of 
+        the function.
+
+    Examples
+    --------
+
+    Simple example of using CMRC with default seetings: 0-1 loss and linear feature mapping.
+    We first load the data and split it into train and test sets. We fit the model 
+    with the training samples using `fit` function. Then, we predict the class of some test
+    samples with `predict`. We can also obtain the probabilities of each class with 
+    `predict_proba`. Finally, we calculate the score of the model over the test set
+    using `score`.
+
+
+    >>> from MRCpy import CMRC
+    >>> from MRCpy.datasets import load_mammographic
+    >>> from sklearn import preprocessing
+    >>> from sklearn.model_selection import train_test_split
+    >>> # Loading the dataset
+    >>> X, Y = load_mammographic(return_X_y=True) 
+    >>> # Split the dataset into training and test instances
+    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+    >>> # Standarize the data
+    >>> std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)
+    >>> X_train = std_scale.transform(X_train)
+    >>> X_test = std_scale.transform(X_test)
+    >>> # Fit the CMRC model
+    >>> clf = CMRC().fit(X_train, Y_train)
+    >>> # Prediction. The predicted values for the first 10 test instances are:
+    >>> clf.predict(X_test[:10, :])
+    [0 0 0 0 0 1 0 1 0 0]
+    >>> # Predicted probabilities. 
+    >>> # The predicted probabilities for the first 10 test instances are:
+    >>> clf.predict_proba(X_test[:10, :])
+    [[0.62919573 0.37080427]
+     [1.         0.        ]
+     [0.95104266 0.04895734]
+     [1.         0.        ]
+     [0.99047735 0.00952265]
+     [0.         1.        ]
+     [1.         0.        ]
+     [0.12378713 0.87621287]
+     [1.         0.        ]
+     [0.62290253 0.37709747]]
+    >>> # Calculate the score of the predictor 
+    >>> # (mean accuracy on the given test data and labels)
+    >>> clf.score(X_test, Y_test)
+    0.8247422680412371
     '''
 
     # Redefining the init function
@@ -115,15 +218,14 @@ class CMRC(BaseMRC):
     # In case of CMRC, the convergence is observed to be fast
     # and hence less iterations should be sufficient
     def __init__(self, loss='0-1', s=0.3,
-                 deterministic=None, random_state=None,
-                 fit_intercept=True, warm_start=False, use_cvx=False,
+                 deterministic=True, random_state=None,
+                 fit_intercept=True, use_cvx=False,
                  solver='SCS', max_iters=2000, phi='linear', **phi_kwargs):
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
                          random_state=random_state,
                          fit_intercept=fit_intercept,
-                         warm_start=warm_start,
                          use_cvx=use_cvx,
                          solver=solver,
                          max_iters=max_iters,
@@ -137,19 +239,19 @@ class CMRC(BaseMRC):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Training instances used for solving
             the minimax risk optimization problem.
 
-        tau_ : array-like of shape (n_features * n_classes)
+        tau_ : `array`-like of shape (`n_features` * `n_classes`)
             The mean estimates
             for the expectations of feature mappings.
 
-        lambda_ : array-like of shape (n_features * n_classes)
+        lambda_ : `array`-like of shape (`n_features` * `n_classes`)
             The variance in the mean estimates
             for the expectations of the feature mappings.
 
-        n_classes : int
+        n_classes : `int`
             Number of labels in the dataset.
 
         Returns
@@ -279,18 +381,8 @@ class CMRC(BaseMRC):
                         (np.sum(((expPhi @ phi)[:, 0, :] /
                                  np.sum(expPhi, axis=2)).transpose(), axis=1))
 
-            # Check if the warm start is true
-            # to reuse the solution from previous call to fit.
-            if self.warm_start:
-                # Start from a previous solution.
-                try:
-                    self.params_ = \
-                        self.nesterov_optimization(m, self.params_, f_, g_)
-                except AttributeError:
-                    self.params_ = self.nesterov_optimization(m, None, f_, g_)
-            else:
-                self.params_ = \
-                    self.nesterov_optimization(m, None, f_, g_)
+            self.params_ = \
+                self.nesterov_optimization(m, None, f_, g_)
 
             self.mu_ = self.params_['mu']
 
@@ -303,21 +395,27 @@ class CMRC(BaseMRC):
         Solution of the CMRC convex optimization(minimization)
         using the Nesterov accelerated approach.
 
+        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019). 
+                            The Strength of Nesterov’s Extrapolation in the Individual 
+                            Convergence of Nonsmooth Optimization. IEEE transactions on 
+                            neural networks and learning systems, 31(7), 2557-2568.
+                            <https://ieeexplore.ieee.org/document/8822632>`_
+
         Parameters
         ----------
-        m : int
+        m : `int`
             Length of the feature mapping vector
-        params_ : a dictionary
+        params_ : `dict`
             A dictionary of parameters values
             obtained from the previous call to fit
             used as the initial values for the current optimization
             when warm_start is True.
-        f_ : a lambda function/ function of the form - f_(mu)
+        f_ : a lambda function/ function of the form - `f_(mu)`
             It is expected to be a lambda function or a function
             calculating a part of the objective function
             depending on the type of loss function chosen
             by taking the parameters(mu) of the optimization as input.
-        g_ : a lambda function of the form - g_(mu, idx)
+        g_ : a lambda function of the form - `g_(mu, idx)`
             It is expected to be a lambda function
             calculating the part of the subgradient of the objective function
             depending on the type of the loss function chosen.
@@ -328,18 +426,10 @@ class CMRC(BaseMRC):
 
         Return
         ------
-        mu : array-like, shape (m,)
+        mu : `array`-like, shape (`m`,)
             The parameters corresponding to the optimized function value
-        f_best_value : float
+        f_best_value : `float`
             The optimized value of the function in consideration.
-
-        References
-        ----------
-        [1] The strength of Nesterov’s extrapolation
-        in the individual convergence of nonsmooth optimization.
-        Wei Tao, Zhisong Pan, Gao wei Wu, and Qing Tao.
-        In IEEE Transactions on Neural Networks and Learning System.
-        (https://ieeexplore.ieee.org/document/8822632)
         '''
 
         # Initial values for the parameters
@@ -467,13 +557,13 @@ class CMRC(BaseMRC):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Testing instances for which
             the prediction probabilities are calculated for each class.
 
         Returns
         -------
-        hy_x : array-like of shape (n_samples, n_classes)
+        hy_x : `array`-like of shape (`n_samples`, `n_classes`)
             The conditional probabilities (p(y|x))
             corresponding to each class.
         '''

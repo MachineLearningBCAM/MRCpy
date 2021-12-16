@@ -11,8 +11,8 @@ The latest code of MRCpy can be installed by downloading the source repository a
 
 **Dependencies**
 
-- Python 3.6+
-- numpy>=1.18.1, scipy>=1.4.1, scikit-learn>=0.21.0, cvxpy, mosek
+- `Python` :math:`\geq` 3.6
+- `numpy` :math:`\geq` 1.18.1, `scipy`:math:`\geq` 1.4.1, `scikit-learn` :math:`\geq` 0.21.0, `cvxpy`, `mosek`
 
 Quick start
 ===========

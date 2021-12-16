@@ -16,53 +16,74 @@ class BasePhi():
     used by the MRCs in the library. It corresponds
     to the usual identity feature map referred to as Linear feature map.
 
+    To see an example of how to extend the class `BasePhi` to implement
+    yout own feature mapping see :ref:`this example <ex_phi>`.
+
+
+
+    .. note:: This is a base class for all the feature mappings.
+        To create a new feature mapping that can be used with MRC objects,
+        the user can extend this class and then implement the functions -
+
+            1) `fit` - learns the required parameters for feature transformation
+            2) `transform` - transforms the input instances to the features
+
+        The above functions are principal components
+        for different feature transformation.
+        Apart from these functions, the users can also re-define other functions
+        in this class according to their need.
+
+        The definition of `fit` and `transform` in this class correspond to the
+        usual identity feature map referred to as **Linear feature map**.
+
+        The `transform` function is only used by the `eval_xy` function
+        of this class to get the one-hot encoded features.
+        If the user defines his own `eval_xy` function
+        that returns the features directly without the need
+        of `transform` function, then the `transform` function can be omitted.
+
+    .. seealso:: For more information about MRC, one can refer to the following resources:
+                        
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
+                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
+                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_ 
+                    
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
+                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                    <https://arxiv.org/abs/2108.01952>`_
+
+
     Parameters
     ----------
-    n_classes : int
-        The number of classes in the dataset
+    n_classes : `int`
+        Number of classes in the dataset
 
-    fit_intercept : bool, default=True
-            Whether to calculate the intercept.
-            If set to false, no intercept will be used in calculations
-            (i.e. data is expected to be already centered)
+    fit_intercept : `bool`, default = `True`
+        Whether to calculate the intercept.
+        If set to false, no intercept will be used in calculations
+        (i.e. data is expected to be already centered)
 
-    one_hot : bool, default=False
-        Only applies in the binary case, namely, only when there are two
-        classes. If set to true, one-hot-encoding will be used. If set to
+    one_hot : `bool`, default = `False`
+        Controls the method used for evaluating the features of the 
+        given instances in the binary case.
+        Only applies in the **binary case**, namely, only when there are two
+        classes. When set to true, one-hot-encoding will be used. If set to
         false a more efficient shorcut will be performed.
-
+    
     Attributes
     ----------
-    is_fitted_ : bool
-        True if the feature mappings has learned its hyperparameters (if any)
+    is_fitted_ : `bool`
+        Whether the feature mapping has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
 
-    len_ : int
-        Defines the length of the feature mapping vector.
+    len_ : `int`
+        Length of the feature mapping vector.
+    
 
-    Notes
-    -----
-    This is a base class for all the feature mappings.
-    To create a new feature mapping that can be used with MRC objects,
-    the user can extend this class and
-    then implement the functions -
-
-        1) `fit` - learns the required parameters for feature transformation
-        2) `transform` - transforms the input instances to the features
-
-    The above functions are principal components
-    for different feature transformation.
-    Apart from these functions, the users can also re-define other functions
-    in this class according to their need.
-
-    The definition of `fit` and `transform` in this class correspond to the
-    usual identity feature map referred to as Linear feature map.
-
-    The `transform` function is only used by the `eval_xy` function
-    of this class to get the one-hot encoded features.
-    If the user defines his own `eval_xy` function
-    that returns the features directly without the need
-    of `transform` function, then the `transform` function can be omitted.
 
     '''
 
@@ -74,13 +95,15 @@ class BasePhi():
 
     def fit(self, X, Y=None):
         '''
+        Performs training stage.
+
         Learns the required hyperparameters
         for the feature mapping transformation
         from the training instances
         and set the length of the feature mapping (one-hot encoded)
         obtained from the `eval_xy` function.
 
-        Note: If a user implements `fit` function in his own feature mapping,
+        .. note:: If a user implements `fit` function in his own feature mapping,
               then it is recommended to call this `fit` function
               at the end of his own function to automatically set
               the length of the feature mapping.
@@ -93,11 +116,11 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances
             used to learn the feature configurations
 
-        Y : array-like of shape (n_samples)
+        Y : `array`-like of shape (`n_samples`)
             Labels corresponding to the unlabeled instances.
 
         Returns
@@ -121,12 +144,12 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances.
 
         Returns
         -------
-        X_feat : array-like of shape (n_samples, n_features)
+        X_feat : `array`-like of shape (`n_samples`, `n_features`)
             Transformed features from the given instances.
 
         '''
@@ -148,16 +171,16 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances for developing the feature matrix
 
-        Y : array-like of shape (n_samples)
+        Y : `array`-like of shape (`n_samples`)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        phi : array-like of shape
-              (n_samples, n_features * n_classes)
+        phi : `array`-like of shape
+              (`n_samples`, `n_features` * `n_classes`)
             Matrix containing the one-hot encoding
             with respect to the labels given for all the instances.
 
@@ -197,13 +220,12 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances for developing the feature matrix.
 
         Returns
         -------
-        phi : array-like of shape
-              (n_samples, n_classes, n_features * n_classes)
+        phi : `array`-like of shape (`n_samples`, `n_classes`, `n_features` * `n_classes`)
             Matrix containing the one-hot encoding for all the classes
             for each of the instances given.
 
@@ -229,16 +251,16 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances.
 
-        Y : array-like of shape (n_samples,)
+        Y : `array`-like of shape (`n_samples`,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        tau_ : array-like of shape (n_features * n_classes)
-            Average value of phi
+        tau_ : `array`-like of shape (`n_features` * `n_classes`)
+            Average value of `phi`
 
         '''
 
@@ -255,16 +277,16 @@ class BasePhi():
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances.
 
-        Y : array-like of shape (n_samples,)
+        Y : `array`-like of shape (`n_samples`,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        lambda_ : array-like of shape (n_features * n_classes)
-            Standard deviation of phi
+        lambda_ : `array`-like of shape (`n_features` * `n_classes`)
+            Standard deviation of `phi`
 
         '''
 

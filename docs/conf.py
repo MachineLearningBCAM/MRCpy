@@ -19,14 +19,16 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = u'MRCpy'
-copyright = (u'2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez')
-author = (u'Kartheek Bondugula, Santiago Mazuelas and Aritz Perez')
+copyright = (u'2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero')
+author = (u'Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero')
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
 language = 'en'
 
 # -- General configuration ---------------------------------------------------
+
+
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom

@@ -3,7 +3,7 @@
 [![Build Status](https://app.travis-ci.com/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.com/github/MachineLearningBCAM/MRCpy)
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
-Variants of Minimax Risk Classifiers(MRC) using different loss functions and uncertainity set of distributions.
+Variants of Minimax Risk Classifiers (MRC) using different loss functions and uncertainity set of distributions.
 
 The variants available here are - 
 
@@ -108,3 +108,8 @@ See the [documentation](https://MachineLearningBCAM.github.io/MRCpy/) for more d
 # Updates and Discussion
 
 You can subscribe to the MRCpy's mailing [list](https://mail.python.org/mailman3/lists/mrcpy.python.org/) for updates and discussion.
+
+
+******
+###### Acknowledgments
+Research carried out under the project PID2019-105058GA-I00 funded by MCIN/ AEI /10.13039/501100011033

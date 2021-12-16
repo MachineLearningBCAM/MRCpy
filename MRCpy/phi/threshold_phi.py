@@ -1,4 +1,4 @@
-'''Feature mappings obtained using threshold (Half planes).'''
+'''Feature mappings obtained using a threshold (Half planes).'''
 
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -21,40 +21,56 @@ class ThresholdPhi(BasePhi):
     This class obtains the thresholds fitting multiple one-dimensional
     decision stumps on the training data.
 
+    .. seealso:: For more information about MRC, one can refer to the following resources:
+                        
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
+                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
+                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_ 
+                    
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
+                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                    <https://arxiv.org/abs/2108.01952>`_
+
     Parameters
     ----------
-    n_classes : int
-        The number of classes in the dataset
+    n_classes : `int`
+        Number of classes in the dataset
 
-    fit_intercept : bool, default=True
-            Whether to calculate the intercept.
-            If set to false, no intercept will be used in calculations
-            (i.e. data is expected to be already centered).
+    fit_intercept : `bool`, default = `True`
+        Whether to calculate the intercept.
+        If set to false, no intercept will be used in calculations
+        (i.e. data is expected to be already centered).
 
-    one_hot : bool, default=False
+    one_hot : `bool`, default = `False`
+        Controls the method used for evaluating the features of the 
+        given instances in the binary case.
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to
         false a more efficient shorcut will be performed.
 
-    n_thresholds : int, default=200
-        It defines the maximum number of allowed threshold values
+    n_thresholds : `int`, default = `200`
+        Maximum number of allowed threshold values
         for each dimension.
 
     Attributes
     ----------
-    self.thrsVal : array-like of shape (n_thresholds)
-        Array of all threshold values learned from the training data.
+    self.thrsVal : `array`-like of shape (`n_thresholds`)
+        Threshold values learned from the training data.
 
-    self.thrsDim : array-like of shape (n_thresholds)
-        Array of dimensions
-        corresponding to the learned threshold value in self.thrsVal.
+    self.thrsDim : `array`-like of shape (`n_thresholds`)
+        Dimensions
+        corresponding to the learned threshold value in `self.thrsVal`.
 
-    is_fitted_ : bool
-        True if the feature mappings has learned its hyperparameters (if any)
+    is_fitted_ : `bool`
+        Whether the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
 
-    len_ : int
-        Defines the length of the feature mapping vector.
+    len_ : `int`
+        Length of the feature mapping vector.
 
     '''
 
@@ -74,11 +90,11 @@ class ThresholdPhi(BasePhi):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances
             used to learn the feature configurations.
 
-        Y : array-like of shape (n_samples,), default=None
+        Y : `array`-like of shape (`n_samples`,), default = `None`
             Labels corresponding to the unlabeled instances X,
             used for finding the thresholds from the dataset.
 
@@ -108,22 +124,22 @@ class ThresholdPhi(BasePhi):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled instances.
 
-        Y : array-like of shape (n_samples,)
+        Y : `array`-like of shape (`n_samples`,)
             Labels corresponding to the instances.
 
-        n_thresholds : int, default = None
+        n_thresholds : `int`, default = `None`
             Maximum limit on the number of thresholds obtained
 
         Returns
         -------
-        prodThrsDim : array-like of shape (n_thresholds)
-            The dimension in which the thresholds are defined.
+        prodThrsDim : `array`-like of shape (`n_thresholds`)
+            Dimension in which the thresholds are defined.
 
-        prodThrsVal : array-like of shape (n_thresholds)
-            The threshold value in the corresponding dimension.
+        prodThrsVal : `array`-like of shape (`n_thresholds`)
+            Threshold value in the corresponding dimension.
 
         '''
 
@@ -151,17 +167,17 @@ class ThresholdPhi(BasePhi):
 
     def transform(self, X):
         '''
-        Compute the threshold features(0/1)
+        Compute the threshold features (0/1)
         by comparing with the thresholds obtained in each dimension.
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances.
 
         Returns
         -------
-        X_feat : array-like of shape (n_samples, n_features)
+        X_feat : `array`-like of shape (`n_samples`, `n_features`)
             Transformed features from the given instances.
 
         '''

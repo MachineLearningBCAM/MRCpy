@@ -18,78 +18,106 @@ class RandomFourierPhi(BasePhi):
     Features obtained by approximating the rbf kernel by
     Random Fourier Feature map -
 
-    .. math:: z(x) = \sqrt{(2/D)} *
+    .. math:: z(x) = \sqrt{2/D} *
                         [\cos(w_1^t * x), ..., \cos(w_D^t * x),
                          \sin(w_1^t * x), ..., \sin(w_D^t * x)]
 
     where w is a vector(dimension d) of random weights
     from gaussian distribution with mean 0 and variance
-    :math:`\sqrt(2 * \gamma)` and
+    :math:`1/\sigma` and
     D is the number of components in the resulting feature map.
-    The parameter :math:`\gamma`
+    The parameter :math:`\sigma`
     in the variance is similar to the scaling parameter
-    of the radial basis function kernel -
+    of the radial basis function kernel:
 
-    .. math:: K(x, x\') = \exp(-\gamma * \| x-x\'\|^2)
+    .. math:: K(x, x\') = \exp{\\frac{-\| x-x\'\|^2}{2\sigma^2}}
+
+    .. seealso:: For more information about Random Features check:
+                
+                    [1] **Random Features:** `Rahimi, A., & Recht, B. (2007). 
+                    Random Features for Large-Scale Kernel Machines. In NIPS 
+                    (Vol. 3, No. 4, p. 5). 
+                    <https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf>`_
+
+                For more information about MRC, one can refer to the following resources:
+                    
+                    [2] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
+                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    
+                    [3] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
+                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_ 
+                    
+                    [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
+                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                    <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
     ----------
-    n_classes : int
-        The number of classes in the dataset.
+    n_classes : `int`
+        Number of classes in the dataset.
 
-    fit_intercept : bool, default=True
-            Whether to calculate the intercept.
-            If set to false, no intercept will be used in calculations
-            (i.e. data is expected to be already centered).
+    fit_intercept : `bool`, default = `True`
+        Whether to calculate the intercept.
+        If set to false, no intercept will be used in calculations
+        (i.e. data is expected to be already centered).
 
-    one_hot : bool, default=False
+    one_hot : `bool`, default = `False`
+        Controls the method used for evaluating the features of the 
+        given instances in the binary case.
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to
         false a more efficient shorcut will be performed.
 
-    gamma : str {'scale', 'avg_ann', 'avg_ann_50'} or float,
-            default = 'avg_ann_50'
-        It defines the type of heuristic to be used
-        to calculate the scaling parameter using the data or
-        a float value for the parameter.
+    sigma : `str` or `float`, default = 'avg_ann_50'
+        When given a string, it defines the type of heuristic to be used
+        to calculate the scaling parameter `sigma` using the data.
+        For comparison its relation with parameter `gamma` used in 
+        other methods is :math:`\gamma=1/(2\sigma^2)`.
+        When given a float, it is the value for the scaling parameter.
 
-    n_components : int, default=300
-        Number of Monte Carlo samples per original features.
-        Equals the dimensionality of the computed (mapped) feature space.
+        'scale'
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
+            so that 
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            variance function.
 
-    random_state : int, RandomState instance, default=None
-        Used to produce the random weights
+        'avg_ann_50'
+            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            nearest neighbour estimated from 1000 samples of the dataset using
+            the function `rff_sigma`. 
+
+    n_components : `int`, default = `600`
+        Number of features which the transformer transforms the input into.       
+
+    random_state : `int`, `RandomState` instance, default = None
+        Random seed used to produce the `random_weights_`
         used for the approximation of the gaussian kernel.
 
     Attributes
     ----------
-    random_weights_ : array-like of shape (n_features, n_components/2)
-        The sampled basis.
+    random_weights_ : `array`-like of shape (`n_features`, `n_components`/2)
+        Random weights applied to the training samples as a step for 
+        computing the random Fourier features.
 
-    is_fitted_ : bool
-        True if the feature mappings has learned its hyperparameters (if any)
+    is_fitted_ : `bool`
+        Whether the feature mappings has learned its hyperparameters (if any)
         and the length of the feature mapping is set.
 
-    len_ : int
-        Defines the length of the feature mapping vector.
-
-    References
-    ----------
-    [1] Random Features for Large-Scale Kernel Machines.
-    Ali Rahimi and Ben Recht.
-    In NIPS 2007.
-    (https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf)
+    len_ : `int`
+        Length of the feature mapping vector.
 
     '''
 
-    def __init__(self, n_classes, fit_intercept=True, gamma='avg_ann_50',
-                 n_components=300, random_state=None, one_hot=False):
+    def __init__(self, n_classes, fit_intercept=True, sigma='avg_ann_50',
+                 n_components=600, random_state=None, one_hot=False):
 
         # Call the base class init function.
         super().__init__(n_classes=n_classes, fit_intercept=fit_intercept,
                          one_hot=one_hot)
 
-        self.gamma = gamma
+        self.sigma = sigma
         self.n_components = n_components
         self.random_state = random_state
 
@@ -100,11 +128,11 @@ class RandomFourierPhi(BasePhi):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances
             used to learn the feature configurations.
 
-        Y : array-like of shape (n_samples,), default=None
+        Y : `array`-like of shape (`n_samples`,), default = `None`
             This argument will never be used in this case.
             It is present in the signature for consistency
             in the signature of the function among different feature mappings.
@@ -119,23 +147,23 @@ class RandomFourierPhi(BasePhi):
         X = check_array(X, accept_sparse=True)
 
         d = X.shape[1]
-        # Evaluate the gamma according to the gamma type given in self.gamma
-        if self.gamma == 'scale':
-            self.gamma_val = 1 / (d * X.var())
+        # Evaluate the sigma according to the sigma type given in self.sigma
+        if self.sigma == 'scale':
+            self.sigma_val = np.sqrt((d * X.var())/2)
 
-        elif self.gamma == 'avg_ann_50':
-            self.gamma_val = self.rff_gamma(X)
+        elif self.sigma == 'avg_ann_50':
+            self.sigma_val = self.rff_sigma(X)
 
-        elif type(self.gamma) != str:
-            self.gamma_val = self.gamma
+        elif type(self.sigma) != str:
+            self.sigma_val = self.sigma
 
         else:
-            raise ValueError('Unexpected value for gamma ...')
+            raise ValueError('Unexpected value for sigma ...')
 
         # Obtain the random weight from a normal distribution.
         self.random_state = check_random_state(self.random_state)
         self.random_weights_ = \
-            self.random_state.normal(0, np.sqrt(2 * self.gamma_val),
+            self.random_state.normal(0, 1/self.sigma_val,
                                      size=(d, int(self.n_components / 2)))
 
         # Sets the length of the feature mapping
@@ -149,12 +177,12 @@ class RandomFourierPhi(BasePhi):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled training instances.
 
         Returns
         -------
-        X_feat : array-like of shape (n_samples, n_features)
+        X_feat : `array`-like of shape (`n_samples`, `n_features`)
             Transformed features from the given instances.
 
         '''
@@ -168,91 +196,31 @@ class RandomFourierPhi(BasePhi):
 
         return X_feat
 
-    def heuristic_gamma(self, X, Y):
-
-        '''
-        Computes the scaling parameter for relu features
-        using the heuristic -
-
-        .. math::   \sigma = median(\min(\| x_i-x_j \|^2, y_j = +1), y_i = -1)
-
-        .. math::   \gamma = 1 / (2 * \sigma^2)
-
-        for two classes {+1, -1}. For multi-class, we use the same strategy
-        by finding median of minimum distances between the points of
-        each class against all other classes
-        and then taking the average value of the medians of all the classes.
-
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_dimensions)
-            Unlabeled instances.
-
-        Y : array-like of shape (n_samples,)
-            Labels corresponding to the instances.
-
-        Returns
-        -------
-        gamma : float value
-            Scaling parameter computed using the heuristic.
-
-        '''
-
-        # List to store the median of min norm value for each class
-        dist_x_i = list()
-
-        n_classes = np.max(Y) + 1
-
-        for i in range(n_classes):
-            x_i = X[Y == i, :]
-            x_not_i = X[Y != i, :]
-
-            # Find the distance of each point of this class
-            # with every other point of other class
-            norm_vec = np.linalg.norm(np.tile(x_not_i, (x_i.shape[0], 1)) -
-                                      np.repeat(x_i, x_not_i.shape[0],
-                                                axis=0), axis=1)
-            dist_mat = np.reshape(norm_vec, (x_not_i.shape[0], x_i.shape[0]))
-
-            # Find the min distance for each point and take the median distance
-            minDist_x_i = np.min(dist_mat, axis=1)
-            dist_x_i.append(statistics.median(minDist_x_i))
-
-        sigma = np.average(dist_x_i)
-
-        # Evaluate gamma
-        gamma = 1 / (2 * sigma * sigma)
-
-        return gamma
-
-    def rff_gamma(self, X):
+    def rff_sigma(self, X):
 
         '''
         Computes the scaling parameter for the fourier features
-        using the heuristic given in the paper -
-
-                "Compact Nonlinear Maps and Circulant Extensions"
+        using the heuristic given in the paper "Compact Nonlinear Maps 
+        and Circulant Extensions" :ref:`[1] <refpf>`.
 
         The heuristic states that the scaling parameter is obtained as
         the average distance to the 50th nearest neighbour estimated
         from 1000 samples of the dataset.
 
+        .. _refpf:
+        .. seealso:: [1] `Yu, F. X., Kumar, S., Rowley, H., & Chang, S. F. 
+                        (2015). Compact nonlinear maps and circulant extensions.
+                        <https://arxiv.org/pdf/1503.03893.pdf>`_ 
+
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_dimensions)
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
             Unlabeled instances.
 
         Returns
         -------
-        gamma : float value
+        sigma : `float` value
             Scaling parameter computed using the heuristic.
-
-        References
-        ----------
-        [1] Compact Nonlinear Maps and Circulant Extensions
-        Felix X. Yu, Sanjiv Kumar, Henry Rowley and Shih-Fu Chang
-        (https://arxiv.org/pdf/1503.03893.pdf)
-
         '''
         if X.shape[0] < 50:
             neighbour_ind = X.shape[0] - 2
@@ -267,6 +235,4 @@ class RandomFourierPhi(BasePhi):
         # Compute the average distance to the 50th nearest neighbour
         sigma = np.average(distances[:, neighbour_ind])
 
-        gamma = 1 / (2 * sigma * sigma)
-
-        return gamma
+        return sigma
