@@ -95,7 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Library Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
 </ul>
 
             
@@ -181,73 +184,130 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Constrained Minimax Risk Classifier</span>
 
-<span class="sd">    MRCs using the additional marginals constraints on the instances.</span>
-<span class="sd">    It also implements two kinds of loss functions, namely 0-1 and log loss.</span>
+<span class="sd">    The class CMRC implements the method Minimimax Risk Classification (MRC) proposed in :ref:`[1] &lt;ref1&gt;` </span>
+<span class="sd">    using the additional marginals constraints on the instances. It also implements two kinds of loss functions, namely 0-1 and log loss.</span>
+<span class="sd">    </span>
 <span class="sd">    This is a subclass of the super class BaseMRC.</span>
+
+<span class="sd">    See :ref:`Examples of use` for futher applications of this class and its methods.</span>
+
+<span class="sd">    .. seealso:: For more information about MRC, one can refer to the following resources:</span>
+<span class="sd">                    </span>
+<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with </span>
+<span class="sd">                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing </span>
+<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+<span class="sd">                    </span>
+<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum </span>
+<span class="sd">                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_ </span>
+<span class="sd">                    </span>
+<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A </span>
+<span class="sd">                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. </span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    loss : `str` {&#39;0-1&#39;, &#39;log&#39;}, default=&#39;0-1&#39;</span>
-<span class="sd">        The type of loss function to use for the risk minimization.</span>
+<span class="sd">    loss : `str` {&#39;0-1&#39;, &#39;log&#39;}, default = &#39;0-1&#39;</span>
+<span class="sd">        Type of loss function to use for the risk minimization. 0-1 loss</span>
+<span class="sd">        quantifies the probability of classification error at a certain example</span>
+<span class="sd">        for a certain rule. Log-loss quantifies the minus log-likelihood at a</span>
+<span class="sd">        certain example for a certain rule.</span>
 
-<span class="sd">    s : float, default=0.3</span>
-<span class="sd">        For tuning the estimation of expected values</span>
-<span class="sd">        of feature mapping function.</span>
+<span class="sd">    s : `float`, default = `0.3`</span>
+<span class="sd">        Parameter that tunes the estimation of expected values</span>
+<span class="sd">        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates</span>
+<span class="sd">        for the expectations of the feature mappings) in the following way</span>
 
-<span class="sd">    deterministic : bool, default=None</span>
-<span class="sd">        For determining if the prediction of the labels</span>
-<span class="sd">        should be done in a deterministic way or not.</span>
-<span class="sd">        For &#39;0-1&#39; loss, the non-deterministic (&#39;False&#39;) approach</span>
-<span class="sd">        works well.</span>
-<span class="sd">        For &#39;log&#39; loss, the deterministic (&#39;True&#39;) approach</span>
-<span class="sd">        works well.</span>
-<span class="sd">        If the user doesnot specify the value, the default value</span>
-<span class="sd">        is set according to loss function.</span>
+<span class="sd">        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     </span>
+<span class="sd">        </span>
+<span class="sd">        where (X,Y) is the dataset of training samples and their labels respectively and</span>
+<span class="sd">        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y). </span>
 
-<span class="sd">    random_state : int, RandomState instance, default=None</span>
+<span class="sd">    sigma : `str` or `float`, default = `None`</span>
+<span class="sd">        When given a string, it defines the type of heuristic to be used</span>
+<span class="sd">        to calculate the scaling parameter `sigma` used in some feature mappings such</span>
+<span class="sd">        as Random Fourier or ReLU featuress.</span>
+<span class="sd">        For comparison its relation with parameter `gamma` used in </span>
+<span class="sd">        other methods is :math:`\gamma=1/(2\sigma^2)`.</span>
+<span class="sd">        When given a float, it is the value for the scaling parameter.</span>
+
+<span class="sd">        &#39;scale&#39;</span>
+<span class="sd">            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` </span>
+<span class="sd">            so that </span>
+<span class="sd">            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the </span>
+<span class="sd">            variance function.</span>
+
+<span class="sd">        &#39;avg_ann_50&#39;</span>
+<span class="sd">            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` </span>
+<span class="sd">            nearest neighbour estimated from 1000 samples of the dataset using</span>
+<span class="sd">            the function `rff_sigma`. </span>
+
+<span class="sd">    deterministic : `bool`, default = `True`</span>
+<span class="sd">        Whether the prediction of the labels</span>
+<span class="sd">        should be done in a deterministic way (given a fixed `random_state` </span>
+<span class="sd">        in the case of using random Fourier or random ReLU features).</span>
+
+<span class="sd">    random_state : `int`, RandomState instance, default = `None`</span>
 <span class="sd">        Used when &#39;fourier&#39; and &#39;relu&#39; options for feature mappings are used</span>
 <span class="sd">        to produce the random weights.</span>
 
-<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">    fit_intercept : `bool`, default = `True`</span>
 <span class="sd">            Whether to calculate the intercept for MRCs</span>
 <span class="sd">            If set to false, no intercept will be used in calculations</span>
 <span class="sd">            (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    warm_start : bool, default=False</span>
-<span class="sd">        When set to True,</span>
-<span class="sd">        reuse the solution of the previous call to fit as initialization,</span>
-<span class="sd">        otherwise, just erase the previous solution.</span>
-
-<span class="sd">    use_cvx : bool, default=False</span>
+<span class="sd">    use_cvx : `bool`, default = `False`</span>
 <span class="sd">        If True, use CVXpy library for the optimization</span>
 <span class="sd">        instead of the subgradient methods.</span>
 
-<span class="sd">    solver : str {&#39;SCS&#39;, &#39;ECOS&#39;, &#39;MOSEK&#39;}, default=&#39;MOSEK&#39;</span>
+<span class="sd">    solver : `str`, default = &#39;MOSEK&#39;</span>
 <span class="sd">        The type of CVX solver to use for solving the problem.</span>
 <span class="sd">        In some cases, one solver might not work,</span>
 <span class="sd">        so you might need to change solver depending on the problem.</span>
-<span class="sd">        &#39;MOSEK&#39; is a commercial solver for which one might need to</span>
-<span class="sd">        request for a license. A free license can be requested</span>
-<span class="sd">        `here &lt;https://www.mosek.com/products/academic-licenses/&gt;`_</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;SCS&#39;</span>
+<span class="sd">            It uses Splitting Conic Solver (SCS).</span>
 
-<span class="sd">    max_iters : int, default=2000</span>
+<span class="sd">        &#39;ECOS&#39;</span>
+<span class="sd">            It uses Embedded Eonic Eolver (ECOS).</span>
+
+<span class="sd">        &#39;MOSEK&#39;</span>
+<span class="sd">            MOSEK is a commercial solver for which one might need to</span>
+<span class="sd">            request for a license. A free license can be requested</span>
+<span class="sd">            `here &lt;https://www.mosek.com/products/academic-licenses/&gt;`_.</span>
+
+
+<span class="sd">    max_iters : `int`, default = `2000`</span>
 <span class="sd">        The maximum number of iterations to use</span>
-<span class="sd">        for finding the solution of optimization</span>
+<span class="sd">        for finding the solution of optimization when</span>
 <span class="sd">        using the subgradient approach.</span>
 
-<span class="sd">    phi : str {&#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39;, &#39;linear&#39;} or</span>
-<span class="sd">           `BasePhi` instance (custom features), default=&#39;linear&#39;</span>
-<span class="sd">        The type of feature mapping function to use for mapping the input data</span>
-<span class="sd">        &#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39; and &#39;linear&#39;</span>
-<span class="sd">        are the currenlty available feature mapping methods.</span>
+<span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
+<span class="sd">        The type of feature mapping function to use for mapping the input data.</span>
+<span class="sd">        The currenlty available feature mapping methods are </span>
+<span class="sd">        &#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39; and &#39;linear&#39;.</span>
 <span class="sd">        The users can also implement their own feature mapping object</span>
 <span class="sd">        (should be a `BasePhi` instance) and pass it to this argument.</span>
 <span class="sd">        To implement a feature mapping, please go through the</span>
 <span class="sd">        :ref:`Feature Mapping` section.</span>
 
+<span class="sd">        &#39;linear&#39;</span>
+<span class="sd">            It uses the identity feature map referred to as Linear feature map.</span>
+<span class="sd">            See class `BasePhi`.</span>
+
+<span class="sd">        &#39;fourier&#39;</span>
+<span class="sd">            It uses Random Fourier Feature map. See class `RandomFourierPhi`.</span>
+
+<span class="sd">        &#39;relu&#39;</span>
+<span class="sd">            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.</span>
+
+<span class="sd">        &#39;threshold&#39;</span>
+<span class="sd">            It uses Feature mappings obtained using a threshold. </span>
+<span class="sd">            See class `ThresholdPhi`.</span>
+
 <span class="sd">    **phi_kwargs : Additional parameters for feature mappings.</span>
 <span class="sd">                Groups the multiple optional parameters</span>
-<span class="sd">                for the corresponding feature mappings(phi).</span>
+<span class="sd">                for the corresponding feature mappings(`phi`).</span>
 
 <span class="sd">                For example in case of fourier features,</span>
 <span class="sd">                the number of features is given by `n_components`</span>
@@ -259,19 +319,65 @@
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    is_fitted_ : bool</span>
-<span class="sd">        True if the classifier is fitted i.e., the parameters are learnt.</span>
-<span class="sd">    tau_ : array-like of shape (n_features) or float</span>
-<span class="sd">        The mean estimates</span>
+<span class="sd">    is_fitted_ : `bool`</span>
+<span class="sd">        Whether the classifier is fitted i.e., the parameters are learnt.</span>
+<span class="sd">    tau_ : `array`-like of shape (`n_features`) or `float`</span>
+<span class="sd">        Mean estimates</span>
 <span class="sd">        for the expectations of feature mappings.</span>
-<span class="sd">    lambda_ : array-like of shape (n_features) or float</span>
-<span class="sd">        The variance in the mean estimates</span>
+<span class="sd">    lambda_ : `array`-like of shape (`n_features`) or `float`</span>
+<span class="sd">        Variance in the mean estimates</span>
 <span class="sd">        for the expectations of the feature mappings.</span>
-<span class="sd">    mu_ : array-like of shape (n_features) or float</span>
+<span class="sd">    mu_ : `array`-like of shape (`n_features`) or `float`</span>
 <span class="sd">        Parameters learnt by the optimization.</span>
-<span class="sd">    params_ : a dictionary</span>
-<span class="sd">        Stores the optimal points and best value of the function</span>
-<span class="sd">        when the warm_start=True.</span>
+<span class="sd">    params_ : `dict`</span>
+<span class="sd">        Dictionary that stores the optimal points and best value of </span>
+<span class="sd">        the function.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    Simple example of using CMRC with default seetings: 0-1 loss and linear feature mapping.</span>
+<span class="sd">    We first load the data and split it into train and test sets. We fit the model </span>
+<span class="sd">    with the training samples using `fit` function. Then, we predict the class of some test</span>
+<span class="sd">    samples with `predict`. We can also obtain the probabilities of each class with </span>
+<span class="sd">    `predict_proba`. Finally, we calculate the score of the model over the test set</span>
+<span class="sd">    using `score`.</span>
+
+
+<span class="sd">    &gt;&gt;&gt; from MRCpy import CMRC</span>
+<span class="sd">    &gt;&gt;&gt; from MRCpy.datasets import load_mammographic</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn import preprocessing</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.model_selection import train_test_split</span>
+<span class="sd">    &gt;&gt;&gt; # Loading the dataset</span>
+<span class="sd">    &gt;&gt;&gt; X, Y = load_mammographic(return_X_y=True) </span>
+<span class="sd">    &gt;&gt;&gt; # Split the dataset into training and test instances</span>
+<span class="sd">    &gt;&gt;&gt; X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)</span>
+<span class="sd">    &gt;&gt;&gt; # Standarize the data</span>
+<span class="sd">    &gt;&gt;&gt; std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)</span>
+<span class="sd">    &gt;&gt;&gt; X_train = std_scale.transform(X_train)</span>
+<span class="sd">    &gt;&gt;&gt; X_test = std_scale.transform(X_test)</span>
+<span class="sd">    &gt;&gt;&gt; # Fit the CMRC model</span>
+<span class="sd">    &gt;&gt;&gt; clf = CMRC().fit(X_train, Y_train)</span>
+<span class="sd">    &gt;&gt;&gt; # Prediction. The predicted values for the first 10 test instances are:</span>
+<span class="sd">    &gt;&gt;&gt; clf.predict(X_test[:10, :])</span>
+<span class="sd">    [0 0 0 0 0 1 0 1 0 0]</span>
+<span class="sd">    &gt;&gt;&gt; # Predicted probabilities. </span>
+<span class="sd">    &gt;&gt;&gt; # The predicted probabilities for the first 10 test instances are:</span>
+<span class="sd">    &gt;&gt;&gt; clf.predict_proba(X_test[:10, :])</span>
+<span class="sd">    [[0.62919573 0.37080427]</span>
+<span class="sd">     [1.         0.        ]</span>
+<span class="sd">     [0.95104266 0.04895734]</span>
+<span class="sd">     [1.         0.        ]</span>
+<span class="sd">     [0.99047735 0.00952265]</span>
+<span class="sd">     [0.         1.        ]</span>
+<span class="sd">     [1.         0.        ]</span>
+<span class="sd">     [0.12378713 0.87621287]</span>
+<span class="sd">     [1.         0.        ]</span>
+<span class="sd">     [0.62290253 0.37709747]]</span>
+<span class="sd">    &gt;&gt;&gt; # Calculate the score of the predictor </span>
+<span class="sd">    &gt;&gt;&gt; # (mean accuracy on the given test data and labels)</span>
+<span class="sd">    &gt;&gt;&gt; clf.score(X_test, Y_test)</span>
+<span class="sd">    0.8247422680412371</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Redefining the init function</span>
@@ -279,15 +385,14 @@
     <span class="c1"># In case of CMRC, the convergence is observed to be fast</span>
     <span class="c1"># and hence less iterations should be sufficient</span>
 <div class="viewcode-block" id="CMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">warm_start</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
                          <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
                          <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
                          <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                         <span class="n">warm_start</span><span class="o">=</span><span class="n">warm_start</span><span class="p">,</span>
                          <span class="n">use_cvx</span><span class="o">=</span><span class="n">use_cvx</span><span class="p">,</span>
                          <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
                          <span class="n">max_iters</span><span class="o">=</span><span class="n">max_iters</span><span class="p">,</span>
@@ -301,19 +406,19 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Training instances used for solving</span>
 <span class="sd">            the minimax risk optimization problem.</span>
 
-<span class="sd">        tau_ : array-like of shape (n_features * n_classes)</span>
+<span class="sd">        tau_ : `array`-like of shape (`n_features` * `n_classes`)</span>
 <span class="sd">            The mean estimates</span>
 <span class="sd">            for the expectations of feature mappings.</span>
 
-<span class="sd">        lambda_ : array-like of shape (n_features * n_classes)</span>
+<span class="sd">        lambda_ : `array`-like of shape (`n_features` * `n_classes`)</span>
 <span class="sd">            The variance in the mean estimates</span>
 <span class="sd">            for the expectations of the feature mappings.</span>
 
-<span class="sd">        n_classes : int</span>
+<span class="sd">        n_classes : `int`</span>
 <span class="sd">            Number of labels in the dataset.</span>
 
 <span class="sd">        Returns</span>
@@ -443,18 +548,8 @@
                         <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">expPhi</span> <span class="o">@</span> <span class="n">phi</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span>
                                  <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expPhi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
-            <span class="c1"># Check if the warm start is true</span>
-            <span class="c1"># to reuse the solution from previous call to fit.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">warm_start</span><span class="p">:</span>
-                <span class="c1"># Start from a previous solution.</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> \
-                        <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
-                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> \
-                    <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params_</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
 
@@ -467,21 +562,27 @@
 <span class="sd">        Solution of the CMRC convex optimization(minimization)</span>
 <span class="sd">        using the Nesterov accelerated approach.</span>
 
+<span class="sd">        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., &amp; Tao, Q. (2019). </span>
+<span class="sd">                            The Strength of Nesterov’s Extrapolation in the Individual </span>
+<span class="sd">                            Convergence of Nonsmooth Optimization. IEEE transactions on </span>
+<span class="sd">                            neural networks and learning systems, 31(7), 2557-2568.</span>
+<span class="sd">                            &lt;https://ieeexplore.ieee.org/document/8822632&gt;`_</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        m : int</span>
+<span class="sd">        m : `int`</span>
 <span class="sd">            Length of the feature mapping vector</span>
-<span class="sd">        params_ : a dictionary</span>
+<span class="sd">        params_ : `dict`</span>
 <span class="sd">            A dictionary of parameters values</span>
 <span class="sd">            obtained from the previous call to fit</span>
 <span class="sd">            used as the initial values for the current optimization</span>
 <span class="sd">            when warm_start is True.</span>
-<span class="sd">        f_ : a lambda function/ function of the form - f_(mu)</span>
+<span class="sd">        f_ : a lambda function/ function of the form - `f_(mu)`</span>
 <span class="sd">            It is expected to be a lambda function or a function</span>
 <span class="sd">            calculating a part of the objective function</span>
 <span class="sd">            depending on the type of loss function chosen</span>
 <span class="sd">            by taking the parameters(mu) of the optimization as input.</span>
-<span class="sd">        g_ : a lambda function of the form - g_(mu, idx)</span>
+<span class="sd">        g_ : a lambda function of the form - `g_(mu, idx)`</span>
 <span class="sd">            It is expected to be a lambda function</span>
 <span class="sd">            calculating the part of the subgradient of the objective function</span>
 <span class="sd">            depending on the type of the loss function chosen.</span>
@@ -492,18 +593,10 @@
 
 <span class="sd">        Return</span>
 <span class="sd">        ------</span>
-<span class="sd">        mu : array-like, shape (m,)</span>
+<span class="sd">        mu : `array`-like, shape (`m`,)</span>
 <span class="sd">            The parameters corresponding to the optimized function value</span>
-<span class="sd">        f_best_value : float</span>
+<span class="sd">        f_best_value : `float`</span>
 <span class="sd">            The optimized value of the function in consideration.</span>
-
-<span class="sd">        References</span>
-<span class="sd">        ----------</span>
-<span class="sd">        [1] The strength of Nesterov’s extrapolation</span>
-<span class="sd">        in the individual convergence of nonsmooth optimization.</span>
-<span class="sd">        Wei Tao, Zhisong Pan, Gao wei Wu, and Qing Tao.</span>
-<span class="sd">        In IEEE Transactions on Neural Networks and Learning System.</span>
-<span class="sd">        (https://ieeexplore.ieee.org/document/8822632)</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Initial values for the parameters</span>
@@ -631,13 +724,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Testing instances for which</span>
 <span class="sd">            the prediction probabilities are calculated for each class.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        hy_x : array-like of shape (n_samples, n_classes)</span>
+<span class="sd">        hy_x : `array`-like of shape (`n_samples`, `n_classes`)</span>
 <span class="sd">            The conditional probabilities (p(y|x))</span>
 <span class="sd">            corresponding to each class.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -727,7 +820,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
 
     </p>
   </div>

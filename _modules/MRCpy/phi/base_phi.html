@@ -95,7 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">MRCpy Library Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
 </ul>
 
             
@@ -180,53 +183,74 @@
 <span class="sd">    used by the MRCs in the library. It corresponds</span>
 <span class="sd">    to the usual identity feature map referred to as Linear feature map.</span>
 
+<span class="sd">    To see an example of how to extend the class `BasePhi` to implement</span>
+<span class="sd">    yout own feature mapping see :ref:`this example &lt;ex_phi&gt;`.</span>
+
+
+
+<span class="sd">    .. note:: This is a base class for all the feature mappings.</span>
+<span class="sd">        To create a new feature mapping that can be used with MRC objects,</span>
+<span class="sd">        the user can extend this class and then implement the functions -</span>
+
+<span class="sd">            1) `fit` - learns the required parameters for feature transformation</span>
+<span class="sd">            2) `transform` - transforms the input instances to the features</span>
+
+<span class="sd">        The above functions are principal components</span>
+<span class="sd">        for different feature transformation.</span>
+<span class="sd">        Apart from these functions, the users can also re-define other functions</span>
+<span class="sd">        in this class according to their need.</span>
+
+<span class="sd">        The definition of `fit` and `transform` in this class correspond to the</span>
+<span class="sd">        usual identity feature map referred to as **Linear feature map**.</span>
+
+<span class="sd">        The `transform` function is only used by the `eval_xy` function</span>
+<span class="sd">        of this class to get the one-hot encoded features.</span>
+<span class="sd">        If the user defines his own `eval_xy` function</span>
+<span class="sd">        that returns the features directly without the need</span>
+<span class="sd">        of `transform` function, then the `transform` function can be omitted.</span>
+
+<span class="sd">    .. seealso:: For more information about MRC, one can refer to the following resources:</span>
+<span class="sd">                        </span>
+<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with </span>
+<span class="sd">                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing </span>
+<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+<span class="sd">                    </span>
+<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum </span>
+<span class="sd">                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_ </span>
+<span class="sd">                    </span>
+<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A </span>
+<span class="sd">                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. </span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
+
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    n_classes : int</span>
-<span class="sd">        The number of classes in the dataset</span>
+<span class="sd">    n_classes : `int`</span>
+<span class="sd">        Number of classes in the dataset</span>
 
-<span class="sd">    fit_intercept : bool, default=True</span>
-<span class="sd">            Whether to calculate the intercept.</span>
-<span class="sd">            If set to false, no intercept will be used in calculations</span>
-<span class="sd">            (i.e. data is expected to be already centered)</span>
+<span class="sd">    fit_intercept : `bool`, default = `True`</span>
+<span class="sd">        Whether to calculate the intercept.</span>
+<span class="sd">        If set to false, no intercept will be used in calculations</span>
+<span class="sd">        (i.e. data is expected to be already centered)</span>
 
-<span class="sd">    one_hot : bool, default=False</span>
-<span class="sd">        Only applies in the binary case, namely, only when there are two</span>
-<span class="sd">        classes. If set to true, one-hot-encoding will be used. If set to</span>
+<span class="sd">    one_hot : `bool`, default = `False`</span>
+<span class="sd">        Controls the method used for evaluating the features of the </span>
+<span class="sd">        given instances in the binary case.</span>
+<span class="sd">        Only applies in the **binary case**, namely, only when there are two</span>
+<span class="sd">        classes. When set to true, one-hot-encoding will be used. If set to</span>
 <span class="sd">        false a more efficient shorcut will be performed.</span>
-
+<span class="sd">    </span>
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    is_fitted_ : bool</span>
-<span class="sd">        True if the feature mappings has learned its hyperparameters (if any)</span>
+<span class="sd">    is_fitted_ : `bool`</span>
+<span class="sd">        Whether the feature mapping has learned its hyperparameters (if any)</span>
 <span class="sd">        and the length of the feature mapping is set.</span>
 
-<span class="sd">    len_ : int</span>
-<span class="sd">        Defines the length of the feature mapping vector.</span>
+<span class="sd">    len_ : `int`</span>
+<span class="sd">        Length of the feature mapping vector.</span>
+<span class="sd">    </span>
 
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This is a base class for all the feature mappings.</span>
-<span class="sd">    To create a new feature mapping that can be used with MRC objects,</span>
-<span class="sd">    the user can extend this class and</span>
-<span class="sd">    then implement the functions -</span>
-
-<span class="sd">        1) `fit` - learns the required parameters for feature transformation</span>
-<span class="sd">        2) `transform` - transforms the input instances to the features</span>
-
-<span class="sd">    The above functions are principal components</span>
-<span class="sd">    for different feature transformation.</span>
-<span class="sd">    Apart from these functions, the users can also re-define other functions</span>
-<span class="sd">    in this class according to their need.</span>
-
-<span class="sd">    The definition of `fit` and `transform` in this class correspond to the</span>
-<span class="sd">    usual identity feature map referred to as Linear feature map.</span>
-
-<span class="sd">    The `transform` function is only used by the `eval_xy` function</span>
-<span class="sd">    of this class to get the one-hot encoded features.</span>
-<span class="sd">    If the user defines his own `eval_xy` function</span>
-<span class="sd">    that returns the features directly without the need</span>
-<span class="sd">    of `transform` function, then the `transform` function can be omitted.</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -234,17 +258,19 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="o">=</span> <span class="n">fit_intercept</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">one_hot</span> <span class="o">=</span> <span class="n">one_hot</span></div>
 
 <div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Performs training stage.</span>
+
 <span class="sd">        Learns the required hyperparameters</span>
 <span class="sd">        for the feature mapping transformation</span>
 <span class="sd">        from the training instances</span>
 <span class="sd">        and set the length of the feature mapping (one-hot encoded)</span>
 <span class="sd">        obtained from the `eval_xy` function.</span>
 
-<span class="sd">        Note: If a user implements `fit` function in his own feature mapping,</span>
+<span class="sd">        .. note:: If a user implements `fit` function in his own feature mapping,</span>
 <span class="sd">              then it is recommended to call this `fit` function</span>
 <span class="sd">              at the end of his own function to automatically set</span>
 <span class="sd">              the length of the feature mapping.</span>
@@ -257,11 +283,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances</span>
 <span class="sd">            used to learn the feature configurations</span>
 
-<span class="sd">        Y : array-like of shape (n_samples)</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`)</span>
 <span class="sd">            Labels corresponding to the unlabeled instances.</span>
 
 <span class="sd">        Returns</span>
@@ -285,12 +311,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
+<span class="sd">        X_feat : `array`-like of shape (`n_samples`, `n_features`)</span>
 <span class="sd">            Transformed features from the given instances.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -312,16 +338,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances for developing the feature matrix</span>
 
-<span class="sd">        Y : array-like of shape (n_samples)</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`)</span>
 <span class="sd">            Labels corresponding to the unlabeled training instances</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        phi : array-like of shape</span>
-<span class="sd">              (n_samples, n_features * n_classes)</span>
+<span class="sd">        phi : `array`-like of shape</span>
+<span class="sd">              (`n_samples`, `n_features` * `n_classes`)</span>
 <span class="sd">            Matrix containing the one-hot encoding</span>
 <span class="sd">            with respect to the labels given for all the instances.</span>
 
@@ -361,13 +387,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances for developing the feature matrix.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        phi : array-like of shape</span>
-<span class="sd">              (n_samples, n_classes, n_features * n_classes)</span>
+<span class="sd">        phi : `array`-like of shape (`n_samples`, `n_classes`, `n_features` * `n_classes`)</span>
 <span class="sd">            Matrix containing the one-hot encoding for all the classes</span>
 <span class="sd">            for each of the instances given.</span>
 
@@ -393,16 +418,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances.</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,)</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`,)</span>
 <span class="sd">            Labels corresponding to the unlabeled training instances</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        tau_ : array-like of shape (n_features * n_classes)</span>
-<span class="sd">            Average value of phi</span>
+<span class="sd">        tau_ : `array`-like of shape (`n_features` * `n_classes`)</span>
+<span class="sd">            Average value of `phi`</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -419,16 +444,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances.</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,)</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`,)</span>
 <span class="sd">            Labels corresponding to the unlabeled training instances</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        lambda_ : array-like of shape (n_features * n_classes)</span>
-<span class="sd">            Standard deviation of phi</span>
+<span class="sd">        lambda_ : `array`-like of shape (`n_features` * `n_classes`)</span>
+<span class="sd">            Standard deviation of `phi`</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -445,7 +470,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
 
     </p>
   </div>

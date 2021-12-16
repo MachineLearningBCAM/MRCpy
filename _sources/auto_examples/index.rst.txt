@@ -4,20 +4,28 @@
 
 .. _sphx_glr_auto_examples:
 
-README
-======
+Gallery of examples
+===================
+
+Basic Examples
+----------------
+This gallery consists of introductory examples and examples demonstrating
+specific features of MRCpy library.
+
+
+
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example of using MRC with 0-1 loss.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_example3_thumb.png
-     :alt: Simple example of using MRC with 0-1 loss.
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_example2_thumb.png
+     :alt: Example: Use of CMRC with different settings
 
-     :ref:`sphx_glr_auto_examples_example3.py`
+     :ref:`sphx_glr_auto_examples_plot_example2.py`
 
 .. raw:: html
 
@@ -27,18 +35,18 @@ README
 .. toctree::
    :hidden:
 
-   /auto_examples/example3
+   /auto_examples/plot_example2
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Simple example of using CMRC with 0-1 loss.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_example4_thumb.png
-     :alt: Simple example of using CMRC with 0-1 loss.
+ .. figure:: /auto_examples/images/thumb/sphx_glr_plot_example1_thumb.png
+     :alt: Example: Use of MRC with different settings
 
-     :ref:`sphx_glr_auto_examples_example4.py`
+     :ref:`sphx_glr_auto_examples_plot_example1.py`
 
 .. raw:: html
 
@@ -48,18 +56,30 @@ README
 .. toctree::
    :hidden:
 
-   /auto_examples/example4
+   /auto_examples/plot_example1
+.. raw:: html
+
+    <div class="sphx-glr-clear"></div>
+
+
+
+.. _sphx_glr_auto_examples_further_examples:
+
+Further applications
+--------------------
+This gallery contains examples that illustrate further applications of MRCpy library and its features.
+
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy  library for hyp...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_example2_thumb.png
-     :alt: Example of using CMRC with some of the common classification datasets.
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_grid_thumb.png
+     :alt: Hyperparameter Tuning: Upper Bound vs Cross-Validation
 
-     :ref:`sphx_glr_auto_examples_example2.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_grid.py`
 
 .. raw:: html
 
@@ -69,18 +89,18 @@ README
 .. toctree::
    :hidden:
 
-   /auto_examples/example2
+   /auto_examples/further_examples/plot_grid
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets.">
+    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_example1_thumb.png
-     :alt: Example of using MRC with some of the common classification datasets.
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
+     :alt: Example: Comparison to other methods
 
-     :ref:`sphx_glr_auto_examples_example1.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
 
 .. raw:: html
 
@@ -90,28 +110,7 @@ README
 .. toctree::
    :hidden:
 
-   /auto_examples/example1
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example, I am extending the Phi parent class according to the needs of the mappings. Yo...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_customPhi_thumb.png
-     :alt: An example of creating you own custom feature mappings
-
-     :ref:`sphx_glr_auto_examples_customPhi.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/customPhi
+   /auto_examples/further_examples/plot_comparison
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>

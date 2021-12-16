@@ -48,6 +48,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MRCpy.BaseMRC" href="MRCpy.BaseMRC.html" />
     <link rel="prev" title="MRCpy.phi.RandomReLUPhi" href="MRCpy.phi.RandomReLUPhi.html" /> 
 </head>
 
@@ -97,18 +98,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-contents">Module Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.BasePhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.BasePhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
 </ul>
 </li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
 </ul>
 
             
@@ -157,7 +160,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../api.html">MRCpy Library Documentation</a> &raquo;</li>
+          <li><a href="../api.html">MRCpy Package Contents</a> &raquo;</li>
         
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</li>
     
@@ -191,37 +194,50 @@ A product of threshold features is an indicator of a region
 and its expectation is closely related to cumulative distributions.
 This class obtains the thresholds fitting multiple one-dimensional
 decision stumps on the training data.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>For more information about MRC, one can refer to the following resources:</p>
+<p>[1] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with 
+0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+Systems, 33, 302-312.</a></p>
+<p>[2] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum 
+Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</a></p>
+<p class="last">[3] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A 
+Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>The number of classes in the dataset</p>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of classes in the dataset</p>
 </dd>
-<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept.
+<dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether to calculate the intercept.
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
-<dt><strong>one_hot</strong><span class="classifier">bool, default=False</span></dt><dd><p>Only applies in the binary case, namely, only when there are two
+<dt><strong>one_hot</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>Controls the method used for evaluating the features of the 
+given instances in the binary case.
+Only applies in the binary case, namely, only when there are two
 classes. If set to true, one-hot-encoding will be used. If set to
 false a more efficient shorcut will be performed.</p>
 </dd>
-<dt><strong>n_thresholds</strong><span class="classifier">int, default=200</span></dt><dd><p>It defines the maximum number of allowed threshold values
+<dt><strong>n_thresholds</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">200</span></code></span></dt><dd><p>Maximum number of allowed threshold values
 for each dimension.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>self.thrsVal</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>Array of all threshold values learned from the training data.</p>
+<dt><strong>self.thrsVal</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Threshold values learned from the training data.</p>
 </dd>
-<dt><strong>self.thrsDim</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>Array of dimensions
-corresponding to the learned threshold value in self.thrsVal.</p>
+<dt><strong>self.thrsDim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Dimensions
+corresponding to the learned threshold value in <code class="xref any docutils literal notranslate"><span class="pre">self.thrsVal</span></code>.</p>
 </dd>
-<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the feature mappings has learned its hyperparameters (if any)
+<dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the feature mappings has learned its hyperparameters (if any)
 and the length of the feature mapping is set.</p>
 </dd>
-<dt><strong>len_</strong><span class="classifier">int</span></dt><dd><p>Defines the length of the feature mapping vector.</p>
+<dt><strong>len_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Length of the feature mapping vector.</p>
 </dd>
 </dl>
 </td>
@@ -254,7 +270,7 @@ and the length of the feature mapping is set.</p>
 <td>Learns the set of thresholds using one-dimensional decision stumps obtained from the dataset.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
-<td>Compute the threshold features(0/1) by comparing with the thresholds obtained in each dimension.</td>
+<td>Compute the threshold features (0/1) by comparing with the thresholds obtained in each dimension.</td>
 </tr>
 </tbody>
 </table>
@@ -275,19 +291,19 @@ for each dimension of data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled instances.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled instances.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the instances.</p>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>,)</span></dt><dd><p>Labels corresponding to the instances.</p>
 </dd>
-<dt><strong>n_thresholds</strong><span class="classifier">int, default = None</span></dt><dd><p>Maximum limit on the number of thresholds obtained</p>
+<dt><strong>n_thresholds</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Maximum limit on the number of thresholds obtained</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>prodThrsDim</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>The dimension in which the thresholds are defined.</p>
+<dt><strong>prodThrsDim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Dimension in which the thresholds are defined.</p>
 </dd>
-<dt><strong>prodThrsVal</strong><span class="classifier">array-like of shape (n_thresholds)</span></dt><dd><p>The threshold value in the corresponding dimension.</p>
+<dt><strong>prodThrsVal</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Threshold value in the corresponding dimension.</p>
 </dd>
 </dl>
 </td>
@@ -307,15 +323,15 @@ the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</spa
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Average value of phi</p>
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Average value of <code class="xref any docutils literal notranslate"><span class="pre">phi</span></code></p>
 </dd>
 </dl>
 </td>
@@ -337,15 +353,15 @@ to estimate the variance in the expectation of
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>,)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>Standard deviation of phi</p>
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Standard deviation of <code class="xref any docutils literal notranslate"><span class="pre">phi</span></code></p>
 </dd>
 </dl>
 </td>
@@ -368,16 +384,13 @@ corresponding to all the possible labels in the data.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
-<div><p>(n_samples, n_classes, n_features * n_classes)</p>
-</div></blockquote>
-<p>Matrix containing the one-hot encoding for all the classes
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Matrix containing the one-hot encoding for all the classes
 for each of the instances given.</p>
 </dd>
 </dl>
@@ -401,16 +414,16 @@ for estimating the expectation of <span class="math notranslate nohighlight">\(\
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>)</span></dt><dd><p>Labels corresponding to the unlabeled training instances</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>phi</strong><span class="classifier">array-like of shape</span></dt><dd><blockquote>
-<div><p>(n_samples, n_features * n_classes)</p>
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape</span></dt><dd><blockquote>
+<div><p>(<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</p>
 </div></blockquote>
 <p>Matrix containing the one-hot encoding
 with respect to the labels given for all the instances.</p>
@@ -432,10 +445,10 @@ obtained from the dataset.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances
 used to learn the feature configurations.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Labels corresponding to the unlabeled instances X,
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>,), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the unlabeled instances X,
 used for finding the thresholds from the dataset.</p>
 </dd>
 </dl>
@@ -454,20 +467,20 @@ used for finding the thresholds from the dataset.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.transform">
 <code class="sig-name descname"><span class="pre">transform</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.transform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the threshold features(0/1)
+<dd><p>Compute the threshold features (0/1)
 by comparing with the thresholds obtained in each dimension.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Unlabeled training instances.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>X_feat</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Transformed features from the given instances.</p>
+<dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>)</span></dt><dd><p>Transformed features from the given instances.</p>
 </dd>
 </dl>
 </td>
@@ -486,6 +499,7 @@ by comparing with the thresholds obtained in each dimension.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.BaseMRC.html" class="btn btn-neutral float-right" title="MRCpy.BaseMRC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="MRCpy.phi.RandomReLUPhi.html" class="btn btn-neutral float-left" title="MRCpy.phi.RandomReLUPhi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
@@ -493,7 +507,7 @@ by comparing with the thresholds obtained in each dimension.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
 
     </p>
   </div>

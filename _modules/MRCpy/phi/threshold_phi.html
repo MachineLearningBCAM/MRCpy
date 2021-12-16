@@ -95,7 +95,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">MRCpy Library Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../auto_examples/index.html">Gallery of examples</a></li>
 </ul>
 
             
@@ -162,7 +165,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for MRCpy.phi.threshold_phi</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;Feature mappings obtained using threshold (Half planes).&#39;&#39;&#39;</span>
+<span></span><span class="sd">&#39;&#39;&#39;Feature mappings obtained using a threshold (Half planes).&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
@@ -185,40 +188,56 @@
 <span class="sd">    This class obtains the thresholds fitting multiple one-dimensional</span>
 <span class="sd">    decision stumps on the training data.</span>
 
+<span class="sd">    .. seealso:: For more information about MRC, one can refer to the following resources:</span>
+<span class="sd">                        </span>
+<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with </span>
+<span class="sd">                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing </span>
+<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+<span class="sd">                    </span>
+<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum </span>
+<span class="sd">                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_ </span>
+<span class="sd">                    </span>
+<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A </span>
+<span class="sd">                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. </span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    n_classes : int</span>
-<span class="sd">        The number of classes in the dataset</span>
+<span class="sd">    n_classes : `int`</span>
+<span class="sd">        Number of classes in the dataset</span>
 
-<span class="sd">    fit_intercept : bool, default=True</span>
-<span class="sd">            Whether to calculate the intercept.</span>
-<span class="sd">            If set to false, no intercept will be used in calculations</span>
-<span class="sd">            (i.e. data is expected to be already centered).</span>
-<span class="sd">            </span>
-<span class="sd">    one_hot : bool, default=False</span>
+<span class="sd">    fit_intercept : `bool`, default = `True`</span>
+<span class="sd">        Whether to calculate the intercept.</span>
+<span class="sd">        If set to false, no intercept will be used in calculations</span>
+<span class="sd">        (i.e. data is expected to be already centered).</span>
+
+<span class="sd">    one_hot : `bool`, default = `False`</span>
+<span class="sd">        Controls the method used for evaluating the features of the </span>
+<span class="sd">        given instances in the binary case.</span>
 <span class="sd">        Only applies in the binary case, namely, only when there are two</span>
 <span class="sd">        classes. If set to true, one-hot-encoding will be used. If set to</span>
 <span class="sd">        false a more efficient shorcut will be performed.</span>
 
-<span class="sd">    n_thresholds : int, default=200</span>
-<span class="sd">        It defines the maximum number of allowed threshold values</span>
+<span class="sd">    n_thresholds : `int`, default = `200`</span>
+<span class="sd">        Maximum number of allowed threshold values</span>
 <span class="sd">        for each dimension.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    self.thrsVal : array-like of shape (n_thresholds)</span>
-<span class="sd">        Array of all threshold values learned from the training data.</span>
+<span class="sd">    self.thrsVal : `array`-like of shape (`n_thresholds`)</span>
+<span class="sd">        Threshold values learned from the training data.</span>
 
-<span class="sd">    self.thrsDim : array-like of shape (n_thresholds)</span>
-<span class="sd">        Array of dimensions</span>
-<span class="sd">        corresponding to the learned threshold value in self.thrsVal.</span>
+<span class="sd">    self.thrsDim : `array`-like of shape (`n_thresholds`)</span>
+<span class="sd">        Dimensions</span>
+<span class="sd">        corresponding to the learned threshold value in `self.thrsVal`.</span>
 
-<span class="sd">    is_fitted_ : bool</span>
-<span class="sd">        True if the feature mappings has learned its hyperparameters (if any)</span>
+<span class="sd">    is_fitted_ : `bool`</span>
+<span class="sd">        Whether the feature mappings has learned its hyperparameters (if any)</span>
 <span class="sd">        and the length of the feature mapping is set.</span>
 
-<span class="sd">    len_ : int</span>
-<span class="sd">        Defines the length of the feature mapping vector.</span>
+<span class="sd">    len_ : `int`</span>
+<span class="sd">        Length of the feature mapping vector.</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -226,7 +245,8 @@
                  <span class="n">n_thresholds</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="c1"># Call the base class init function.</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
+                         <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n_thresholds</span> <span class="o">=</span> <span class="n">n_thresholds</span></div>
 
@@ -237,11 +257,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances</span>
 <span class="sd">            used to learn the feature configurations.</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,), default=None</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`,), default = `None`</span>
 <span class="sd">            Labels corresponding to the unlabeled instances X,</span>
 <span class="sd">            used for finding the thresholds from the dataset.</span>
 
@@ -271,22 +291,22 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled instances.</span>
 
-<span class="sd">        Y : array-like of shape (n_samples,)</span>
+<span class="sd">        Y : `array`-like of shape (`n_samples`,)</span>
 <span class="sd">            Labels corresponding to the instances.</span>
 
-<span class="sd">        n_thresholds : int, default = None</span>
+<span class="sd">        n_thresholds : `int`, default = `None`</span>
 <span class="sd">            Maximum limit on the number of thresholds obtained</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        prodThrsDim : array-like of shape (n_thresholds)</span>
-<span class="sd">            The dimension in which the thresholds are defined.</span>
+<span class="sd">        prodThrsDim : `array`-like of shape (`n_thresholds`)</span>
+<span class="sd">            Dimension in which the thresholds are defined.</span>
 
-<span class="sd">        prodThrsVal : array-like of shape (n_thresholds)</span>
-<span class="sd">            The threshold value in the corresponding dimension.</span>
+<span class="sd">        prodThrsVal : `array`-like of shape (`n_thresholds`)</span>
+<span class="sd">            Threshold value in the corresponding dimension.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -314,17 +334,17 @@
 
 <div class="viewcode-block" id="ThresholdPhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compute the threshold features(0/1)</span>
+<span class="sd">        Compute the threshold features (0/1)</span>
 <span class="sd">        by comparing with the thresholds obtained in each dimension.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
 <span class="sd">            Unlabeled training instances.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        X_feat : array-like of shape (n_samples, n_features)</span>
+<span class="sd">        X_feat : `array`-like of shape (`n_samples`, `n_features`)</span>
 <span class="sd">            Transformed features from the given instances.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -355,7 +375,7 @@
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
 
     </p>
   </div>

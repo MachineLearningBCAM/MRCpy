@@ -1,8 +1,6 @@
-MRCpy Library Documentation
+MRCpy Package Contents
 ===========================
 
-Module Contents
----------------
 
 Minimax Risk Classifiers
 ------------------------
@@ -11,7 +9,6 @@ Minimax Risk Classifiers
    :toctree: generated/
    :template: class.rst
 
-   MRCpy.BaseMRC
    MRCpy.MRC
    MRCpy.CMRC
 
@@ -24,8 +21,17 @@ Feature Mappings
    :toctree: generated/
    :template: class.rst
 
-   MRCpy.phi.BasePhi
    MRCpy.phi.RandomFourierPhi
    MRCpy.phi.RandomReLUPhi
    MRCpy.phi.ThresholdPhi
+
+Extended Functionalities
+------------------------
+
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+   MRCpy.BaseMRC
+   MRCpy.phi.BasePhi
 

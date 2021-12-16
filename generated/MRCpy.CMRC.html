@@ -41,13 +41,14 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MRCpy.phi.BasePhi" href="MRCpy.phi.BasePhi.html" />
+    <link rel="next" title="MRCpy.phi.RandomFourierPhi" href="MRCpy.phi.RandomFourierPhi.html" />
     <link rel="prev" title="MRCpy.MRC" href="MRCpy.MRC.html" /> 
 </head>
 
@@ -97,10 +98,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 </ul>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Library Documentation</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#module-contents">Module Contents</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="MRCpy.BaseMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.BaseMRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.MRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.MRC</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-mrcpy-cmrc">Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a></li>
@@ -109,8 +108,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
 </ul>
 </li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
 </ul>
 
             
@@ -159,7 +162,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-          <li><a href="../api.html">MRCpy Library Documentation</a> &raquo;</li>
+          <li><a href="../api.html">MRCpy Package Contents</a> &raquo;</li>
         
       <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</li>
     
@@ -184,70 +187,115 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC<a class="headerlink" href="#mrcpy-cmrc" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.CMRC">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.</span></code><code class="sig-name descname"><span class="pre">CMRC</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">MRCpy.</span></code><code class="sig-name descname"><span class="pre">CMRC</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Constrained Minimax Risk Classifier</p>
-<p>MRCs using the additional marginals constraints on the instances.
-It also implements two kinds of loss functions, namely 0-1 and log loss.
-This is a subclass of the super class BaseMRC.</p>
+<p>The class CMRC implements the method Minimimax Risk Classification (MRC) proposed in <a class="reference internal" href="MRCpy.MRC.html#ref1"><span class="std std-ref">[1]</span></a> 
+using the additional marginals constraints on the instances. It also implements two kinds of loss functions, namely 0-1 and log loss.</p>
+<p>This is a subclass of the super class BaseMRC.</p>
+<p>See <span class="xref std std-ref">Examples of use</span> for futher applications of this class and its methods.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>For more information about MRC, one can refer to the following resources:</p>
+<p>[1] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with 
+0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+Systems, 33, 302-312.</a></p>
+<p>[2] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum 
+Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</a></p>
+<p class="last">[3] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A 
+Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default=’0-1’</span></dt><dd><p>The type of loss function to use for the risk minimization.</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
+quantifies the probability of classification error at a certain example
+for a certain rule. Log-loss quantifies the minus log-likelihood at a
+certain example for a certain rule.</p>
 </dd>
-<dt><strong>s</strong><span class="classifier">float, default=0.3</span></dt><dd><p>For tuning the estimation of expected values
-of feature mapping function.</p>
+<dt><strong>s</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">0.3</span></code></span></dt><dd><p>Parameter that tunes the estimation of expected values
+of feature mapping function. It is used to calculate <span class="math notranslate nohighlight">\(\lambda\)</span> (variance in the mean estimates
+for the expectations of the feature mappings) in the following way</p>
+<div class="math notranslate nohighlight">
+\[\lambda = s * \text{std}(\phi(X,Y)) / \sqrt{\left| X \right|}     \]</div>
+<p>where (X,Y) is the dataset of training samples and their labels respectively and
+<span class="math notranslate nohighlight">\(\text{std}(\phi(X,Y))\)</span> stands for standard deviation of <span class="math notranslate nohighlight">\(\phi(X,Y)\)</span> in the supervised dataset (X,Y).</p>
 </dd>
-<dt><strong>deterministic</strong><span class="classifier">bool, default=None</span></dt><dd><p>For determining if the prediction of the labels
-should be done in a deterministic way or not.
-For ‘0-1’ loss, the non-deterministic (‘False’) approach
-works well.
-For ‘log’ loss, the deterministic (‘True’) approach
-works well.
-If the user doesnot specify the value, the default value
-is set according to loss function.</p>
+<dt><strong>sigma</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>When given a string, it defines the type of heuristic to be used
+to calculate the scaling parameter <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> used in some feature mappings such
+as Random Fourier or ReLU featuress.
+For comparison its relation with parameter <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> used in 
+other methods is <span class="math notranslate nohighlight">\(\gamma=1/(2\sigma^2)\)</span>.
+When given a float, it is the value for the scaling parameter.</p>
+<dl class="docutils">
+<dt>‘scale’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by <span class="math notranslate nohighlight">\(\sqrt{\frac{\textrm{n_features} * \textrm{var}(X)}{2}}\)</span> 
+so that 
+<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is <span class="math notranslate nohighlight">\(\frac{1}{\textrm{n_features} *º \textrm{var}(X)}\)</span>  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the 
+variance function.</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier">int, RandomState instance, default=None</span></dt><dd><p>Used when ‘fourier’ and ‘relu’ options for feature mappings are used
+<dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the <span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span> 
+nearest neighbour estimated from 1000 samples of the dataset using
+the function <a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.rff_sigma" title="MRCpy.phi.RandomFourierPhi.rff_sigma"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>deterministic</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
+should be done in a deterministic way (given a fixed <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">random_state</span></code></a> 
+in the case of using random Fourier or random ReLU features).</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Used when ‘fourier’ and ‘relu’ options for feature mappings are used
 to produce the random weights.</p>
 </dd>
-<dt><strong>fit_intercept</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to calculate the intercept for MRCs
+<dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
-<dt><strong>warm_start</strong><span class="classifier">bool, default=False</span></dt><dd><p>When set to True,
-reuse the solution of the previous call to fit as initialization,
-otherwise, just erase the previous solution.</p>
-</dd>
-<dt><strong>use_cvx</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, use CVXpy library for the optimization
+<dt><strong>use_cvx</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>If True, use CVXpy library for the optimization
 instead of the subgradient methods.</p>
 </dd>
-<dt><strong>solver</strong><span class="classifier">str {‘SCS’, ‘ECOS’, ‘MOSEK’}, default=’MOSEK’</span></dt><dd><p>The type of CVX solver to use for solving the problem.
+<dt><strong>solver</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a>, default = ‘MOSEK’</span></dt><dd><p>The type of CVX solver to use for solving the problem.
 In some cases, one solver might not work,
-so you might need to change solver depending on the problem.
-‘MOSEK’ is a commercial solver for which one might need to
-request for a license. A free license can be requested
-<a class="reference external" href="https://www.mosek.com/products/academic-licenses/">here</a></p>
+so you might need to change solver depending on the problem.</p>
+<dl class="docutils">
+<dt>‘SCS’</dt><dd><p>It uses Splitting Conic Solver (SCS).</p>
 </dd>
-<dt><strong>max_iters</strong><span class="classifier">int, default=2000</span></dt><dd><p>The maximum number of iterations to use
-for finding the solution of optimization
+<dt>‘ECOS’</dt><dd><p>It uses Embedded Eonic Eolver (ECOS).</p>
+</dd>
+<dt>‘MOSEK’</dt><dd><p>MOSEK is a commercial solver for which one might need to
+request for a license. A free license can be requested
+<a class="reference external" href="https://www.mosek.com/products/academic-licenses/">here</a>.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">2000</span></code></span></dt><dd><p>The maximum number of iterations to use
+for finding the solution of optimization when
 using the subgradient approach.</p>
 </dd>
-<dt><strong>phi</strong><span class="classifier">str {‘fourier’, ‘relu’, ‘threshold’, ‘linear’} or</span></dt><dd><blockquote>
-<div><p><a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance (custom features), default=’linear’</p>
-</div></blockquote>
-<p>The type of feature mapping function to use for mapping the input data
-‘fourier’, ‘relu’, ‘threshold’ and ‘linear’
-are the currenlty available feature mapping methods.
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>The type of feature mapping function to use for mapping the input data.
+The currenlty available feature mapping methods are 
+‘fourier’, ‘relu’, ‘threshold’ and ‘linear’.
 The users can also implement their own feature mapping object
 (should be a <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance) and pass it to this argument.
 To implement a feature mapping, please go through the
 <a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
+<dl class="docutils">
+<dt>‘linear’</dt><dd><p>It uses the identity feature map referred to as Linear feature map.
+See class <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a>.</p>
+</dd>
+<dt>‘fourier’</dt><dd><p>It uses Random Fourier Feature map. See class <a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code></a>.</p>
+</dd>
+<dt>‘relu’</dt><dd><p>It uses Rectified Linear Unit (ReLU) features. See class <a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a>.</p>
+</dd>
+<dt>‘threshold’</dt><dd><p>It uses Feature mappings obtained using a threshold. 
+See class <a class="reference internal" href="MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi" title="MRCpy.phi.ThresholdPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ThresholdPhi</span></code></a>.</p>
+</dd>
+</dl>
 </dd>
 <dt><strong>**phi_kwargs</strong><span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
-for the corresponding feature mappings(phi).</p>
+for the corresponding feature mappings(<code class="xref any docutils literal notranslate"><span class="pre">phi</span></code>).</p>
 <p>For example in case of fourier features,
-the number of features is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
+the number of features is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
 parameter which can be passed as argument -
 <code class="xref any docutils literal notranslate"><span class="pre">MRC(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=500)</span></code></p>
 <p>The list of arguments for each feature mappings class
@@ -256,19 +304,68 @@ can be found in the corresponding documentation.</p>
 </dl>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>True if the classifier is fitted i.e., the parameters are learnt.</p>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>Simple example of using CMRC with default seetings: 0-1 loss and linear feature mapping.
+We first load the data and split it into train and test sets. We fit the model 
+with the training samples using <a class="reference internal" href="#MRCpy.CMRC.fit" title="MRCpy.CMRC.fit"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">fit</span></code></a> function. Then, we predict the class of some test
+samples with <a class="reference internal" href="#MRCpy.CMRC.predict" title="MRCpy.CMRC.predict"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">predict</span></code></a>. We can also obtain the probabilities of each class with 
+<a class="reference internal" href="#MRCpy.CMRC.predict_proba" title="MRCpy.CMRC.predict_proba"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">predict_proba</span></code></a>. Finally, we calculate the score of the model over the test set
+using <a class="reference internal" href="#MRCpy.CMRC.score" title="MRCpy.CMRC.score"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">score</span></code></a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_mammographic</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Loading the dataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Split the dataset into training and test instances</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Standarize the data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Fit the CMRC model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Prediction. The predicted values for the first 10 test instances are:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:])</span>
+<span class="go">[0 0 0 0 0 1 0 1 0 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Predicted probabilities. </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># The predicted probabilities for the first 10 test instances are:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">[:</span><span class="mi">10</span><span class="p">,</span> <span class="p">:])</span>
+<span class="go">[[0.62919573 0.37080427]</span>
+<span class="go"> [1.         0.        ]</span>
+<span class="go"> [0.95104266 0.04895734]</span>
+<span class="go"> [1.         0.        ]</span>
+<span class="go"> [0.99047735 0.00952265]</span>
+<span class="go"> [0.         1.        ]</span>
+<span class="go"> [1.         0.        ]</span>
+<span class="go"> [0.12378713 0.87621287]</span>
+<span class="go"> [1.         0.        ]</span>
+<span class="go"> [0.62290253 0.37709747]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Calculate the score of the predictor </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># (mean accuracy on the given test data and labels)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">)</span>
+<span class="go">0.8247422680412371</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the classifier is fitted i.e., the parameters are learnt.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features) or float</span></dt><dd><p>The mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features) or float</span></dt><dd><p>The variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Variance in the mean estimates
 for the expectations of the feature mappings.</p>
 </dd>
-<dt><strong>mu_</strong><span class="classifier">array-like of shape (n_features) or float</span></dt><dd><p>Parameters learnt by the optimization.</p>
+<dt><strong>mu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by the optimization.</p>
 </dd>
-<dt><strong>params_</strong><span class="classifier">a dictionary</span></dt><dd><p>Stores the optimal points and best value of the function
-when the warm_start=True.</p>
+<dt><strong>params_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Dictionary that stores the optimal points and best value of 
+the function.</p>
 </dd>
 </dl>
 </td>
@@ -292,7 +389,7 @@ when the warm_start=True.</p>
 <td>Solves the marginally constrained minimax risk optimization problem for different types of loss (0-1 and log loss).</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.CMRC.predict" title="MRCpy.CMRC.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</td>
-<td>Returns the predicted classes for the given instances using the probabilities given by the function <a class="reference internal" href="#MRCpy.CMRC.predict_proba" title="MRCpy.CMRC.predict_proba"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">predict_proba</span></code></a>.</td>
+<td>Predicts classes for new instances using a fitted model.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.CMRC.predict_proba" title="MRCpy.CMRC.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</td>
 <td>Computes conditional probabilities corresponding to each class for the given unlabeled instances.</td>
@@ -307,7 +404,7 @@ when the warm_start=True.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.CMRC.__init__">
-<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">warm_start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em><span class="n"><span class="pre">use_cvx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'SCS'</span></span></em>, <em><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -322,17 +419,17 @@ and then calls the <a class="reference internal" href="#MRCpy.CMRC.minimax_risk"
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Training instances used in</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
 <ul class="simple">
 <li>Calculating the expectation estimates
 that constrain the uncertainty set
 for the minimax risk classification</li>
 <li>Solving the minimax risk optimization problem.</li>
 </ul>
-<p>n_samples is the number of samples and
-n_features is the number of features.</p>
+<p><a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a> is the number of training samples and
+<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> is the number of features.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples1), default = None</span></dt><dd><p>Labels corresponding to the training instances
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
 used only to compute the expectation estimates.</p>
 </dd>
 </dl>
@@ -384,16 +481,16 @@ different types of loss (0-1 and log loss).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Training instances used for solving
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>The mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_features * n_classes)</span></dt><dd><p>The variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The variance in the mean estimates
 for the expectations of the feature mappings.</p>
 </dd>
-<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>Number of labels in the dataset.</p>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
 </dd>
 </dl>
 </td>
@@ -411,21 +508,22 @@ for the expectations of the feature mappings.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.CMRC.predict">
 <code class="sig-name descname"><span class="pre">predict</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.CMRC.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the predicted classes for the given instances
+<dd><p>Predicts classes for new instances using a fitted model.</p>
+<p>Returns the predicted classes for the given instances in <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">X</span></code></a>
 using the probabilities given by the function <a class="reference internal" href="#MRCpy.CMRC.predict_proba" title="MRCpy.CMRC.predict_proba"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">predict_proba</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples)</span></dt><dd><p>The predicted labels corresponding to the given instances.</p>
+<dt><strong>y_pred</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
 </dd>
 </dl>
 </td>
@@ -444,14 +542,14 @@ to each class for the given unlabeled instances.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Testing instances for which
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
 the prediction probabilities are calculated for each class.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>hy_x</strong><span class="classifier">array-like of shape (n_samples, n_classes)</span></dt><dd><p>The conditional probabilities (p(y|x))
+<dt><strong>hy_x</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The conditional probabilities (p(y|x))
 corresponding to each class.</p>
 </dd>
 </dl>
@@ -475,7 +573,7 @@ each label set be correctly predicted.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Test samples.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs)</span></dt><dd><p>True labels for <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">X</span></code></a>.</p>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs)</span></dt><dd><p>True labels for <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">X</span></code></a>.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights.</p>
 </dd>
@@ -483,7 +581,7 @@ each label set be correctly predicted.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> wrt. <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-y" title="(in scikit-learn v0.24)"><code class="xref any docutils literal notranslate"><span class="pre">y</span></code></a>.</p>
+<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> wrt. <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-y" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">y</span></code></a>.</p>
 </dd>
 </dl>
 </td>
@@ -497,7 +595,7 @@ each label set be correctly predicted.</p>
 <code class="sig-name descname"><span class="pre">set_params</span></code><span class="sig-paren">(</span><em><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.CMRC.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
-(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v0.24)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
 parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
 possible to update each component of a nested object.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -524,17 +622,9 @@ possible to update each component of a nested object.</p>
 
 <div class="section" id="examples-using-mrcpy-cmrc">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code><a class="headerlink" href="#examples-using-mrcpy-cmrc" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Simple example of using CMRC with 0-1 loss."><div class="figure align-default" id="id1">
-<img alt="Simple example of using CMRC with 0-1 loss." src="../_images/sphx_glr_example4_thumb.png" />
-<p class="caption"><span class="caption-text"><span class="xref std std-ref">sphx_glr_auto_examples_example4.py</span></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets."><div class="figure align-default" id="id2">
-<img alt="Example of using CMRC with some of the common classification datasets." src="../_images/sphx_glr_example2_thumb.png" />
-<p class="caption"><span class="caption-text"><span class="xref std std-ref">sphx_glr_auto_examples_example2.py</span></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="In this example, I am extending the Phi parent class according to the needs of the mappings. Yo..."><div class="figure align-default" id="id3">
-<img alt="An example of creating you own custom feature mappings" src="../_images/sphx_glr_customPhi_thumb.png" />
-<p class="caption"><span class="caption-text"><span class="xref std std-ref">sphx_glr_auto_examples_customPhi.py</span></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><div class="figure align-default" id="id1">
+<img alt="Example: Comparison to other methods" src="../_images/sphx_glr_plot_comparison_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_comparison.html#sphx-glr-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -545,7 +635,7 @@ possible to update each component of a nested object.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="MRCpy.phi.BasePhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.BasePhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.phi.RandomFourierPhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.RandomFourierPhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="MRCpy.MRC.html" class="btn btn-neutral float-left" title="MRCpy.MRC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
@@ -553,7 +643,7 @@ possible to update each component of a nested object.</p>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas and Aritz Perez.
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
 
     </p>
   </div>

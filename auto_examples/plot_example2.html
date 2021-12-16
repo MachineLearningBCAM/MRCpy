@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Example: Use of CMRC with different settings &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example: Use of MRC with different settings" href="plot_example1.html" />
+    <link rel="prev" title="Gallery of examples" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#basic-examples">Basic Examples</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Use of CMRC with different settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_example1.html">Example: Use of MRC with different settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#further-applications">Further applications</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Gallery of examples</a> &raquo;</li>
+        
+      <li>Example: Use of CMRC with different settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/auto_examples/plot_example2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-example2-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-use-of-cmrc-with-different-settings">
+<span id="ex2"></span><span id="sphx-glr-auto-examples-plot-example2-py"></span><h1>Example: Use of CMRC with different settings<a class="headerlink" href="#example-use-of-cmrc-with-different-settings" title="Permalink to this headline">¶</a></h1>
+<p>Example of using CMRC with some of the common classification datasets with different
+losses and feature mappings settings. We load the different datasets and use 10-Fold
+Cross-Validation to generate the partitions for train and test. We separate 1 partition
+each time for testing and use the others for training. On each iteration we calculate
+the classification error. We also calculate the mean training time.</p>
+<p>You can check a more elaborated example in <a class="reference internal" href="further_examples/plot_comparison.html#ex-comp"><span class="std std-ref">Example: Comparison to other methods</span></a>.</p>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>*** Example (CMRC with the additional marginal constraints) ***
+
+
+1. Using 0-1 loss and relu feature mapping
+
+
+ ##############
+ mammographic n= 961 , d= 5, cardY= 2
+ error= : 0.1758591065292096 +/- 0.03275749228451331
+ avg_train_time= : 82.26594717502594 secs
+ ##############
+
+
+ ##############
+ haberman n= 306 , d= 3, cardY= 2
+ error= : 0.2686021505376344 +/- 0.04230824129843591
+ avg_train_time= : 7.737597537040711 secs
+ ##############
+
+
+ ##############
+ indian_liver n= 583 , d= 10, cardY= 2
+ error= : 0.29669783752191703 +/- 0.02715855969805603
+ avg_train_time= : 28.55181505680084 secs
+ ##############
+
+
+ ##############
+ diabetes n= 768 , d= 8, cardY= 2
+ error= : 0.24343814080656184 +/- 0.0462583682769457
+ avg_train_time= : 49.386615014076234 secs
+ ##############
+
+
+ ##############
+ credit n= 690 , d= 15, cardY= 2
+ error= : 0.14782608695652175 +/- 0.04338153491911816
+ avg_train_time= : 36.71939489841461 secs
+ ##############
+
+
+2. Using log loss and relu feature mapping
+
+
+ ##############
+ mammographic n= 961 , d= 5, cardY= 2
+ error= : 0.17794243986254296 +/- 0.032436284915514965
+ avg_train_time= : 11.319463229179382 secs
+ ##############
+
+
+ ##############
+ haberman n= 306 , d= 3, cardY= 2
+ error= : 0.2880645161290322 +/- 0.05064150844073888
+ avg_train_time= : 1.9484014749526977 secs
+ ##############
+
+
+ ##############
+ indian_liver n= 583 , d= 10, cardY= 2
+ error= : 0.2864114552893045 +/- 0.044005208271729296
+ avg_train_time= : 4.73349609375 secs
+ ##############
+
+
+ ##############
+ diabetes n= 768 , d= 8, cardY= 2
+ error= : 0.22264183185235814 +/- 0.053038152425360315
+ avg_train_time= : 7.481048727035523 secs
+ ##############
+
+
+ ##############
+ credit n= 690 , d= 15, cardY= 2
+ error= : 0.13043478260869562 +/- 0.04583011101693304
+ avg_train_time= : 5.934507155418396 secs
+ ##############
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
+<span class="c1"># Import the datasets</span>
+<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Data sets</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">load_mammographic</span><span class="p">,</span> <span class="n">load_haberman</span><span class="p">,</span> <span class="n">load_indian_liver</span><span class="p">,</span>
+           <span class="n">load_diabetes</span><span class="p">,</span> <span class="n">load_credit</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mammographic&quot;</span><span class="p">,</span> <span class="s2">&quot;haberman&quot;</span><span class="p">,</span> <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+
+    <span class="n">res_mean</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a><span class="p">))</span>
+    <span class="n">res_std</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">(</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a><span class="p">))</span>
+
+    <span class="c1"># We fix the random seed to that the stratified kfold performed</span>
+    <span class="c1"># is the same through the different executions</span>
+    <span class="n">random_seed</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># Iterate through each of the dataset and fit the CMRC classfier.</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">load</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a><span class="p">):</span>
+
+        <span class="c1"># Loading the dataset</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="numpy.unique" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># Print the dataset name</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ############## </span><span class="se">\n</span><span class="s2"> &quot;</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; n= &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span>
+              <span class="s2">&quot; , d= &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, cardY= &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+
+        <span class="c1"># Create the CMRC object initilized with the corresponding parameters</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                   <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+        <span class="c1"># Generate the partitions of the stratified cross-validation</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
+                             <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">cvError</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">auxTime</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Paired and stratified cross-validation</span>
+        <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+
+            <span class="c1"># Normalizing the data</span>
+            <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+            <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+            <span class="c1"># Save start time for computing training time</span>
+            <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+
+            <span class="c1"># Train the model</span>
+            <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+            <span class="c1"># Save the training time</span>
+            <span class="n">auxTime</span> <span class="o">+=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+            <span class="c1"># Predict the class for test instances</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+            <span class="c1"># Calculate the error made by CMRC classificator</span>
+            <span class="n">cvError</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">y_pred</span> <span class="o">!=</span> <span class="n">y_test</span><span class="p">))</span>
+
+        <span class="n">res_mean</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">cvError</span><span class="p">)</span>
+        <span class="n">res_std</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.std.html#numpy.std" title="numpy.std" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">std</span></a><span class="p">(</span><span class="n">cvError</span><span class="p">)</span>
+
+        <span class="c1"># Calculating the mean training time</span>
+        <span class="n">auxTime</span> <span class="o">=</span> <span class="n">auxTime</span> <span class="o">/</span> <span class="mi">10</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; error= &quot;</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">res_mean</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; +/- &quot;</span> <span class="o">+</span>
+              <span class="nb">str</span><span class="p">(</span><span class="n">res_std</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> avg_train_time= &quot;</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span>
+              <span class="nb">str</span><span class="p">(</span><span class="n">auxTime</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; secs&#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ############## </span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*** Example (CMRC with the additional marginal constraints) *** </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;1. Using 0-1 loss and relu feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;2. Using log loss and relu feature mapping </span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 39 minutes  21.407 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-example2-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../_downloads/a8b175cd29751dc0229ceb76947711bf/plot_example2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_example2.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../_downloads/cd55f92c8d819b776c6a1e904e5efb23/plot_example2.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_example2.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="plot_example1.html" class="btn btn-neutral float-right" title="Example: Use of MRC with different settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Gallery of examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
