@@ -5,10 +5,11 @@
 Example: Use of CMRC with different settings
 ============================================
 
-Example of using CMRC with some of the common classification datasets with different
-losses and feature mappings settings. We load the different datasets and use 10-Fold 
-Cross-Validation to generate the partitions for train and test. We separate 1 partition
-each time for testing and use the others for training. On each iteration we calculate 
+Example of using CMRC with some of the common classification datasets with
+different losses and feature mappings settings. We load the different datasets
+and use 10-Fold Cross-Validation to generate the partitions for train and test.
+We separate 1 partition each time for testing and use the others for training.
+On each iteration we calculate
 the classification error. We also calculate the mean training time.
 
 You can check a more elaborated example in :ref:`ex_comp`.
@@ -27,7 +28,7 @@ from MRCpy.datasets import *
 # Data sets
 loaders = [load_mammographic, load_haberman, load_indian_liver,
            load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver", 
+dataName = ["mammographic", "haberman", "indian_liver",
             "diabetes", "credit"]
 
 
@@ -82,7 +83,7 @@ def runCMRC(phi, loss):
 
             # Save the training time
             auxTime += time.time() - startTime
-            
+
             # Predict the class for test instances
             y_pred = clf.predict(X_test)
 
@@ -102,7 +103,8 @@ def runCMRC(phi, loss):
 
 if __name__ == '__main__':
 
-    print('*** Example (CMRC with the additional marginal constraints) *** \n\n')
+    print('*** Example (CMRC with the additional\
+     marginal constraints) *** \n\n')
 
     print('1. Using 0-1 loss and relu feature mapping \n\n')
     runCMRC(phi='relu', loss='0-1')

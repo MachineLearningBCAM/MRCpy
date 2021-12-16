@@ -17,25 +17,34 @@ class CMRC(BaseMRC):
     '''
     Constrained Minimax Risk Classifier
 
-    The class CMRC implements the method Minimimax Risk Classification (MRC) proposed in :ref:`[1] <ref1>` 
-    using the additional marginals constraints on the instances. It also implements two kinds of loss functions, namely 0-1 and log loss.
-    
+    The class CMRC implements the method Minimimax Risk Classification
+    (MRC) proposed in :ref:`[1] <ref1>`
+    using the additional marginals constraints on the instances.
+    It also implements two kinds of loss functions, namely 0-1 and log loss.
+
     This is a subclass of the super class BaseMRC.
 
-    See :ref:`Examples of use` for futher applications of this class and its methods.
+    See :ref:`Examples of use` for futher applications of this class and
+    its methods.
 
-    .. seealso:: For more information about MRC, one can refer to the following resources:
-                    
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+    .. seealso:: For more information about MRC, one can refer to the
+    following resources:
+
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                    Minimax Classification with
+                    0-1 Loss and Performance Guarantees.
+                    Advances in Neural Information Processing
                     Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                    
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_ 
-                    
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    Generalized Maximum
+                    Entropy for Supervised Classification.
+                    arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_
+
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    MRCpy: A Library for Minimax Risk Classifiers.
+                    arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
@@ -48,36 +57,43 @@ class CMRC(BaseMRC):
 
     s : `float`, default = `0.3`
         Parameter that tunes the estimation of expected values
-        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates
+        of feature mapping function. It is used to calculate :math:`\lambda`
+        (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
-        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     
-        
-        where (X,Y) is the dataset of training samples and their labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y). 
+        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) /
+                \\sqrt{\\left| X \\right|}
+
+        where (X,Y) is the dataset of training samples and their labels
+        respectively and :math:`\\text{std}(\\phi(X,Y))` stands for
+        standard deviation of :math:`\\phi(X,Y)` in the supervised
+        dataset (X,Y).
 
     sigma : `str` or `float`, default = `None`
         When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature mappings such
-        as Random Fourier or ReLU featuress.
-        For comparison its relation with parameter `gamma` used in 
+        to calculate the scaling parameter `sigma` used in some feature
+        mappings such as Random Fourier or ReLU featuress.
+        For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
-            so that 
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
+                                                        \\textrm{var}(X)}{2}}`
+            so that
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
+                                        \\textrm{var}(X)}`  where `var` is the
             variance function.
 
         'avg_ann_50'
-            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            Approximates `sigma` by the average distance to the
+            :math:`50^{\\textrm{th}}`
             nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`. 
+            the function `rff_sigma`.
 
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
-        should be done in a deterministic way (given a fixed `random_state` 
+        should be done in a deterministic way (given a fixed `random_state`
         in the case of using random Fourier or random ReLU features).
 
     random_state : `int`, RandomState instance, default = `None`
@@ -97,7 +113,7 @@ class CMRC(BaseMRC):
         The type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
         so you might need to change solver depending on the problem.
-        
+
         'SCS'
             It uses Splitting Conic Solver (SCS).
 
@@ -117,7 +133,7 @@ class CMRC(BaseMRC):
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         The type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are 
+        The currenlty available feature mapping methods are
         'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
@@ -132,10 +148,11 @@ class CMRC(BaseMRC):
             It uses Random Fourier Feature map. See class `RandomFourierPhi`.
 
         'relu'
-            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.
+            It uses Rectified Linear Unit (ReLU) features.
+            See class `RandomReLUPhi`.
 
         'threshold'
-            It uses Feature mappings obtained using a threshold. 
+            It uses Feature mappings obtained using a threshold.
             See class `ThresholdPhi`.
 
     **phi_kwargs : Additional parameters for feature mappings.
@@ -163,17 +180,18 @@ class CMRC(BaseMRC):
     mu_ : `array`-like of shape (`n_features`) or `float`
         Parameters learnt by the optimization.
     params_ : `dict`
-        Dictionary that stores the optimal points and best value of 
+        Dictionary that stores the optimal points and best value of
         the function.
 
     Examples
     --------
 
-    Simple example of using CMRC with default seetings: 0-1 loss and linear feature mapping.
-    We first load the data and split it into train and test sets. We fit the model 
-    with the training samples using `fit` function. Then, we predict the class of some test
-    samples with `predict`. We can also obtain the probabilities of each class with 
-    `predict_proba`. Finally, we calculate the score of the model over the test set
+    Simple example of using CMRC with default seetings: 0-1 loss and linear
+    feature mapping. We first load the data and split it into train and
+    test sets. We fit the model with the training samples using `fit` function.
+    Then, we predict the class of some test samples with `predict`.
+    We can also obtain the probabilities of each class with `predict_proba`.
+    Finally, we calculate the score of the model over the test set
     using `score`.
 
 
@@ -182,9 +200,10 @@ class CMRC(BaseMRC):
     >>> from sklearn import preprocessing
     >>> from sklearn.model_selection import train_test_split
     >>> # Loading the dataset
-    >>> X, Y = load_mammographic(return_X_y=True) 
+    >>> X, Y = load_mammographic(return_X_y=True)
     >>> # Split the dataset into training and test instances
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+    >>> X_train, X_test, Y_train, Y_test =
+    train_test_split(X, Y, test_size=0.2, random_state=0)
     >>> # Standarize the data
     >>> std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)
     >>> X_train = std_scale.transform(X_train)
@@ -194,7 +213,7 @@ class CMRC(BaseMRC):
     >>> # Prediction. The predicted values for the first 10 test instances are:
     >>> clf.predict(X_test[:10, :])
     [0 0 0 0 0 1 0 1 0 0]
-    >>> # Predicted probabilities. 
+    >>> # Predicted probabilities.
     >>> # The predicted probabilities for the first 10 test instances are:
     >>> clf.predict_proba(X_test[:10, :])
     [[0.62919573 0.37080427]
@@ -207,7 +226,7 @@ class CMRC(BaseMRC):
      [0.12378713 0.87621287]
      [1.         0.        ]
      [0.62290253 0.37709747]]
-    >>> # Calculate the score of the predictor 
+    >>> # Calculate the score of the predictor
     >>> # (mean accuracy on the given test data and labels)
     >>> clf.score(X_test, Y_test)
     0.8247422680412371
@@ -395,10 +414,12 @@ class CMRC(BaseMRC):
         Solution of the CMRC convex optimization(minimization)
         using the Nesterov accelerated approach.
 
-        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019). 
-                            The Strength of Nesterov’s Extrapolation in the Individual 
-                            Convergence of Nonsmooth Optimization. IEEE transactions on 
-                            neural networks and learning systems, 31(7), 2557-2568.
+        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
+                            The Strength of Nesterov’s Extrapolation
+                            in the Individual Convergence of Nonsmooth
+                            Optimization. IEEE transactions on
+                            neural networks and learning systems,
+                            31(7), 2557-2568.
                             <https://ieeexplore.ieee.org/document/8822632>`_
 
         Parameters

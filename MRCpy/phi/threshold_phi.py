@@ -21,18 +21,22 @@ class ThresholdPhi(BasePhi):
     This class obtains the thresholds fitting multiple one-dimensional
     decision stumps on the training data.
 
-    .. seealso:: For more information about MRC, one can refer to the following resources:
-                        
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+    .. seealso:: For more information about MRC, one can refer to the
+    following resources:
+
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                    Minimax Classification with 0-1 Loss and Performance
+                    Guarantees. Advances in Neural Information Processing
                     Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                    
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_ 
-                    
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    Generalized Maximum Entropy for Supervised Classification.
+                    arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_
+
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    MRCpy: A Library for Minimax Risk Classifiers.
+                    arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
@@ -46,7 +50,7 @@ class ThresholdPhi(BasePhi):
         (i.e. data is expected to be already centered).
 
     one_hot : `bool`, default = `False`
-        Controls the method used for evaluating the features of the 
+        Controls the method used for evaluating the features of the
         given instances in the binary case.
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to

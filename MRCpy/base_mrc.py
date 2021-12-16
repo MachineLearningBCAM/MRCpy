@@ -25,70 +25,83 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
     implemented in the library.
     It defines the different parameters and the layout.
 
-    .. seealso:: For more information about MRC, one can refer to the following resources:
-                        
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+    .. seealso:: For more information about MRC, one can refer to the
+    following resources:
+
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                    Minimax Classification with
+                    0-1 Loss and Performance Guarantees.
+                    Advances in Neural Information Processing
                     Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                    
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_ 
-                    
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    Generalized Maximum
+                    Entropy for Supervised Classification.
+                    arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_
+
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez,
+                    A. (2021). MRCpy: A Library for Minimax Risk Classifiers.
+                    arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
     ----------
     loss : `str`, default = '0-1'
-        Type of loss function to use for the risk 
+        Type of loss function to use for the risk
         minimization.
         The options are 0-1 loss and logaritmic loss.
-        '0-1' 
-            0-1 loss quantifies the probability of classification 
-            error at a certain example for a certain rule. 
+        '0-1'
+            0-1 loss quantifies the probability of classification
+            error at a certain example for a certain rule.
         'log'
             Log-loss quantifies the minus log-likelihood at a
             certain example for a certain rule.
 
     s : `float`, default = `0.3`
         Parameter that tunes the estimation of expected values
-        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates
+        of feature mapping function. It is used to calculate :math:`\lambda`
+        (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
-        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     
-        
-        where (X,Y) is the dataset of training samples and their labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
+        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) /
+                \\sqrt{\\left| X \\right|}
+
+        where (X,Y) is the dataset of training samples and their labels
+        respectively and :math:`\\text{std}(\\phi(X,Y))` stands for
+        standard deviation of :math:`\\phi(X,Y)` in the supervised
+        dataset (X,Y).
 
     sigma : `str` or `float`, default = `None`
         When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature mappings such
-        as Random Fourier or ReLU featuress.
-        For comparison its relation with parameter `gamma` used in 
+        to calculate the scaling parameter `sigma` used in some feature
+        mappings such as Random Fourier or ReLU featuress.
+        For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
-            so that 
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
+                                                        \\textrm{var}(X)}{2}}`
+            so that
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
+                                        \\textrm{var}(X)}`  where `var` is the
             variance function.
 
         'avg_ann_50'
-            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            Approximates `sigma` by the average distance to the
+            :math:`50^{\\textrm{th}}`
             nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`. 
+            the function `rff_sigma`.
 
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
-        should be done in a deterministic way (given a fixed `random_state` 
+        should be done in a deterministic way (given a fixed `random_state`
         in the case of using random Fourier or random ReLU features).
 
     random_state : `int`, RandomState instance, default = `None`
-        Random seed used when 'fourier' and 'relu' options for feature mappings are used
-        to produce the random weights.
+        Random seed used when 'fourier' and 'relu' options for feature mappings
+        are used to produce the random weights.
 
     fit_intercept : `bool`, default = `True`
             Whether to calculate the intercept for MRCs
@@ -103,7 +116,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         Type of CVX solver to use for solving the problem.
         In some cases, one solver might not work,
         so you might need to change solver depending on the problem.
-        
+
         'SCS'
             It uses Splitting Conic Solver (SCS).
 
@@ -122,7 +135,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are 
+        The currenlty available feature mapping methods are
         'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
@@ -137,10 +150,11 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             It uses Random Fourier Feature map. See class `RandomFourierPhi`.
 
         'relu'
-            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.
+            It uses Rectified Linear Unit (ReLU) features.
+            See class `RandomReLUPhi`.
 
         'threshold'
-            It uses Feature mappings obtained using a threshold. 
+            It uses Feature mappings obtained using a threshold.
             See class `ThresholdPhi`.
 
     **phi_kwargs : Additional parameters for feature mappings.

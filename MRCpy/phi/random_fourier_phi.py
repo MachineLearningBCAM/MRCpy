@@ -1,7 +1,5 @@
 ''' Gaussian Kernel approximated using Random Features.'''
 
-import statistics
-
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import check_array, check_random_state
@@ -33,24 +31,29 @@ class RandomFourierPhi(BasePhi):
     .. math:: K(x, x\') = \exp{\\frac{-\| x-x\'\|^2}{2\sigma^2}}
 
     .. seealso:: For more information about Random Features check:
-                
-                    [1] **Random Features:** `Rahimi, A., & Recht, B. (2007). 
-                    Random Features for Large-Scale Kernel Machines. In NIPS 
-                    (Vol. 3, No. 4, p. 5). 
-                    <https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf>`_
 
-                For more information about MRC, one can refer to the following resources:
-                    
-                    [2] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    [1] **Random Features:** `Rahimi, A., & Recht, B. (2007).
+                    Random Features for Large-Scale Kernel Machines. In NIPS
+                    (Vol. 3, No. 4, p. 5).
+                    <https://people.eecs.berkeley.edu/~brecht/
+                    papers/07.rah.rec.nips.pdf>`_
+
+                For more information about MRC, one can refer to the
+                following resources:
+
+                    [2] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                    Minimax Classification with 0-1 Loss and Performance
+                    Guarantees. Advances in Neural Information Processing
                     Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                    
-                    [3] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_ 
-                    
-                    [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+
+                    [3] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    Generalized Maximum Entropy for Supervised Classification.
+                    arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_
+
+                    [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    MRCpy: A Library for Minimax Risk Classifiers.
+                    arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
@@ -64,7 +67,7 @@ class RandomFourierPhi(BasePhi):
         (i.e. data is expected to be already centered).
 
     one_hot : `bool`, default = `False`
-        Controls the method used for evaluating the features of the 
+        Controls the method used for evaluating the features of the
         given instances in the binary case.
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to
@@ -73,23 +76,26 @@ class RandomFourierPhi(BasePhi):
     sigma : `str` or `float`, default = 'avg_ann_50'
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` using the data.
-        For comparison its relation with parameter `gamma` used in 
+        For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
-            so that 
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
+                                                        \\textrm{var}(X)}{2}}`
+            so that
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
+                                        \\textrm{var}(X)}`  where `var` is the
             variance function.
 
         'avg_ann_50'
-            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            Approximates `sigma` by the average distance to the
+            :math:`50^{\\textrm{th}}`
             nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`. 
+            the function `rff_sigma`.
 
     n_components : `int`, default = `600`
-        Number of features which the transformer transforms the input into.       
+        Number of features which the transformer transforms the input into.
 
     random_state : `int`, `RandomState` instance, default = None
         Random seed used to produce the `random_weights_`
@@ -98,7 +104,7 @@ class RandomFourierPhi(BasePhi):
     Attributes
     ----------
     random_weights_ : `array`-like of shape (`n_features`, `n_components`/2)
-        Random weights applied to the training samples as a step for 
+        Random weights applied to the training samples as a step for
         computing the random Fourier features.
 
     is_fitted_ : `bool`
@@ -149,7 +155,7 @@ class RandomFourierPhi(BasePhi):
         d = X.shape[1]
         # Evaluate the sigma according to the sigma type given in self.sigma
         if self.sigma == 'scale':
-            self.sigma_val = np.sqrt((d * X.var())/2)
+            self.sigma_val = np.sqrt((d * X.var()) / 2)
 
         elif self.sigma == 'avg_ann_50':
             self.sigma_val = self.rff_sigma(X)
@@ -163,7 +169,7 @@ class RandomFourierPhi(BasePhi):
         # Obtain the random weight from a normal distribution.
         self.random_state = check_random_state(self.random_state)
         self.random_weights_ = \
-            self.random_state.normal(0, 1/self.sigma_val,
+            self.random_state.normal(0, 1 / self.sigma_val,
                                      size=(d, int(self.n_components / 2)))
 
         # Sets the length of the feature mapping
@@ -200,7 +206,7 @@ class RandomFourierPhi(BasePhi):
 
         '''
         Computes the scaling parameter for the fourier features
-        using the heuristic given in the paper "Compact Nonlinear Maps 
+        using the heuristic given in the paper "Compact Nonlinear Maps
         and Circulant Extensions" :ref:`[1] <refpf>`.
 
         The heuristic states that the scaling parameter is obtained as
@@ -208,9 +214,10 @@ class RandomFourierPhi(BasePhi):
         from 1000 samples of the dataset.
 
         .. _refpf:
-        .. seealso:: [1] `Yu, F. X., Kumar, S., Rowley, H., & Chang, S. F. 
-                        (2015). Compact nonlinear maps and circulant extensions.
-                        <https://arxiv.org/pdf/1503.03893.pdf>`_ 
+        .. seealso:: [1] `Yu, F. X., Kumar, S., Rowley, H., & Chang, S. F.
+                        (2015). Compact nonlinear maps and circulant
+                        extensions.
+                        <https://arxiv.org/pdf/1503.03893.pdf>`_
 
         Parameters
         ----------

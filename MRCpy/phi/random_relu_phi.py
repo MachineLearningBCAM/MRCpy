@@ -1,7 +1,5 @@
 ''' Random Relu Features. '''
 
-import statistics
-
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import check_array, check_random_state
@@ -28,24 +26,34 @@ class RandomReLUPhi(BasePhi):
 
     .. math::           f(x) = \max(0, x)
 
-    .. seealso:: For more information about ReLU Features check:    
-                        
-                        [1] **ReLU Features:** `Sun, Y., Gilbert, A., & Tewari, A. (2019). 
-                        On the approximation properties of random relu features. 
-                        arXiv: Machine Learning. <https://arxiv.org/pdf/1810.04374.pdf>`_
+    .. seealso:: For more information about ReLU Features check:
 
-                For more information about MRC, one can refer to the following resources:
-                        
-                        [2] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                        0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
-                        Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                        
-                        [3] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                        Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                        <https://arxiv.org/abs/2007.05447>`_ 
-                        
-                        [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                        Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+                        [1] **ReLU Features:** `Sun, Y., Gilbert, A.,
+                        & Tewari, A. (2019).
+                        On the approximation properties of random
+                        relu features.
+                        arXiv: Machine Learning.
+                        <https://arxiv.org/pdf/1810.04374.pdf>`_
+
+                For more information about MRC, one can refer to the
+                following resources:
+
+                        [2] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                        Minimax Classification with
+                        0-1 Loss and Performance Guarantees. Advances in
+                        Neural Information Processing
+                        Systems, 33, 302-312.
+                        <https://arxiv.org/abs/2010.07964>`_
+
+                        [3] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                        Generalized Maximum
+                        Entropy for Supervised Classification.
+                        arXiv preprint arXiv:2007.05447.
+                        <https://arxiv.org/abs/2007.05447>`_
+
+                        [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                        MRCpy: A Library for Minimax Risk Classifiers.
+                        arXiv preprint arXiv:2108.01952.
                         <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
@@ -59,7 +67,7 @@ class RandomReLUPhi(BasePhi):
         (i.e. data is expected to be already centered).
 
     one_hot : `bool`, default = `False`
-        Controls the method used for evaluating the features of the 
+        Controls the method used for evaluating the features of the
         given instances in the binary case.
         Only applies in the binary case, namely, only when there are two
         classes. If set to true, one-hot-encoding will be used. If set to
@@ -68,20 +76,23 @@ class RandomReLUPhi(BasePhi):
     sigma : `str` or `float`, default = 'avg_ann_50'
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` using the data.
-        For comparison its relation with parameter `gamma` used in 
+        For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
-            so that 
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
+                                                        \\textrm{var}(X)}{2}}`
+            so that
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
+                                        \\textrm{var}(X)}`  where `var` is the
             variance function.
 
         'avg_ann_50'
-            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            Approximates `sigma` by the average distance to the
+            :math:`50^{\\textrm{th}}`
             nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`. 
+            the function `rff_sigma`.
 
     n_components : `int`, default = `600`
         Number of features which the transformer transforms the input into.
@@ -93,7 +104,7 @@ class RandomReLUPhi(BasePhi):
     Attributes
     ----------
     random_weights_ : `array`-like of shape (`n_features`, `n_components`)
-        Random weights applied to the training samples as a step for 
+        Random weights applied to the training samples as a step for
         computing the ReLU random features.
 
     is_fitted_ : `bool`
@@ -143,7 +154,7 @@ class RandomReLUPhi(BasePhi):
         d = X.shape[1]
         # Evaluate the sigma according to the sigma type given in self.sigma
         if self.sigma == 'scale':
-            self.sigma_val = np.sqrt((d * X.var())/2)
+            self.sigma_val = np.sqrt((d * X.var()) / 2)
 
         elif self.sigma == 'avg_ann_50':
             self.sigma_val = self.rff_sigma(X)
@@ -204,7 +215,7 @@ class RandomReLUPhi(BasePhi):
         '''
 
         Computes the scaling parameter for the ReLU features
-        using the heuristic given in the paper "Compact Nonlinear Maps 
+        using the heuristic given in the paper "Compact Nonlinear Maps
         and Circulant Extensions" :ref:`[1] <refpr>`.
 
         The heuristic states that the scaling parameter is obtained as
@@ -212,8 +223,9 @@ class RandomReLUPhi(BasePhi):
         from 1000 samples of the dataset.
 
         .. _refpr:
-        .. seealso:: [1] `Yu, F. X., Kumar, S., Rowley, H., & Chang, 
-                        S. F. (2015). Compact nonlinear maps and circulant extensions. 
+        .. seealso:: [1] `Yu, F. X., Kumar, S., Rowley, H., & Chang,
+                        S. F. (2015). Compact nonlinear maps and circulant
+                        extensions.
                         <https://arxiv.org/pdf/1503.03893.pdf>`_
 
         Parameters

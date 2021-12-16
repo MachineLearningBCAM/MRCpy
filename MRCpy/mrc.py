@@ -17,35 +17,50 @@ class MRC(BaseMRC):
     '''
     Minimax Risk Classifier
 
-    The class MRC implements the method Minimimax Risk Classification (MRC) proposed in :ref:`[1] <ref1>` 
-    using the default constraints. It implements two kinds of loss functions, namely 0-1 and log loss.
+    The class MRC implements the method Minimimax Risk Classification (MRC)
+    proposed in :ref:`[1] <ref1>`
+    using the default constraints. It implements two kinds of loss functions,
+    namely 0-1 and log loss.
 
-    The method MRC approximates the optimal classification rule by an optimization problem of the form
+    The method MRC approximates the optimal classification rule by an
+    optimization problem of the form
 
-    .. math:: \\mathcal{P}_{\\text{MRC}}: \\min_{h\\in T(\\mathcal{X},\\mathcal{Y})} \\max_{p\\in\\mathcal{U}} \\ell(h,p)
+    .. math:: \\mathcal{P}_{\\text{MRC}}:
+        \\min_{h\\in T(\\mathcal{X},\\mathcal{Y})}
+        \\max_{p\\in\\mathcal{U}} \\ell(h,p)
 
-    where we consider an uncertainty set :math:`\\mathcal{U}` of potential probabilities. 
-    These untertainty sets of distributions are given by constraints on the expectations of a vector-valued 
-    function :math:`\\phi : \\mathcal{X} \\times \\mathcal{Y} \\rightarrow \\mathbb{R}^m` referred to as feature mapping.
+    where we consider an uncertainty set :math:`\\mathcal{U}` of potential
+    probabilities.
+    These untertainty sets of distributions are given by constraints on the
+    expectations of a vector-valued function :math:`\\phi : \\mathcal{X}
+    \\times \\mathcal{Y} \\rightarrow \\mathbb{R}^m` referred to as feature
+    mapping.
 
 
     This is a subclass of the super class `BaseMRC`.
 
-    See :ref:`Examples of use` for futher applications of this class and its methods.
+    See :ref:`Examples of use` for futher applications of this class and its
+    methods.
 
     .. _ref1:
-    .. seealso:: For more information about MRC, one can refer to the following resources:
+    .. seealso:: For more information about MRC, one can refer to the following
+    resources:
 
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 
-                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+                    Minimax Classification with
+                    0-1 Loss and Performance Guarantees. Advances in Neural
+                    Information Processing
                     Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-                    
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum 
-                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_ 
-                    
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A 
-                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. 
+
+                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    Generalized Maximum
+                    Entropy for Supervised Classification.
+                    arXiv preprint arXiv:2007.05447.
+                    <https://arxiv.org/abs/2007.05447>`_
+
+                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    MRCpy: A Library for Minimax Risk Classifiers.
+                    arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
@@ -58,41 +73,48 @@ class MRC(BaseMRC):
 
     s : `float`, default = `0.3`
         Parameter that tunes the estimation of expected values
-        of feature mapping function. It is used to calculate :math:`\lambda` (variance in the mean estimates
+        of feature mapping function. It is used to calculate :math:`\lambda`
+        (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
-        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}     
-        
-        where (X,Y) is the dataset of training samples and their labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation of :math:`\\phi(X,Y)` in the supervised dataset (X,Y). 
+        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) /
+        \\sqrt{\\left| X \\right|}
+
+        where (X,Y) is the dataset of training samples and their
+        labels respectively and
+        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
+        of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
 
     sigma : `str` or `float`, default = `None`
         When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature mappings such
-        as Random Fourier or ReLU featuress.
-        For comparison its relation with parameter `gamma` used in 
+        to calculate the scaling parameter `sigma` used in some feature
+        mappings such as Random Fourier or ReLU featuress.
+        For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}` 
-            so that 
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *º \\textrm{var}(X)}`  where `var` is the 
+            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
+                                                        \\textrm{var}(X)}{2}}`
+            so that
+            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
+                                        \\textrm{var}(X)}`  where `var` is the
             variance function.
 
         'avg_ann_50'
-            Approximates `sigma` by the average distance to the :math:`50^{\\textrm{th}}` 
+            Approximates `sigma` by the average distance to the
+            :math:`50^{\\textrm{th}}`
             nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`. 
-       
+            the function `rff_sigma`.
+
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
-        should be done in a deterministic way (given a fixed `random_state` 
+        should be done in a deterministic way (given a fixed `random_state`
         in the case of using random Fourier or random ReLU features).
 
     random_state : `int`, RandomState instance, default = `None`
-        Random seed used when 'fourier' and 'relu' options for feature mappings are used
-        to produce the random weights.
+        Random seed used when 'fourier' and 'relu' options for feature mappings
+        are used to produce the random weights.
 
     fit_intercept : `bool`, default = `True`
             Whether to calculate the intercept for MRCs
@@ -102,12 +124,12 @@ class MRC(BaseMRC):
     use_cvx : `bool`, default = `False`
         When set to True, use CVXpy library for the optimization
         instead of the subgradient methods.
- 
+
     solver : `str`, default = 'MOSEK'
         Type of CVX solver to be used for solving the optimization problem.
         In some cases, one solver might not work,
         so you might need to change solver depending on the problem.
-        
+
         'SCS'
             It uses Splitting Conic Solver (SCS).
 
@@ -127,7 +149,7 @@ class MRC(BaseMRC):
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are 
+        The currenlty available feature mapping methods are
         'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
@@ -142,10 +164,11 @@ class MRC(BaseMRC):
             It uses Random Fourier Feature map. See class `RandomFourierPhi`.
 
         'relu'
-            It uses Rectified Linear Unit (ReLU) features. See class `RandomReLUPhi`.
+            It uses Rectified Linear Unit (ReLU) features.
+            See class `RandomReLUPhi`.
 
         'threshold'
-            It uses Feature mappings obtained using a threshold. 
+            It uses Feature mappings obtained using a threshold.
             See class `ThresholdPhi`.
 
     **phi_kwargs : Additional parameters for feature mappings.
@@ -154,7 +177,7 @@ class MRC(BaseMRC):
 
                 For example in case of fourier features,
                 the number of features is given by `n_components`
-                parameter which can be passed as argument 
+                parameter which can be passed as argument
                 `MRC(loss='log', phi='fourier', n_components=500)`
 
                 The list of arguments for each feature mappings class
@@ -163,7 +186,8 @@ class MRC(BaseMRC):
     Attributes
     ----------
     is_fitted_ : `bool`
-        Whether the classifier is fitted i.e., the parameters are learnt or not.
+        Whether the classifier is fitted i.e., the parameters are learnt
+        or not.
 
     tau_ : `array`-like of shape (`n_features`) or `float`
         Mean estimates
@@ -200,11 +224,13 @@ class MRC(BaseMRC):
     Examples
     --------
 
-    Simple example of using MRC with default seetings: 0-1 loss and linear feature mapping.
-    We first load the data and split it into train and test sets. We fit the model 
-    with the training samples using `fit` function. Then, we predict the class of some test
-    samples with `predict`. We can also obtain the probabilities of each class with 
-    `predict_proba`. Finally, we calculate the score of the model over the test set
+    Simple example of using MRC with default seetings: 0-1 loss and linear
+    feature mapping.
+    We first load the data and split it into train and test sets.
+    We fit the model with the training samples using `fit` function.
+    Then, we predict the class of some test samples with `predict`.
+    We can also obtain the probabilities of each class with `predict_proba`.
+    Finally, we calculate the score of the model over the test set
     using `score`.
 
 
@@ -213,9 +239,10 @@ class MRC(BaseMRC):
     >>> from sklearn import preprocessing
     >>> from sklearn.model_selection import train_test_split
     >>> # Loading the dataset
-    >>> X, Y = load_mammographic(return_X_y=True) 
+    >>> X, Y = load_mammographic(return_X_y=True)
     >>> # Split the dataset into training and test instances
-    >>> X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=0)
+    >>> X_train, X_test, Y_train, Y_test =
+    train_test_split(X, Y, test_size=0.2, random_state=0)
     >>> # Standarize the data
     >>> std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)
     >>> X_train = std_scale.transform(X_train)
@@ -225,20 +252,20 @@ class MRC(BaseMRC):
     >>> # Prediction. The predicted values for the first 10 test instances are:
     >>> clf.pre (X_test[:10, :])
     [1 0 0 0 0 1 0 1 0 0]
-    >>> # Predicted probabilities. 
+    >>> # Predicted probabilities.
     >>> # The predicted probabilities for the first 10 test instances are:
     >>> clf.predict_proba(X_test[:10, :])
-	[[2.80350905e-01 7.19649095e-01]
-	 [9.99996406e-01 3.59370941e-06]
-	 [8.78592959e-01 1.21407041e-01]
-	 [8.78593719e-01 1.21406281e-01]
-	 [8.78595619e-01 1.21404381e-01]
-	 [1.58950511e-01 8.41049489e-01]
-	 [9.99997060e-01 2.94047920e-06]
-	 [4.01753510e-01 5.98246490e-01]
-	 [8.78595322e-01 1.21404678e-01]
-	 [6.35793570e-01 3.64206430e-01]]
-    >>> # Calculate the score of the predictor 
+    [[2.80350905e-01 7.19649095e-01]
+    [9.99996406e-01 3.59370941e-06]
+    [8.78592959e-01 1.21407041e-01]
+    [8.78593719e-01 1.21406281e-01]
+    [8.78595619e-01 1.21404381e-01]
+    [1.58950511e-01 8.41049489e-01]
+    [9.99997060e-01 2.94047920e-06]
+    [4.01753510e-01 5.98246490e-01]
+    [8.78595322e-01 1.21404678e-01]
+    [6.35793570e-01 3.64206430e-01]]
+    >>> # Calculate the score of the predictor
     >>> # (mean accuracy on the given test data and labels)
     >>> clf.score(X_test, Y_test)
     0.7731958762886598
@@ -499,11 +526,13 @@ class MRC(BaseMRC):
         Solution of the MRC convex optimization (minimization)
         using the Nesterov accelerated approach.
 
-        .. seealso::         [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019). 
-                                The Strength of Nesterov’s Extrapolation in the Individual 
-                                Convergence of Nonsmooth Optimization. IEEE transactions on 
-                                neural networks and learning systems, 31(7), 2557-2568.
-                                <https://ieeexplore.ieee.org/document/8822632>`_
+        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
+                            The Strength of Nesterov’s Extrapolation in
+                            the Individual Convergence of Nonsmooth
+                            Optimization. IEEE transactions on
+                            neural networks and learning systems,
+                            31(7), 2557-2568.
+                            <https://ieeexplore.ieee.org/document/8822632>`_
 
         Parameters
         ----------
@@ -527,11 +556,13 @@ class MRC(BaseMRC):
         Returns
         -------
         new_params_ : `dict`
-            Dictionary that stores the optimal points (`w_k`: `array-like` shape (`m`,),
-            `w_k_prev`: `array-like` shape (`m`,)) where `m`is the length of the feature
+            Dictionary that stores the optimal points
+            (`w_k`: `array-like` shape (`m`,), `w_k_prev`: `array-like`
+             shape (`m`,)) where `m`is the length of the feature
             mapping vector and best value
-            for the upper bound (`best_value`: `float`) of the function and the parameters 
-            corresponding to the optimized function value (`mu`: `array-like` shape (`m`,),
+            for the upper bound (`best_value`: `float`) of the function and
+            the parameters corresponding to the optimized function value
+            (`mu`: `array-like` shape (`m`,),
             `nu`: `float`).
         '''
 
@@ -549,7 +580,6 @@ class MRC(BaseMRC):
         mnu = np.max(v)
         f_best_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + mnu
         mu = y_k
-        #print(mu)
         nu = -1 * mnu
 
         # Iteration for finding the optimal values
@@ -606,170 +636,176 @@ class MRC(BaseMRC):
         Solution of the MRC convex optimization (minimization)
         using an optimized version of the Nesterov accelerated approach.
 
-        .. seealso::         [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019). 
-                                The Strength of Nesterov’s Extrapolation in the Individual 
-                                Convergence of Nonsmooth Optimization. IEEE transactions on 
-                                neural networks and learning systems, 31(7), 2557-2568.
+        .. seealso::         [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
+                                The Strength of Nesterov’s Extrapolation in
+                                the Individual Convergence of Nonsmooth
+                                Optimization. IEEE transactions on
+                                neural networks and learning systems,
+                                31(7), 2557-2568.
                                 <https://ieeexplore.ieee.org/document/8822632>`_
 
         Parameters
         ----------
         M : `array`-like of shape (:math:`m_1`, :math:`m_2`)
-            Where :math:`m_1` is approximately :math:`(2^{\\textrm{n_classes}}-1) * 
+            Where :math:`m_1` is approximately
+            :math:`(2^{\\textrm{n_classes}}-1) *
             \\textrm{min}(5000,\\textrm{len}(X))`,
-            where the second factor is the number of training samples used for 
+            where the second factor is the number of training samples used for
             solving the optimization problem.
 
         h : `array`-like of shape (:math:`m_1`,)
-            Where :math:`m_1` is approximately :math:`(2^{\\textrm{n_classes}}-1) * 
+            Where :math:`m_1` is approximately
+            :math:`(2^{\\textrm{n_classes}}-1) *
             \\textrm{min}(5000,\\textrm{len}(X))`,
-            where the second factor is the number of training samples used for 
+            where the second factor is the number of training samples used for
             solving the optimization problem.
 
         Returns
         ------
         new_params_ : `dict`
-            Dictionary that stores the optimal points (`w_k`: `array-like` shape (`m`,),
-            `w_k_prev`: `array-like` shape (`m`,)), where `m` is the length of the feature
+            Dictionary that stores the optimal points
+            (`w_k`: `array-like` shape (`m`,), `w_k_prev`: `array-like`
+             shape (`m`,)), where `m` is the length of the feature
             mapping vector, and best value
-            for the upper bound (`best_value`: `float`) of the function and the parameters 
-            corresponding to the optimized function value (`mu`: `array-like` shape (`m`,),
+            for the upper bound (`best_value`: `float`) of the function and
+            the parameters corresponding to the optimized function value
+            (`mu`: `array-like` shape (`m`,),
             `nu`: `float`).
-
         '''
-        h=h.reshape((len(h),1))
+        h = h.reshape((len(h), 1))
         M_t = M.T
         Mc = M @ - self.tau_
         n, m = M.shape
-        lambda_col = self.lambda_.reshape((m,1))
+        lambda_col = self.lambda_.reshape((m, 1))
         MD = np.multiply(M, self.lambda_)
-        MD_sum = np.zeros((n,1))        
-        
-        if n*n>(1024)**3:           
-            large_dimension=True
+        MD_sum = np.zeros((n, 1))
+
+        if n * n > (1024) ** 3:
+            large_dimension = True
             # print("LARGE DIMENSION")
             MMtc = []
-            Mtc = np.zeros((m,n))
+            Mtc = np.zeros((m, n))
         else:
-            large_dimension=False
+            large_dimension = False
             # print("SMALL DIMENSION")
             MMt = M @ M_t
-            MMtc = Mc.reshape((n,1))+MMt
-            Mtc = (-self.tau_).reshape((m,1)) + M_t
+            MMtc = Mc.reshape((n, 1)) + MMt
+            Mtc = (-self.tau_).reshape((m, 1)) + M_t
 
         # Initial values for points
-        y_k = np.zeros((m,1))
-        w_k = np.zeros((m,1))
+        y_k = np.zeros((m, 1))
+        w_k = np.zeros((m, 1))
 
         theta_k = 1
-        mnu=np.max(M @ y_k + h) # -h en matlab
-        f_value=float(-np.dot(self.tau_,y_k)+
-                           np.dot(self.lambda_,abs(y_k))+mnu)
-        upper=f_value
-        mu=y_k
-        nu=-mnu
-        My = M @ y_k + h # -h en matlab
-        Mw = M @ w_k + h # -h en matlab
+        mnu = np.max(M @ y_k + h)  # -h en matlab
+        f_value = float(-np.dot(self.tau_, y_k) +
+                        np.dot(self.lambda_, abs(y_k)) + mnu)
+        upper = f_value
+        mu = y_k
+        nu = -mnu
+        My = M @ y_k + h  # -h en matlab
+        Mw = M @ w_k + h  # -h en matlab
 
-        alpha_k=0
+        alpha_k = 0
         signos = np.sign(y_k)
         signos_old = signos
-        delta = signos-signos_old
-        index1 = np.where(delta!=0)[0]
-        idx = 1 
+        delta = signos - signos_old
+        index1 = np.where(delta != 0)[0]
+        idx = 1
         step_k = 0
 
         if large_dimension:
-            index = (np.ones(n)*-1).astype(int)
+            index = (np.ones(n) * -1).astype(int)
             idx = 0
-            MMtc=np.zeros((n,1))            
-            for k in range(1,self.max_iters+1):
-                
-                MD_sum = MD_sum+MD[:,index1]@delta[index1] #Here we calculate My-h
-                Mg0 = MD_sum+MMtc[:,[index[idx]]]
+            MMtc = np.zeros((n, 1))
+            for k in range(1, self.max_iters + 1):
+                # calculate My-h
+                MD_sum = MD_sum + MD[:, index1] @ delta[index1]
+                Mg0 = MD_sum + MMtc[:, [index[idx]]]
                 Mw_prev = Mw
                 Mw = My - alpha_k * Mg0
 
-                My = Mw + step_k * (Mw-Mw_prev)
-                
+                My = Mw + step_k * (Mw - Mw_prev)
 
                 idx = np.argmax(My)
                 mnu = My[idx]
-                                    
-                if index[idx]==-1:
-                    update_MMtc = Mc + M @ (M_t[:,idx])                 
-                    MMtc = np.concatenate([MMtc,update_MMtc.reshape((len(update_MMtc),1))],axis=1)
-                    Mtc[:,idx] = -self.tau_ + M_t[:,idx]
-                    index[idx] = np.shape(MMtc)[1]-1
-                
+
+                if index[idx] == -1:
+                    update_MMtc = Mc + M @ (M_t[:, idx])
+                    MMtc = np.concatenate([MMtc, update_MMtc.reshape(
+                        (len(update_MMtc), 1))], axis=1)
+                    Mtc[:, idx] = -self.tau_ + M_t[:, idx]
+                    index[idx] = np.shape(MMtc)[1] - 1
+
                 signos_old = signos
                 signos = np.sign(y_k)
-                delta = signos-signos_old                            
-                index1 = np.where(delta!=0)[0]          
-                
-                g0 = np.multiply(signos, lambda_col) + Mtc[:,[idx]]
-                f_value=float(-np.dot(self.tau_,np.asarray(y_k))+
-                                 np.dot(self.lambda_,np.asarray(abs(y_k)))+mnu)
-      
-                if f_value<upper:
-                    upper=f_value
-                    mu=y_k
-                    nu=-mnu
+                delta = signos - signos_old
+                index1 = np.where(delta != 0)[0]
 
-                
+                g0 = np.multiply(signos, lambda_col) + Mtc[:, [idx]]
+                f_value = float(-np.dot(self.tau_, np.asarray(y_k)) +
+                                np.dot(self.lambda_, np.asarray(abs(y_k)))
+                                + mnu)
+
+                if f_value < upper:
+                    upper = f_value
+                    mu = y_k
+                    nu = -mnu
+
                 theta_k_prev = theta_k
-                theta_k = 2/(k+1)              
-                alpha_k = 1/np.power((k+1),(3/2))              
+                theta_k = 2 / (k + 1)
+                alpha_k = 1 / np.power((k + 1), (3 / 2))
                 w_k_prev = w_k
-                w_k = y_k-alpha_k*g0     
-                step_k = theta_k*((1/theta_k_prev)-1)              
-                y_k = w_k+step_k*(w_k-w_k_prev)
+                w_k = y_k - alpha_k * g0
+                step_k = theta_k * ((1 / theta_k_prev) - 1)
+                y_k = w_k + step_k * (w_k - w_k_prev)
         else:
-            for k in range(1,self.max_iters+1):
-                MD_sum = MD_sum+MD[:,index1]@delta[index1] #Here we calculate My-h
-                Mg0 = MD_sum+MMtc[:,[idx]]
+            for k in range(1, self.max_iters + 1):
+                # calculate My-h
+                MD_sum = MD_sum + MD[:, index1] @ delta[index1]
+                Mg0 = MD_sum + MMtc[:, [idx]]
                 Mw_prev = Mw
                 Mw = My - alpha_k * Mg0
-                My = Mw + step_k * (Mw-Mw_prev)
-                
+                My = Mw + step_k * (Mw - Mw_prev)
 
                 idx = np.argmax(My)
                 mnu = float(My[idx])
-                                        
+
                 signos_old = signos
                 signos = np.sign(y_k)
-                delta = signos-signos_old
-                index1 = np.where(delta!=0)[0] #where delta!=0         
-                g0 = np.multiply(signos, lambda_col) + Mtc[:,[idx]]               
-                f_value=float(-np.dot(self.tau_,np.asarray(y_k))+
-                                   np.dot(self.lambda_,np.asarray(abs(y_k)))+mnu)
-                  
-                if f_value<upper:
-                    upper=f_value
-                    mu=y_k
-                    nu=-mnu
-                
+                delta = signos - signos_old
+                index1 = np.where(delta != 0)[0]  # where delta!=0
+                g0 = np.multiply(signos, lambda_col) + Mtc[:, [idx]]
+                f_value = float(-np.dot(self.tau_, np.asarray(y_k)) +
+                                np.dot(self.lambda_, np.asarray(abs(y_k)))
+                                + mnu)
+
+                if f_value < upper:
+                    upper = f_value
+                    mu = y_k
+                    nu = -mnu
+
                 theta_k_prev = theta_k
-                theta_k = 2/(k+1)              
-                alpha_k = 1/np.power((k+1),(3/2))               
+                theta_k = 2 / (k + 1)
+                alpha_k = 1 / np.power((k + 1), (3 / 2))
                 w_k_prev = w_k
-                w_k = y_k-alpha_k*g0                
-                step_k = theta_k*((1/theta_k_prev)-1)               
-                y_k = w_k+step_k*(w_k-w_k_prev)
-        
+                w_k = y_k - alpha_k * g0
+                step_k = theta_k * ((1 / theta_k_prev) - 1)
+                y_k = w_k + step_k * (w_k - w_k_prev)
+
         # Check for possible improvement of the objective value
         # for the last generated value of w_k
-        mnu = float(max(M@w_k+h))
-        f_value = float(-np.dot(self.tau_,np.asarray(w_k))+
-                           np.dot(self.lambda_,np.asarray(abs(w_k)))+mnu)
+        mnu = float(max(M @ w_k + h))
+        f_value = float(-np.dot(self.tau_, np.asarray(w_k)) +
+                        np.dot(self.lambda_, np.asarray(abs(w_k))) + mnu)
 
-        if f_value<upper:
-                  upper=f_value
-                  mu=w_k
-                  nu=-mnu
+        if f_value < upper:
+            upper = f_value
+            mu = w_k
+            nu = -mnu
 
-        mu=np.array(mu).flatten()
-        
+        mu = np.array(mu).flatten()
+
         # Return the optimized values in a dictionary
         new_params_ = {'w_k': w_k,
                        'w_k_prev': w_k_prev,
@@ -840,6 +876,3 @@ class MRC(BaseMRC):
                 self.deterministic = True
 
         return hy_x
-
-
- 
