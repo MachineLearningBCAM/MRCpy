@@ -5,11 +5,12 @@
 Example: Use of MRC with different settings
 ===========
 
-Example of using MRC with some of the common classification datasets with different
-losses and feature mappings settings. We load the different datasets and use 10-Fold 
-Cross-Validation to generate the partitions for train and test. We separate 1 partition
-each time for testing and use the others for training. On each iteration we calculate
-the classification error as well as the upper and lower bounds for the error. We also
+Example of using MRC with some of the common classification datasets with
+different losses and feature mappings settings. We load the different datasets
+and use 10-Fold Cross-Validation to generate the partitions for train and test.
+We separate 1 partition each time for testing and use the others for training.
+On each iteration we calculate the classification error as well as the upper
+and lower bounds for the error. We also
 calculate the mean training time.
 
 You can check a more elaborated example in :ref:`ex_comp`.

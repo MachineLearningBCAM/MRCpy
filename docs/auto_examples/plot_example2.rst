@@ -23,15 +23,16 @@
 Example: Use of CMRC with different settings
 ============================================
 
-Example of using CMRC with some of the common classification datasets with different
-losses and feature mappings settings. We load the different datasets and use 10-Fold 
-Cross-Validation to generate the partitions for train and test. We separate 1 partition
-each time for testing and use the others for training. On each iteration we calculate 
+Example of using CMRC with some of the common classification datasets with
+different losses and feature mappings settings. We load the different datasets
+and use 10-Fold Cross-Validation to generate the partitions for train and test.
+We separate 1 partition each time for testing and use the others for training.
+On each iteration we calculate
 the classification error. We also calculate the mean training time.
 
 You can check a more elaborated example in :ref:`ex_comp`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-112
+.. GENERATED FROM PYTHON SOURCE LINES 17-114
 
 
 
@@ -42,7 +43,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
  .. code-block:: none
 
-    *** Example (CMRC with the additional marginal constraints) *** 
+    *** Example (CMRC with the additional     marginal constraints) *** 
 
 
     1. Using 0-1 loss and relu feature mapping 
@@ -50,36 +51,36 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.1758591065292096 +/- 0.03275749228451331
-     avg_train_time= : 82.26594717502594 secs
+     error= : 0.17789948453608245 +/- 0.03566906436986172
+     avg_train_time= : 83.6018925666809 secs
      ############## 
 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
-     error= : 0.2686021505376344 +/- 0.04230824129843591
-     avg_train_time= : 7.737597537040711 secs
+     error= : 0.25860215053763447 +/- 0.03425115185844817
+     avg_train_time= : 7.806287407875061 secs
      ############## 
 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.29669783752191703 +/- 0.02715855969805603
-     avg_train_time= : 28.55181505680084 secs
+     error= : 0.28997662185856227 +/- 0.03552377873248201
+     avg_train_time= : 28.09897572994232 secs
      ############## 
 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.24343814080656184 +/- 0.0462583682769457
-     avg_train_time= : 49.386615014076234 secs
+     error= : 0.2460868079289132 +/- 0.033040281294701435
+     avg_train_time= : 48.85894320011139 secs
      ############## 
 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.14782608695652175 +/- 0.04338153491911816
-     avg_train_time= : 36.71939489841461 secs
+     error= : 0.14057971014492754 +/- 0.0425257992786122
+     avg_train_time= : 35.96012754440308 secs
      ############## 
 
 
@@ -88,36 +89,36 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.17794243986254296 +/- 0.032436284915514965
-     avg_train_time= : 11.319463229179382 secs
+     error= : 0.17794243986254293 +/- 0.03740768372063
+     avg_train_time= : 9.726464366912841 secs
      ############## 
 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
-     error= : 0.2880645161290322 +/- 0.05064150844073888
-     avg_train_time= : 1.9484014749526977 secs
+     error= : 0.2587096774193548 +/- 0.05974122327853731
+     avg_train_time= : 1.9104907512664795 secs
      ############## 
 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.2864114552893045 +/- 0.044005208271729296
-     avg_train_time= : 4.73349609375 secs
+     error= : 0.28118059614260665 +/- 0.03150871350737739
+     avg_train_time= : 4.516436839103699 secs
      ############## 
 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.22264183185235814 +/- 0.053038152425360315
-     avg_train_time= : 7.481048727035523 secs
+     error= : 0.23438140806561852 +/- 0.0427392439807677
+     avg_train_time= : 6.675226426124572 secs
      ############## 
 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.13043478260869562 +/- 0.04583011101693304
-     avg_train_time= : 5.934507155418396 secs
+     error= : 0.136231884057971 +/- 0.04592167976160829
+     avg_train_time= : 5.496482157707215 secs
      ############## 
 
 
@@ -145,7 +146,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     # Data sets
     loaders = [load_mammographic, load_haberman, load_indian_liver,
                load_diabetes, load_credit]
-    dataName = ["mammographic", "haberman", "indian_liver", 
+    dataName = ["mammographic", "haberman", "indian_liver",
                 "diabetes", "credit"]
 
 
@@ -200,7 +201,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
                 # Save the training time
                 auxTime += time.time() - startTime
-            
+
                 # Predict the class for test instances
                 y_pred = clf.predict(X_test)
 
@@ -220,7 +221,8 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
     if __name__ == '__main__':
 
-        print('*** Example (CMRC with the additional marginal constraints) *** \n\n')
+        print('*** Example (CMRC with the additional\
+         marginal constraints) *** \n\n')
 
         print('1. Using 0-1 loss and relu feature mapping \n\n')
         runCMRC(phi='relu', loss='0-1')
@@ -231,7 +233,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 39 minutes  21.407 seconds)
+   **Total running time of the script:** ( 38 minutes  47.119 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example2.py:

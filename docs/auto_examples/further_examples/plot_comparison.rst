@@ -22,27 +22,30 @@
 
 Example: Comparison to other methods
 ========================================
-We are training and testing both MRC and CMRC methods with 
+We are training and testing both MRC and CMRC methods with
 a variety of different settings and comparing their performance both
 error-wise and time-wise to other usual classification methods.
 
-We will see that the performance of the MRC methods with the appropiate settings
-is similar to the one of other methods like SVC (SVM Classification) or MLPClassifier
-(neural network). Furthermore, with non-determinitic approach and loss 0-1, 
-MRC method provides a theoretical upper and lower bound for the error that can be an useful
-non-biased indicator of the performance of the algorithm on a given dataset. 
-It also can be used to perform hyperparameter tuning in a much faster way than 
+We will see that the performance of the MRC methods with the appropiate
+settings is similar to the one of other methods like SVC (SVM Classification)
+or MLPClassifier (neural network).
+Furthermore, with non-determinitic approach and loss 0-1,
+MRC method provides a theoretical upper and lower bound for the error
+that can be an useful non-biased indicator of the performance of the
+algorithm on a given dataset.
+It also can be used to perform hyperparameter tuning in a much faster way than
 cross-validation, you can check an example about that :ref:`here<grid>`.
 
-We show the numerical results in three tables; the two firsts ones for all the MRC and CMRC variants 
-and the next one for all the comparison methods in the deterministic and non-deterministic
-case respectively.
-In these firsts tables the columns named 'upper' and 'lower' show the upper and lower bound
-provided by the MRC method. Note that in the case where loss = `0-1` these are upper and 
-lower bounds of the classification error while, in the case of `loss=log` these
-bounds correspond to the log-likelihood.
+We show the numerical results in three tables; the two firsts ones for all
+the MRC and CMRC variants and the next one for all the comparison methods
+in the deterministic and non-deterministic case respectively.
+In these firsts tables the columns named 'upper' and 'lower' show the
+upper and lower bound provided by the MRC method.
+Note that in the case where loss = `0-1` these are upper and
+lower bounds of the classification error while, in the case of `loss=log`
+these bounds correspond to the log-likelihood.
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-42
+.. GENERATED FROM PYTHON SOURCE LINES 30-48
 
 .. code-block:: default
 
@@ -57,6 +60,9 @@ bounds correspond to the log-likelihood.
 
     from MRCpy import MRC, CMRC
     from MRCpy.datasets import load_credit, load_haberman
+    from sklearn.svm import SVC
+    from sklearn.neural_network import MLPClassifier
+    from sklearn.ensemble import RandomForestClassifier
 
     KFOLDS = 5
     kf = KFold(n_splits=KFOLDS)
@@ -68,30 +74,41 @@ bounds correspond to the log-likelihood.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-50
+.. GENERATED FROM PYTHON SOURCE LINES 49-57
 
 MRC and CMRC methods
-^^^^^^^^^^^^ 
-We are training and testing both MRC and CMRC methods with 
+^^^^^^^^^^^^
+We are training and testing both MRC and CMRC methods with
 a variety of different settings; using 0-1 loss and logarithmic loss, using
-all the default feature mappings available (Linear, Random Fourier, ReLU, Threshold)
-and using both the non-deterministic and deterministic approach which uses or not,
+all the default feature mappings available (Linear, Random Fourier, ReLU,
+Threshold) and using both the non-deterministic and deterministic
+approach which uses or not,
 respectively probability estimates in the prediction stage.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-111
+.. GENERATED FROM PYTHON SOURCE LINES 57-133
 
 .. code-block:: default
 
 
-    def runMRC(X,Y):
-        df_mrc = pd.DataFrame(np.zeros((8,4)), columns=['MRC', 
-                                   'MRC time', 'CMRC', 'CMRC time'], index=
-                          ['loss 0-1, phi linear','loss 0-1, phi fourier','loss 0-1, phi relu','loss 0-1, phi threshold',
-                           'loss log, phi linear','loss log, phi fourier','loss log, phi relu','loss log, phi threshold'])
 
-        df_mrc_nd = pd.DataFrame(np.zeros((4,4)), columns=['MRC', 
-                                   'MRC time', 'upper', 'lower'], index=
-                          ['loss 0-1, phi linear','loss 0-1, phi fourier','loss 0-1, phi relu','loss 0-1, phi threshold'])
+    def runMRC(X, Y):
+        df_mrc = pd.DataFrame(np.zeros((8, 4)),
+                              columns=['MRC', 'MRC time', 'CMRC', 'CMRC time'],
+                              index=['loss 0-1, phi linear',
+                                     'loss 0-1, phi fourier',
+                                     'loss 0-1, phi relu',
+                                     'loss 0-1, phi threshold',
+                                     'loss log, phi linear',
+                                     'loss log, phi fourier',
+                                     'loss log, phi relu',
+                                     'loss log, phi threshold'])
+
+        df_mrc_nd = pd.DataFrame(np.zeros((4, 4)),
+                                 columns=['MRC', 'MRC time', 'upper', 'lower'],
+                                 index=['loss 0-1, phi linear',
+                                        'loss 0-1, phi fourier',
+                                        'loss 0-1, phi relu',
+                                        'loss 0-1, phi threshold'])
 
         for train_index, test_index in kf.split(X):
             X_train, X_test = X[train_index], X[test_index]
@@ -99,41 +116,45 @@ respectively probability estimates in the prediction stage.
             std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)
             X_train = std_scale.transform(X_train)
             X_test = std_scale.transform(X_test)
-        
+
             for loss in ['0-1', 'log']:
-                for phi in ['linear','fourier','relu','threshold']:
-                    row_name = 'loss '+loss+', phi '+phi
-                
+                for phi in ['linear', 'fourier', 'relu', 'threshold']:
+                    row_name = 'loss ' + loss + ', phi ' + phi
+
                     # Deterministic case
-                    startTime = time.time()     
-                    clf = MRC(loss=loss, phi=phi, random_state=0, sigma='scale', 
-                              deterministic=True, use_cvx=True, solver='MOSEK').fit(X_train, Y_train)
+                    startTime = time.time()
+                    clf = MRC(loss=loss, phi=phi, random_state=0, sigma='scale',
+                              deterministic=True, use_cvx=True,
+                              solver='MOSEK').fit(X_train, Y_train)
                     Y_pred = clf.predict(X_test)
-                    error = np.average(Y_pred!=Y_test)            
+                    error = np.average(Y_pred != Y_test)
                     totalTime = time.time() - startTime
-                
+
                     df_mrc['MRC time'][row_name] += totalTime
                     df_mrc['MRC'][row_name] += error
-                
-                    startTime = time.time()     
-                    clf = CMRC(loss=loss, phi=phi, random_state=0, sigma='scale', 
-                               deterministic=True, use_cvx=True, solver='MOSEK').fit(X_train, Y_train)
+
+                    startTime = time.time()
+                    clf = CMRC(loss=loss, phi=phi, random_state=0, sigma='scale',
+                               deterministic=True, use_cvx=True,
+                               solver='MOSEK').fit(X_train, Y_train)
                     Y_pred = clf.predict(X_test)
-                    error = np.average(Y_pred!=Y_test)            
+                    error = np.average(Y_pred != Y_test)
                     totalTime = time.time() - startTime
-                
+
                     df_mrc['CMRC time'][row_name] += totalTime
                     df_mrc['CMRC'][row_name] += error
-                
-                    if loss=='0-1':
+
+                    if loss == '0-1':
                         # Non-deterministic case (with upper-lower bounds)
-                        startTime = time.time()     
-                        clf = MRC(loss=loss, phi=phi, random_state=0, sigma='scale', 
-                                  deterministic=False, use_cvx=True, solver='MOSEK').fit(X_train, Y_train)
+                        startTime = time.time()
+                        clf = MRC(loss=loss, phi=phi, random_state=0,
+                                  sigma='scale',
+                                  deterministic=False, use_cvx=True,
+                                  solver='MOSEK').fit(X_train, Y_train)
                         Y_pred = clf.predict(X_test)
-                        error = np.average(Y_pred!=Y_test)            
+                        error = np.average(Y_pred != Y_test)
                         totalTime = time.time() - startTime
-                    
+
                         df_mrc_nd['MRC time'][row_name] += totalTime
                         df_mrc_nd['MRC'][row_name] += error
                         df_mrc_nd['upper'][row_name] += clf.get_upper_bound()
@@ -150,20 +171,23 @@ respectively probability estimates in the prediction stage.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-114
 
-Note that the non deterministic linear case is expected to perform poorly for datasets with small initial dimensions
+.. GENERATED FROM PYTHON SOURCE LINES 134-137
+
+Note that the non deterministic linear case is expected to perform poorly
+for datasets with small initial dimensions
 like the ones in the example.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-120
+.. GENERATED FROM PYTHON SOURCE LINES 137-144
 
 .. code-block:: default
 
 
     # Credit dataset
     X, Y = load_credit(return_X_y=True)
-    df_mrc_credit, df_mrc_nd_credit = runMRC(X,Y)
-    df_mrc_credit.style.set_caption('Credit Dataset: Deterministic MRC and CMRC error and runtime')
+    df_mrc_credit, df_mrc_nd_credit = runMRC(X, Y)
+    df_mrc_credit.style.set_caption('Credit Dataset: Deterministic \
+                                    MRC and CMRC error and runtime')
 
 
 
@@ -174,74 +198,76 @@ like the ones in the example.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_dcb1b_" ><caption>Credit Dataset: Deterministic MRC and CMRC error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >CMRC</th>        <th class="col_heading level0 col3" >CMRC time</th>    </tr></thead><tbody>
+    </style><table id="T_24eb5_" ><caption>Credit Dataset: Deterministic                                 MRC and CMRC error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >CMRC</th>        <th class="col_heading level0 col3" >CMRC time</th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_dcb1b_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-                            <td id="T_dcb1b_row0_col0" class="data row0 col0" >0.146377</td>
-                            <td id="T_dcb1b_row0_col1" class="data row0 col1" >0.053830</td>
-                            <td id="T_dcb1b_row0_col2" class="data row0 col2" >0.146377</td>
-                            <td id="T_dcb1b_row0_col3" class="data row0 col3" >2.463654</td>
+                            <th id="T_24eb5_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+                            <td id="T_24eb5_row0_col0" class="data row0 col0" >0.146377</td>
+                            <td id="T_24eb5_row0_col1" class="data row0 col1" >0.058770</td>
+                            <td id="T_24eb5_row0_col2" class="data row0 col2" >0.146377</td>
+                            <td id="T_24eb5_row0_col3" class="data row0 col3" >3.010724</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-                            <td id="T_dcb1b_row1_col0" class="data row1 col0" >0.155072</td>
-                            <td id="T_dcb1b_row1_col1" class="data row1 col1" >1.505504</td>
-                            <td id="T_dcb1b_row1_col2" class="data row1 col2" >0.163768</td>
-                            <td id="T_dcb1b_row1_col3" class="data row1 col3" >63.665394</td>
+                            <th id="T_24eb5_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+                            <td id="T_24eb5_row1_col0" class="data row1 col0" >0.155072</td>
+                            <td id="T_24eb5_row1_col1" class="data row1 col1" >1.683093</td>
+                            <td id="T_24eb5_row1_col2" class="data row1 col2" >0.163768</td>
+                            <td id="T_24eb5_row1_col3" class="data row1 col3" >71.373650</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-                            <td id="T_dcb1b_row2_col0" class="data row2 col0" >0.147826</td>
-                            <td id="T_dcb1b_row2_col1" class="data row2 col1" >1.076297</td>
-                            <td id="T_dcb1b_row2_col2" class="data row2 col2" >0.172464</td>
-                            <td id="T_dcb1b_row2_col3" class="data row2 col3" >26.992095</td>
+                            <th id="T_24eb5_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+                            <td id="T_24eb5_row2_col0" class="data row2 col0" >0.147826</td>
+                            <td id="T_24eb5_row2_col1" class="data row2 col1" >1.202868</td>
+                            <td id="T_24eb5_row2_col2" class="data row2 col2" >0.172464</td>
+                            <td id="T_24eb5_row2_col3" class="data row2 col3" >33.236660</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-                            <td id="T_dcb1b_row3_col0" class="data row3 col0" >0.143478</td>
-                            <td id="T_dcb1b_row3_col1" class="data row3 col1" >1.361742</td>
-                            <td id="T_dcb1b_row3_col2" class="data row3 col2" >0.171014</td>
-                            <td id="T_dcb1b_row3_col3" class="data row3 col3" >47.214933</td>
+                            <th id="T_24eb5_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+                            <td id="T_24eb5_row3_col0" class="data row3 col0" >0.143478</td>
+                            <td id="T_24eb5_row3_col1" class="data row3 col1" >1.601839</td>
+                            <td id="T_24eb5_row3_col2" class="data row3 col2" >0.171014</td>
+                            <td id="T_24eb5_row3_col3" class="data row3 col3" >55.256403</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
-                            <td id="T_dcb1b_row4_col0" class="data row4 col0" >0.146377</td>
-                            <td id="T_dcb1b_row4_col1" class="data row4 col1" >2.266425</td>
-                            <td id="T_dcb1b_row4_col2" class="data row4 col2" >0.152174</td>
-                            <td id="T_dcb1b_row4_col3" class="data row4 col3" >2.078894</td>
+                            <th id="T_24eb5_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+                            <td id="T_24eb5_row4_col0" class="data row4 col0" >0.146377</td>
+                            <td id="T_24eb5_row4_col1" class="data row4 col1" >3.086707</td>
+                            <td id="T_24eb5_row4_col2" class="data row4 col2" >0.152174</td>
+                            <td id="T_24eb5_row4_col3" class="data row4 col3" >2.946978</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
-                            <td id="T_dcb1b_row5_col0" class="data row5 col0" >0.155072</td>
-                            <td id="T_dcb1b_row5_col1" class="data row5 col1" >10.885154</td>
-                            <td id="T_dcb1b_row5_col2" class="data row5 col2" >0.162319</td>
-                            <td id="T_dcb1b_row5_col3" class="data row5 col3" >11.567076</td>
+                            <th id="T_24eb5_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+                            <td id="T_24eb5_row5_col0" class="data row5 col0" >0.155072</td>
+                            <td id="T_24eb5_row5_col1" class="data row5 col1" >12.094807</td>
+                            <td id="T_24eb5_row5_col2" class="data row5 col2" >0.162319</td>
+                            <td id="T_24eb5_row5_col3" class="data row5 col3" >13.378454</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
-                            <td id="T_dcb1b_row6_col0" class="data row6 col0" >0.147826</td>
-                            <td id="T_dcb1b_row6_col1" class="data row6 col1" >6.060060</td>
-                            <td id="T_dcb1b_row6_col2" class="data row6 col2" >0.162319</td>
-                            <td id="T_dcb1b_row6_col3" class="data row6 col3" >5.240722</td>
+                            <th id="T_24eb5_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+                            <td id="T_24eb5_row6_col0" class="data row6 col0" >0.147826</td>
+                            <td id="T_24eb5_row6_col1" class="data row6 col1" >7.286569</td>
+                            <td id="T_24eb5_row6_col2" class="data row6 col2" >0.162319</td>
+                            <td id="T_24eb5_row6_col3" class="data row6 col3" >6.235941</td>
                 </tr>
                 <tr>
-                            <th id="T_dcb1b_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
-                            <td id="T_dcb1b_row7_col0" class="data row7 col0" >0.139130</td>
-                            <td id="T_dcb1b_row7_col1" class="data row7 col1" >7.667181</td>
-                            <td id="T_dcb1b_row7_col2" class="data row7 col2" >0.162319</td>
-                            <td id="T_dcb1b_row7_col3" class="data row7 col3" >7.879380</td>
+                            <th id="T_24eb5_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+                            <td id="T_24eb5_row7_col0" class="data row7 col0" >0.139130</td>
+                            <td id="T_24eb5_row7_col1" class="data row7 col1" >7.989669</td>
+                            <td id="T_24eb5_row7_col2" class="data row7 col2" >0.162319</td>
+                            <td id="T_24eb5_row7_col3" class="data row7 col3" >7.813012</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-124
+.. GENERATED FROM PYTHON SOURCE LINES 145-150
 
 .. code-block:: default
 
 
-    df_mrc_nd_credit.style.set_caption('Credit Dataset: Non-Deterministic MRC error and runtime\nwith Upper and Lower bounds')
+    df_mrc_nd_credit.style.set_caption('Credit Dataset: Non-Deterministic \
+                                       MRC error and runtime\nwith Upper and\
+                                           Lower bounds')
 
 
 
@@ -252,50 +278,51 @@ like the ones in the example.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_e92fa_" ><caption>Credit Dataset: Non-Deterministic MRC error and runtime
-    with Upper and Lower bounds</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >upper</th>        <th class="col_heading level0 col3" >lower</th>    </tr></thead><tbody>
+    </style><table id="T_b389e_" ><caption>Credit Dataset: Non-Deterministic                                    MRC error and runtime
+    with Upper and                                       Lower bounds</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >upper</th>        <th class="col_heading level0 col3" >lower</th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_e92fa_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-                            <td id="T_e92fa_row0_col0" class="data row0 col0" >0.146377</td>
-                            <td id="T_e92fa_row0_col1" class="data row0 col1" >0.065734</td>
-                            <td id="T_e92fa_row0_col2" class="data row0 col2" >0.150086</td>
-                            <td id="T_e92fa_row0_col3" class="data row0 col3" >0.136146</td>
+                            <th id="T_b389e_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+                            <td id="T_b389e_row0_col0" class="data row0 col0" >0.146377</td>
+                            <td id="T_b389e_row0_col1" class="data row0 col1" >0.073472</td>
+                            <td id="T_b389e_row0_col2" class="data row0 col2" >0.150086</td>
+                            <td id="T_b389e_row0_col3" class="data row0 col3" >0.136146</td>
                 </tr>
                 <tr>
-                            <th id="T_e92fa_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-                            <td id="T_e92fa_row1_col0" class="data row1 col0" >0.179710</td>
-                            <td id="T_e92fa_row1_col1" class="data row1 col1" >1.421105</td>
-                            <td id="T_e92fa_row1_col2" class="data row1 col2" >0.157206</td>
-                            <td id="T_e92fa_row1_col3" class="data row1 col3" >0.111953</td>
+                            <th id="T_b389e_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+                            <td id="T_b389e_row1_col0" class="data row1 col0" >0.166667</td>
+                            <td id="T_b389e_row1_col1" class="data row1 col1" >1.662152</td>
+                            <td id="T_b389e_row1_col2" class="data row1 col2" >0.157206</td>
+                            <td id="T_b389e_row1_col3" class="data row1 col3" >0.111953</td>
                 </tr>
                 <tr>
-                            <th id="T_e92fa_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-                            <td id="T_e92fa_row2_col0" class="data row2 col0" >0.159420</td>
-                            <td id="T_e92fa_row2_col1" class="data row2 col1" >1.005278</td>
-                            <td id="T_e92fa_row2_col2" class="data row2 col2" >0.175849</td>
-                            <td id="T_e92fa_row2_col3" class="data row2 col3" >0.106388</td>
+                            <th id="T_b389e_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+                            <td id="T_b389e_row2_col0" class="data row2 col0" >0.157971</td>
+                            <td id="T_b389e_row2_col1" class="data row2 col1" >1.263810</td>
+                            <td id="T_b389e_row2_col2" class="data row2 col2" >0.175849</td>
+                            <td id="T_b389e_row2_col3" class="data row2 col3" >0.106388</td>
                 </tr>
                 <tr>
-                            <th id="T_e92fa_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-                            <td id="T_e92fa_row3_col0" class="data row3 col0" >0.143478</td>
-                            <td id="T_e92fa_row3_col1" class="data row3 col1" >1.400040</td>
-                            <td id="T_e92fa_row3_col2" class="data row3 col2" >0.152686</td>
-                            <td id="T_e92fa_row3_col3" class="data row3 col3" >0.123401</td>
+                            <th id="T_b389e_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+                            <td id="T_b389e_row3_col0" class="data row3 col0" >0.142029</td>
+                            <td id="T_b389e_row3_col1" class="data row3 col1" >1.543266</td>
+                            <td id="T_b389e_row3_col2" class="data row3 col2" >0.152686</td>
+                            <td id="T_b389e_row3_col3" class="data row3 col3" >0.123401</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-131
+.. GENERATED FROM PYTHON SOURCE LINES 151-158
 
 .. code-block:: default
 
 
     # Haberman Dataset
     X, Y = load_haberman(return_X_y=True)
-    df_mrc_haberman, df_mrc_nd_haberman = runMRC(X,Y)
-    df_mrc_haberman.style.set_caption('Haberman Dataset: Deterministic MRC and CMRC error and runtime')
+    df_mrc_haberman, df_mrc_nd_haberman = runMRC(X, Y)
+    df_mrc_haberman.style.set_caption('Haberman Dataset: Deterministic \
+                                      MRC and CMRC error and runtime')
 
 
 
@@ -306,74 +333,76 @@ like the ones in the example.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_d7d9d_" ><caption>Haberman Dataset: Deterministic MRC and CMRC error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >CMRC</th>        <th class="col_heading level0 col3" >CMRC time</th>    </tr></thead><tbody>
+    </style><table id="T_ff46c_" ><caption>Haberman Dataset: Deterministic                                   MRC and CMRC error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >CMRC</th>        <th class="col_heading level0 col3" >CMRC time</th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_d7d9d_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-                            <td id="T_d7d9d_row0_col0" class="data row0 col0" >0.268324</td>
-                            <td id="T_d7d9d_row0_col1" class="data row0 col1" >0.029961</td>
-                            <td id="T_d7d9d_row0_col2" class="data row0 col2" >0.268324</td>
-                            <td id="T_d7d9d_row0_col3" class="data row0 col3" >0.669068</td>
+                            <th id="T_ff46c_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+                            <td id="T_ff46c_row0_col0" class="data row0 col0" >0.268324</td>
+                            <td id="T_ff46c_row0_col1" class="data row0 col1" >0.035270</td>
+                            <td id="T_ff46c_row0_col2" class="data row0 col2" >0.268324</td>
+                            <td id="T_ff46c_row0_col3" class="data row0 col3" >0.981374</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-                            <td id="T_d7d9d_row1_col0" class="data row1 col0" >0.274617</td>
-                            <td id="T_d7d9d_row1_col1" class="data row1 col1" >0.617391</td>
-                            <td id="T_d7d9d_row1_col2" class="data row1 col2" >0.264833</td>
-                            <td id="T_d7d9d_row1_col3" class="data row1 col3" >10.855327</td>
+                            <th id="T_ff46c_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+                            <td id="T_ff46c_row1_col0" class="data row1 col0" >0.274617</td>
+                            <td id="T_ff46c_row1_col1" class="data row1 col1" >0.701946</td>
+                            <td id="T_ff46c_row1_col2" class="data row1 col2" >0.264833</td>
+                            <td id="T_ff46c_row1_col3" class="data row1 col3" >15.823104</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-                            <td id="T_d7d9d_row2_col0" class="data row2 col0" >0.287678</td>
-                            <td id="T_d7d9d_row2_col1" class="data row2 col1" >0.617695</td>
-                            <td id="T_d7d9d_row2_col2" class="data row2 col2" >0.290904</td>
-                            <td id="T_d7d9d_row2_col3" class="data row2 col3" >6.087620</td>
+                            <th id="T_ff46c_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+                            <td id="T_ff46c_row2_col0" class="data row2 col0" >0.287678</td>
+                            <td id="T_ff46c_row2_col1" class="data row2 col1" >0.791632</td>
+                            <td id="T_ff46c_row2_col2" class="data row2 col2" >0.290904</td>
+                            <td id="T_ff46c_row2_col3" class="data row2 col3" >9.171014</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-                            <td id="T_d7d9d_row3_col0" class="data row3 col0" >0.294183</td>
-                            <td id="T_d7d9d_row3_col1" class="data row3 col1" >0.079655</td>
-                            <td id="T_d7d9d_row3_col2" class="data row3 col2" >0.294130</td>
-                            <td id="T_d7d9d_row3_col3" class="data row3 col3" >1.454198</td>
+                            <th id="T_ff46c_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+                            <td id="T_ff46c_row3_col0" class="data row3 col0" >0.294183</td>
+                            <td id="T_ff46c_row3_col1" class="data row3 col1" >0.105017</td>
+                            <td id="T_ff46c_row3_col2" class="data row3 col2" >0.294130</td>
+                            <td id="T_ff46c_row3_col3" class="data row3 col3" >2.108408</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
-                            <td id="T_d7d9d_row4_col0" class="data row4 col0" >0.268324</td>
-                            <td id="T_d7d9d_row4_col1" class="data row4 col1" >1.083923</td>
-                            <td id="T_d7d9d_row4_col2" class="data row4 col2" >0.261766</td>
-                            <td id="T_d7d9d_row4_col3" class="data row4 col3" >1.036161</td>
+                            <th id="T_ff46c_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+                            <td id="T_ff46c_row4_col0" class="data row4 col0" >0.268324</td>
+                            <td id="T_ff46c_row4_col1" class="data row4 col1" >1.708961</td>
+                            <td id="T_ff46c_row4_col2" class="data row4 col2" >0.261766</td>
+                            <td id="T_ff46c_row4_col3" class="data row4 col3" >1.724847</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
-                            <td id="T_d7d9d_row5_col0" class="data row5 col0" >0.274617</td>
-                            <td id="T_d7d9d_row5_col1" class="data row5 col1" >4.174641</td>
-                            <td id="T_d7d9d_row5_col2" class="data row5 col2" >0.277684</td>
-                            <td id="T_d7d9d_row5_col3" class="data row5 col3" >3.332225</td>
+                            <th id="T_ff46c_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+                            <td id="T_ff46c_row5_col0" class="data row5 col0" >0.274617</td>
+                            <td id="T_ff46c_row5_col1" class="data row5 col1" >5.279028</td>
+                            <td id="T_ff46c_row5_col2" class="data row5 col2" >0.277684</td>
+                            <td id="T_ff46c_row5_col3" class="data row5 col3" >4.788593</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
-                            <td id="T_d7d9d_row6_col0" class="data row6 col0" >0.287678</td>
-                            <td id="T_d7d9d_row6_col1" class="data row6 col1" >2.818506</td>
-                            <td id="T_d7d9d_row6_col2" class="data row6 col2" >0.381121</td>
-                            <td id="T_d7d9d_row6_col3" class="data row6 col3" >1.735073</td>
+                            <th id="T_ff46c_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+                            <td id="T_ff46c_row6_col0" class="data row6 col0" >0.287678</td>
+                            <td id="T_ff46c_row6_col1" class="data row6 col1" >3.804535</td>
+                            <td id="T_ff46c_row6_col2" class="data row6 col2" >0.381121</td>
+                            <td id="T_ff46c_row6_col3" class="data row6 col3" >2.507711</td>
                 </tr>
                 <tr>
-                            <th id="T_d7d9d_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
-                            <td id="T_d7d9d_row7_col0" class="data row7 col0" >0.294130</td>
-                            <td id="T_d7d9d_row7_col1" class="data row7 col1" >1.018210</td>
-                            <td id="T_d7d9d_row7_col2" class="data row7 col2" >0.267953</td>
-                            <td id="T_d7d9d_row7_col3" class="data row7 col3" >1.059169</td>
+                            <th id="T_ff46c_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+                            <td id="T_ff46c_row7_col0" class="data row7 col0" >0.294130</td>
+                            <td id="T_ff46c_row7_col1" class="data row7 col1" >1.539445</td>
+                            <td id="T_ff46c_row7_col2" class="data row7 col2" >0.267953</td>
+                            <td id="T_ff46c_row7_col3" class="data row7 col3" >1.592623</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-135
+.. GENERATED FROM PYTHON SOURCE LINES 159-164
 
 .. code-block:: default
 
 
-    df_mrc_nd_haberman.style.set_caption('Haberman Dataset: Non-Deterministic MRC error and runtime\nwith Upper and Lower bounds')
+    df_mrc_nd_haberman.style.set_caption('Haberman Dataset: Non-Deterministic MRC \
+                                         error and runtime\nwith Upper and \
+                                             Lower bounds')
 
 
 
@@ -384,66 +413,67 @@ like the ones in the example.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_7df6a_" ><caption>Haberman Dataset: Non-Deterministic MRC error and runtime
-    with Upper and Lower bounds</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >upper</th>        <th class="col_heading level0 col3" >lower</th>    </tr></thead><tbody>
+    </style><table id="T_e495d_" ><caption>Haberman Dataset: Non-Deterministic MRC                                      error and runtime
+    with Upper and                                          Lower bounds</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >MRC</th>        <th class="col_heading level0 col1" >MRC time</th>        <th class="col_heading level0 col2" >upper</th>        <th class="col_heading level0 col3" >lower</th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_7df6a_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-                            <td id="T_7df6a_row0_col0" class="data row0 col0" >0.271549</td>
-                            <td id="T_7df6a_row0_col1" class="data row0 col1" >0.027657</td>
-                            <td id="T_7df6a_row0_col2" class="data row0 col2" >0.271849</td>
-                            <td id="T_7df6a_row0_col3" class="data row0 col3" >0.254460</td>
+                            <th id="T_e495d_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+                            <td id="T_e495d_row0_col0" class="data row0 col0" >0.274775</td>
+                            <td id="T_e495d_row0_col1" class="data row0 col1" >0.039166</td>
+                            <td id="T_e495d_row0_col2" class="data row0 col2" >0.271849</td>
+                            <td id="T_e495d_row0_col3" class="data row0 col3" >0.254460</td>
                 </tr>
                 <tr>
-                            <th id="T_7df6a_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-                            <td id="T_7df6a_row1_col0" class="data row1 col0" >0.284347</td>
-                            <td id="T_7df6a_row1_col1" class="data row1 col1" >0.629308</td>
-                            <td id="T_7df6a_row1_col2" class="data row1 col2" >0.251392</td>
-                            <td id="T_7df6a_row1_col3" class="data row1 col3" >0.212770</td>
+                            <th id="T_e495d_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+                            <td id="T_e495d_row1_col0" class="data row1 col0" >0.284400</td>
+                            <td id="T_e495d_row1_col1" class="data row1 col1" >0.848009</td>
+                            <td id="T_e495d_row1_col2" class="data row1 col2" >0.251392</td>
+                            <td id="T_e495d_row1_col3" class="data row1 col3" >0.212770</td>
                 </tr>
                 <tr>
-                            <th id="T_7df6a_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-                            <td id="T_7df6a_row2_col0" class="data row2 col0" >0.294130</td>
-                            <td id="T_7df6a_row2_col1" class="data row2 col1" >0.603706</td>
-                            <td id="T_7df6a_row2_col2" class="data row2 col2" >0.256867</td>
-                            <td id="T_7df6a_row2_col3" class="data row2 col3" >0.216255</td>
+                            <th id="T_e495d_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+                            <td id="T_e495d_row2_col0" class="data row2 col0" >0.280962</td>
+                            <td id="T_e495d_row2_col1" class="data row2 col1" >0.813460</td>
+                            <td id="T_e495d_row2_col2" class="data row2 col2" >0.256867</td>
+                            <td id="T_e495d_row2_col3" class="data row2 col3" >0.216255</td>
                 </tr>
                 <tr>
-                            <th id="T_7df6a_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-                            <td id="T_7df6a_row3_col0" class="data row3 col0" >0.297409</td>
-                            <td id="T_7df6a_row3_col1" class="data row3 col1" >0.080293</td>
-                            <td id="T_7df6a_row3_col2" class="data row3 col2" >0.257160</td>
-                            <td id="T_7df6a_row3_col3" class="data row3 col3" >0.229775</td>
+                            <th id="T_e495d_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+                            <td id="T_e495d_row3_col0" class="data row3 col0" >0.300687</td>
+                            <td id="T_e495d_row3_col1" class="data row3 col1" >0.163616</td>
+                            <td id="T_e495d_row3_col2" class="data row3 col2" >0.257160</td>
+                            <td id="T_e495d_row3_col3" class="data row3 col3" >0.229775</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-147
+.. GENERATED FROM PYTHON SOURCE LINES 165-180
 
 SVM, Neural Networks: MLP Classifier, Random Forest Classifier
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Now, let's try other usual supervised classification algorithms and compare the results.
-For comparison purposes. We try the same experiment using the Support Vector Machine
-method using C-Support Vector Classification implemented in the 
-:ref:`SVC<https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html>` 
-function, the Neural Network 
-method :ref:`Multi-layer Perceptron classifier<https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html>`
-and a :ref:`Random Forest 
-Classifier<https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html>`.
+Now, let's try other usual supervised classification algorithms and compare
+the results.
+For comparison purposes. We try the same experiment using the Support Vector
+Machine method using C-Support Vector Classification implemented in the
+:ref:`SVC<https://scikit-learn.org/stable/modules/
+generated/sklearn.svm.SVC.html>`
+function, the Neural Network
+method :ref:`Multi-layer Perceptron classifier<https://scikit-learn.org/
+stable/modules/generated/sklearn.neural_network.MLPClassifier.html>`
+and a :ref:`Random Forest
+Classifier<https://scikit-learn.org/stable/modules/generated/
+sklearn.ensemble.RandomForestClassifier.html>`.
 All of them from the library `scikit-learn`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-200
+.. GENERATED FROM PYTHON SOURCE LINES 180-235
 
 .. code-block:: default
 
 
-    from sklearn.svm import SVC
-    from sklearn.neural_network import MLPClassifier
-    from sklearn.ensemble import RandomForestClassifier
 
-    def runComparisonMethods(X,Y):
-        df = pd.DataFrame(columns=['Method','Error','Time'])
+    def runComparisonMethods(X, Y):
+        df = pd.DataFrame(columns=['Method', 'Error', 'Time'])
 
         error_svm = 0
         totalTime_svm = 0
@@ -458,35 +488,39 @@ All of them from the library `scikit-learn`.
             std_scale = preprocessing.StandardScaler().fit(X_train, Y_train)
             X_train = std_scale.transform(X_train)
             X_test = std_scale.transform(X_test)
-        
-            startTime = time.time()    
+
+            startTime = time.time()
             clf = SVC(random_state=0).fit(X_train, Y_train)
             Y_pred = clf.predict(X_test)
-            error_svm += np.average(Y_pred!=Y_test)  
-            totalTime_svm += time.time() - startTime  
+            error_svm += np.average(Y_pred != Y_test)
+            totalTime_svm += time.time() - startTime
 
             startTime = time.time()
             clf = MLPClassifier(random_state=0).fit(X_train, Y_train)
             Y_pred = clf.predict(X_test)
-            error_mlp += np.average(Y_pred!=Y_test)
+            error_mlp += np.average(Y_pred != Y_test)
             totalTime_mlp += time.time() - startTime
 
             startTime = time.time()
-            clf = clf = RandomForestClassifier(max_depth=2, random_state=0).fit(X_train, Y_train)
+            clf = clf = RandomForestClassifier(
+                max_depth=2, random_state=0).fit(X_train, Y_train)
             Y_pred = clf.predict(X_test)
-            error_rf += np.average(Y_pred!=Y_test)
+            error_rf += np.average(Y_pred != Y_test)
             totalTime_rf += time.time() - startTime
-        
-        error_svm/=KFOLDS
-        totalTime_svm/=KFOLDS
-        error_mlp/=KFOLDS
-        totalTime_mlp/=KFOLDS
-        error_rf/=KFOLDS
-        totalTime_rf/=KFOLDS
-        
-        df = df.append({'Method': 'SVM', 'Error': error_svm, 'Time': totalTime_svm}, ignore_index=True) 
-        df = df.append({'Method': 'NN-MLP', 'Error': error_mlp, 'Time': totalTime_mlp}, ignore_index=True) 
-        df = df.append({'Method': 'Random Forest', 'Error': error_rf, 'Time': totalTime_rf}, ignore_index=True)
+
+        error_svm /= KFOLDS
+        totalTime_svm /= KFOLDS
+        error_mlp /= KFOLDS
+        totalTime_mlp /= KFOLDS
+        error_rf /= KFOLDS
+        totalTime_rf /= KFOLDS
+
+        df = df.append({'Method': 'SVM', 'Error': error_svm,
+                        'Time': totalTime_svm}, ignore_index=True)
+        df = df.append({'Method': 'NN-MLP', 'Error': error_mlp,
+                        'Time': totalTime_mlp}, ignore_index=True)
+        df = df.append({'Method': 'Random Forest', 'Error': error_rf,
+                        'Time': totalTime_rf}, ignore_index=True)
         df = df.set_index('Method')
         return df
 
@@ -497,15 +531,17 @@ All of them from the library `scikit-learn`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 201-207
+
+.. GENERATED FROM PYTHON SOURCE LINES 236-243
 
 .. code-block:: default
 
 
     # Credit Dataset
     X, Y = load_credit(return_X_y=True)
-    df_credit= runComparisonMethods(X,Y)
-    df_credit.style.set_caption('Credit Dataset: Different methods error and runtime')
+    df_credit = runComparisonMethods(X, Y)
+    df_credit.style.set_caption('Credit Dataset: Different \
+                                methods error and runtime')
 
 
 
@@ -516,36 +552,37 @@ All of them from the library `scikit-learn`.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_c5245_" ><caption>Credit Dataset: Different methods error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >Error</th>        <th class="col_heading level0 col1" >Time</th>    </tr>    <tr>        <th class="index_name level0" >Method</th>        <th class="blank" ></th>        <th class="blank" ></th>    </tr></thead><tbody>
+    </style><table id="T_8b508_" ><caption>Credit Dataset: Different                             methods error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >Error</th>        <th class="col_heading level0 col1" >Time</th>    </tr>    <tr>        <th class="index_name level0" >Method</th>        <th class="blank" ></th>        <th class="blank" ></th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_c5245_level0_row0" class="row_heading level0 row0" >SVM</th>
-                            <td id="T_c5245_row0_col0" class="data row0 col0" >0.166667</td>
-                            <td id="T_c5245_row0_col1" class="data row0 col1" >0.017653</td>
+                            <th id="T_8b508_level0_row0" class="row_heading level0 row0" >SVM</th>
+                            <td id="T_8b508_row0_col0" class="data row0 col0" >0.166667</td>
+                            <td id="T_8b508_row0_col1" class="data row0 col1" >0.018732</td>
                 </tr>
                 <tr>
-                            <th id="T_c5245_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
-                            <td id="T_c5245_row1_col0" class="data row1 col0" >0.150725</td>
-                            <td id="T_c5245_row1_col1" class="data row1 col1" >0.450138</td>
+                            <th id="T_8b508_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+                            <td id="T_8b508_row1_col0" class="data row1 col0" >0.150725</td>
+                            <td id="T_8b508_row1_col1" class="data row1 col1" >0.663885</td>
                 </tr>
                 <tr>
-                            <th id="T_c5245_level0_row2" class="row_heading level0 row2" >Random Forest</th>
-                            <td id="T_c5245_row2_col0" class="data row2 col0" >0.165217</td>
-                            <td id="T_c5245_row2_col1" class="data row2 col1" >0.142756</td>
+                            <th id="T_8b508_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+                            <td id="T_8b508_row2_col0" class="data row2 col0" >0.165217</td>
+                            <td id="T_8b508_row2_col1" class="data row2 col1" >0.207265</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-214
+.. GENERATED FROM PYTHON SOURCE LINES 244-251
 
 .. code-block:: default
 
 
     # Haberman Dataset
     X, Y = load_haberman(return_X_y=True)
-    df_haberman = runComparisonMethods(X,Y)
-    df_haberman.style.set_caption('Haberman Dataset: Different methods error and runtime')
+    df_haberman = runComparisonMethods(X, Y)
+    df_haberman.style.set_caption('Haberman Dataset: Different \
+                                  methods error and runtime')
 
 
 
@@ -556,84 +593,91 @@ All of them from the library `scikit-learn`.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style  type="text/css" >
-    </style><table id="T_e156e_" ><caption>Haberman Dataset: Different methods error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >Error</th>        <th class="col_heading level0 col1" >Time</th>    </tr>    <tr>        <th class="index_name level0" >Method</th>        <th class="blank" ></th>        <th class="blank" ></th>    </tr></thead><tbody>
+    </style><table id="T_64d61_" ><caption>Haberman Dataset: Different                               methods error and runtime</caption><thead>    <tr>        <th class="blank level0" ></th>        <th class="col_heading level0 col0" >Error</th>        <th class="col_heading level0 col1" >Time</th>    </tr>    <tr>        <th class="index_name level0" >Method</th>        <th class="blank" ></th>        <th class="blank" ></th>    </tr></thead><tbody>
                     <tr>
-                            <th id="T_e156e_level0_row0" class="row_heading level0 row0" >SVM</th>
-                            <td id="T_e156e_row0_col0" class="data row0 col0" >0.258488</td>
-                            <td id="T_e156e_row0_col1" class="data row0 col1" >0.004563</td>
+                            <th id="T_64d61_level0_row0" class="row_heading level0 row0" >SVM</th>
+                            <td id="T_64d61_row0_col0" class="data row0 col0" >0.258488</td>
+                            <td id="T_64d61_row0_col1" class="data row0 col1" >0.006918</td>
                 </tr>
                 <tr>
-                            <th id="T_e156e_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
-                            <td id="T_e156e_row1_col0" class="data row1 col0" >0.284294</td>
-                            <td id="T_e156e_row1_col1" class="data row1 col1" >0.224742</td>
+                            <th id="T_64d61_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+                            <td id="T_64d61_row1_col0" class="data row1 col0" >0.284294</td>
+                            <td id="T_64d61_row1_col1" class="data row1 col1" >0.403574</td>
                 </tr>
                 <tr>
-                            <th id="T_e156e_level0_row2" class="row_heading level0 row2" >Random Forest</th>
-                            <td id="T_e156e_row2_col0" class="data row2 col0" >0.274828</td>
-                            <td id="T_e156e_row2_col1" class="data row2 col1" >0.124962</td>
+                            <th id="T_64d61_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+                            <td id="T_64d61_row2_col0" class="data row2 col0" >0.274828</td>
+                            <td id="T_64d61_row2_col1" class="data row2 col1" >0.204362</td>
                 </tr>
         </tbody></table>
     </div>
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-231
+.. GENERATED FROM PYTHON SOURCE LINES 252-268
 
 Comparison of MRCs to other methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In the deterministic case we can see that the performance of MRC and CMRC 
+In the deterministic case we can see that the performance of MRC and CMRC
 methods in the
 appropiate settings is similar to usual methods such as SVM and
-Neural Networks implemented by the MLPClassifier. Best performances for MRC 
-method are usually reached using loss = `0-1` and phi = `fourier` or 
+Neural Networks implemented by the MLPClassifier. Best performances for MRC
+method are usually reached using loss = `0-1` and phi = `fourier` or
 phi = `relu`. Even though these
-settings make the execution time of MRC a little bit higher than others it is still 
-similar to the time it would take to use the MLPClassifier.
+settings make the execution time of MRC a little bit higher than others it
+is still  similar to the time it would take to use the MLPClassifier.
 
-Now we are plotting some figures for the **deterministic** case. 
+Now we are plotting some figures for the **deterministic** case.
 
 Note that
-the options of MRC with loss = `0-1` use an optimized version of Nesterov 
+the options of MRC with loss = `0-1` use an optimized version of Nesterov
 optimization algorithm, improving the runtime of these options.
 
-.. GENERATED FROM PYTHON SOURCE LINES 231-267
+.. GENERATED FROM PYTHON SOURCE LINES 268-311
 
 .. code-block:: default
 
 
+
     # Graph plotting
     def major_formatter(x, pos):
-        label = '' if x < 0 else '%0.2f'% x
+        label = '' if x < 0 else '%0.2f' % x
         return label
+
+
     def major_formatter1(x, pos):
-        label = '' if x < 0 or x>0.16 else '%0.3f'% x
+        label = '' if x < 0 or x > 0.16 else '%0.3f' % x
         return label
+
+
     def major_formatter2(x, pos):
-        label = '' if x < 0 else '%0.2g'% x
+        label = '' if x < 0 else '%0.2g' % x
         return label
+
+
     fig = plt.figure()
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0, 0, 1, 1])
     labels = ['CMRC\n0-1\nlinear',
-               'MRC\n0-1\nrelu',
-               'MRC\n0-1\nthreshold',
-                'MRC\nlog\nthreshold',
-                'SVM','NN-MLP',
-                'Random\nforest']
+              'MRC\n0-1\nrelu',
+              'MRC\n0-1\nthreshold',
+              'MRC\nlog\nthreshold',
+              'SVM', 'NN-MLP',
+              'Random\nforest']
 
     errors = [df_mrc_credit['CMRC']['loss 0-1, phi linear'],
-                df_mrc_credit['MRC']['loss 0-1, phi relu'],
-                df_mrc_credit['MRC']['loss 0-1, phi threshold'],
-                df_mrc_credit['MRC']['loss log, phi threshold'],
-                df_credit['Error']['SVM'],
-                df_credit['Error']['NN-MLP'],
-                df_credit['Error']['Random Forest']]
-    ax.bar(['']+labels,[0]+errors, color='lightskyblue')
+              df_mrc_credit['MRC']['loss 0-1, phi relu'],
+              df_mrc_credit['MRC']['loss 0-1, phi threshold'],
+              df_mrc_credit['MRC']['loss log, phi threshold'],
+              df_credit['Error']['SVM'],
+              df_credit['Error']['NN-MLP'],
+              df_credit['Error']['Random Forest']]
+    ax.bar([''] + labels, [0] + errors, color='lightskyblue')
     plt.title('Credit Dataset Errors')
-    ax.tick_params(axis="y",direction="in", pad=-35)
-    ax.tick_params(axis="x",direction="out", pad=-40)
+    ax.tick_params(axis="y", direction="in", pad=-35)
+    ax.tick_params(axis="x", direction="out", pad=-40)
     ax.yaxis.set_major_formatter(major_formatter1)
-    margin=0.05*max(errors)
-    ax.set_ylim([-margin*3.5, max(errors)+margin])
+    margin = 0.05 * max(errors)
+    ax.set_ylim([-margin * 3.5, max(errors) + margin])
     plt.show()
 
 
@@ -647,37 +691,37 @@ optimization algorithm, improving the runtime of these options.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 268-271
+.. GENERATED FROM PYTHON SOURCE LINES 312-315
 
-Above: MRCs errors for different parameter settings 
+Above: MRCs errors for different parameter settings
 compared to other techniques for the dataset Credit. The ordinate
 axis represents the error (proportion of incorrectly predicted labels).
 
-.. GENERATED FROM PYTHON SOURCE LINES 275-298
+.. GENERATED FROM PYTHON SOURCE LINES 317-340
 
 .. code-block:: default
 
 
     fig = plt.figure()
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0, 0, 1, 1])
 
     labels = ['MRC\n0-1\nrelu',
-               'MRC\n0-1\nthreshold',
-                'SVM','NN-MLP',
-                'Random\nforest']
+              'MRC\n0-1\nthreshold',
+              'SVM', 'NN-MLP',
+              'Random\nforest']
 
     times = [df_mrc_credit['MRC time']['loss 0-1, phi relu'],
-                df_mrc_credit['MRC time']['loss 0-1, phi threshold'],
-                df_credit['Time']['SVM'],
-                df_credit['Time']['NN-MLP'],
-                df_credit['Time']['Random Forest']]
-    ax.bar(['']+labels,[0]+times, color='lightskyblue')
+             df_mrc_credit['MRC time']['loss 0-1, phi threshold'],
+             df_credit['Time']['SVM'],
+             df_credit['Time']['NN-MLP'],
+             df_credit['Time']['Random Forest']]
+    ax.bar([''] + labels, [0] + times, color='lightskyblue')
     plt.title('Credit Dataset Runtime')
-    ax.tick_params(axis="y",direction="in", pad=-30)
-    ax.tick_params(axis="x",direction="out", pad=-40)
+    ax.tick_params(axis="y", direction="in", pad=-30)
+    ax.tick_params(axis="x", direction="out", pad=-40)
     ax.yaxis.set_major_formatter(major_formatter2)
-    margin=0.05*max(times)
-    ax.set_ylim([-margin*3.5, max(times)+margin])
+    margin = 0.05 * max(times)
+    ax.set_ylim([-margin * 3.5, max(times) + margin])
     plt.show()
 
 
@@ -691,36 +735,36 @@ axis represents the error (proportion of incorrectly predicted labels).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 299-302
+.. GENERATED FROM PYTHON SOURCE LINES 341-344
 
-Above: MRCs runtime for different parameter settings 
+Above: MRCs runtime for different parameter settings
 compared to other techniques for the dataset Credit. The ordinate
 represents the runtime measured in seconds.
 
-.. GENERATED FROM PYTHON SOURCE LINES 306-328
+.. GENERATED FROM PYTHON SOURCE LINES 346-368
 
 .. code-block:: default
 
     fig = plt.figure()
-    ax = fig.add_axes([0,0,1,1])
+    ax = fig.add_axes([0, 0, 1, 1])
     labels = ['MRC\n0-1\nfourier',
-               'CMRC\n0-1\nfourier',
-                'SVM',
-                'NN-MLP',
-                'Random\nforest']
+              'CMRC\n0-1\nfourier',
+              'SVM',
+              'NN-MLP',
+              'Random\nforest']
 
     errors = [df_mrc_haberman['MRC']['loss 0-1, phi fourier'],
-                df_mrc_haberman['CMRC']['loss 0-1, phi fourier'],
-                df_haberman['Error']['SVM'],
-                df_haberman['Error']['NN-MLP'],
-                df_haberman['Error']['Random Forest']]
-    ax.bar(['']+labels,[0]+errors, color='lightskyblue')
+              df_mrc_haberman['CMRC']['loss 0-1, phi fourier'],
+              df_haberman['Error']['SVM'],
+              df_haberman['Error']['NN-MLP'],
+              df_haberman['Error']['Random Forest']]
+    ax.bar([''] + labels, [0] + errors, color='lightskyblue')
     plt.title('Haberman Dataset Errors')
-    ax.tick_params(axis="y",direction="in", pad=-30)
-    ax.tick_params(axis="x",direction="out", pad=-40)
+    ax.tick_params(axis="y", direction="in", pad=-30)
+    ax.tick_params(axis="x", direction="out", pad=-40)
     ax.yaxis.set_major_formatter(major_formatter)
-    margin=0.05*max(errors)
-    ax.set_ylim([-margin*3.5, max(errors)+margin])
+    margin = 0.05 * max(errors)
+    ax.set_ylim([-margin * 3.5, max(errors) + margin])
     plt.show()
 
 
@@ -734,38 +778,37 @@ represents the runtime measured in seconds.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 329-332
+.. GENERATED FROM PYTHON SOURCE LINES 369-372
 
-Above: MRCs errors for different parameter settings 
+Above: MRCs errors for different parameter settings
 compared to other techniques for the dataset Haberman. The ordinate
 axis represents the error (proportion of incorrectly predicted labels).
 
-.. GENERATED FROM PYTHON SOURCE LINES 334-358
+.. GENERATED FROM PYTHON SOURCE LINES 374-397
 
 .. code-block:: default
 
 
     fig = plt.figure()
-    ax = fig.add_axes([0,0,1,1])
-
+    ax = fig.add_axes([0, 0, 1, 1])
 
     labels = ['MRC\n0-1\nfourier',
-               'MRC\n0-1\nrelu',
-                'SVM','NN-MLP',
-                'Random\nforest']
+              'MRC\n0-1\nrelu',
+              'SVM', 'NN-MLP',
+              'Random\nforest']
 
     times = [df_mrc_haberman['MRC time']['loss 0-1, phi fourier'],
-                df_mrc_haberman['MRC time']['loss 0-1, phi relu'],
-                df_haberman['Time']['SVM'],
-                df_haberman['Time']['NN-MLP'],
-                df_haberman['Time']['Random Forest']]
-    ax.bar(['']+labels,[0]+times, color='lightskyblue')
+             df_mrc_haberman['MRC time']['loss 0-1, phi relu'],
+             df_haberman['Time']['SVM'],
+             df_haberman['Time']['NN-MLP'],
+             df_haberman['Time']['Random Forest']]
+    ax.bar([''] + labels, [0] + times, color='lightskyblue')
     plt.title('Haberman Dataset Runtime')
-    ax.tick_params(axis="y",direction="in", pad=-30)
-    ax.tick_params(axis="x",direction="out", pad=-40)
+    ax.tick_params(axis="y", direction="in", pad=-30)
+    ax.tick_params(axis="x", direction="out", pad=-40)
     ax.yaxis.set_major_formatter(major_formatter2)
-    margin=0.05*max(times)
-    ax.set_ylim([-margin*3.5, max(times)+margin])
+    margin = 0.05 * max(times)
+    ax.set_ylim([-margin * 3.5, max(times) + margin])
     plt.show()
 
 
@@ -779,31 +822,32 @@ axis represents the error (proportion of incorrectly predicted labels).
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 359-362
+.. GENERATED FROM PYTHON SOURCE LINES 398-401
 
-Above: MRCs runtime for different parameter settings 
+Above: MRCs runtime for different parameter settings
 compared to other techniques for the dataset Haberman. The ordinate
 represents the runtime measured in seconds.
 
-.. GENERATED FROM PYTHON SOURCE LINES 364-376
+.. GENERATED FROM PYTHON SOURCE LINES 403-416
 
 Upper and Lower bounds provided by MRCs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Furthermore, when using a non-deterministic approach and `loss = 0-1`, the MRC method
-provides us with Upper and Lower theoretical bounds for the error which can
-be of great use to make sure you are not overfitting your model or for 
-hyperparameter tuning. You can check our :ref:`example on parameter tuning<grid>`.
+Furthermore, when using a non-deterministic approach and `loss = 0-1`, the
+MRC method provides us with Upper and Lower theoretical bounds for the
+error which can be of great use to make sure you are not overfitting your
+model or for hyperparameter tuning. You can check our
+:ref:`example on parameter tuning<grid>`.
 In the logistic case these Upper and Lower values are the theoretical bounds
 for the log-likelihood.
 
-The only difference between the deterministic and  non-deterministic approach is 
-in the prediction stage so, as we can see, the runtime of both versions 
+The only difference between the deterministic and  non-deterministic approach
+is in the prediction stage so, as we can see, the runtime of both versions
 is pretty similar.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 20 minutes  30.587 seconds)
+   **Total running time of the script:** ( 24 minutes  34.438 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_comparison.py:
