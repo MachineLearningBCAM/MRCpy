@@ -20,20 +20,19 @@ from `scikit-learn`.
 """
 
 # Import needed modules
-import numpy as np
-import time
-import pandas as pd
 import random
+import time
 
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from scipy.spatial import distance
+from sklearn import preprocessing
+from sklearn.model_selection import RandomizedSearchCV, train_test_split
 
 from MRCpy import MRC
 from MRCpy.datasets import *
 
-from sklearn.model_selection import RandomizedSearchCV
-import matplotlib.pyplot as plt
 
 ############################################################################
 # Random Grid using Upper Bound parameter

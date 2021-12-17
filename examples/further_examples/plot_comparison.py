@@ -29,18 +29,20 @@ these bounds correspond to the log-likelihood.
 """
 
 # Import needed modules
-import numpy as np
 import time
-from sklearn.model_selection import KFold
-from sklearn import preprocessing
-import pandas as pd
-import matplotlib.pyplot as plt
 
-from MRCpy import MRC, CMRC
-from MRCpy.datasets import load_credit, load_haberman
-from sklearn.svm import SVC
-from sklearn.neural_network import MLPClassifier
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import KFold
+from sklearn.neural_network import MLPClassifier
+from sklearn.svm import SVC
+
+from MRCpy import CMRC, MRC
+from MRCpy.datasets import load_credit, load_haberman
+
 
 KFOLDS = 5
 kf = KFold(n_splits=KFOLDS)
