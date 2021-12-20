@@ -192,12 +192,14 @@
 <span class="sd">        To create a new feature mapping that can be used with MRC objects,</span>
 <span class="sd">        the user can extend this class and then implement the functions -</span>
 
-<span class="sd">            1) `fit` - learns the required parameters for feature transformation</span>
+<span class="sd">            1) `fit` - learns the required parameters for feature</span>
+<span class="sd">                transformation</span>
 <span class="sd">            2) `transform` - transforms the input instances to the features</span>
 
 <span class="sd">        The above functions are principal components</span>
 <span class="sd">        for different feature transformation.</span>
-<span class="sd">        Apart from these functions, the users can also re-define other functions</span>
+<span class="sd">        Apart from these functions, the users can also re-define other</span>
+<span class="sd">        functions</span>
 <span class="sd">        in this class according to their need.</span>
 
 <span class="sd">        The definition of `fit` and `transform` in this class correspond to the</span>
@@ -209,20 +211,23 @@
 <span class="sd">        that returns the features directly without the need</span>
 <span class="sd">        of `transform` function, then the `transform` function can be omitted.</span>
 
-<span class="sd">    .. seealso:: For more information about MRC, one can refer to the following resources:</span>
-<span class="sd">                        </span>
-<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with </span>
-<span class="sd">                    0-1 Loss and Performance Guarantees. Advances in Neural Information Processing </span>
-<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
-<span class="sd">                    </span>
-<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum </span>
-<span class="sd">                    Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_ </span>
-<span class="sd">                    </span>
-<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A </span>
-<span class="sd">                    Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. </span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
+<span class="sd">    .. seealso:: For more information about MRC, one can refer to the following</span>
+<span class="sd">            resources:</span>
 
+<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).</span>
+<span class="sd">                    Minimax Classification with 0-1 Loss and Performance</span>
+<span class="sd">                    Guarantees. Advances in Neural Information Processing</span>
+<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+
+<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).</span>
+<span class="sd">                    Generalized Maximum Entropy for Supervised Classification.</span>
+<span class="sd">                    arXiv preprint arXiv:2007.05447.</span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_</span>
+
+<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021).</span>
+<span class="sd">                    MRCpy: A Library for Minimax Risk Classifiers.</span>
+<span class="sd">                    arXiv preprint arXiv:2108.01952.</span>
+<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -235,12 +240,12 @@
 <span class="sd">        (i.e. data is expected to be already centered)</span>
 
 <span class="sd">    one_hot : `bool`, default = `False`</span>
-<span class="sd">        Controls the method used for evaluating the features of the </span>
+<span class="sd">        Controls the method used for evaluating the features of the</span>
 <span class="sd">        given instances in the binary case.</span>
 <span class="sd">        Only applies in the **binary case**, namely, only when there are two</span>
 <span class="sd">        classes. When set to true, one-hot-encoding will be used. If set to</span>
 <span class="sd">        false a more efficient shorcut will be performed.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
 <span class="sd">    is_fitted_ : `bool`</span>
@@ -249,8 +254,6 @@
 
 <span class="sd">    len_ : `int`</span>
 <span class="sd">        Length of the feature mapping vector.</span>
-<span class="sd">    </span>
-
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -270,8 +273,8 @@
 <span class="sd">        and set the length of the feature mapping (one-hot encoded)</span>
 <span class="sd">        obtained from the `eval_xy` function.</span>
 
-<span class="sd">        .. note:: If a user implements `fit` function in his own feature mapping,</span>
-<span class="sd">              then it is recommended to call this `fit` function</span>
+<span class="sd">        .. note:: If a user implements `fit` function in his own feature</span>
+<span class="sd">              mapping, then it is recommended to call this `fit` function</span>
 <span class="sd">              at the end of his own function to automatically set</span>
 <span class="sd">              the length of the feature mapping.</span>
 <span class="sd">              This `fit` function can be called in a subclass as follows -</span>
@@ -392,7 +395,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        phi : `array`-like of shape (`n_samples`, `n_classes`, `n_features` * `n_classes`)</span>
+<span class="sd">        phi : `array`-like of shape</span>
+<span class="sd">                    (`n_samples`, `n_classes`, `n_features` * `n_classes`)</span>
 <span class="sd">            Matrix containing the one-hot encoding for all the classes</span>
 <span class="sd">            for each of the instances given.</span>
 

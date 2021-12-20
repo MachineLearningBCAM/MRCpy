@@ -72,7 +72,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy  library for hyp...">
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
 
 .. only:: html
 

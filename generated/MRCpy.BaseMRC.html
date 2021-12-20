@@ -194,26 +194,34 @@ implemented in the library.
 It defines the different parameters and the layout.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p>For more information about MRC, one can refer to the following resources:</p>
-<p>[1] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with 
-0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
-Systems, 33, 302-312.</a></p>
-<p>[2] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum 
-Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</a></p>
-<p class="last">[3] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A 
-Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
+<p class="last">For more information about MRC, one can refer to the</p>
 </div>
+<p>following resources:</p>
+<blockquote>
+<div><p>[1] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).
+Minimax Classification with
+0-1 Loss and Performance Guarantees.
+Advances in Neural Information Processing
+Systems, 33, 302-312.</a></p>
+<p>[2] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).
+Generalized Maximum
+Entropy for Supervised Classification.
+arXiv preprint arXiv:2007.05447.</a></p>
+<p>[3] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez,
+A. (2021). MRCpy: A Library for Minimax Risk Classifiers.
+arXiv preprint arXiv:2108.01952.</a></p>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a>, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk 
+<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a>, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk
 minimization.
 The options are 0-1 loss and logaritmic loss.
 ‘0-1’</p>
 <blockquote>
-<div><p>0-1 loss quantifies the probability of classification 
+<div><p>0-1 loss quantifies the probability of classification
 error at a certain example for a certain rule.</p>
 </div></blockquote>
 <dl class="docutils">
@@ -223,37 +231,48 @@ certain example for a certain rule.</p>
 </dl>
 </dd>
 <dt><strong>s</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">0.3</span></code></span></dt><dd><p>Parameter that tunes the estimation of expected values
-of feature mapping function. It is used to calculate <span class="math notranslate nohighlight">\(\lambda\)</span> (variance in the mean estimates
+of feature mapping function. It is used to calculate <span class="math notranslate nohighlight">\(\lambda\)</span>
+(variance in the mean estimates
 for the expectations of the feature mappings) in the following way</p>
 <div class="math notranslate nohighlight">
-\[\lambda = s * \text{std}(\phi(X,Y)) / \sqrt{\left| X \right|}     \]</div>
-<p>where (X,Y) is the dataset of training samples and their labels respectively and
-<span class="math notranslate nohighlight">\(\text{std}(\phi(X,Y))\)</span> stands for standard deviation of <span class="math notranslate nohighlight">\(\phi(X,Y)\)</span> in the supervised dataset (X,Y).</p>
+\[\lambda = s * \text{std}(\phi(X,Y)) /
+\sqrt{\left| X \right|}\]</div>
+<p>where (X,Y) is the dataset of training samples and their labels
+respectively and <span class="math notranslate nohighlight">\(\text{std}(\phi(X,Y))\)</span> stands for
+standard deviation of <span class="math notranslate nohighlight">\(\phi(X,Y)\)</span> in the supervised
+dataset (X,Y).</p>
 </dd>
 <dt><strong>sigma</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>When given a string, it defines the type of heuristic to be used
-to calculate the scaling parameter <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> used in some feature mappings such
-as Random Fourier or ReLU featuress.
-For comparison its relation with parameter <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> used in 
+to calculate the scaling parameter <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> used in some feature
+mappings such as Random Fourier or ReLU featuress.
+For comparison its relation with parameter <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> used in
 other methods is <span class="math notranslate nohighlight">\(\gamma=1/(2\sigma^2)\)</span>.
 When given a float, it is the value for the scaling parameter.</p>
 <dl class="docutils">
-<dt>‘scale’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by <span class="math notranslate nohighlight">\(\sqrt{\frac{\textrm{n_features} * \textrm{var}(X)}{2}}\)</span> 
-so that 
-<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is <span class="math notranslate nohighlight">\(\frac{1}{\textrm{n_features} *º \textrm{var}(X)}\)</span>  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the 
-variance function.</p>
+<dt>‘scale’</dt><dd><dl class="docutils">
+<dt>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>sqrt{frac{textrm{n_features} *</dt><dd><p>textrm{var}(X)}{2}}`</p>
 </dd>
-<dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the <span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span> 
+</dl>
+<p>so that
+<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>frac{1}{textrm{n_features} *</p>
+<blockquote>
+<div><p>textrm{var}(X)}`  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the</p>
+</div></blockquote>
+<p>variance function.</p>
+</dd>
+<dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the
+<span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span>
 nearest neighbour estimated from 1000 samples of the dataset using
 the function <a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.rff_sigma" title="MRCpy.phi.RandomFourierPhi.rff_sigma"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
 <dt><strong>deterministic</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
-should be done in a deterministic way (given a fixed <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">random_state</span></code></a> 
+should be done in a deterministic way (given a fixed <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">random_state</span></code></a>
 in the case of using random Fourier or random ReLU features).</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings are used
-to produce the random weights.</p>
+<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings
+are used to produce the random weights.</p>
 </dd>
 <dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs
 If set to false, no intercept will be used in calculations
@@ -281,7 +300,7 @@ for finding the solution of optimization when
 using the subgradient approach.</p>
 </dd>
 <dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
-The currenlty available feature mapping methods are 
+The currenlty available feature mapping methods are
 ‘fourier’, ‘relu’, ‘threshold’ and ‘linear’.
 The users can also implement their own feature mapping object
 (should be a <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance) and pass it to this argument.
@@ -293,9 +312,10 @@ See class <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.B
 </dd>
 <dt>‘fourier’</dt><dd><p>It uses Random Fourier Feature map. See class <a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code></a>.</p>
 </dd>
-<dt>‘relu’</dt><dd><p>It uses Rectified Linear Unit (ReLU) features. See class <a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a>.</p>
+<dt>‘relu’</dt><dd><p>It uses Rectified Linear Unit (ReLU) features.
+See class <a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a>.</p>
 </dd>
-<dt>‘threshold’</dt><dd><p>It uses Feature mappings obtained using a threshold. 
+<dt>‘threshold’</dt><dd><p>It uses Feature mappings obtained using a threshold.
 See class <a class="reference internal" href="MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi" title="MRCpy.phi.ThresholdPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">ThresholdPhi</span></code></a>.</p>
 </dd>
 </dl>
@@ -583,9 +603,13 @@ possible to update each component of a nested object.</p>
 
 <div class="section" id="examples-using-mrcpy-basemrc">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.BaseMRC</span></code><a class="headerlink" href="#examples-using-mrcpy-basemrc" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype..."><div class="figure align-default" id="id5">
+<img alt="Hyperparameter Tuning: Upper Bound vs Cross-Validation" src="../_images/sphx_glr_plot_grid_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_grid.html#sphx-glr-auto-examples-further-examples-plot-grid-py"><span class="std std-ref">Hyperparameter Tuning: Upper Bound vs Cross-Validation</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><div class="figure align-default" id="id6">
 <img alt="Example: Comparison to other methods" src="../_images/sphx_glr_plot_comparison_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_comparison.html#sphx-glr-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_comparison.html#sphx-glr-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>

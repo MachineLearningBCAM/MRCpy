@@ -206,18 +206,22 @@ of the radial basis function kernel:</p>
 <p class="first admonition-title">See also</p>
 <p>For more information about Random Features check:</p>
 <blockquote>
-<div>[1] <strong>Random Features:</strong> <a class="reference external" href="https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf">Rahimi, A., &amp; Recht, B. (2007). 
-Random Features for Large-Scale Kernel Machines. In NIPS 
+<div>[1] <strong>Random Features:</strong> <a class="reference external" href="https://people.eecs.berkeley.edu/~brecht/papers/07.rah.rec.nips.pdf">Rahimi, A., &amp; Recht, B. (2007).
+Random Features for Large-Scale Kernel Machines. In NIPS
 (Vol. 3, No. 4, p. 5).</a></div></blockquote>
-<p>For more information about MRC, one can refer to the following resources:</p>
+<p>For more information about MRC, one can refer to the
+following resources:</p>
 <blockquote class="last">
-<div><p>[2] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with 
-0-1 Loss and Performance Guarantees. Advances in Neural Information Processing 
+<div><p>[2] <a class="reference external" href="https://arxiv.org/abs/2010.07964">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).
+Minimax Classification with 0-1 Loss and Performance
+Guarantees. Advances in Neural Information Processing
 Systems, 33, 302-312.</a></p>
-<p>[3] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020). Generalized Maximum 
-Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.</a></p>
-<p>[4] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A 
-Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
+<p>[3] <a class="reference external" href="https://arxiv.org/abs/2007.05447">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).
+Generalized Maximum Entropy for Supervised Classification.
+arXiv preprint arXiv:2007.05447.</a></p>
+<p>[4] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021).
+MRCpy: A Library for Minimax Risk Classifiers.
+arXiv preprint arXiv:2108.01952.</a></p>
 </div></blockquote>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -231,7 +235,7 @@ Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
-<dt><strong>one_hot</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>Controls the method used for evaluating the features of the 
+<dt><strong>one_hot</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>Controls the method used for evaluating the features of the
 given instances in the binary case.
 Only applies in the binary case, namely, only when there are two
 classes. If set to true, one-hot-encoding will be used. If set to
@@ -239,16 +243,23 @@ false a more efficient shorcut will be performed.</p>
 </dd>
 <dt><strong>sigma</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = ‘avg_ann_50’</span></dt><dd><p>When given a string, it defines the type of heuristic to be used
 to calculate the scaling parameter <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> using the data.
-For comparison its relation with parameter <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> used in 
+For comparison its relation with parameter <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> used in
 other methods is <span class="math notranslate nohighlight">\(\gamma=1/(2\sigma^2)\)</span>.
 When given a float, it is the value for the scaling parameter.</p>
 <dl class="docutils">
-<dt>‘scale’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by <span class="math notranslate nohighlight">\(\sqrt{\frac{\textrm{n_features} * \textrm{var}(X)}{2}}\)</span> 
-so that 
-<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is <span class="math notranslate nohighlight">\(\frac{1}{\textrm{n_features} *º \textrm{var}(X)}\)</span>  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the 
-variance function.</p>
+<dt>‘scale’</dt><dd><dl class="docutils">
+<dt>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>sqrt{frac{textrm{n_features} *</dt><dd><p>textrm{var}(X)}{2}}`</p>
 </dd>
-<dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the <span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span> 
+</dl>
+<p>so that
+<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>frac{1}{textrm{n_features} *</p>
+<blockquote>
+<div><p>textrm{var}(X)}`  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the</p>
+</div></blockquote>
+<p>variance function.</p>
+</dd>
+<dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the
+<span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span>
 nearest neighbour estimated from 1000 samples of the dataset using
 the function <a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.rff_sigma" title="MRCpy.phi.RandomFourierPhi.rff_sigma"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>.</p>
 </dd>
@@ -263,7 +274,7 @@ used for the approximation of the gaussian kernel.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>random_weights_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>/2)</span></dt><dd><p>Random weights applied to the training samples as a step for 
+<dt><strong>random_weights_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>/2)</span></dt><dd><p>Random weights applied to the training samples as a step for
 computing the random Fourier features.</p>
 </dd>
 <dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the feature mappings has learned its hyperparameters (if any)
@@ -299,7 +310,7 @@ and the length of the feature mapping is set.</p>
 <td>Learns the set of random weights for computing the features.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.rff_sigma" title="MRCpy.phi.RandomFourierPhi.rff_sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>(X)</td>
-<td>Computes the scaling parameter for the fourier features using the heuristic given in the paper “Compact Nonlinear Maps  and Circulant Extensions” <a class="reference internal" href="#refpf"><span class="std std-ref">[1]</span></a>.</td>
+<td>Computes the scaling parameter for the fourier features using the heuristic given in the paper “Compact Nonlinear Maps and Circulant Extensions” <a class="reference internal" href="#refpf"><span class="std std-ref">[1]</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#MRCpy.phi.RandomFourierPhi.transform" title="MRCpy.phi.RandomFourierPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</td>
 <td>Compute the random Fourier features ((<span class="math notranslate nohighlight">\(z(x)\)</span>)).</td>
@@ -390,7 +401,10 @@ corresponding to all the possible labels in the data.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Matrix containing the one-hot encoding for all the classes
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.10)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape</span></dt><dd><blockquote>
+<div><p>(<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>, <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</p>
+</div></blockquote>
+<p>Matrix containing the one-hot encoding for all the classes
 for each of the instances given.</p>
 </dd>
 </dl>
@@ -469,15 +483,16 @@ in the signature of the function among different feature mappings.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.RandomFourierPhi.rff_sigma">
 <code class="sig-name descname"><span class="pre">rff_sigma</span></code><span class="sig-paren">(</span><em><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_fourier_phi.html#RandomFourierPhi.rff_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomFourierPhi.rff_sigma" title="Permalink to this definition">¶</a></dt>
 <dd><p>Computes the scaling parameter for the fourier features
-using the heuristic given in the paper “Compact Nonlinear Maps 
+using the heuristic given in the paper “Compact Nonlinear Maps
 and Circulant Extensions” <a class="reference internal" href="#refpf"><span class="std std-ref">[1]</span></a>.</p>
 <p>The heuristic states that the scaling parameter is obtained as
 the average distance to the 50th nearest neighbour estimated
 from 1000 samples of the dataset.</p>
 <div class="admonition seealso" id="refpf">
 <p class="first admonition-title">See also</p>
-<p class="last">[1] <a class="reference external" href="https://arxiv.org/pdf/1503.03893.pdf">Yu, F. X., Kumar, S., Rowley, H., &amp; Chang, S. F. 
-(2015). Compact nonlinear maps and circulant extensions.</a></p>
+<p class="last">[1] <a class="reference external" href="https://arxiv.org/pdf/1503.03893.pdf">Yu, F. X., Kumar, S., Rowley, H., &amp; Chang, S. F.
+(2015). Compact nonlinear maps and circulant
+extensions.</a></p>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

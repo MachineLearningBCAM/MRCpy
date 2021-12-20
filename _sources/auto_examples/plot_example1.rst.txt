@@ -23,16 +23,17 @@
 Example: Use of MRC with different settings
 ===========
 
-Example of using MRC with some of the common classification datasets with different
-losses and feature mappings settings. We load the different datasets and use 10-Fold 
-Cross-Validation to generate the partitions for train and test. We separate 1 partition
-each time for testing and use the others for training. On each iteration we calculate
-the classification error as well as the upper and lower bounds for the error. We also
+Example of using MRC with some of the common classification datasets with
+different losses and feature mappings settings. We load the different datasets
+and use 10-Fold Cross-Validation to generate the partitions for train and test.
+We separate 1 partition each time for testing and use the others for training.
+On each iteration we calculate the classification error as well as the upper
+and lower bounds for the error. We also
 calculate the mean training time.
 
 You can check a more elaborated example in :ref:`ex_comp`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-121
+.. GENERATED FROM PYTHON SOURCE LINES 19-122
 
 
 
@@ -51,42 +52,42 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.18104596219931274 +/- 0.030155796025062662
-     upper= 0.21562381798505958
-     lower= 0.17179206690935778
-     avg_train_time= : 2.7614378213882445 secs
+     error= : 0.18940077319587628 +/- 0.026770683831872446
+     upper= 0.2135523103127598
+     lower= 0.16793595166653397
+     avg_train_time= : 3.436056303977966 secs
      ############## 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
-     error= : 0.26838709677419353 +/- 0.04098509496168556
-     upper= 0.25587309151465093
-     lower= 0.21367449451838688
-     avg_train_time= : 1.285470962524414 secs
+     error= : 0.26838709677419353 +/- 0.03799276391418881
+     upper= 0.25495414926908844
+     lower= 0.21401659628557143
+     avg_train_time= : 1.6984854698181153 secs
      ############## 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.2898597311513735 +/- 0.011299355253418256
-     upper= 0.2891465954024749
-     lower= 0.27179973797079515
-     avg_train_time= : 1.911133313179016 secs
+     error= : 0.29333722969023956 +/- 0.012489267459210357
+     upper= 0.28866521965588743
+     lower= 0.2694775557111216
+     avg_train_time= : 2.5528562307357787 secs
      ############## 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.24475393028024603 +/- 0.044905828380155596
-     upper= 0.27254042514432225
-     lower= 0.21890982245379842
-     avg_train_time= : 3.18976686000824 secs
+     error= : 0.2500341763499658 +/- 0.046354823640713895
+     upper= 0.2708744209035068
+     lower= 0.2198047968879444
+     avg_train_time= : 4.118932461738586 secs
      ############## 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.1405797101449275 +/- 0.03669272145267294
-     upper= 0.17828699811794385
-     lower= 0.10931790187765264
-     avg_train_time= : 2.171911334991455 secs
+     error= : 0.14202898550724635 +/- 0.03931785497463923
+     upper= 0.17968010136848855
+     lower= 0.10765359782681076
+     avg_train_time= : 3.0744213342666624 secs
      ############## 
 
     2. Using log loss and relu feature mapping 
@@ -94,42 +95,42 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.1727233676975945 +/- 0.043440298168131546
-     upper= 0.5183254983162376
-     lower= 0.37670666902079813
-     avg_train_time= : 9.495104575157166 secs
+     error= : 0.19146262886597937 +/- 0.03162954911115647
+     upper= 0.5192606083022867
+     lower= 0.3746550365772805
+     avg_train_time= : 10.030834507942199 secs
      ############## 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
      error= : 0.25849462365591397 +/- 0.02604815129114169
-     upper= 0.5694205122293716
-     lower= 0.4589318373531638
-     avg_train_time= : 3.942916250228882 secs
+     upper= 0.5687735358724942
+     lower= 0.45985098876574
+     avg_train_time= : 5.63266954421997 secs
      ############## 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.2898597311513734 +/- 0.008259685044740707
-     upper= 0.6012817789503437
-     lower= 0.5396964913284981
-     avg_train_time= : 7.310282635688782 secs
+     error= : 0.2863822326125073 +/- 0.02212139262007088
+     upper= 0.6007379208410979
+     lower= 0.5330366145676775
+     avg_train_time= : 9.262992525100708 secs
      ############## 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.2630041011619959 +/- 0.037558273133120205
-     upper= 0.5878030888325628
-     lower= 0.46809074227515135
-     avg_train_time= : 10.55997018814087 secs
+     error= : 0.25786056049213946 +/- 0.0388581492092039
+     upper= 0.5840184826432231
+     lower= 0.4618767576475289
+     avg_train_time= : 12.99996201992035 secs
      ############## 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.14492753623188406 +/- 0.039953764498812244
-     upper= 0.46732603037884096
-     lower= 0.29597619054089835
-     avg_train_time= : 7.616873669624328 secs
+     error= : 0.14492753623188406 +/- 0.03995376449881224
+     upper= 0.47152244315779585
+     lower= 0.29770190730943635
+     avg_train_time= : 9.140479969978333 secs
      ############## 
 
 
@@ -249,7 +250,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 8 minutes  22.845 seconds)
+   **Total running time of the script:** ( 10 minutes  20.218 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example1.py:
