@@ -64,7 +64,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
-        .. math:: 
+        .. math::
             \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
 
         where (X,Y) is the dataset of training samples and their labels
