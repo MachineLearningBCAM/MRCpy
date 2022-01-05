@@ -77,8 +77,8 @@ class MRC(BaseMRC):
         (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
-        .. math:: \\lambda = s * \\text{std}(\\phi(X,Y)) /
-        \\sqrt{\\left| X \\right|}
+        .. math:: 
+            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
 
         where (X,Y) is the dataset of training samples and their
         labels respectively and
@@ -94,12 +94,11 @@ class MRC(BaseMRC):
         When given a float, it is the value for the scaling parameter.
 
         'scale'
-            Approximates `sigma` by :math:`\sqrt{\\frac{\\textrm{n_features} *
-                                                        \\textrm{var}(X)}{2}}`
-            so that
-            `gamma` is :math:`\\frac{1}{\\textrm{n_features} *
-                                        \\textrm{var}(X)}`  where `var` is the
-            variance function.
+            Approximates `sigma` by
+            :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}`
+            so that `gamma` is
+            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`
+            where `var` is the variance function.
 
         'avg_ann_50'
             Approximates `sigma` by the average distance to the
