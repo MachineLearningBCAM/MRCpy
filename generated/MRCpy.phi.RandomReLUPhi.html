@@ -246,16 +246,11 @@ For comparison its relation with parameter <code class="xref any docutils litera
 other methods is <span class="math notranslate nohighlight">\(\gamma=1/(2\sigma^2)\)</span>.
 When given a float, it is the value for the scaling parameter.</p>
 <dl class="docutils">
-<dt>‘scale’</dt><dd><dl class="docutils">
-<dt>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>sqrt{frac{textrm{n_features} *</dt><dd><p>textrm{var}(X)}{2}}`</p>
-</dd>
-</dl>
-<p>so that
-<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>frac{1}{textrm{n_features} *</p>
-<blockquote>
-<div><p>textrm{var}(X)}`  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the</p>
-</div></blockquote>
-<p>variance function.</p>
+<dt>‘scale’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by
+<span class="math notranslate nohighlight">\(\sqrt{\frac{\textrm{n_features} * \textrm{var}(X)}{2}}\)</span>
+so that <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is
+<span class="math notranslate nohighlight">\(\frac{1}{\textrm{n_features} * \textrm{var}(X)}\)</span>
+where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the variance function.</p>
 </dd>
 <dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the
 <span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span>

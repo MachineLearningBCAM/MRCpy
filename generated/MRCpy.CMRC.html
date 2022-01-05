@@ -230,8 +230,7 @@ of feature mapping function. It is used to calculate <span class="math notransla
 (variance in the mean estimates
 for the expectations of the feature mappings) in the following way</p>
 <div class="math notranslate nohighlight">
-\[\lambda = s * \text{std}(\phi(X,Y)) /
-\sqrt{\left| X \right|}\]</div>
+\[\lambda = s * \text{std}(\phi(X,Y)) / \sqrt{\left| X \right|}\]</div>
 <p>where (X,Y) is the dataset of training samples and their labels
 respectively and <span class="math notranslate nohighlight">\(\text{std}(\phi(X,Y))\)</span> stands for
 standard deviation of <span class="math notranslate nohighlight">\(\phi(X,Y)\)</span> in the supervised
@@ -244,16 +243,11 @@ For comparison its relation with parameter <code class="xref any docutils litera
 other methods is <span class="math notranslate nohighlight">\(\gamma=1/(2\sigma^2)\)</span>.
 When given a float, it is the value for the scaling parameter.</p>
 <dl class="docutils">
-<dt>‘scale’</dt><dd><dl class="docutils">
-<dt>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>sqrt{frac{textrm{n_features} *</dt><dd><p>textrm{var}(X)}{2}}`</p>
-</dd>
-</dl>
-<p>so that
-<code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>frac{1}{textrm{n_features} *</p>
-<blockquote>
-<div><p>textrm{var}(X)}`  where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the</p>
-</div></blockquote>
-<p>variance function.</p>
+<dt>‘scale’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by
+<span class="math notranslate nohighlight">\(\sqrt{\frac{\textrm{n_features} * \textrm{var}(X)}{2}}\)</span>
+so that <code class="xref any docutils literal notranslate"><span class="pre">gamma</span></code> is
+<span class="math notranslate nohighlight">\(\frac{1}{\textrm{n_features} * \textrm{var}(X)}\)</span>
+where <code class="xref any docutils literal notranslate"><span class="pre">var</span></code> is the variance function.</p>
 </dd>
 <dt>‘avg_ann_50’</dt><dd><p>Approximates <code class="xref any docutils literal notranslate"><span class="pre">sigma</span></code> by the average distance to the
 <span class="math notranslate nohighlight">\(50^{\textrm{th}}\)</span>
@@ -647,13 +641,13 @@ possible to update each component of a nested object.</p>
 
 <div class="section" id="examples-using-mrcpy-cmrc">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code><a class="headerlink" href="#examples-using-mrcpy-cmrc" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and..."><div class="figure align-default" id="id5">
+<div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and..."><div class="figure align-default" id="id1">
 <img alt="Example: Use of CMRC with different settings" src="../_images/sphx_glr_plot_example2_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plot_example2.html#sphx-glr-auto-examples-plot-example2-py"><span class="std std-ref">Example: Use of CMRC with different settings</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/plot_example2.html#sphx-glr-auto-examples-plot-example2-py"><span class="std std-ref">Example: Use of CMRC with different settings</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><div class="figure align-default" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><div class="figure align-default" id="id2">
 <img alt="Example: Comparison to other methods" src="../_images/sphx_glr_plot_comparison_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_comparison.html#sphx-glr-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/plot_comparison.html#sphx-glr-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>

@@ -15,7 +15,7 @@ MRCpy: A Library for Minimax Risk Classifiers
 
 |Travis-CI Build Status| |Code coverage|
 
-`MRCpy <https://github.com/MachineLearningBCAM/MRCpy>`_ is an open-source Python library for Supervised Classification in Machine Learning. It provides implementation for recently proposed Minimax Risk Classifiers (MRCs) based on robust risk minimization and 0-1-loss, and provide bounds on the classification error. It provides a unified user-friendly interface for different variant of MRCs. The library also comes with a feature mapping module that provides implementation for some recent feature mapping methods.
+`MRCpy <https://github.com/MachineLearningBCAM/MRCpy>`_ library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1-loss. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. The presented library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines. In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features.
 
 
 
