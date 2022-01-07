@@ -30,6 +30,9 @@ class RandomFourierPhi(BasePhi):
 
     .. math:: K(x, x\') = \exp{\\frac{-\| x-x\'\|^2}{2\sigma^2}}
 
+    Note that when using Random Fourier feature mapping, training
+    and testing instances are expected to be normalized.
+
     .. seealso:: For more information about Random Features check:
 
                     [1] **Random Features:** `Rahimi, A., & Recht, B. (2007).

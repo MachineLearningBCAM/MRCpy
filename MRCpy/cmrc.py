@@ -136,6 +136,8 @@ class CMRC(BaseMRC):
         'fourier', 'relu', 'threshold' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
+        Note that when using 'fourier' or 'relu' feature mappings,
+        training and testing instances are expected to be normalized.
         To implement a feature mapping, please go through the
         :ref:`Feature Mapping` section.
 

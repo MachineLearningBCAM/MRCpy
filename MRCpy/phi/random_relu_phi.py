@@ -26,6 +26,9 @@ class RandomReLUPhi(BasePhi):
 
     .. math::           f(x) = \max(0, x)
 
+    Note that when using ReLU feature mapping, training
+    and testing instances are expected to be normalized.
+
     .. seealso:: For more information about ReLU Features check:
 
                         [1] **ReLU Features:** `Sun, Y., Gilbert, A.,
