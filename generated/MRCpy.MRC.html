@@ -305,6 +305,8 @@ The currenlty available feature mapping methods are
 ‘fourier’, ‘relu’, ‘threshold’ and ‘linear’.
 The users can also implement their own feature mapping object
 (should be a <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance) and pass it to this argument.
+Note that when using ‘fourier’ or ‘relu’ feature mappings,
+training and testing instances are expected to be normalized.
 To implement a feature mapping, please go through the
 <a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
 <dl class="docutils">
