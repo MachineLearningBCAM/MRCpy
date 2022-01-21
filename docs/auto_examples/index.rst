@@ -72,6 +72,27 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="We are using https://pytorch.org/hub/pytorch_vision_resnet/ pretrained model implementation in ...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
+     :alt: Computer vision: Feature extraction for image classification
+
+     :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/further_examples/feature_extraction
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
 
 .. only:: html
