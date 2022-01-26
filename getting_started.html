@@ -47,6 +47,31 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation-and-setup">Installation and Setup</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset-loaders">Dataset Loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#normalizelabels-origy"><code class="docutils literal notranslate"><span class="pre">normalizeLabels(origY)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-adult-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_adult(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-diabetes-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_diabetes(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-iris-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_iris(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-redwine-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_redwine(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-forestcov-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_forestcov(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-letterrecog-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_letterrecog(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-ecoli-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_ecoli(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-vehicle-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_vehicle(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-segment-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_segment(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-satellite-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_satellite(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-optdigits-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_optdigits(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-credit-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_credit(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-magic-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_magic(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-glass-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_glass(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-haberman-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_haberman(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-mammographic-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_mammographic(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-indian-liver-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_indian_liver(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-yearbook-path"><code class="docutils literal notranslate"><span class="pre">load_yearbook_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-mnist-features-resnet18-return-x-y-true-split-false"><code class="docutils literal notranslate"><span class="pre">load_mnist_features_resnet18(return_X_y=True,</span> <span class="pre">split=False)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-catsvsdogs-features-resnet18-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_catsvsdogs_features_resnet18(return_X_y=True)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-yearbook-features-resnet18-return-x-y-true"><code class="docutils literal notranslate"><span class="pre">load_yearbook_features_resnet18(return_X_y=True)</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -120,6 +145,753 @@ using 0-1 loss (i.e., the default loss).</p>
 <span class="c1"># Compute the accuracy on the test set</span>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="dataset-loaders">
+<h2>Dataset Loaders<a class="headerlink" href="#dataset-loaders" title="Permalink to this headline"></a></h2>
+<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref any docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>.</p>
+<div class="section" id="normalizelabels-origy">
+<h3><code class="docutils literal notranslate"><span class="pre">normalizeLabels(origY)</span></code><a class="headerlink" href="#normalizelabels-origy" title="Permalink to this headline"></a></h3>
+<p>Normalize the labels of the instances in the range 0,…, r-1 for r classes.</p>
+</div>
+<div class="section" id="load-adult-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_adult(return_X_y=True)</span></code><a class="headerlink" href="#load-adult-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the adult incomes prediction dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[37155,11687]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>48882</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>14</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-diabetes-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_diabetes(return_X_y=True)</span></code><a class="headerlink" href="#load-diabetes-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Pima Indians Diabetes dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[500,268]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>668</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-iris-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_iris(return_X_y=True)</span></code><a class="headerlink" href="#load-iris-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Iris Plants Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[50,50,50]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>150</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-redwine-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_redwine(return_X_y=True)</span></code><a class="headerlink" href="#load-redwine-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Red Wine Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>10</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[1599, 4898]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>6497</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>11</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-forestcov-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_forestcov(return_X_y=True)</span></code><a class="headerlink" href="#load-forestcov-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Forestcov Plants Dataset (classification).</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-letterrecog-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_letterrecog(return_X_y=True)</span></code><a class="headerlink" href="#load-letterrecog-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Letter Recognition Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>26</td>
+</tr>
+<tr class="row-even"><td>Samples total</td>
+<td>20000</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>16</td>
+</tr>
+<tr class="row-even"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-ecoli-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_ecoli(return_X_y=True)</span></code><a class="headerlink" href="#load-ecoli-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Ecoli Dataset (classification).</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-vehicle-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_vehicle(return_X_y=True)</span></code><a class="headerlink" href="#load-vehicle-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Vehicle Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>4</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[240,240,240,226]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>846</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>18</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of the dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-segment-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_segment(return_X_y=True)</span></code><a class="headerlink" href="#load-segment-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Segment prediction dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>7</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[383, 307]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>2310</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>19</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of adult csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-satellite-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_satellite(return_X_y=True)</span></code><a class="headerlink" href="#load-satellite-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Satellite prediction dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>383, 307]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>6435</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>36</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of adult csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-optdigits-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_optdigits(return_X_y=True)</span></code><a class="headerlink" href="#load-optdigits-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Optdigits prediction dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>10</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>383, 307]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>5620</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>64</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of adult csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-credit-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_credit(return_X_y=True)</span></code><a class="headerlink" href="#load-credit-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Credit Approval prediction dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="45%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>383, 307]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>690</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>15</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of adult csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-magic-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_magic(return_X_y=True)</span></code><a class="headerlink" href="#load-magic-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Magic Gamma Telescope dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[6688,12332]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>19020</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of adult csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-glass-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_glass(return_X_y=True)</span></code><a class="headerlink" href="#load-glass-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Glass Identification Data Set (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>6</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[70, 76, 17, 29, 13, 9]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>214</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of glass csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-haberman-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_haberman(return_X_y=True)</span></code><a class="headerlink" href="#load-haberman-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Haberman’s Survival Data Set (classification).</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of haberman csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-mammographic-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_mammographic(return_X_y=True)</span></code><a class="headerlink" href="#load-mammographic-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Mammographic Mass Data Set (classification).</p>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of mammographic csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-indian-liver-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_indian_liver(return_X_y=True)</span></code><a class="headerlink" href="#load-indian-liver-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Indian Liver Patient Data Set
+(classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[416, 167]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>583</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>10</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float</td>
+</tr>
+<tr class="row-even"><td>Missing Values</td>
+<td>4 (nan)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of satellite csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-yearbook-path">
+<h3><code class="docutils literal notranslate"><span class="pre">load_yearbook_path()</span></code><a class="headerlink" href="#load-yearbook-path" title="Permalink to this headline"></a></h3>
+<p>Returns the path of Yearbook Image Dataset</p>
+</div>
+<div class="section" id="load-mnist-features-resnet18-return-x-y-true-split-false">
+<h3><code class="docutils literal notranslate"><span class="pre">load_mnist_features_resnet18(return_X_y=True,</span> <span class="pre">split=False)</span></code><a class="headerlink" href="#load-mnist-features-resnet18-return-x-y-true-split-false" title="Permalink to this headline"></a></h3>
+<p>Load and return the MNIST Data Set features extracted using a
+pretrained ResNet18 neural network (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class Train</td>
+<td><dl class="first last docutils">
+<dt>[5923,6742,5958,6131,5842,</dt><dd>5421,5918,6265,5851,5949]</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-odd"><td>Samples per class Test</td>
+<td><dl class="first last docutils">
+<dt>[980,1135,1032,1010,982,</dt><dd>892,958,1028,974,1009]</dd>
+</dl>
+</td>
+</tr>
+<tr class="row-even"><td>Samples total Train</td>
+<td>60000</td>
+</tr>
+<tr class="row-odd"><td>Samples total Test</td>
+<td>10000</td>
+</tr>
+<tr class="row-even"><td>Samples total</td>
+<td>70000</td>
+</tr>
+<tr class="row-odd"><td>Dimensionality</td>
+<td>512</td>
+</tr>
+<tr class="row-even"><td>Features</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+<dt>split<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns a dictionary instead of an array in the place of the
+data.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>bunch<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of MNIST ResNet18 features
+csv dataset. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is
+an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
+splits.</dd>
+<dt>(data, target)<span class="classifier">tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is</span></dt><dd>an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
+splits.</dd>
+</dl>
+</div>
+<div class="section" id="load-catsvsdogs-features-resnet18-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_catsvsdogs_features_resnet18(return_X_y=True)</span></code><a class="headerlink" href="#load-catsvsdogs-features-resnet18-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Cats vs Dogs Data Set features extracted using a
+pretrained ResNet18 neural network (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[11658,11604]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>23262</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>512</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>bunch<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of Cats vs Dogs ResNet18 features
+csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
+</div>
+<div class="section" id="load-yearbook-features-resnet18-return-x-y-true">
+<h3><code class="docutils literal notranslate"><span class="pre">load_yearbook_features_resnet18(return_X_y=True)</span></code><a class="headerlink" href="#load-yearbook-features-resnet18-return-x-y-true" title="Permalink to this headline"></a></h3>
+<p>Load and return the Yearbook Data Set features extracted using a
+pretrained ResNet18 neural network (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[20248,17673]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>37921</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>512</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Parameters</strong></p>
+<dl class="docutils">
+<dt>return_X_y<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
+See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.0)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</dd>
+</dl>
+<p><strong>Returns</strong></p>
+<dl class="docutils">
+<dt>bunch<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
+‘data’, the data to learn, ‘target’, the classification targets,
+‘DESCR’, the full description of the dataset,
+and ‘filename’, the physical location of Yearbook ResNet18 features
+csv dataset.</dd>
+</dl>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">return_X_y</span></code> is True</p>
 </div>
 </div>
 </div>
