@@ -1,9 +1,18 @@
+# -*- coding: utf-8 -*-
+"""
+.. _load:
+
+Set of loaders and convenient functions to access Dataset
+=========================================================
+"""
 import csv
 from os.path import dirname, join
 
 import numpy as np
+import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.utils import Bunch
+import zipfile
 
 
 def normalizeLabels(origY):
@@ -21,7 +30,7 @@ def normalizeLabels(origY):
     return Y
 
 
-def load_adult(return_X_y=False):
+def load_adult(return_X_y=True):
     """Load and return the adult incomes prediction dataset (classification).
 
     =================   ==============
@@ -40,7 +49,7 @@ def load_adult(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -85,7 +94,7 @@ def load_adult(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_diabetes(return_X_y=False):
+def load_diabetes(return_X_y=True):
     """Load and return the Pima Indians Diabetes dataset (classification).
 
     =================   =====================
@@ -104,7 +113,7 @@ def load_diabetes(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -148,7 +157,7 @@ def load_diabetes(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_iris(return_X_y=False):
+def load_iris(return_X_y=True):
     """Load and return the Iris Plants Dataset (classification).
 
     =================   =====================
@@ -167,7 +176,7 @@ def load_iris(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -217,8 +226,8 @@ def load_iris(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_redwine(return_X_y=False):
-    """Load and return the Iris Plants Dataset (classification).
+def load_redwine(return_X_y=True):
+    """Load and return the Red Wine Dataset (classification).
 
     =================   =====================
     Classes                                10
@@ -236,7 +245,7 @@ def load_redwine(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -281,8 +290,8 @@ def load_redwine(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_forestcov(return_X_y=False):
-    """Load and return the Iris Plants Dataset (classification).
+def load_forestcov(return_X_y=True):
+    """Load and return the Forestcov Dataset (classification).
 
     =================   =====================
     Classes                                 7
@@ -301,7 +310,7 @@ def load_forestcov(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -346,8 +355,8 @@ def load_forestcov(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_letterrecog(return_X_y=False):
-    """Load and return the Iris Plants Dataset (classification).
+def load_letterrecog(return_X_y=True):
+    """Load and return the Letter Recognition Dataset (classification).
 
     =================   =====================
     Classes                                26
@@ -364,7 +373,7 @@ def load_letterrecog(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -415,8 +424,8 @@ def load_letterrecog(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_ecoli(return_X_y=False):
-    """Load and return the Iris Plants Dataset (classification).
+def load_ecoli(return_X_y=True):
+    """Load and return the Ecoli Dataset (classification).
 
     =================   =====================
     Classes                                 8
@@ -434,7 +443,7 @@ def load_ecoli(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -484,8 +493,8 @@ def load_ecoli(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_vehicle(return_X_y=False):
-    """Load and return the Iris Plants Dataset (classification).
+def load_vehicle(return_X_y=True):
+    """Load and return the Vehicle Dataset (classification).
 
     =================   =====================
     Classes                                 4
@@ -503,7 +512,7 @@ def load_vehicle(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -552,8 +561,8 @@ def load_vehicle(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_segment(return_X_y=False):
-    """Load and return the Credit Approval prediction dataset (classification).
+def load_segment(return_X_y=True):
+    """Load and return the Segment prediction dataset (classification).
 
     =================   =====================
     Classes                                 7
@@ -571,7 +580,7 @@ def load_segment(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -619,8 +628,8 @@ def load_segment(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_satellite(return_X_y=False):
-    """Load and return the Credit Approval prediction dataset (classification).
+def load_satellite(return_X_y=True):
+    """Load and return the Satellite prediction dataset (classification).
 
     =================   =====================
     Classes                                 6
@@ -638,7 +647,7 @@ def load_satellite(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -685,8 +694,8 @@ def load_satellite(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_optdigits(return_X_y=False):
-    """Load and return the Credit Approval prediction dataset (classification).
+def load_optdigits(return_X_y=True):
+    """Load and return the Optdigits prediction dataset (classification).
 
     =================   =====================
     Classes                                10
@@ -704,7 +713,7 @@ def load_optdigits(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -751,7 +760,7 @@ def load_optdigits(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_credit(return_X_y=False):
+def load_credit(return_X_y=True):
     """Load and return the Credit Approval prediction dataset (classification).
 
     =================   =====================
@@ -770,7 +779,7 @@ def load_credit(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -817,7 +826,7 @@ def load_credit(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_magic(return_X_y=False):
+def load_magic(return_X_y=True):
     """Load and return the Magic Gamma Telescope dataset (classification).
 
     =========================================
@@ -836,7 +845,7 @@ def load_magic(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -880,7 +889,7 @@ def load_magic(return_X_y=False):
                  filename=data_file_name)
 
 
-def load_glass(return_X_y=False):
+def load_glass(return_X_y=True):
     """Load and return the Glass Identification Data Set (classification).
 
     ===========================================
@@ -899,7 +908,7 @@ def load_glass(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -951,7 +960,7 @@ def load_glass(return_X_y=False):
                                 'Fe: Iron'])
 
 
-def load_haberman(return_X_y=False):
+def load_haberman(return_X_y=True):
     """Load and return the Haberman's Survival Data Set (classification).
 
     ==============================
@@ -970,7 +979,7 @@ def load_haberman(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -1014,7 +1023,7 @@ def load_haberman(return_X_y=False):
                                 'PositiveAxillaryNodesDetected'])
 
 
-def load_mammographic(return_X_y=False):
+def load_mammographic(return_X_y=True):
     """Load and return the Mammographic Mass Data Set (classification).
 
     ==============================
@@ -1033,7 +1042,7 @@ def load_mammographic(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -1079,7 +1088,7 @@ def load_mammographic(return_X_y=False):
                                 'density'])
 
 
-def load_indian_liver(return_X_y=False):
+def load_indian_liver(return_X_y=True):
     """Load and return the Indian Liver Patient Data Set
     (classification).
 
@@ -1100,7 +1109,7 @@ def load_indian_liver(return_X_y=False):
 
     Returns
     -------
-    data : Bunch
+    bunch : Bunch
         Dictionary-like object, the interesting attributes are:
         'data', the data to learn, 'target', the classification targets,
         'DESCR', the full description of the dataset,
@@ -1148,3 +1157,209 @@ def load_indian_liver(return_X_y=False):
                                 'Total Protiens',
                                 'Albumin',
                                 'A/G Ratio'])
+
+def load_yearbook_path():
+    """
+    Returns the path of Yearbook Image Dataset
+    """
+    module_path = dirname(__file__)
+    path = join(module_path, 'data', 'yearbook')
+    return path
+
+def load_mnist_features_resnet18(return_X_y=True, split=False):
+    """Load and return the MNIST Data Set features extracted using a
+    pretrained ResNet18 neural network (classification).
+
+    ===========================================
+    Classes                                   2
+    Samples per class Train             
+        [5923,6742,5958,6131,5842,5421,5918,6265,5851,5949]
+    Samples per class Test
+        [980,1135,1032,1010,982,892,958,1028,974,1009]
+    Samples total Train                   60000
+    Samples total Test                    10000
+    Samples total                         70000
+    Dimensionality                          512
+    Features                              float
+    ===========================================
+
+    Parameters
+    ----------
+    return_X_y : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+    split : boolean, default=False.
+        If True, returns a dictionary instead of an array in the place of the
+        data.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of MNIST ResNet18 features
+        csv dataset. If `split=False`, data is
+        an array. If `split=True` data is a dictionary with 'train' and 'test'
+        splits.
+
+    (data, target) : tuple if ``return_X_y`` is True. If `split=False`, data is
+        an array. If `split=True` data is a dictionary with 'train' and 'test'
+        splits.
+    """
+    module_path = dirname(__file__)
+
+    fdescr_name = join(module_path, 'descr', 'mnist_features_resnet18.rst')
+    with open(fdescr_name) as f:
+        descr_text = f.read()
+
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'mnist_features_resnet18_1.csv.zip')) 
+    df1 = pd.read_csv(zf.open('mnist_features_resnet18_1.csv'), header=None)
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'mnist_features_resnet18_2.csv.zip')) 
+    df2 = pd.read_csv(zf.open('mnist_features_resnet18_2.csv'), header=None)
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'mnist_features_resnet18_3.csv.zip')) 
+    df3 = pd.read_csv(zf.open('mnist_features_resnet18_3.csv'), header=None)
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'mnist_features_resnet18_4.csv.zip')) 
+    df4 = pd.read_csv(zf.open('mnist_features_resnet18_4.csv'), header=None)
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'mnist_features_resnet18_5.csv.zip')) 
+    df5 = pd.read_csv(zf.open('mnist_features_resnet18_5.csv'), header=None)
+
+    dataset = np.array(pd.concat([df1,df2,df3,df4,df5]))
+    data = dataset[:,:-1]
+    target = dataset[:,-1]
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
+    target = normalizeLabels(target)
+    if return_X_y:
+        if split:
+            # X_train, X_test, Y_train, Y_test
+            return data[:60000, :], data[60000:, :],\
+                   target[:60000], target[60000:]
+        else:
+            return data, target
+    else:
+        if split:
+            data = {'train': data[:60000, :], 'test': data[60000:, :]}
+            target = {'train': target[:60000], 'test': target[60000:]}
+        return Bunch(data=data, target=target, DESCR=descr_text)
+    return 0
+
+def load_catsvsdogs_features_resnet18(return_X_y=True):
+    """Load and return the Cats vs Dogs Data Set features extracted using a
+    pretrained ResNet18 neural network (classification).
+
+    ===========================================
+    Classes                                   2
+    Samples per class             [11658,11604]
+    Samples total                         23262
+    Dimensionality                          512
+    Features                              float
+    ===========================================
+
+    Parameters
+    ----------
+    return_X_y : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of Cats vs Dogs ResNet18 features
+        csv dataset.
+
+    (data, target) : tuple if ``return_X_y`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    fdescr_name = join(module_path, 'descr',
+                       'catsvsdogs_features_resnet18.rst')
+    with open(fdescr_name) as f:
+        descr_text = f.read()
+
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'catsvsdogs_features_resnet18_1.csv.zip')) 
+    df1 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_1.csv'))
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'catsvsdogs_features_resnet18_2.csv.zip')) 
+    df2 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_2.csv'))
+
+    dataset = np.array(pd.concat([df1,df2]))
+    data = dataset[:,:-1]
+    target = dataset[:,-1]
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
+    if return_X_y:
+        return data, normalizeLabels(target)
+
+    return Bunch(data=data, target=normalizeLabels(target),
+                 DESCR=descr_text)
+
+def load_yearbook_features_resnet18(return_X_y=True):
+    """Load and return the Yearbook Data Set features extracted using a
+    pretrained ResNet18 neural network (classification).
+
+    ===========================================
+    Classes                                   2
+    Samples per class             [20248,17673]
+    Samples total                         37921
+    Dimensionality                          512
+    Features                              float
+    ===========================================
+
+    Parameters
+    ----------
+    return_X_y : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of Yearbook ResNet18 features
+        csv dataset.
+
+    (data, target) : tuple if ``return_X_y`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    fdescr_name = join(module_path, 'descr', 'yearbook_features_resnet18.rst')
+    with open(fdescr_name) as f:
+        descr_text = f.read()
+
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'yearbook_features_resnet18_1.csv.zip')) 
+    df1 = pd.read_csv(zf.open('yearbook_features_resnet18_1.csv'), header=None)
+    zf = zipfile.ZipFile(join(module_path, 'data',
+        'yearbook_features_resnet18_2.csv.zip')) 
+    df2 = pd.read_csv(zf.open('yearbook_features_resnet18_2.csv'), header=None)
+
+    dataset = np.array(pd.concat([df1,df2]))
+    data = dataset[:,:-1]
+    target = dataset[:,-1]
+
+    trans = SimpleImputer(strategy='median')
+    data = trans.fit_transform(data)
+
+    if return_X_y:
+        return data, normalizeLabels(target)
+
+    return Bunch(data=data, target=normalizeLabels(target),
+                 DESCR=descr_text)

@@ -69,15 +69,38 @@ Further applications
 --------------------
 This gallery contains examples that illustrate further applications of MRCpy library and its features.
 
+.. _longlink: https://towardsdatascience.com/a-demonstration-of-transfer-learning-of-vgg-convolutional-neural-network-pre-trained-model-with-c9f5b8b1ab0a
+
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We are using https://pytorch.org/hub/pytorch_vision_resnet/ pretrained model implementation in ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
+     :alt: MRCs with Deep Neural Networks: Part II
+
+     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/further_examples/plot_image_classification
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl...">
 
 .. only:: html
 
  .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
-     :alt: Computer vision: Feature extraction for image classification
+     :alt: MRCs with Deep Neural Networks: Part I
 
      :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
 
