@@ -6,13 +6,13 @@ Set of loaders and convenient functions to access Dataset
 =========================================================
 """
 import csv
+import zipfile
 from os.path import dirname, join
 
 import numpy as np
 import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.utils import Bunch
-import zipfile
 
 
 def normalizeLabels(origY):
@@ -1158,6 +1158,7 @@ def load_indian_liver(return_X_y=True):
                                 'Albumin',
                                 'A/G Ratio'])
 
+
 def load_yearbook_path():
     """
     Returns the path of Yearbook Image Dataset
@@ -1166,13 +1167,14 @@ def load_yearbook_path():
     path = join(module_path, 'data', 'yearbook')
     return path
 
+
 def load_mnist_features_resnet18(return_X_y=True, split=False):
     """Load and return the MNIST Data Set features extracted using a
     pretrained ResNet18 neural network (classification).
 
     ===========================================
     Classes                                   2
-    Samples per class Train             
+    Samples per class Train
         [5923,6742,5958,6131,5842,5421,5918,6265,5851,5949]
     Samples per class Test
         [980,1135,1032,1010,982,892,958,1028,974,1009]
@@ -1214,24 +1216,24 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
         descr_text = f.read()
 
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'mnist_features_resnet18_1.csv.zip')) 
+                              'mnist_features_resnet18_1.csv.zip'))
     df1 = pd.read_csv(zf.open('mnist_features_resnet18_1.csv'), header=None)
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'mnist_features_resnet18_2.csv.zip')) 
+                              'mnist_features_resnet18_2.csv.zip'))
     df2 = pd.read_csv(zf.open('mnist_features_resnet18_2.csv'), header=None)
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'mnist_features_resnet18_3.csv.zip')) 
+                              'mnist_features_resnet18_3.csv.zip'))
     df3 = pd.read_csv(zf.open('mnist_features_resnet18_3.csv'), header=None)
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'mnist_features_resnet18_4.csv.zip')) 
+                              'mnist_features_resnet18_4.csv.zip'))
     df4 = pd.read_csv(zf.open('mnist_features_resnet18_4.csv'), header=None)
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'mnist_features_resnet18_5.csv.zip')) 
+                              'mnist_features_resnet18_5.csv.zip'))
     df5 = pd.read_csv(zf.open('mnist_features_resnet18_5.csv'), header=None)
 
-    dataset = np.array(pd.concat([df1,df2,df3,df4,df5]))
-    data = dataset[:,:-1]
-    target = dataset[:,-1]
+    dataset = np.array(pd.concat([df1, df2, df3, df4, df5]))
+    data = dataset[:, :-1]
+    target = dataset[:, -1]
 
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
@@ -1240,8 +1242,11 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
     if return_X_y:
         if split:
             # X_train, X_test, Y_train, Y_test
-            return data[:60000, :], data[60000:, :],\
-                   target[:60000], target[60000:]
+            X_train = data[:60000, :]
+            Y_train = target[:60000]
+            X_test = data[60000:, :]
+            Y_test = target[60000:]
+            return X_train, X_test, Y_train, Y_test
         else:
             return data, target
     else:
@@ -1250,6 +1255,7 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
             target = {'train': target[:60000], 'test': target[60000:]}
         return Bunch(data=data, target=target, DESCR=descr_text)
     return 0
+
 
 def load_catsvsdogs_features_resnet18(return_X_y=True):
     """Load and return the Cats vs Dogs Data Set features extracted using a
@@ -1289,15 +1295,15 @@ def load_catsvsdogs_features_resnet18(return_X_y=True):
         descr_text = f.read()
 
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'catsvsdogs_features_resnet18_1.csv.zip')) 
+                              'catsvsdogs_features_resnet18_1.csv.zip'))
     df1 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_1.csv'))
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'catsvsdogs_features_resnet18_2.csv.zip')) 
+                              'catsvsdogs_features_resnet18_2.csv.zip'))
     df2 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_2.csv'))
 
-    dataset = np.array(pd.concat([df1,df2]))
-    data = dataset[:,:-1]
-    target = dataset[:,-1]
+    dataset = np.array(pd.concat([df1, df2]))
+    data = dataset[:, :-1]
+    target = dataset[:, -1]
 
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
@@ -1307,6 +1313,7 @@ def load_catsvsdogs_features_resnet18(return_X_y=True):
 
     return Bunch(data=data, target=normalizeLabels(target),
                  DESCR=descr_text)
+
 
 def load_yearbook_features_resnet18(return_X_y=True):
     """Load and return the Yearbook Data Set features extracted using a
@@ -1345,15 +1352,15 @@ def load_yearbook_features_resnet18(return_X_y=True):
         descr_text = f.read()
 
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'yearbook_features_resnet18_1.csv.zip')) 
+                              'yearbook_features_resnet18_1.csv.zip'))
     df1 = pd.read_csv(zf.open('yearbook_features_resnet18_1.csv'), header=None)
     zf = zipfile.ZipFile(join(module_path, 'data',
-        'yearbook_features_resnet18_2.csv.zip')) 
+                              'yearbook_features_resnet18_2.csv.zip'))
     df2 = pd.read_csv(zf.open('yearbook_features_resnet18_2.csv'), header=None)
 
-    dataset = np.array(pd.concat([df1,df2]))
-    data = dataset[:,:-1]
-    target = dataset[:,-1]
+    dataset = np.array(pd.concat([df1, df2]))
+    data = dataset[:, :-1]
+    target = dataset[:, -1]
 
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
