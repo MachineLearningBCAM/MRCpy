@@ -210,7 +210,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         # Solver list for cvxpy
         self.solvers = ['MOSEK', 'SCS', 'ECOS']
 
-    def fit(self, X, Y):
+    def fit(self, X, Y, X_=None):
         '''
         Fit the MRC model.
 
@@ -234,6 +234,12 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             Labels corresponding to the training instances
             used only to compute the expectation estimates.
 
+        X_ : array-like of shape (`n_samples2`, `n_dimensions`), default = None
+            These instances are optional and
+            when given, will be used in the minimax risk optimization.
+            These extra instances are generally a smaller set and
+            give an advantage in training time.
+
         Returns
         -------
         self :
@@ -242,6 +248,23 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         '''
 
         X, Y = check_X_y(X, Y, accept_sparse=True)
+
+        # Check if separate instances are given for the optimization
+        if X_ is not None:
+            X_opt = check_array(X_, accept_sparse=True)
+            not_all_instances = False
+        else:
+            # Use the training samples used to compute estimate
+            # for the optimization.
+            X_opt = X
+
+            # If the labels are not given, then these instances
+            # are assumed to be given for optimization only and
+            # hence all the instances will be used.
+            if Y is None:
+                not_all_instances = False
+            else:
+                not_all_instances = True
 
         # Obtaining the number of classes and mapping the labels to integers
         origY = Y
@@ -287,12 +310,12 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         # for large datasets
         # Reduces the training time and use of memory
         n_max = 5000
-        n = X.shape[0]
-        if n_max < n:
+        n = X_opt.shape[0]
+        if not_all_instances and n_max < n:
             n = n_max
 
         # Fit the MRC classifier
-        self.minimax_risk(X[:n], tau_, lambda_, n_classes)
+        self.minimax_risk(X_opt[:n], tau_, lambda_, n_classes)
 
         return self
 
