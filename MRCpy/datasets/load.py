@@ -30,7 +30,7 @@ def normalizeLabels(origY):
     return Y
 
 
-def load_adult(return_X_y=True):
+def load_adult(with_info=False):
     """Load and return the adult incomes prediction dataset (classification).
 
     =================   ==============
@@ -43,7 +43,7 @@ def load_adult(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -55,7 +55,7 @@ def load_adult(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -83,7 +83,7 @@ def load_adult(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -94,7 +94,7 @@ def load_adult(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_diabetes(return_X_y=True):
+def load_diabetes(with_info=False):
     """Load and return the Pima Indians Diabetes dataset (classification).
 
     =================   =====================
@@ -107,7 +107,7 @@ def load_diabetes(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -119,7 +119,7 @@ def load_diabetes(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -146,7 +146,7 @@ def load_diabetes(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -157,7 +157,7 @@ def load_diabetes(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_iris(return_X_y=True):
+def load_iris(with_info=False):
     """Load and return the Iris Plants Dataset (classification).
 
     =================   =====================
@@ -170,7 +170,7 @@ def load_iris(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -182,7 +182,7 @@ def load_iris(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -215,7 +215,7 @@ def load_iris(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -226,7 +226,7 @@ def load_iris(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_redwine(return_X_y=True):
+def load_redwine(with_info=False):
     """Load and return the Red Wine Dataset (classification).
 
     =================   =====================
@@ -239,7 +239,7 @@ def load_redwine(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -251,7 +251,7 @@ def load_redwine(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -279,7 +279,7 @@ def load_redwine(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -290,7 +290,7 @@ def load_redwine(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_forestcov(return_X_y=True):
+def load_forestcov(with_info=False):
     """Load and return the Forestcov Dataset (classification).
 
     =================   =====================
@@ -304,7 +304,7 @@ def load_forestcov(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -316,7 +316,7 @@ def load_forestcov(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -344,7 +344,7 @@ def load_forestcov(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -355,7 +355,7 @@ def load_forestcov(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_letterrecog(return_X_y=True):
+def load_letterrecog(with_info=False):
     """Load and return the Letter Recognition Dataset (classification).
 
     =================   =====================
@@ -367,7 +367,7 @@ def load_letterrecog(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -379,7 +379,7 @@ def load_letterrecog(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -413,7 +413,7 @@ def load_letterrecog(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -424,7 +424,7 @@ def load_letterrecog(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_ecoli(return_X_y=True):
+def load_ecoli(with_info=False):
     """Load and return the Ecoli Dataset (classification).
 
     =================   =====================
@@ -437,7 +437,7 @@ def load_ecoli(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -449,7 +449,7 @@ def load_ecoli(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -482,7 +482,7 @@ def load_ecoli(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -493,7 +493,7 @@ def load_ecoli(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_vehicle(return_X_y=True):
+def load_vehicle(with_info=False):
     """Load and return the Vehicle Dataset (classification).
 
     =================   =====================
@@ -506,7 +506,7 @@ def load_vehicle(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -518,7 +518,7 @@ def load_vehicle(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -551,7 +551,7 @@ def load_vehicle(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
     return Bunch(data=data,
                  target=normalizeLabels(target),
@@ -561,7 +561,7 @@ def load_vehicle(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_segment(return_X_y=True):
+def load_segment(with_info=False):
     """Load and return the Segment prediction dataset (classification).
 
     =================   =====================
@@ -574,7 +574,7 @@ def load_segment(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -586,7 +586,7 @@ def load_segment(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -617,7 +617,7 @@ def load_segment(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -628,7 +628,7 @@ def load_segment(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_satellite(return_X_y=True):
+def load_satellite(with_info=False):
     """Load and return the Satellite prediction dataset (classification).
 
     =================   =====================
@@ -641,7 +641,7 @@ def load_satellite(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -653,7 +653,7 @@ def load_satellite(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -683,7 +683,7 @@ def load_satellite(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -694,7 +694,7 @@ def load_satellite(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_optdigits(return_X_y=True):
+def load_optdigits(with_info=False):
     """Load and return the Optdigits prediction dataset (classification).
 
     =================   =====================
@@ -707,7 +707,7 @@ def load_optdigits(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -719,7 +719,7 @@ def load_optdigits(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -749,7 +749,7 @@ def load_optdigits(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -760,7 +760,7 @@ def load_optdigits(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_credit(return_X_y=True):
+def load_credit(with_info=False):
     """Load and return the Credit Approval prediction dataset (classification).
 
     =================   =====================
@@ -773,7 +773,7 @@ def load_credit(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -785,7 +785,7 @@ def load_credit(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -815,7 +815,7 @@ def load_credit(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -826,7 +826,7 @@ def load_credit(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_magic(return_X_y=True):
+def load_magic(with_info=False):
     """Load and return the Magic Gamma Telescope dataset (classification).
 
     =========================================
@@ -839,7 +839,7 @@ def load_magic(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -851,7 +851,7 @@ def load_magic(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -878,7 +878,7 @@ def load_magic(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data,
@@ -889,7 +889,7 @@ def load_magic(return_X_y=True):
                  filename=data_file_name)
 
 
-def load_glass(return_X_y=True):
+def load_glass(with_info=False):
     """Load and return the Glass Identification Data Set (classification).
 
     ===========================================
@@ -902,7 +902,7 @@ def load_glass(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -914,7 +914,7 @@ def load_glass(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of glass csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -942,7 +942,7 @@ def load_glass(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
@@ -960,7 +960,7 @@ def load_glass(return_X_y=True):
                                 'Fe: Iron'])
 
 
-def load_haberman(return_X_y=True):
+def load_haberman(with_info=False):
     """Load and return the Haberman's Survival Data Set (classification).
 
     ==============================
@@ -973,7 +973,7 @@ def load_haberman(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -985,7 +985,7 @@ def load_haberman(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of haberman csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -1013,7 +1013,7 @@ def load_haberman(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
@@ -1023,7 +1023,7 @@ def load_haberman(return_X_y=True):
                                 'PositiveAxillaryNodesDetected'])
 
 
-def load_mammographic(return_X_y=True):
+def load_mammographic(with_info=False):
     """Load and return the Mammographic Mass Data Set (classification).
 
     ==============================
@@ -1036,7 +1036,7 @@ def load_mammographic(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -1048,7 +1048,7 @@ def load_mammographic(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of mammographic csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -1076,7 +1076,7 @@ def load_mammographic(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
@@ -1088,7 +1088,7 @@ def load_mammographic(return_X_y=True):
                                 'density'])
 
 
-def load_indian_liver(return_X_y=True):
+def load_indian_liver(with_info=False):
     """Load and return the Indian Liver Patient Data Set
     (classification).
 
@@ -1103,7 +1103,7 @@ def load_indian_liver(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -1115,7 +1115,7 @@ def load_indian_liver(return_X_y=True):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -1141,7 +1141,7 @@ def load_indian_liver(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
@@ -1168,7 +1168,7 @@ def load_yearbook_path():
     return path
 
 
-def load_mnist_features_resnet18(return_X_y=True, split=False):
+def load_mnist_features_resnet18(with_info=False, split=False):
     """Load and return the MNIST Data Set features extracted using a
     pretrained ResNet18 neural network (classification).
 
@@ -1187,7 +1187,7 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
     split : boolean, default=False.
@@ -1205,7 +1205,7 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
         an array. If `split=True` data is a dictionary with 'train' and 'test'
         splits.
 
-    (data, target) : tuple if ``return_X_y`` is True. If `split=False`, data is
+    (data, target) : tuple if ``with_info`` is True. If `split=False`, data is
         an array. If `split=True` data is a dictionary with 'train' and 'test'
         splits.
     """
@@ -1239,7 +1239,7 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
     data = trans.fit_transform(data)
 
     target = normalizeLabels(target)
-    if return_X_y:
+    if not with_info:
         if split:
             # X_train, X_test, Y_train, Y_test
             X_train = data[:60000, :]
@@ -1257,7 +1257,7 @@ def load_mnist_features_resnet18(return_X_y=True, split=False):
     return 0
 
 
-def load_catsvsdogs_features_resnet18(return_X_y=True):
+def load_catsvsdogs_features_resnet18(with_info=False):
     """Load and return the Cats vs Dogs Data Set features extracted using a
     pretrained ResNet18 neural network (classification).
 
@@ -1271,7 +1271,7 @@ def load_catsvsdogs_features_resnet18(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
 
@@ -1284,7 +1284,7 @@ def load_catsvsdogs_features_resnet18(return_X_y=True):
         and 'filename', the physical location of Cats vs Dogs ResNet18 features
         csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -1308,14 +1308,14 @@ def load_catsvsdogs_features_resnet18(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
+    if not with_info:
         return data, normalizeLabels(target)
 
     return Bunch(data=data, target=normalizeLabels(target),
                  DESCR=descr_text)
 
 
-def load_yearbook_features_resnet18(return_X_y=True):
+def load_yearbook_features_resnet18(with_info=False, with_attributes=False):
     """Load and return the Yearbook Data Set features extracted using a
     pretrained ResNet18 neural network (classification).
 
@@ -1329,9 +1329,16 @@ def load_yearbook_features_resnet18(return_X_y=True):
 
     Parameters
     ----------
-    return_X_y : boolean, default=False.
+    with_info : boolean, default=False.
         If True, returns ``(data, target)`` instead of a Bunch object.
         See below for more information about the `data` and `target` object.
+
+    with_attributes : boolean, default=False.
+        If True, returns an additional dictionary containing information of
+        additional attributes: year, state, city, school of the portraits.
+        The key 'attr_labels' in the dictionary contains these labels
+        corresponding to each columns, while 'attr_data' corresponds to
+        the attribute data in form of numpy array.
 
     Returns
     -------
@@ -1342,7 +1349,7 @@ def load_yearbook_features_resnet18(return_X_y=True):
         and 'filename', the physical location of Yearbook ResNet18 features
         csv dataset.
 
-    (data, target) : tuple if ``return_X_y`` is True
+    (data, target) : tuple if ``with_info`` is True
 
     """
     module_path = dirname(__file__)
@@ -1365,8 +1372,22 @@ def load_yearbook_features_resnet18(return_X_y=True):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
-    if return_X_y:
-        return data, normalizeLabels(target)
+    if with_attributes:
+        attr = pd.read_csv(join(module_path, 'data',
+                                'yearbook_attributes.csv'))
+        attr_labels = attr.columns.values
+        attr_val = attr.values
+        attr = {'attr_labels': attr_labels, 'attr_data': attr_val}
 
-    return Bunch(data=data, target=normalizeLabels(target),
-                 DESCR=descr_text)
+        if not with_info:
+            return data, normalizeLabels(target), attr
+
+        return Bunch(data=data, target=normalizeLabels(target),
+                     attributes=attr, DESCR=descr_text)
+
+    else:
+        if not with_info:
+            return data, normalizeLabels(target)
+
+        return Bunch(data=data, target=normalizeLabels(target),
+                     DESCR=descr_text)

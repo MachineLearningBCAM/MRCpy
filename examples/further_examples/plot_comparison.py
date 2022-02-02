@@ -138,7 +138,7 @@ def runMRC(X, Y):
 # like the ones in the example.
 
 # Credit dataset
-X, Y = load_credit(return_X_y=True)
+X, Y = load_credit()
 df_mrc_credit, df_mrc_nd_credit = runMRC(X, Y)
 df_mrc_credit.style.set_caption('Credit Dataset: Deterministic \
                                 MRC and CMRC error and runtime')
@@ -152,7 +152,7 @@ df_mrc_nd_credit.style.set_caption('Credit Dataset: Non-Deterministic \
 #####################################
 
 # Haberman Dataset
-X, Y = load_haberman(return_X_y=True)
+X, Y = load_haberman()
 df_mrc_haberman, df_mrc_nd_haberman = runMRC(X, Y)
 df_mrc_haberman.style.set_caption('Haberman Dataset: Deterministic \
                                   MRC and CMRC error and runtime')
@@ -237,7 +237,7 @@ def runComparisonMethods(X, Y):
 ########################################
 
 # Credit Dataset
-X, Y = load_credit(return_X_y=True)
+X, Y = load_credit()
 df_credit = runComparisonMethods(X, Y)
 df_credit.style.set_caption('Credit Dataset: Different \
                             methods error and runtime')
@@ -245,7 +245,7 @@ df_credit.style.set_caption('Credit Dataset: Different \
 #####################################
 
 # Haberman Dataset
-X, Y = load_haberman(return_X_y=True)
+X, Y = load_haberman()
 df_haberman = runComparisonMethods(X, Y)
 df_haberman.style.set_caption('Haberman Dataset: Different \
                               methods error and runtime')

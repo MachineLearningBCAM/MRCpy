@@ -45,7 +45,7 @@ def runCMRC(phi, loss):
     for j, load in enumerate(loaders):
 
         # Loading the dataset
-        X, Y = load(return_X_y=True)
+        X, Y = load()
         r = len(np.unique(Y))
         n, d = X.shape
 

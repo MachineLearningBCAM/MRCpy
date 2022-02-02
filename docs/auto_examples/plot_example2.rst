@@ -51,36 +51,36 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.16856743986254294 +/- 0.032164944796554004
-     avg_train_time= : 79.13245494365692 secs
+     error= : 0.17896262886597938 +/- 0.03622385553382819
+     avg_train_time= : 60.33155705928802 secs
      ############## 
 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
-     error= : 0.26526881720430107 +/- 0.043460152215751106
-     avg_train_time= : 6.865237593650818 secs
+     error= : 0.2717204301075269 +/- 0.044615363914131935
+     avg_train_time= : 5.72195336818695 secs
      ############## 
 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.29336645236703685 +/- 0.030670852514159446
-     avg_train_time= : 26.14507086277008 secs
+     error= : 0.300146113383986 +/- 0.03165706213580872
+     avg_train_time= : 19.88431587219238 secs
      ############## 
 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.2330997949419002 +/- 0.0418637583604699
-     avg_train_time= : 48.58256554603577 secs
+     error= : 0.22520505809979494 +/- 0.050926801093973004
+     avg_train_time= : 36.469277310371396 secs
      ############## 
 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.14492753623188406 +/- 0.03995376449881224
-     avg_train_time= : 37.77459011077881 secs
+     error= : 0.14782608695652175 +/- 0.04289463358535867
+     avg_train_time= : 28.053568983078 secs
      ############## 
 
 
@@ -89,36 +89,36 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
      ############## 
      mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.1789733676975945 +/- 0.029707428323655517
-     avg_train_time= : 10.20141417980194 secs
+     error= : 0.18106743986254295 +/- 0.03525820092910794
+     avg_train_time= : 7.65362515449524 secs
      ############## 
 
 
      ############## 
      haberman n= 306 , d= 3, cardY= 2
-     error= : 0.2752688172043011 +/- 0.07597822375160576
-     avg_train_time= : 1.9261162996292114 secs
+     error= : 0.2687096774193548 +/- 0.059542033779212813
+     avg_train_time= : 1.5134883165359496 secs
      ############## 
 
 
      ############## 
      indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.2862945645821157 +/- 0.037173967181943546
-     avg_train_time= : 4.50679624080658 secs
+     error= : 0.2675336060783168 +/- 0.045262190833508215
+     avg_train_time= : 3.482965922355652 secs
      ############## 
 
 
      ############## 
      diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.231784005468216 +/- 0.03582418409679763
-     avg_train_time= : 6.925230216979981 secs
+     error= : 0.22522214627477788 +/- 0.03267158957103221
+     avg_train_time= : 5.23490891456604 secs
      ############## 
 
 
      ############## 
      credit n= 690 , d= 15, cardY= 2
-     error= : 0.14347826086956522 +/- 0.030709594348430565
-     avg_train_time= : 5.7290040969848635 secs
+     error= : 0.14202898550724638 +/- 0.045738358950897104
+     avg_train_time= : 4.246552991867065 secs
      ############## 
 
 
@@ -163,7 +163,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
         for j, load in enumerate(loaders):
 
             # Loading the dataset
-            X, Y = load(return_X_y=True)
+            X, Y = load()
             r = len(np.unique(Y))
             n, d = X.shape
 
@@ -233,7 +233,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 37 minutes  58.496 seconds)
+   **Total running time of the script:** ( 28 minutes  46.667 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example2.py:

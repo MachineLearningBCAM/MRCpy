@@ -20,11 +20,14 @@
    Class 0 (F) 20248
    Class 1 (M) 17673
 
-6. Number of Attributes: 512 + class atribute
+6. Number of Attributes: 512 + 4 info attributes (year, state, city, school)
+                             + class atribute
 
 7. Attribute Information:
    The 512 attributes correspond to the second last layer of a ResNet18 model
    pretrained on ImageNet Data Set used to predict the class of each image
    on Yearbook dataset.
+   The 4 attributes giving additional information are available in the file
+   yearbook_attributes.csv
 
 8. Missing Attribute Values: None

@@ -13,7 +13,7 @@ class TestCMRC(unittest.TestCase):
 
     def setUp(self):
         # Get the sample data for testing.
-        self.X, self.y = load_iris(return_X_y=True)
+        self.X, self.y = load_iris(with_info=False)
 
     def CMRC_training(self, phi, loss, use_cvx):
         r = np.unique(self.y).shape[0]

@@ -14,7 +14,7 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('../MRCpy/'))
 import sphinx_rtd_theme
-
+from sphinx_gallery.sorting import ExampleTitleSortKey
 
 # -- Project information -----------------------------------------------------
 
@@ -86,6 +86,7 @@ sphinx_gallery_conf = {
     # #references-to-examples)
     'doc_module': 'MRCpy',
     'backreferences_dir': os.path.join('generated'),
+    'within_subsection_order': ExampleTitleSortKey,
 }
 
 # -- Options for HTML output -------------------------------------------------

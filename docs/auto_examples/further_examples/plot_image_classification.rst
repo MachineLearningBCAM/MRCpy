@@ -23,7 +23,7 @@
 MRCs with Deep Neural Networks: Part II
 ===============================================================
 In this example we will use a features extracted from different sets of images
-using pretrained neural networks, as explained in :ref:`<featureextraction>`.
+using pretrained neural networks, as explained in :ref:`featureextraction`.
 
 We will use image features correponding to a set of training images to train an
 MRC model to then predict the class of a set of test images using their
@@ -280,7 +280,7 @@ training with "source" images (2000 first ones), 76.9±2.1 when training with
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  7.811 seconds)
+   **Total running time of the script:** ( 1 minutes  16.735 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_image_classification.py:
