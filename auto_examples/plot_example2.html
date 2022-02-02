@@ -108,36 +108,36 @@ the classification error. We also calculate the mean training time.</p>
 
  ##############
  mammographic n= 961 , d= 5, cardY= 2
- error= : 0.16856743986254294 +/- 0.032164944796554004
- avg_train_time= : 79.13245494365692 secs
+ error= : 0.17896262886597938 +/- 0.03622385553382819
+ avg_train_time= : 60.33155705928802 secs
  ##############
 
 
  ##############
  haberman n= 306 , d= 3, cardY= 2
- error= : 0.26526881720430107 +/- 0.043460152215751106
- avg_train_time= : 6.865237593650818 secs
+ error= : 0.2717204301075269 +/- 0.044615363914131935
+ avg_train_time= : 5.72195336818695 secs
  ##############
 
 
  ##############
  indian_liver n= 583 , d= 10, cardY= 2
- error= : 0.29336645236703685 +/- 0.030670852514159446
- avg_train_time= : 26.14507086277008 secs
+ error= : 0.300146113383986 +/- 0.03165706213580872
+ avg_train_time= : 19.88431587219238 secs
  ##############
 
 
  ##############
  diabetes n= 768 , d= 8, cardY= 2
- error= : 0.2330997949419002 +/- 0.0418637583604699
- avg_train_time= : 48.58256554603577 secs
+ error= : 0.22520505809979494 +/- 0.050926801093973004
+ avg_train_time= : 36.469277310371396 secs
  ##############
 
 
  ##############
  credit n= 690 , d= 15, cardY= 2
- error= : 0.14492753623188406 +/- 0.03995376449881224
- avg_train_time= : 37.77459011077881 secs
+ error= : 0.14782608695652175 +/- 0.04289463358535867
+ avg_train_time= : 28.053568983078 secs
  ##############
 
 
@@ -146,36 +146,36 @@ the classification error. We also calculate the mean training time.</p>
 
  ##############
  mammographic n= 961 , d= 5, cardY= 2
- error= : 0.1789733676975945 +/- 0.029707428323655517
- avg_train_time= : 10.20141417980194 secs
+ error= : 0.18106743986254295 +/- 0.03525820092910794
+ avg_train_time= : 7.65362515449524 secs
  ##############
 
 
  ##############
  haberman n= 306 , d= 3, cardY= 2
- error= : 0.2752688172043011 +/- 0.07597822375160576
- avg_train_time= : 1.9261162996292114 secs
+ error= : 0.2687096774193548 +/- 0.059542033779212813
+ avg_train_time= : 1.5134883165359496 secs
  ##############
 
 
  ##############
  indian_liver n= 583 , d= 10, cardY= 2
- error= : 0.2862945645821157 +/- 0.037173967181943546
- avg_train_time= : 4.50679624080658 secs
+ error= : 0.2675336060783168 +/- 0.045262190833508215
+ avg_train_time= : 3.482965922355652 secs
  ##############
 
 
  ##############
  diabetes n= 768 , d= 8, cardY= 2
- error= : 0.231784005468216 +/- 0.03582418409679763
- avg_train_time= : 6.925230216979981 secs
+ error= : 0.22522214627477788 +/- 0.03267158957103221
+ avg_train_time= : 5.23490891456604 secs
  ##############
 
 
  ##############
  credit n= 690 , d= 15, cardY= 2
- error= : 0.14347826086956522 +/- 0.030709594348430565
- avg_train_time= : 5.7290040969848635 secs
+ error= : 0.14202898550724638 +/- 0.045738358950897104
+ avg_train_time= : 4.246552991867065 secs
  ##############
 </pre></div>
 </div>
@@ -212,7 +212,7 @@ the classification error. We also calculate the mean training time.</p>
     <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">load</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a><span class="p">):</span>
 
         <span class="c1"># Loading the dataset</span>
-        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load</span><span class="p">()</span>
         <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="numpy.unique" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">unique</span></a><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
 
@@ -280,7 +280,7 @@ the classification error. We also calculate the mean training time.</p>
     <span class="n">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 37 minutes  58.496 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 28 minutes  46.667 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-example2-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../_downloads/a8b175cd29751dc0229ceb76947711bf/plot_example2.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_example2.py</span></code></a></div>

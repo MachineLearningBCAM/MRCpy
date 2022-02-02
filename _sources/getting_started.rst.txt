@@ -27,7 +27,7 @@ using 0-1 loss (i.e., the default loss).
     from sklearn.model_selection import train_test_split
 
     # Load the mammographic dataset
-    X, Y = load_mammographic(return_X_y=True)
+    X, Y = load_mammographic(with_info=False)
 
     # Split the data into training and testing
     X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
@@ -56,7 +56,7 @@ Dataset Loaders
 Normalize the labels of the instances in the range 0,..., r-1 for r classes.
 
 
-``load_adult(return_X_y=True)``
+``load_adult(with_info=False)``
 ---------------------------------
 
 Load and return the adult incomes prediction dataset (classification).
@@ -71,7 +71,7 @@ Features             int, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -83,10 +83,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_diabetes(return_X_y=True)``
+``load_diabetes(with_info=False)``
 -----------------------------------
 Load and return the Pima Indians Diabetes dataset (classification).
 
@@ -100,7 +100,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -112,10 +112,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_iris(return_X_y=True)``
+``load_iris(with_info=False)``
 -------------------------------
 Load and return the Iris Plants Dataset (classification).
 
@@ -129,7 +129,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -141,10 +141,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_redwine(return_X_y=True)``
+``load_redwine(with_info=False)``
 ----------------------------------
 Load and return the Red Wine Dataset (classification).
 
@@ -158,7 +158,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -170,10 +170,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_forestcov(return_X_y=True)``
+``load_forestcov(with_info=False)``
 ------------------------------------
 Load and return the Forestcov Plants Dataset (classification).
 
@@ -188,7 +188,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -200,10 +200,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_letterrecog(return_X_y=True)``
+``load_letterrecog(with_info=False)``
 --------------------------------------
 Load and return the Letter Recognition Dataset (classification).
 
@@ -216,7 +216,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -228,10 +228,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_ecoli(return_X_y=True)``
+``load_ecoli(with_info=False)``
 --------------------------------
 Load and return the Ecoli Dataset (classification).
 
@@ -245,7 +245,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -257,10 +257,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_vehicle(return_X_y=True)``
+``load_vehicle(with_info=False)``
 ----------------------------------
 Load and return the Vehicle Dataset (classification).
 
@@ -274,7 +274,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -286,10 +286,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_segment(return_X_y=True)``
+``load_segment(with_info=False)``
 ----------------------------------
 Load and return the Segment prediction dataset (classification).
 
@@ -303,7 +303,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -315,10 +315,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_satellite(return_X_y=True)``
+``load_satellite(with_info=False)``
 ------------------------------------
 Load and return the Satellite prediction dataset (classification).
 
@@ -332,7 +332,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -344,10 +344,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_optdigits(return_X_y=True)``
+``load_optdigits(with_info=False)``
 ------------------------------------
 Load and return the Optdigits prediction dataset (classification).
 
@@ -361,7 +361,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -373,10 +373,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_credit(return_X_y=True)``
+``load_credit(with_info=False)``
 ---------------------------------
 Load and return the Credit Approval prediction dataset (classification).
 
@@ -390,7 +390,7 @@ Features             int, float, positive
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -402,10 +402,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_magic(return_X_y=True)``
+``load_magic(with_info=False)``
 --------------------------------
 Load and return the Magic Gamma Telescope dataset (classification).
 
@@ -419,7 +419,7 @@ Features                            float
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -431,10 +431,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_glass(return_X_y=True)``
+``load_glass(with_info=False)``
 --------------------------------
 Load and return the Glass Identification Data Set (classification).
 
@@ -448,7 +448,7 @@ Features                              float
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -460,10 +460,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of glass csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_haberman(return_X_y=True)``
+``load_haberman(with_info=False)``
 -----------------------------------
 Load and return the Haberman's Survival Data Set (classification).
 
@@ -477,7 +477,7 @@ Features                   int
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -489,10 +489,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of haberman csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_mammographic(return_X_y=True)``
+``load_mammographic(with_info=False)``
 ---------------------------------------
 Load and return the Mammographic Mass Data Set (classification).
 
@@ -506,7 +506,7 @@ Features                   int
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -518,10 +518,10 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of mammographic csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_indian_liver(return_X_y=True)``
+``load_indian_liver(with_info=False)``
 ---------------------------------------
 Load and return the Indian Liver Patient Data Set
 (classification).
@@ -537,7 +537,7 @@ Missing Values                                     4 (nan)
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -549,14 +549,14 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of satellite csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 ``load_yearbook_path()``
 ------------------------
 Returns the path of Yearbook Image Dataset
 
 
-``load_mnist_features_resnet18(return_X_y=True, split=False)``
+``load_mnist_features_resnet18(with_info=False, split=False)``
 --------------------------------------------------------------
 Load and return the MNIST Data Set features extracted using a
 pretrained ResNet18 neural network (classification).
@@ -576,7 +576,7 @@ Features                                     float
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 split : boolean, default=False.
@@ -594,12 +594,12 @@ bunch : Bunch
     an array. If `split=True` data is a dictionary with 'train' and 'test'
     splits.
 
-(data, target) : tuple if ``return_X_y`` is True. If `split=False`, data is
+(data, target) : tuple if ``with_info`` is True. If `split=False`, data is
     an array. If `split=True` data is a dictionary with 'train' and 'test'
     splits.
 
 
-``load_catsvsdogs_features_resnet18(return_X_y=True)``
+``load_catsvsdogs_features_resnet18(with_info=False)``
 ------------------------------------------------------
 Load and return the Cats vs Dogs Data Set features extracted using a
 pretrained ResNet18 neural network (classification).
@@ -614,7 +614,7 @@ Features                              float
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
@@ -627,10 +627,10 @@ bunch : Bunch
     and 'filename', the physical location of Cats vs Dogs ResNet18 features
     csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
-``load_yearbook_features_resnet18(return_X_y=True)``
+``load_yearbook_features_resnet18(with_info=False, with_attributes=False)``
 ----------------------------------------------------
 Load and return the Yearbook Data Set features extracted using a
 pretrained ResNet18 neural network (classification).
@@ -645,9 +645,16 @@ Features                              float
 
 **Parameters**
 
-return_X_y : boolean, default=False.
+with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
+
+with_attributes : boolean, default=False.
+    If True, returns an additional dictionary containing information of
+    additional attributes: year, state, city, school of the portraits.
+    The key 'attr_labels' in the dictionary contains these labels
+    corresponding to each columns, while 'attr_data' corresponds to
+    the attribute data in form of numpy array.
 
 **Returns**
 
@@ -658,7 +665,7 @@ bunch : Bunch
     and 'filename', the physical location of Yearbook ResNet18 features
     csv dataset.
 
-(data, target) : tuple if ``return_X_y`` is True
+(data, target) : tuple if ``with_info`` is True
 
 
 

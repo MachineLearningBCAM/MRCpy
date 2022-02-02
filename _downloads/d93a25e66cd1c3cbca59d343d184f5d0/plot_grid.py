@@ -153,7 +153,7 @@ f = '%1.3g'  # format
 for j, load in enumerate(loaders):
 
     # Loading the dataset
-    X, Y = load(return_X_y=True)
+    X, Y = load()
     dataName = dataNameList[j]
 
     # In order to avoid the possible bias made by the choice of the train-test

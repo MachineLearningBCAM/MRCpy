@@ -69,19 +69,18 @@ Further applications
 --------------------
 This gallery contains examples that illustrate further applications of MRCpy library and its features.
 
-.. _longlink: https://towardsdatascience.com/a-demonstration-of-transfer-learning-of-vgg-convolutional-neural-network-pre-trained-model-with-c9f5b8b1ab0a
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part II
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
+     :alt: Example: Comparison to other methods
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
 
 .. raw:: html
 
@@ -91,28 +90,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 .. toctree::
    :hidden:
 
-   /auto_examples/further_examples/plot_image_classification
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part I
-
-     :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/feature_extraction
+   /auto_examples/further_examples/plot_comparison
 
 .. raw:: html
 
@@ -137,14 +115,14 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
-     :alt: Example: Comparison to other methods
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
+     :alt: MRCs with Deep Neural Networks: Part I
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
+     :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
 
 .. raw:: html
 
@@ -154,7 +132,28 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 .. toctree::
    :hidden:
 
-   /auto_examples/further_examples/plot_comparison
+   /auto_examples/further_examples/feature_extraction
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
+     :alt: MRCs with Deep Neural Networks: Part II
+
+     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/further_examples/plot_image_classification
 .. raw:: html
 
     <div class="sphx-glr-clear"></div>
