@@ -287,7 +287,7 @@
         <span class="c1"># Solver list for cvxpy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
@@ -311,6 +311,12 @@
 <span class="sd">            Labels corresponding to the training instances</span>
 <span class="sd">            used only to compute the expectation estimates.</span>
 
+<span class="sd">        X_ : array-like of shape (`n_samples2`, `n_dimensions`), default = None</span>
+<span class="sd">            These instances are optional and</span>
+<span class="sd">            when given, will be used in the minimax risk optimization.</span>
+<span class="sd">            These extra instances are generally a smaller set and</span>
+<span class="sd">            give an advantage in training time.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        self :</span>
@@ -319,6 +325,23 @@
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Check if separate instances are given for the optimization</span>
+        <span class="k">if</span> <span class="n">X_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Use the training samples used to compute estimate</span>
+            <span class="c1"># for the optimization.</span>
+            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">X</span>
+
+            <span class="c1"># If the labels are not given, then these instances</span>
+            <span class="c1"># are assumed to be given for optimization only and</span>
+            <span class="c1"># hence all the instances will be used.</span>
+            <span class="k">if</span> <span class="n">Y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Obtaining the number of classes and mapping the labels to integers</span>
         <span class="n">origY</span> <span class="o">=</span> <span class="n">Y</span>
@@ -364,12 +387,12 @@
         <span class="c1"># for large datasets</span>
         <span class="c1"># Reduces the training time and use of memory</span>
         <span class="n">n_max</span> <span class="o">=</span> <span class="mi">5000</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">n_max</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X_opt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">not_all_instances</span> <span class="ow">and</span> <span class="n">n_max</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="n">n_max</span>
 
         <span class="c1"># Fit the MRC classifier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
