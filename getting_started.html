@@ -115,7 +115,7 @@
 <p><strong>Dependencies</strong></p>
 <ul class="simple">
 <li><code class="xref any docutils literal notranslate"><span class="pre">Python</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 3.6</li>
-<li><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v1.22)"><code class="xref any docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(\geq\)</span> 1.18.1, <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/index.html#module-scipy" title="(in SciPy v1.7.1)"><code class="xref any docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(\geq\)</span> 1.4.1, <code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 0.21.0, <code class="xref any docutils literal notranslate"><span class="pre">cvxpy</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">mosek</span></code></li>
+<li><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v1.22)"><code class="xref any docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(\geq\)</span> 1.18.1, <a class="reference external" href="https://docs.scipy.org/doc/scipy/index.html#module-scipy" title="(in SciPy v1.8.0)"><code class="xref any docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(\geq\)</span> 1.4.1, <code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 0.21.0, <code class="xref any docutils literal notranslate"><span class="pre">cvxpy</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">mosek</span></code></li>
 </ul>
 </div>
 <div class="section" id="quick-start">
@@ -317,6 +317,29 @@ and ‘filename’, the physical location of the dataset.</dd>
 <div class="section" id="load-forestcov-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_forestcov(with_info=False)</span></code><a class="headerlink" href="#load-forestcov-with-info-false" title="Permalink to this headline"></a></h3>
 <p>Load and return the Forestcov Plants Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>7</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[211840,283301,35754,2747,9493,17367,20510,0]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>581012</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>54</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Parameters</strong></p>
 <dl class="docutils">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
@@ -371,6 +394,29 @@ and ‘filename’, the physical location of the dataset.</dd>
 <div class="section" id="load-ecoli-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_ecoli(with_info=False)</span></code><a class="headerlink" href="#load-ecoli-with-info-false" title="Permalink to this headline"></a></h3>
 <p>Load and return the Ecoli Dataset (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>8</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[143,77,52,35,20,5,2,2]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>336</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>8</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int, float, positive</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Parameters</strong></p>
 <dl class="docutils">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
@@ -437,16 +483,13 @@ and ‘filename’, the physical location of the dataset.</dd>
 <tr class="row-odd"><td>Classes</td>
 <td>7</td>
 </tr>
-<tr class="row-even"><td>Samples per class</td>
-<td>[383, 307]</td>
-</tr>
-<tr class="row-odd"><td>Samples total</td>
+<tr class="row-even"><td>Samples total</td>
 <td>2310</td>
 </tr>
-<tr class="row-even"><td>Dimensionality</td>
+<tr class="row-odd"><td>Dimensionality</td>
 <td>19</td>
 </tr>
-<tr class="row-odd"><td>Features</td>
+<tr class="row-even"><td>Features</td>
 <td>int, float, positive</td>
 </tr>
 </tbody>
@@ -477,16 +520,13 @@ and ‘filename’, the physical location of adult csv dataset.</dd>
 <tr class="row-odd"><td>Classes</td>
 <td>6</td>
 </tr>
-<tr class="row-even"><td>Samples per class</td>
-<td>383, 307]</td>
-</tr>
-<tr class="row-odd"><td>Samples total</td>
+<tr class="row-even"><td>Samples total</td>
 <td>6435</td>
 </tr>
-<tr class="row-even"><td>Dimensionality</td>
+<tr class="row-odd"><td>Dimensionality</td>
 <td>36</td>
 </tr>
-<tr class="row-odd"><td>Features</td>
+<tr class="row-even"><td>Features</td>
 <td>int, float, positive</td>
 </tr>
 </tbody>
@@ -517,16 +557,13 @@ and ‘filename’, the physical location of adult csv dataset.</dd>
 <tr class="row-odd"><td>Classes</td>
 <td>10</td>
 </tr>
-<tr class="row-even"><td>Samples per class</td>
-<td>383, 307]</td>
-</tr>
-<tr class="row-odd"><td>Samples total</td>
+<tr class="row-even"><td>Samples total</td>
 <td>5620</td>
 </tr>
-<tr class="row-even"><td>Dimensionality</td>
+<tr class="row-odd"><td>Dimensionality</td>
 <td>64</td>
 </tr>
-<tr class="row-odd"><td>Features</td>
+<tr class="row-even"><td>Features</td>
 <td>int, float, positive</td>
 </tr>
 </tbody>
@@ -557,16 +594,13 @@ and ‘filename’, the physical location of adult csv dataset.</dd>
 <tr class="row-odd"><td>Classes</td>
 <td>2</td>
 </tr>
-<tr class="row-even"><td>Samples per class</td>
-<td>383, 307]</td>
-</tr>
-<tr class="row-odd"><td>Samples total</td>
+<tr class="row-even"><td>Samples total</td>
 <td>690</td>
 </tr>
-<tr class="row-even"><td>Dimensionality</td>
+<tr class="row-odd"><td>Dimensionality</td>
 <td>15</td>
 </tr>
-<tr class="row-odd"><td>Features</td>
+<tr class="row-even"><td>Features</td>
 <td>int, float, positive</td>
 </tr>
 </tbody>
@@ -668,6 +702,29 @@ and ‘filename’, the physical location of glass csv dataset.</dd>
 <div class="section" id="load-haberman-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_haberman(with_info=False)</span></code><a class="headerlink" href="#load-haberman-with-info-false" title="Permalink to this headline"></a></h3>
 <p>Load and return the Haberman’s Survival Data Set (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="67%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[225, 82]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>306</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Parameters</strong></p>
 <dl class="docutils">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
@@ -685,6 +742,29 @@ and ‘filename’, the physical location of haberman csv dataset.</dd>
 <div class="section" id="load-mammographic-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_mammographic(with_info=False)</span></code><a class="headerlink" href="#load-mammographic-with-info-false" title="Permalink to this headline"></a></h3>
 <p>Load and return the Mammographic Mass Data Set (classification).</p>
+<table border="1" class="docutils align-default">
+<colgroup>
+<col width="63%" />
+<col width="37%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Classes</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>Samples per class</td>
+<td>[516, 445]</td>
+</tr>
+<tr class="row-odd"><td>Samples total</td>
+<td>961</td>
+</tr>
+<tr class="row-even"><td>Dimensionality</td>
+<td>5</td>
+</tr>
+<tr class="row-odd"><td>Features</td>
+<td>int</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Parameters</strong></p>
 <dl class="docutils">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
@@ -739,7 +819,7 @@ See below for more information about the <code class="xref any docutils literal 
 <dt>data<span class="classifier">Bunch</span></dt><dd>Dictionary-like object, the interesting attributes are:
 ‘data’, the data to learn, ‘target’, the classification targets,
 ‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of satellite csv dataset.</dd>
+and ‘filename’, the physical location of indian liver csv dataset.</dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
 </div>
@@ -753,24 +833,18 @@ and ‘filename’, the physical location of satellite csv dataset.</dd>
 pretrained ResNet18 neural network (classification).</p>
 <table border="1" class="docutils align-default">
 <colgroup>
-<col width="46%" />
-<col width="54%" />
+<col width="31%" />
+<col width="69%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Classes</td>
 <td>2</td>
 </tr>
 <tr class="row-even"><td>Samples per class Train</td>
-<td><dl class="first last docutils">
-<dt>[5923,6742,5958,6131,5842,</dt><dd>5421,5918,6265,5851,5949]</dd>
-</dl>
-</td>
+<td>[5923,6742,5958,6131,5842,5421,5918,6265,5851,5949]</td>
 </tr>
 <tr class="row-odd"><td>Samples per class Test</td>
-<td><dl class="first last docutils">
-<dt>[980,1135,1032,1010,982,</dt><dd>892,958,1028,974,1009]</dd>
-</dl>
-</td>
+<td>[980,1135,1032,1010,982,892,958,1028,974,1009]</td>
 </tr>
 <tr class="row-even"><td>Samples total Train</td>
 <td>60000</td>
