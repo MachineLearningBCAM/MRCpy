@@ -99,14 +99,14 @@ Funding in direct support of this work has been provided through different resea
    :width: 150
    :alt: AXA Foundation through the project "Early Prognosis of COVID-19 Infections via Machine Learning" funded in the Exceptional Flash Call "Mitigating risk in the wake of the COVID-19 pandemic"
 
-   AXA Foundation through the project **"Early Prognosis of COVID-19 Infections via Machine Learning"** funded in the Exceptional Flash Call **"Mitigating risk in the wake of the COVID-19 pandemic"**
+   AXA Foundation through the project **"Early Prognosis of COVID-19 Infections via Machine Learning"** funded in the Exceptional Flash Call **"Mitigating risk in the wake of the COVID-19 pandemic"**.
 
 .. figure:: logogobiernovasco.png
    :align: center
    :width: 150
    :alt: Basque Government through the project "Mathematical Modeling Applied to Health"
 
-   Basque Government through the project **"Mathematical Modeling Applied to Health"**
+   Basque Government through the project **"Mathematical Modeling Applied to Health"**.
 
 .. |Travis-CI Build Status| image:: https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main
    :target: https://travis-ci.org/github/MachineLearningBCAM/MRCpy

@@ -75,7 +75,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
     sigma : `str` or `float`, default = `None`
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` used in some feature
-        mappings such as Random Fourier or ReLU featuress.
+        mappings such as Random Fourier or ReLU features.
         For comparison its relation with parameter `gamma` used in
         other methods is :math:`\gamma=1/(2\sigma^2)`.
         When given a float, it is the value for the scaling parameter.
