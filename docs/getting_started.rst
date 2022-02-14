@@ -177,14 +177,13 @@ data : Bunch
 ------------------------------------
 Load and return the Forestcov Plants Dataset (classification).
 
-=================   =====================
-Classes                                 7
-Samples per class [211840,283301,35754,
-                 2747,9493,17367,20510,0]
-Samples total                      581012
-Dimensionality                         54
-Features             int, float, positive
-=================   =====================
+=========================   =============================================
+Classes                                                                7
+Samples per class           [211840,283301,35754,2747,9493,17367,20510,0]
+Samples total                                                      581012
+Dimensionality                                                         54
+Features                                             int, float, positive
+=========================   =============================================
 
 **Parameters**
 
@@ -235,13 +234,13 @@ data : Bunch
 --------------------------------
 Load and return the Ecoli Dataset (classification).
 
-=================   =====================
-Classes                                 8
-Samples per class [143,77,52,35,20,5,2,2]
-Samples total                         336
-Dimensionality                          8
-Features             int, float, positive
-=================   =====================
+=================== =========================
+Classes                                     8
+Samples per class     [143,77,52,35,20,5,2,2]
+Samples total                             336
+Dimensionality                              8
+Features                 int, float, positive
+=================== =========================
 
 **Parameters**
 
@@ -295,7 +294,6 @@ Load and return the Segment prediction dataset (classification).
 
 =================   =====================
 Classes                                 7
-Samples per class              [383, 307]
 Samples total                        2310
 Dimensionality                         19
 Features             int, float, positive
@@ -324,7 +322,6 @@ Load and return the Satellite prediction dataset (classification).
 
 =================   =====================
 Classes                                 6
-Samples per class               383, 307]
 Samples total                        6435
 Dimensionality                         36
 Features             int, float, positive
@@ -353,7 +350,6 @@ Load and return the Optdigits prediction dataset (classification).
 
 =================   =====================
 Classes                                10
-Samples per class               383, 307]
 Samples total                        5620
 Dimensionality                         64
 Features             int, float, positive
@@ -382,7 +378,6 @@ Load and return the Credit Approval prediction dataset (classification).
 
 =================   =====================
 Classes                                 2
-Samples per class               383, 307]
 Samples total                         690
 Dimensionality                         15
 Features             int, float, positive
@@ -467,13 +462,13 @@ data : Bunch
 -----------------------------------
 Load and return the Haberman's Survival Data Set (classification).
 
-============= =================
-Classes                      2
-Samples per class    [225, 82]
-Samples total              306
-Dimensionality               3
-Features                   int
-============= =================
+====================  ==========
+Classes                       2
+Samples per class     [225, 82]
+Samples total               306
+Dimensionality                3
+Features                    int
+====================  ==========
 
 **Parameters**
 
@@ -496,13 +491,13 @@ data : Bunch
 ---------------------------------------
 Load and return the Mammographic Mass Data Set (classification).
 
-============ ==================
+=================== ===========
 Classes                      2
 Samples per class    [516, 445]
 Samples total              961
 Dimensionality               5
 Features                   int
-============ ==================
+=================== ===========
 
 **Parameters**
 
@@ -547,7 +542,7 @@ data : Bunch
     Dictionary-like object, the interesting attributes are:
     'data', the data to learn, 'target', the classification targets,
     'DESCR', the full description of the dataset,
-    and 'filename', the physical location of satellite csv dataset.
+    and 'filename', the physical location of indian liver csv dataset.
 
 (data, target) : tuple if ``with_info`` is True
 
@@ -561,18 +556,16 @@ Returns the path of Yearbook Image Dataset
 Load and return the MNIST Data Set features extracted using a
 pretrained ResNet18 neural network (classification).
 
-======================= ===========================
-Classes                                          2
-Samples per class Train [5923,6742,5958,6131,5842,            
-                         5421,5918,6265,5851,5949]
-Samples per class Test    [980,1135,1032,1010,982,
-                            892,958,1028,974,1009]
-Samples total Train                          60000
-Samples total Test                           10000
-Samples total                                70000
-Dimensionality                                 512
-Features                                     float
-======================= ===========================
+=======================  ===================================================
+Classes                                                                    2
+Samples per class Train  [5923,6742,5958,6131,5842,5421,5918,6265,5851,5949]
+Samples per class Test        [980,1135,1032,1010,982,892,958,1028,974,1009]
+Samples total Train                                                    60000
+Samples total Test                                                     10000
+Samples total                                                          70000
+Dimensionality                                                           512
+Features                                                               float
+=======================  ===================================================
 
 **Parameters**
 

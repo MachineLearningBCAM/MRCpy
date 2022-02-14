@@ -293,14 +293,13 @@ def load_redwine(with_info=False):
 def load_forestcov(with_info=False):
     """Load and return the Forestcov Dataset (classification).
 
-    =================   =====================
-    Classes                                 7
-    Samples per class [211840,283301,35754,
-                     2747,9493,17367,20510,0]
-    Samples total                      581012
-    Dimensionality                         54
-    Features             int, float, positive
-    =================   =====================
+    =========================   =============================================
+    Classes                                                                7
+    Samples per class           [211840,283301,35754,2747,9493,17367,20510,0]
+    Samples total                                                      581012
+    Dimensionality                                                         54
+    Features                                             int, float, positive
+    =========================   =============================================
 
     Parameters
     ----------
@@ -427,13 +426,13 @@ def load_letterrecog(with_info=False):
 def load_ecoli(with_info=False):
     """Load and return the Ecoli Dataset (classification).
 
-    =================   =====================
-    Classes                                 8
-    Samples per class [143,77,52,35,20,5,2,2]
-    Samples total                         336
-    Dimensionality                          8
-    Features             int, float, positive
-    =================   =====================
+    =================== =========================
+    Classes                                     8
+    Samples per class     [143,77,52,35,20,5,2,2]
+    Samples total                             336
+    Dimensionality                              8
+    Features                 int, float, positive
+    =================== =========================
 
     Parameters
     ----------
@@ -566,7 +565,6 @@ def load_segment(with_info=False):
 
     =================   =====================
     Classes                                 7
-    Samples per class              [383, 307]
     Samples total                        2310
     Dimensionality                         19
     Features             int, float, positive
@@ -633,7 +631,6 @@ def load_satellite(with_info=False):
 
     =================   =====================
     Classes                                 6
-    Samples per class               383, 307]
     Samples total                        6435
     Dimensionality                         36
     Features             int, float, positive
@@ -765,7 +762,6 @@ def load_credit(with_info=False):
 
     =================   =====================
     Classes                                 2
-    Samples per class               383, 307]
     Samples total                         690
     Dimensionality                         15
     Features             int, float, positive
@@ -829,13 +825,13 @@ def load_credit(with_info=False):
 def load_magic(with_info=False):
     """Load and return the Magic Gamma Telescope dataset (classification).
 
-    =========================================
+    =================== ======================
     Classes                                 2
     Samples per class            [6688,12332]
     Samples total                       19020
     Dimensionality                         10
     Features                            float
-    =========================================
+    =================== ======================
 
     Parameters
     ----------
@@ -892,13 +888,13 @@ def load_magic(with_info=False):
 def load_glass(with_info=False):
     """Load and return the Glass Identification Data Set (classification).
 
-    ===========================================
+    ================== =========================
     Classes                                   6
     Samples per class    [70, 76, 17, 29, 13, 9]
     Samples total                           214
     Dimensionality                            9
     Features                              float
-    ===========================================
+    ================== =========================
 
     Parameters
     ----------
@@ -963,13 +959,13 @@ def load_glass(with_info=False):
 def load_haberman(with_info=False):
     """Load and return the Haberman's Survival Data Set (classification).
 
-    ==============================
+    ================== ============
     Classes                      2
     Samples per class    [225, 82]
     Samples total              306
     Dimensionality               3
     Features                   int
-    ==============================
+    ================== ============
 
     Parameters
     ----------
@@ -1026,13 +1022,13 @@ def load_haberman(with_info=False):
 def load_mammographic(with_info=False):
     """Load and return the Mammographic Mass Data Set (classification).
 
-    ==============================
+    ================== ============
     Classes                      2
     Samples per class    [516, 445]
     Samples total              961
     Dimensionality               5
     Features                   int
-    ==============================
+    ================== ============
 
     Parameters
     ----------
@@ -1092,14 +1088,14 @@ def load_indian_liver(with_info=False):
     """Load and return the Indian Liver Patient Data Set
     (classification).
 
-    =========================================================
+    ============================ =============================
     Classes                                                 2
     Samples per class                              [416, 167]
     Samples total                                         583
     Dimensionality                                         10
     Features                                       int, float
     Missing Values                                     4 (nan)
-    =========================================================
+    =========================== ==============================
 
     Parameters
     ----------
@@ -1172,18 +1168,18 @@ def load_mnist_features_resnet18(with_info=False, split=False):
     """Load and return the MNIST Data Set features extracted using a
     pretrained ResNet18 neural network (classification).
 
-    ===========================================
-    Classes                                   2
-    Samples per class Train
-        [5923,6742,5958,6131,5842,5421,5918,6265,5851,5949]
-    Samples per class Test
-        [980,1135,1032,1010,982,892,958,1028,974,1009]
-    Samples total Train                   60000
-    Samples total Test                    10000
-    Samples total                         70000
-    Dimensionality                          512
-    Features                              float
-    ===========================================
+    ======================= ===========================
+    Classes                                          2
+    Samples per class Train [5923,6742,5958,6131,5842,
+                             5421,5918,6265,5851,5949]
+    Samples per class Test    [980,1135,1032,1010,982,
+                                892,958,1028,974,1009]
+    Samples total Train                          60000
+    Samples total Test                           10000
+    Samples total                                70000
+    Dimensionality                                 512
+    Features                                     float
+    ======================= ===========================
 
     Parameters
     ----------
