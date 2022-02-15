@@ -90,21 +90,21 @@ Funding in direct support of this work has been provided through different resea
 .. figure:: fund_logo.png
    :align: center
    :width: 150
-   :alt: Research carried out under the project PID2019-105058GA-I00 funded by MCIN/ AEI /10.13039/501100011033
+   :alt: Spanish Ministry of Science and Innovation logo
 
-   Spanish Ministry of Education and Science through the project **PID2019-105058GA-I00** funded by **MCIN/AEI/10.13039/501100011033**.
+   Spanish Ministry of Science and Innovation through the project **PID2019-105058GA-I00** funded by **MCIN/AEI/10.13039/501100011033**.
 
 .. figure:: axalogo.png
    :align: center
    :width: 150
-   :alt: AXA Foundation through the project "Early Prognosis of COVID-19 Infections via Machine Learning" funded in the Exceptional Flash Call "Mitigating risk in the wake of the COVID-19 pandemic"
+   :alt: AXA Research Fund logo
 
-   AXA Foundation through the project **"Early Prognosis of COVID-19 Infections via Machine Learning"** funded in the Exceptional Flash Call **"Mitigating risk in the wake of the COVID-19 pandemic"**.
+   AXA Research Fund through the project **"Early Prognosis of COVID-19 Infections via Machine Learning"** funded in the Exceptional Flash Call **"Mitigating risk in the wake of the COVID-19 pandemic"**.
 
 .. figure:: logogobiernovasco.png
    :align: center
    :width: 150
-   :alt: Basque Government through the project "Mathematical Modeling Applied to Health", and through the "ELKARTEK Program".
+   :alt: Basque Government logo
 
    Basque Government through the project **"Mathematical Modeling Applied to Health"**, and through the **"ELKARTEK Program"**.
 
