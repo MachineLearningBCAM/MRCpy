@@ -104,9 +104,9 @@ Funding in direct support of this work has been provided through different resea
 .. figure:: logogobiernovasco.png
    :align: center
    :width: 150
-   :alt: Basque Government through the project "Mathematical Modeling Applied to Health"
+   :alt: Basque Government through the project "Mathematical Modeling Applied to Health", and through the "ELKARTEK Program".
 
-   Basque Government through the project **"Mathematical Modeling Applied to Health"**.
+   Basque Government through the project **"Mathematical Modeling Applied to Health"**, and through the **"ELKARTEK Program"**.
 
 .. |Travis-CI Build Status| image:: https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main
    :target: https://travis-ci.org/github/MachineLearningBCAM/MRCpy
