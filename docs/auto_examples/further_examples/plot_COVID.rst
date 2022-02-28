@@ -21,57 +21,64 @@
 .. _ex_covid:
 
 
-Example: Predicting COVID-19 patients outcome using MRCs in highly class imbalanced dataset.
+Example: Predicting COVID-19 patients outcome using MRCs
 ==================================================================
 
 In this example we will use `MRCpy.MRC` and `MRCpy.CMRC` to predict the outcome
-of a COVID-19 positive patient at the moment of hospital triage. This example uses a dataset  
-that comprises different demographic variables and biomarkers of the patients 
-and a binary outcome :attr:`Status` where :attr:`Status = 0` define the group
-of survivors and :attr:`Status = 1` determines a decease.
+of a COVID-19 positive patient at the moment of hospital triage. This example
+uses a dataset that comprises different demographic variables and biomarkers of
+the patients and a binary outcome :attr:`Status` where :attr:`Status = 0`
+define the group of survivors and :attr:`Status = 1` determines a decease.
 
-The data is provided by the `Covid Data Saves Lives <https://www.hmhospitales.com/coronavirus/covid-data-save-lives/english-version>`_ 
-initiative carried out by HM Hospitales with information of the first wave of 
-the COVID outbreak in Spanish hospitals. The data is available upon request through HM Hospitales `here <https://www.hmhospitales.com/coronavirus/covid-data-save-lives/english-version>`_ .
+The data is provided by the `Covid Data Saves Lives
+<https://www.hmhospitales.com/coronavirus/covid-data-save-lives/>`_ initiative
+carried out by HM Hospitales with information of the first wave of the COVID
+outbreak in Spanish hospitals. The data is available upon request through HM
+Hospitales
+`here <https://www.hmhospitales.com/coronavirus/covid-data-save-lives/>`_ .
 
-.. seealso::    For more information about the dataset and the creation of a risk
-                indicator using Logistic regression refer to:
-                
-                [1] Ruben Armañanzas et al. “Derivation of a Cost-Sensitive COVID-19 
-                Mortality Risk Indicator Using a Multistart Framework", in *2021 
-                IEEE International Conference on Bioinformatics and Biomedicine (BIBM)*, 2021, pp. 
-                2179–2186. 
+.. seealso::    For more information about the dataset and the creation of a
+                risk indicator using Logistic regression refer to:
 
- 
-    
+                [1] Ruben Armañanzas et al. “Derivation of a Cost-Sensitive
+                COVID-19 Mortality Risk Indicator Using a Multistart Framework"
+                , in *2021 IEEE International Conference on Bioinformatics and
+                Biomedicine (BIBM)*, 2021, pp. 2179–2186.
+
+
+
 First we will see how to deal with class imbalance when training a model using
-syntethic minority over-sampling (SMOTE) techniques. Furthermore, we will compare
-two MRC with two state of the art machine learning models probability estimation . The 
-selected models are :mod:`CMRC(phi = 'threshold' , loss = 'log')` & :mod:`MRC(phi = 'fourier' , loss = 'log')`
-for  the group of MRCs and Logistic Regression (LR) & C-Support Vector Classifier(SVC)
-with the implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`. 
+syntethic minority over-sampling (SMOTE) techniques. Furthermore, we will
+comparetwo MRC with two state of the art machine learning models probability
+estimation . The selected models are :mod:`CMRC(phi = 'threshold' ,
+loss = 'log')` & :mod:`MRC(phi = 'fourier' , loss = 'log')` for  the group of
+MRCs and Logistic Regression (LR) & C-Support Vector Classifier(SVC) with the
+implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-62
+.. GENERATED FROM PYTHON SOURCE LINES 43-69
 
 .. code-block:: default
 
     # Import needed modules
     import pandas as pd
     import numpy as np
-    import time
 
     # sklearn
     from sklearn import preprocessing
-    from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold
-    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import (
+        ConfusionMatrixDisplay,
+        classification_report,
+        confusion_matrix,
+    )
     from sklearn.svm import SVC
     from sklearn.linear_model import LogisticRegression
 
-    # SMOTE over-sampling 
+    # SMOTE over-sampling
     from imblearn.over_sampling import SMOTENC
 
-    #MRCpy
-    from MRCpy import MRC,CMRC
+    # MRCpy
+    from MRCpy import MRC, CMRC
 
     # Data visualisation
     import seaborn as sns
@@ -85,48 +92,69 @@ with the implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-65
+.. GENERATED FROM PYTHON SOURCE LINES 70-72
 
 COVID dataset Loader:
 --------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-99
+.. GENERATED FROM PYTHON SOURCE LINES 72-128
 
 .. code-block:: default
 
-    def load_covid(norm = False, array = True ):
+    def load_covid(norm=False, array=True):
         data_consensus = pd.read_csv("data/data_consensus.csv", sep=";")
         # rename variables
-        variable_dict = {'CD0000AGE': 'Age', 'CORE': 'PATIENT_ID', 'CT000000U': 'Urea', 
-                         'CT00000BT': 'Bilirubin', 'CT00000NA': 'Sodium', 
-                         'CT00000TP': 'Proth_time', 'CT0000COM': 'Com', 
-                         'CT0000LDH': 'LDH', 'CT0000NEU': 'Neutrophils',
-                         'CT0000PCR': 'Pro_C_Rea', 'CT0000VCM': 'Med_corp_vol', 
-                         'CT000APTT': 'Ceph_time', 'CT000CHCM': 'Mean_corp_Hgb', 
-                         'CT000EOSP': 'Eosinophils%', 'CT000LEUC': 'Leukocytes', 
-                         'CT000LINP': 'Lymphocytes%', 'CT000NEUP': 'Neutrophils%', 
-                         'CT000PLAQ': 'Platelet_count', 'CTHSDXXRATE': 'Rate', 
-                         'CTHSDXXSAT': 'Sat', 'ED0DISWHY': 'Status', 
-                         'F_INGRESO/ADMISSION_D_ING/INPAT': 'Fecha_admision',
-                         'SEXO/SEX': 'Sexo'}
+        variable_dict = {
+            "CD0000AGE": "Age",
+            "CORE": "PATIENT_ID",
+            "CT000000U": "Urea",
+            "CT00000BT": "Bilirubin",
+            "CT00000NA": "Sodium",
+            "CT00000TP": "Proth_time",
+            "CT0000COM": "Com",
+            "CT0000LDH": "LDH",
+            "CT0000NEU": "Neutrophils",
+            "CT0000PCR": "Pro_C_Rea",
+            "CT0000VCM": "Med_corp_vol",
+            "CT000APTT": "Ceph_time",
+            "CT000CHCM": "Mean_corp_Hgb",
+            "CT000EOSP": "Eosinophils%",
+            "CT000LEUC": "Leukocytes",
+            "CT000LINP": "Lymphocytes%",
+            "CT000NEUP": "Neutrophils%",
+            "CT000PLAQ": "Platelet_count",
+            "CTHSDXXRATE": "Rate",
+            "CTHSDXXSAT": "Sat",
+            "ED0DISWHY": "Status",
+            "F_INGRESO/ADMISSION_D_ING/INPAT": "Fecha_admision",
+            "SEXO/SEX": "Sexo",
+        }
         data_consensus = data_consensus.rename(columns=variable_dict)
-        if norm: # if we want the data standardised
-            x_consensus = data_consensus[data_consensus.columns.difference(['Status', 'PATIENT_ID'])][:]
+        if norm:  # if we want the data standardised
+            x_consensus = data_consensus[
+                data_consensus.columns.difference(["Status", "PATIENT_ID"])
+            ][:]
             std_scale = preprocessing.StandardScaler().fit(x_consensus)
             x_consensus_std = std_scale.transform(x_consensus)
             dataframex_consensus = pd.DataFrame(
-                x_consensus_std, columns=x_consensus.columns)
+                x_consensus_std, columns=x_consensus.columns
+            )
             data_consensus.reset_index(drop=True, inplace=True)
             data_consensus = pd.concat(
-                [dataframex_consensus, data_consensus[["Status"]]], axis=1)
+                [dataframex_consensus, data_consensus[["Status"]]], axis=1
+            )
 
-        data_consensus = data_consensus[data_consensus.columns.difference(['PATIENT_ID'])]
-        X = data_consensus[data_consensus.columns.difference(['Status', 'PATIENT_ID'])]
-        y = data_consensus['Status']
-        if array: 
+        data_consensus = data_consensus[
+            data_consensus.columns.difference(["PATIENT_ID"])
+        ]
+        X = data_consensus[
+            data_consensus.columns.difference(["Status", "PATIENT_ID"])
+        ]
+        y = data_consensus["Status"]
+        if array:
             X = X.to_numpy()
             y = y.to_numpy()
-        return X,y
+        return X, y
 
 
 
@@ -135,25 +163,30 @@ COVID dataset Loader:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-107
+
+.. GENERATED FROM PYTHON SOURCE LINES 129-136
 
 Addressing dataset imbalance with SMOTE
--------------------------------- 
-The COVID dataset has a significant problem of class imbalance where the positive outcome
-has a prevalence of 85% (1522) whilst the negative outcome  has only 276.
-In this example oversampling will be used to add syintetic records to get an almost  
-balanced dataset. :mod:`SMOTE` (Synthetic minority over sampling) is
-a package that implements such oversampling.
+--------------------------------
+The COVID dataset has a significant problem of class imbalance where the
+positive outcome has a prevalence of 85% (1522) whilst the negative outcome
+has only 276. In this example oversampling will be used to add syintetic
+records to get an almost balanced dataset. :mod:`SMOTE` (Synthetic minority
+over sampling) is a package that implements such oversampling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-114
+.. GENERATED FROM PYTHON SOURCE LINES 136-147
 
 .. code-block:: default
 
 
 
-    X,y = load_covid(array = False)
-    described = X.describe(percentiles = [0.5]).round(2).transpose()[['count','mean','std']]
-    pd.DataFrame(y.value_counts().rename({0.0: 'Survive',1.0:'Decease'}))
+    X, y = load_covid(array=False)
+    described = (
+        X.describe(percentiles=[0.5])
+        .round(2)
+        .transpose()[["count", "mean", "std"]]
+    )
+    pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
 
@@ -201,18 +234,22 @@ a package that implements such oversampling.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-123
+.. GENERATED FROM PYTHON SOURCE LINES 148-160
 
-So we create a set of cases syntehtically using 5 nearest neighbors until 
-the class imbalance is almost removed. For more information about :mod:`SMOTE` refer to it's
-`documentation <https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html>`_ .
-We will use the method `SMOTE-NC` for numerical and categorical variables. 
+So we create a set of cases syntehtically using 5 nearest neighbors until
+the class imbalance is almost removed. For more information about
+:mod:`SMOTE` refer to it's `documentation
+<https://imbalanced-learn.org/stable/>`_ .
+We will use the method `SMOTE-NC` for numerical and categorical variables.
 
 .. seealso::    For more information about the SMOTE package refer to:
 
-               [2] Chawla, N. V., Bowyer, K. W., Hall, L. O., & Kegelmeyer, W. P. (2002). SMOTE: synthetic minority over-sampling technique. Journal of artificial intelligence research, 16, 321-357. 
+               [2] Chawla, N. V., Bowyer, K. W., Hall, L. O., & Kegelmeyer,
+                   W. P. (2002). SMOTE: synthetic minority over-sampling
+                   technique. Journal of artificial intelligence
+                   research, 16, 321-357.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-130
+.. GENERATED FROM PYTHON SOURCE LINES 160-171
 
 .. code-block:: default
 
@@ -220,8 +257,12 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
     # We fit the data to the oversampler
     smotefit = SMOTENC(sampling_strategy=0.75, categorical_features=[3])
     X_resampled, y_resampled = smotefit.fit_resample(X, y)
-    described_resample = X_resampled.describe(percentiles = [0.5]).round(2).transpose()[['count','mean','std']]
-    described_resample = described_resample .add_suffix('_SMT')
+    described_resample = (
+        X_resampled.describe(percentiles=[0.5])
+        .round(2)
+        .transpose()[["count", "mean", "std"]]
+    )
+    described_resample = described_resample.add_suffix("_SMT")
     pd.concat([described, described_resample], axis=1)
 
 
@@ -264,8 +305,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>67.79</td>
           <td>15.67</td>
           <td>2663.0</td>
-          <td>71.74</td>
-          <td>14.84</td>
+          <td>71.78</td>
+          <td>14.80</td>
         </tr>
         <tr>
           <th>Bilirubin</th>
@@ -274,7 +315,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>0.45</td>
           <td>2663.0</td>
           <td>0.60</td>
-          <td>0.50</td>
+          <td>0.49</td>
         </tr>
         <tr>
           <th>Ceph_time</th>
@@ -282,8 +323,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>32.94</td>
           <td>7.03</td>
           <td>2663.0</td>
-          <td>33.20</td>
-          <td>7.16</td>
+          <td>33.43</td>
+          <td>7.81</td>
         </tr>
         <tr>
           <th>Com</th>
@@ -301,7 +342,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>1.57</td>
           <td>2663.0</td>
           <td>0.56</td>
-          <td>1.34</td>
+          <td>1.33</td>
         </tr>
         <tr>
           <th>LDH</th>
@@ -309,8 +350,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>601.10</td>
           <td>367.24</td>
           <td>2663.0</td>
-          <td>681.72</td>
-          <td>485.53</td>
+          <td>669.72</td>
+          <td>473.51</td>
         </tr>
         <tr>
           <th>Leukocytes</th>
@@ -318,8 +359,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>7.62</td>
           <td>4.54</td>
           <td>2663.0</td>
-          <td>8.20</td>
-          <td>4.73</td>
+          <td>8.23</td>
+          <td>5.27</td>
         </tr>
         <tr>
           <th>Lymphocytes%</th>
@@ -327,8 +368,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>18.19</td>
           <td>10.44</td>
           <td>2663.0</td>
-          <td>16.34</td>
-          <td>10.00</td>
+          <td>16.37</td>
+          <td>9.92</td>
         </tr>
         <tr>
           <th>Mean_corp_Hgb</th>
@@ -336,8 +377,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>33.62</td>
           <td>1.42</td>
           <td>2663.0</td>
-          <td>33.52</td>
-          <td>1.36</td>
+          <td>33.51</td>
+          <td>1.37</td>
         </tr>
         <tr>
           <th>Med_corp_vol</th>
@@ -345,8 +386,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>88.23</td>
           <td>5.77</td>
           <td>2663.0</td>
-          <td>88.79</td>
-          <td>5.69</td>
+          <td>88.61</td>
+          <td>5.78</td>
         </tr>
         <tr>
           <th>Neutrophils</th>
@@ -354,8 +395,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>5.75</td>
           <td>3.77</td>
           <td>2663.0</td>
-          <td>6.40</td>
-          <td>4.09</td>
+          <td>6.34</td>
+          <td>4.05</td>
         </tr>
         <tr>
           <th>Neutrophils%</th>
@@ -363,8 +404,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>73.01</td>
           <td>12.99</td>
           <td>2663.0</td>
-          <td>75.45</td>
-          <td>12.62</td>
+          <td>75.27</td>
+          <td>12.70</td>
         </tr>
         <tr>
           <th>Platelet_count</th>
@@ -372,8 +413,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>225.32</td>
           <td>96.93</td>
           <td>2663.0</td>
-          <td>219.60</td>
-          <td>93.97</td>
+          <td>218.80</td>
+          <td>94.02</td>
         </tr>
         <tr>
           <th>Pro_C_Rea</th>
@@ -381,8 +422,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>101.00</td>
           <td>100.87</td>
           <td>2663.0</td>
-          <td>120.74</td>
-          <td>109.75</td>
+          <td>120.56</td>
+          <td>110.25</td>
         </tr>
         <tr>
           <th>Proth_time</th>
@@ -390,8 +431,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>15.39</td>
           <td>13.89</td>
           <td>2663.0</td>
-          <td>16.06</td>
-          <td>14.57</td>
+          <td>16.21</td>
+          <td>14.89</td>
         </tr>
         <tr>
           <th>Rate</th>
@@ -399,8 +440,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>79.29</td>
           <td>14.75</td>
           <td>2663.0</td>
-          <td>80.61</td>
-          <td>14.76</td>
+          <td>80.57</td>
+          <td>15.11</td>
         </tr>
         <tr>
           <th>Sat</th>
@@ -408,8 +449,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>94.67</td>
           <td>4.81</td>
           <td>2663.0</td>
-          <td>93.68</td>
-          <td>5.45</td>
+          <td>93.67</td>
+          <td>5.53</td>
         </tr>
         <tr>
           <th>Sodium</th>
@@ -417,8 +458,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>136.92</td>
           <td>4.50</td>
           <td>2663.0</td>
-          <td>137.13</td>
-          <td>4.76</td>
+          <td>137.14</td>
+          <td>4.82</td>
         </tr>
         <tr>
           <th>Urea</th>
@@ -426,8 +467,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>43.17</td>
           <td>30.72</td>
           <td>2663.0</td>
-          <td>49.91</td>
-          <td>33.88</td>
+          <td>49.66</td>
+          <td>32.32</td>
         </tr>
       </tbody>
     </table>
@@ -436,18 +477,20 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-134
+.. GENERATED FROM PYTHON SOURCE LINES 172-175
 
-We see how the distribution of the real data and the resampled data is different.
-However the distribution between classes is kept similar due to the creation of 
-the synthetic cases through 5 nearest neighbors.
+We see how the distribution of the real data and the resampled data is
+different. However the distribution between classes is kept similar due to
+the creation of the synthetic cases through 5 nearest neighbors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-137
+.. GENERATED FROM PYTHON SOURCE LINES 175-180
 
 .. code-block:: default
 
 
-    pd.DataFrame(y_resampled.value_counts().rename({0.0: 'Survive',1.0:'Decease'}))
+    pd.DataFrame(
+        y_resampled.value_counts().rename({0.0: "Survive", 1.0: "Decease"})
+    )
 
 
 
@@ -494,52 +537,65 @@ the synthetic cases through 5 nearest neighbors.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-145
+.. GENERATED FROM PYTHON SOURCE LINES 181-189
 
 Probability estimation
 ----------------------------------
-In this section we will estimate the conditional probabilities and analyse the 
-distribution of the probabilities depending on the real outcome .
-The probability estimation is better when using :mod:`loss = log`. 
-We use :mod:`CMRC(phi = 'threshold', loss = 'log')` and  :mod:`MRC(phi = 'fourier' , loss = 'log'`.
-We will then compare these MRCs with SVC and LR with default parameters.
+In this section we will estimate the conditional probabilities and analyse
+the distribution of the probabilities depending on the real outcome . The
+probability estimation is better when using :mod:`loss = log`. We use
+:mod:`CMRC(phi = 'threshold', loss = 'log')` and
+:mod:`MRC(phi = 'fourier' , loss = 'log'`. We will then compare these MRCs
+with SVC and LR with default parameters.
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-152
+.. GENERATED FROM PYTHON SOURCE LINES 191-196
 
 Load classification function:
 ~~~~~~~~~~~~~~~~~~~~
 These function classify each of the cases in their correspondent
 confusion matrix's category. It also allows to set the desired cut-off
-for the predictions.  
+for the predictions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-178
+.. GENERATED FROM PYTHON SOURCE LINES 196-235
 
 .. code-block:: default
 
 
-    def defDataFrame(model, x_test, y_test,threshold = 0.5):
+
+    def defDataFrame(model, x_test, y_test, threshold=0.5):
         """
-        Takes x,y test and train and a fitted model and computes the probabilities to then classify in TP,TN , FP , FN 
+        Takes x,y test and train and a fitted model and
+        computes the probabilities to then classify in TP,TN , FP , FN.
         """
-        if 'predict_proba' in dir (model):
-            probabilities = model.predict_proba(x_test)[:,1]
-            predictions = [1 if i >threshold else 0 for i in probabilities]
-            df = pd.DataFrame({'Real': y_test.tolist(),
-                           'Prediction': predictions,
-                          'Probabilities': probabilities.tolist()})
+        if "predict_proba" in dir(model):
+            probabilities = model.predict_proba(x_test)[:, 1]
+            predictions = [1 if i > threshold else 0 for i in probabilities]
+            df = pd.DataFrame(
+                {
+                    "Real": y_test.tolist(),
+                    "Prediction": predictions,
+                    "Probabilities": probabilities.tolist(),
+                }
+            )
         else:
-            df = pd.DataFrame({'Real': y_test.tolist(),
-                           'Prediction': model.predict(x_test)})    
+            df = pd.DataFrame(
+                {"Real": y_test.tolist(), "Prediction": model.predict(x_test)}
+            )
         conditions = [
-        (df['Real']==1) & (df['Prediction']==1),
-        (df['Real']==1) & (df['Prediction']==0),
-        (df['Real']==0) & (df['Prediction']==0),
-        (df['Real']==0) & (df['Prediction']==1),
+            (df["Real"] == 1) & (df["Prediction"] == 1),
+            (df["Real"] == 1) & (df["Prediction"] == 0),
+            (df["Real"] == 0) & (df["Prediction"] == 0),
+            (df["Real"] == 0) & (df["Prediction"] == 1),
         ]
-        choices = ["True Positive","False Negative" , "True Negative", "False Positive"]
-        df['Category'] = np.select(conditions, choices, default='No')
-        df.sort_index(inplace = True)
-        df.sort_values(by = 'Category',ascending = False, inplace = True)     
+        choices = [
+            "True Positive",
+            "False Negative",
+            "True Negative",
+            "False Positive",
+        ]
+        df["Category"] = np.select(conditions, choices, default="No")
+        df.sort_index(inplace=True)
+        df.sort_values(by="Category", ascending=False, inplace=True)
         return df
 
 
@@ -549,42 +605,63 @@ for the predictions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 179-183
+
+.. GENERATED FROM PYTHON SOURCE LINES 236-240
 
 Train models:
-~~~~~~~~~~~~~~~~~~~~   
-We will train the models with 80% of the data and then test with the other 
+~~~~~~~~~~~~~~~~~~~~
+We will train the models with 80% of the data and then test with the other
 20% selected randomly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 183-209
+.. GENERATED FROM PYTHON SOURCE LINES 240-286
 
 .. code-block:: default
 
 
-    X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.2, random_state=1)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_resampled, y_resampled, test_size=0.2, random_state=1
+    )
 
-    clf_MRC = MRC(phi = 'fourier',use_cvx=True, loss = 'log').fit(X_train, y_train)
-    df_MRC = defDataFrame(model = clf_MRC,x_test = X_test, y_test = y_test)
-    MRC_values = pd.DataFrame(df_MRC.Category.value_counts()).rename(columns = {'Category':type(clf_MRC).__name__})
-    MRC_values['Freq_MRC'] = MRC_values['MRC']/sum(MRC_values['MRC'])*100
+    clf_MRC = MRC(phi="fourier", use_cvx=True, loss="log").fit(X_train, y_train)
+    df_MRC = defDataFrame(model=clf_MRC, x_test=X_test, y_test=y_test)
+    MRC_values = pd.DataFrame(df_MRC.Category.value_counts()).rename(
+        columns={"Category": type(clf_MRC).__name__}
+    )
+    MRC_values["Freq_MRC"] = MRC_values["MRC"] / sum(MRC_values["MRC"]) * 100
 
-    clf_CMRC = CMRC(phi = 'threshold',use_cvx=True, loss = 'log').fit(X_train, y_train)
-    df_CMRC = defDataFrame(model = clf_CMRC,x_test = X_test, y_test = y_test)
-    CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(columns = {'Category':type(clf_CMRC).__name__})
-    CMRC_values['Freq_CMRC'] = CMRC_values['CMRC']/sum(CMRC_values['CMRC'])*100
+    clf_CMRC = CMRC(phi="threshold", use_cvx=True, loss="log").fit(
+        X_train, y_train
+    )
+    df_CMRC = defDataFrame(model=clf_CMRC, x_test=X_test, y_test=y_test)
+    CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(
+        columns={"Category": type(clf_CMRC).__name__}
+    )
+    CMRC_values["Freq_CMRC"] = (
+        CMRC_values["CMRC"] / sum(CMRC_values["CMRC"]) * 100
+    )
 
-    clf_SVC = SVC(probability = True).fit(X_train, y_train)
-    df_SVC = defDataFrame(model = clf_SVC,x_test = X_test, y_test = y_test)
-    SVC_values = pd.DataFrame(df_SVC.Category.value_counts()).rename(columns = {'Category':type(clf_SVC).__name__})
-    SVC_values['Freq_SVC'] = SVC_values['SVC']/sum(SVC_values['SVC'])*100
+    clf_SVC = SVC(probability=True).fit(X_train, y_train)
+    df_SVC = defDataFrame(model=clf_SVC, x_test=X_test, y_test=y_test)
+    SVC_values = pd.DataFrame(df_SVC.Category.value_counts()).rename(
+        columns={"Category": type(clf_SVC).__name__}
+    )
+    SVC_values["Freq_SVC"] = SVC_values["SVC"] / sum(SVC_values["SVC"]) * 100
 
     clf_LR = LogisticRegression().fit(X_train, y_train)
-    df_LR = defDataFrame(model = clf_LR,x_test = X_test, y_test = y_test)
-    LR_values = pd.DataFrame(df_LR.Category.value_counts()).rename(columns = {'Category':type(clf_LR).__name__})
-    LR_values['Freq_LR'] = LR_values['LogisticRegression']/sum(LR_values['LogisticRegression'])*100
+    df_LR = defDataFrame(model=clf_LR, x_test=X_test, y_test=y_test)
+    LR_values = pd.DataFrame(df_LR.Category.value_counts()).rename(
+        columns={"Category": type(clf_LR).__name__}
+    )
+    LR_values["Freq_LR"] = (
+        LR_values["LogisticRegression"]
+        / sum(LR_values["LogisticRegression"])
+        * 100
+    )
 
 
-    pd.concat([MRC_values, CMRC_values, SVC_values, LR_values],axis = 1).style.set_caption('Classification results by model').format(precision=2)
+    pd.concat(
+        [MRC_values, CMRC_values, SVC_values, LR_values], axis=1
+    ).style.set_caption("Classification results by model").format(precision=2)
 
 
 
@@ -596,7 +673,7 @@ We will train the models with 80% of the data and then test with the other
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_c0566_">
+    <table id="T_6c7da_">
       <caption>Classification results by model</caption>
       <thead>
         <tr>
@@ -613,48 +690,48 @@ We will train the models with 80% of the data and then test with the other
       </thead>
       <tbody>
         <tr>
-          <th id="T_c0566_level0_row0" class="row_heading level0 row0" >True Negative</th>
-          <td id="T_c0566_row0_col0" class="data row0 col0" >252</td>
-          <td id="T_c0566_row0_col1" class="data row0 col1" >47.28</td>
-          <td id="T_c0566_row0_col2" class="data row0 col2" >278</td>
-          <td id="T_c0566_row0_col3" class="data row0 col3" >52.16</td>
-          <td id="T_c0566_row0_col4" class="data row0 col4" >248</td>
-          <td id="T_c0566_row0_col5" class="data row0 col5" >46.53</td>
-          <td id="T_c0566_row0_col6" class="data row0 col6" >267</td>
-          <td id="T_c0566_row0_col7" class="data row0 col7" >50.09</td>
+          <th id="T_6c7da_level0_row0" class="row_heading level0 row0" >True Negative</th>
+          <td id="T_6c7da_row0_col0" class="data row0 col0" >250</td>
+          <td id="T_6c7da_row0_col1" class="data row0 col1" >46.90</td>
+          <td id="T_6c7da_row0_col2" class="data row0 col2" >277</td>
+          <td id="T_6c7da_row0_col3" class="data row0 col3" >51.97</td>
+          <td id="T_6c7da_row0_col4" class="data row0 col4" >245</td>
+          <td id="T_6c7da_row0_col5" class="data row0 col5" >45.97</td>
+          <td id="T_6c7da_row0_col6" class="data row0 col6" >270</td>
+          <td id="T_6c7da_row0_col7" class="data row0 col7" >50.66</td>
         </tr>
         <tr>
-          <th id="T_c0566_level0_row1" class="row_heading level0 row1" >True Positive</th>
-          <td id="T_c0566_row1_col0" class="data row1 col0" >167</td>
-          <td id="T_c0566_row1_col1" class="data row1 col1" >31.33</td>
-          <td id="T_c0566_row1_col2" class="data row1 col2" >191</td>
-          <td id="T_c0566_row1_col3" class="data row1 col3" >35.83</td>
-          <td id="T_c0566_row1_col4" class="data row1 col4" >159</td>
-          <td id="T_c0566_row1_col5" class="data row1 col5" >29.83</td>
-          <td id="T_c0566_row1_col6" class="data row1 col6" >169</td>
-          <td id="T_c0566_row1_col7" class="data row1 col7" >31.71</td>
+          <th id="T_6c7da_level0_row1" class="row_heading level0 row1" >True Positive</th>
+          <td id="T_6c7da_row1_col0" class="data row1 col0" >160</td>
+          <td id="T_6c7da_row1_col1" class="data row1 col1" >30.02</td>
+          <td id="T_6c7da_row1_col2" class="data row1 col2" >189</td>
+          <td id="T_6c7da_row1_col3" class="data row1 col3" >35.46</td>
+          <td id="T_6c7da_row1_col4" class="data row1 col4" >161</td>
+          <td id="T_6c7da_row1_col5" class="data row1 col5" >30.21</td>
+          <td id="T_6c7da_row1_col6" class="data row1 col6" >166</td>
+          <td id="T_6c7da_row1_col7" class="data row1 col7" >31.14</td>
         </tr>
         <tr>
-          <th id="T_c0566_level0_row2" class="row_heading level0 row2" >False Positive</th>
-          <td id="T_c0566_row2_col0" class="data row2 col0" >58</td>
-          <td id="T_c0566_row2_col1" class="data row2 col1" >10.88</td>
-          <td id="T_c0566_row2_col2" class="data row2 col2" >32</td>
-          <td id="T_c0566_row2_col3" class="data row2 col3" >6.00</td>
-          <td id="T_c0566_row2_col4" class="data row2 col4" >62</td>
-          <td id="T_c0566_row2_col5" class="data row2 col5" >11.63</td>
-          <td id="T_c0566_row2_col6" class="data row2 col6" >43</td>
-          <td id="T_c0566_row2_col7" class="data row2 col7" >8.07</td>
+          <th id="T_6c7da_level0_row2" class="row_heading level0 row2" >False Negative</th>
+          <td id="T_6c7da_row2_col0" class="data row2 col0" >63</td>
+          <td id="T_6c7da_row2_col1" class="data row2 col1" >11.82</td>
+          <td id="T_6c7da_row2_col2" class="data row2 col2" >34</td>
+          <td id="T_6c7da_row2_col3" class="data row2 col3" >6.38</td>
+          <td id="T_6c7da_row2_col4" class="data row2 col4" >62</td>
+          <td id="T_6c7da_row2_col5" class="data row2 col5" >11.63</td>
+          <td id="T_6c7da_row2_col6" class="data row2 col6" >57</td>
+          <td id="T_6c7da_row2_col7" class="data row2 col7" >10.69</td>
         </tr>
         <tr>
-          <th id="T_c0566_level0_row3" class="row_heading level0 row3" >False Negative</th>
-          <td id="T_c0566_row3_col0" class="data row3 col0" >56</td>
-          <td id="T_c0566_row3_col1" class="data row3 col1" >10.51</td>
-          <td id="T_c0566_row3_col2" class="data row3 col2" >32</td>
-          <td id="T_c0566_row3_col3" class="data row3 col3" >6.00</td>
-          <td id="T_c0566_row3_col4" class="data row3 col4" >64</td>
-          <td id="T_c0566_row3_col5" class="data row3 col5" >12.01</td>
-          <td id="T_c0566_row3_col6" class="data row3 col6" >54</td>
-          <td id="T_c0566_row3_col7" class="data row3 col7" >10.13</td>
+          <th id="T_6c7da_level0_row3" class="row_heading level0 row3" >False Positive</th>
+          <td id="T_6c7da_row3_col0" class="data row3 col0" >60</td>
+          <td id="T_6c7da_row3_col1" class="data row3 col1" >11.26</td>
+          <td id="T_6c7da_row3_col2" class="data row3 col2" >33</td>
+          <td id="T_6c7da_row3_col3" class="data row3 col3" >6.19</td>
+          <td id="T_6c7da_row3_col4" class="data row3 col4" >65</td>
+          <td id="T_6c7da_row3_col5" class="data row3 col5" >12.20</td>
+          <td id="T_6c7da_row3_col6" class="data row3 col6" >40</td>
+          <td id="T_6c7da_row3_col7" class="data row3 col7" >7.50</td>
         </tr>
       </tbody>
     </table>
@@ -663,62 +740,119 @@ We will train the models with 80% of the data and then test with the other
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 210-218
+.. GENERATED FROM PYTHON SOURCE LINES 287-296
 
 Comparison of models:
 ~~~~~~~~~~~~~~~~~~~~
-We will compare now the histograms of the conditional probability for the 
-two posible outcomes. Overlapping in the histograms means that the classification
-is erroneous. Condisering a cutoff of 0.5 pink cases below this point are 
-false negatives (FN) and blue cases above the threhsold false positives (FP). 
-It is important to consider that in this classification problem the missclassification
-of a patient with fatal outcome (FN) is considered a much more serious error.
+We will compare now the histograms of the conditional probability for the
+two posible outcomes. Overlapping in the histograms means that the
+classification is erroneous. Condisering a cutoff of 0.5 pink cases below
+this point are false negatives (FN) and blue cases above the threhsold false
+positives (FP). It is important to consider that in this classification
+problem the missclassification of a patient with fatal outcome (FN) is
+considered a much more serious error.
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-260
+.. GENERATED FROM PYTHON SOURCE LINES 296-394
 
 .. code-block:: default
 
 
+
     def scatterPlot(df, ax):
         """
-        Takes DF created with defDataFrame and creates a boxplot of different classification by mortal probability
+        Takes DF created with defDataFrame and creates a boxplot of
+        different classification by mortal probability.
         """
-        sns.swarmplot(ax = ax,y="Category", x="Probabilities", data=df,
-                  size=4, palette=sns.color_palette("tab10"), linewidth=0, dodge = False, alpha = 0.6,
-                  order=["True Negative", 'False Negative', "True Positive", 'False Positive'])
-        sns.boxplot(ax = ax,x="Probabilities", y="Category",
-               color="White", 
-                data=df,
-                order=["True Negative", 'False Negative', "True Positive", 'False Positive'],
-                saturation = 15)
-        ax.set_xlabel('Probability of mortality')
-        ax.set_ylabel('')
-    def plotHisto(df,ax, threshold = 0.5, normalize = True):
+        sns.swarmplot(
+            ax=ax,
+            y="Category",
+            x="Probabilities",
+            data=df,
+            size=4,
+            palette=sns.color_palette("tab10"),
+            linewidth=0,
+            dodge=False,
+            alpha=0.6,
+            order=[
+                "True Negative",
+                "False Negative",
+                "True Positive",
+                "False Positive",
+            ],
+        )
+        sns.boxplot(
+            ax=ax,
+            x="Probabilities",
+            y="Category",
+            color="White",
+            data=df,
+            order=[
+                "True Negative",
+                "False Negative",
+                "True Positive",
+                "False Positive",
+            ],
+            saturation=15,
+        )
+        ax.set_xlabel("Probability of mortality")
+        ax.set_ylabel("")
+
+
+    def plotHisto(df, ax, threshold=0.5, normalize=True):
         """
-        Takes DF created with defDataFrame and plots histograms based on the probability of mortality by real Status at a selected @threshold.
+        Takes DF created with defDataFrame and plots histograms based on the
+        probability of mortality by real Status at a selected @threshold.
         """
         if normalize:
-            norm_params = {'stat':"density", 'common_norm':False}
+            norm_params = {"stat": "density", "common_norm": False}
         else:
             norm_params = {}
-        sns.histplot(ax = ax,data=df[df["Real"] ==1], x="Probabilities", color="deeppink", 
-                     label="Deceased",bins = 15, binrange=[0,1], alpha = 0.6, element = 'step', **norm_params)  
-        sns.histplot(ax = ax,data=df[df["Real"] ==0], x="Probabilities", color="dodgerblue", 
-                     label="Survived",bins = 15, binrange=[0,1],alpha = 0.4,  element = 'step',**norm_params)
-        ax.axvline(threshold,0,1, linestyle = (0, (1, 10)), linewidth = 0.7, color = 'black')
+        sns.histplot(
+            ax=ax,
+            data=df[df["Real"] == 1],
+            x="Probabilities",
+            color="deeppink",
+            label="Deceased",
+            bins=15,
+            binrange=[0, 1],
+            alpha=0.6,
+            element="step",
+            **norm_params
+        )
+        sns.histplot(
+            ax=ax,
+            data=df[df["Real"] == 0],
+            x="Probabilities",
+            color="dodgerblue",
+            label="Survived",
+            bins=15,
+            binrange=[0, 1],
+            alpha=0.4,
+            element="step",
+            **norm_params
+        )
+        ax.axvline(
+            threshold, 0, 1, linestyle=(0, (1, 10)), linewidth=0.7, color="black"
+        )
 
-    #visualize results   
-    fig, ax = plt.subplots(nrows = 2,ncols = 2, sharex = 'all', 
-                           sharey = 'all', gridspec_kw={'wspace':0.1,'hspace':0.35}) 
-    plotHisto(df_CMRC, ax = ax[0,0], normalize = False)
-    ax[0,0].set_title('CMRC')
-    plotHisto(df_MRC, ax = ax[1,0], normalize = False)
-    ax[1,0].set_title('MRC')
-    plotHisto(df_LR, ax = ax[0,1], normalize = False)
-    ax[0,1].set_title('LR')
-    ax[0,1].legend()
-    plotHisto(df_SVC, ax = ax[1,1], normalize = False)
-    ax[1,1].set_title('SVC')
+
+    # visualize results
+    fig, ax = plt.subplots(
+        nrows=2,
+        ncols=2,
+        sharex="all",
+        sharey="all",
+        gridspec_kw={"wspace": 0.1, "hspace": 0.35},
+    )
+    plotHisto(df_CMRC, ax=ax[0, 0], normalize=False)
+    ax[0, 0].set_title("CMRC")
+    plotHisto(df_MRC, ax=ax[1, 0], normalize=False)
+    ax[1, 0].set_title("MRC")
+    plotHisto(df_LR, ax=ax[0, 1], normalize=False)
+    ax[0, 1].set_title("LR")
+    ax[0, 1].legend()
+    plotHisto(df_SVC, ax=ax[1, 1], normalize=False)
+    ax[1, 1].set_title("SVC")
     fig.tight_layout()
 
 
@@ -732,37 +866,55 @@ of a patient with fatal outcome (FN) is considered a much more serious error.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 261-269
+.. GENERATED FROM PYTHON SOURCE LINES 395-403
 
-We see a clear different behaviour with the CMRC and MRC. MRC tends to estimate
-conditional probabilities in a more conservative way, rangin from 0.25 to 0.75. 
-This estimation is very sensible to cut-off changes. The CMRC model shows a 
-distribution where most of the cases are grouped around 0 and 1
-for survive and decease respectively. This results are similar to the 
-Logistic Regression's but with less overlapping. SVC is the model with the worst 
-performance of all having a lot of patients that survived with high decease 
-probabilities. 
+We see a clear different behaviour with the CMRC and MRC. MRC tends to
+estimate conditional probabilities in a more conservative way, rangin from
+0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
+model shows a distribution where most of the cases are grouped around 0 and 1
+for survive and decease respectively. This results are similar to the
+Logistic Regression's but with less overlapping. SVC is the model with the
+worst performance of all having a lot of patients that survived with high
+decease probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 269-286
+.. GENERATED FROM PYTHON SOURCE LINES 403-438
 
 .. code-block:: default
 
-  
 
-    cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test)) #CMRC
-    cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test)) #MRC
-    cm_lr = confusion_matrix(y_test, clf_LR.predict(X_test)) #Logistic Regression
-    cm_svc = confusion_matrix(y_test, clf_SVC.predict(X_test)) #C-Support Vector Machine
 
-    fig, ax = plt.subplots(nrows = 2,ncols = 2, sharex = 'all', sharey = 'all', gridspec_kw={'wspace':0,'hspace':0.35}) 
-    ConfusionMatrixDisplay(cm_cmrc, display_labels=['Survive', 'Decease']).plot(colorbar = False, ax = ax[0,0])
-    ax[0,0].set_title('CMRC')
-    ConfusionMatrixDisplay(cm_mrc, display_labels=['Survive', 'Decease']).plot(colorbar = False, ax = ax[1,0])
-    ax[1,0].set_title('MRC')
-    ConfusionMatrixDisplay(cm_lr, display_labels=['Survive', 'Decease']).plot(colorbar = False, ax = ax[0,1])
-    ax[0,1].set_title('LR')
-    ConfusionMatrixDisplay(cm_svc, display_labels=['Survive', 'Decease']).plot(colorbar = False, ax = ax[1,1])
-    ax[1,1].set_title('SVC')
+    cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test))  # CMRC
+    cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test))  # MRC
+    cm_lr = confusion_matrix(
+        y_test, clf_LR.predict(X_test)
+    )  # Logistic Regression
+    cm_svc = confusion_matrix(
+        y_test, clf_SVC.predict(X_test)
+    )  # C-Support Vector Machine
+
+    fig, ax = plt.subplots(
+        nrows=2,
+        ncols=2,
+        sharex="all",
+        sharey="all",
+        gridspec_kw={"wspace": 0, "hspace": 0.35},
+    )
+    ConfusionMatrixDisplay(cm_cmrc, display_labels=["Survive", "Decease"]).plot(
+        colorbar=False, ax=ax[0, 0]
+    )
+    ax[0, 0].set_title("CMRC")
+    ConfusionMatrixDisplay(cm_mrc, display_labels=["Survive", "Decease"]).plot(
+        colorbar=False, ax=ax[1, 0]
+    )
+    ax[1, 0].set_title("MRC")
+    ConfusionMatrixDisplay(cm_lr, display_labels=["Survive", "Decease"]).plot(
+        colorbar=False, ax=ax[0, 1]
+    )
+    ax[0, 1].set_title("LR")
+    ConfusionMatrixDisplay(cm_svc, display_labels=["Survive", "Decease"]).plot(
+        colorbar=False, ax=ax[1, 1]
+    )
+    ax[1, 1].set_title("SVC")
     fig.tight_layout()
 
 
@@ -776,14 +928,18 @@ probabilities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 287-291
+.. GENERATED FROM PYTHON SOURCE LINES 439-447
 
 .. code-block:: default
 
-    pd.DataFrame(classification_report(y_test, 
-                                       clf_CMRC.predict(X_test), 
-                                       target_names = ['Survive', 'Decease'], 
-                                       output_dict=True)).style.set_caption('Classification report CMRC').format(precision=3)
+    pd.DataFrame(
+        classification_report(
+            y_test,
+            clf_CMRC.predict(X_test),
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption("Classification report CMRC").format(precision=3)
 
 
 
@@ -794,7 +950,7 @@ probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_8efb5_">
+    <table id="T_42a2a_">
       <caption>Classification report CMRC</caption>
       <thead>
         <tr>
@@ -808,36 +964,36 @@ probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_8efb5_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_8efb5_row0_col0" class="data row0 col0" >0.897</td>
-          <td id="T_8efb5_row0_col1" class="data row0 col1" >0.857</td>
-          <td id="T_8efb5_row0_col2" class="data row0 col2" >0.880</td>
-          <td id="T_8efb5_row0_col3" class="data row0 col3" >0.877</td>
-          <td id="T_8efb5_row0_col4" class="data row0 col4" >0.880</td>
+          <th id="T_42a2a_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_42a2a_row0_col0" class="data row0 col0" >0.891</td>
+          <td id="T_42a2a_row0_col1" class="data row0 col1" >0.851</td>
+          <td id="T_42a2a_row0_col2" class="data row0 col2" >0.874</td>
+          <td id="T_42a2a_row0_col3" class="data row0 col3" >0.871</td>
+          <td id="T_42a2a_row0_col4" class="data row0 col4" >0.874</td>
         </tr>
         <tr>
-          <th id="T_8efb5_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_8efb5_row1_col0" class="data row1 col0" >0.897</td>
-          <td id="T_8efb5_row1_col1" class="data row1 col1" >0.857</td>
-          <td id="T_8efb5_row1_col2" class="data row1 col2" >0.880</td>
-          <td id="T_8efb5_row1_col3" class="data row1 col3" >0.877</td>
-          <td id="T_8efb5_row1_col4" class="data row1 col4" >0.880</td>
+          <th id="T_42a2a_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_42a2a_row1_col0" class="data row1 col0" >0.894</td>
+          <td id="T_42a2a_row1_col1" class="data row1 col1" >0.848</td>
+          <td id="T_42a2a_row1_col2" class="data row1 col2" >0.874</td>
+          <td id="T_42a2a_row1_col3" class="data row1 col3" >0.871</td>
+          <td id="T_42a2a_row1_col4" class="data row1 col4" >0.874</td>
         </tr>
         <tr>
-          <th id="T_8efb5_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_8efb5_row2_col0" class="data row2 col0" >0.897</td>
-          <td id="T_8efb5_row2_col1" class="data row2 col1" >0.857</td>
-          <td id="T_8efb5_row2_col2" class="data row2 col2" >0.880</td>
-          <td id="T_8efb5_row2_col3" class="data row2 col3" >0.877</td>
-          <td id="T_8efb5_row2_col4" class="data row2 col4" >0.880</td>
+          <th id="T_42a2a_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_42a2a_row2_col0" class="data row2 col0" >0.892</td>
+          <td id="T_42a2a_row2_col1" class="data row2 col1" >0.849</td>
+          <td id="T_42a2a_row2_col2" class="data row2 col2" >0.874</td>
+          <td id="T_42a2a_row2_col3" class="data row2 col3" >0.871</td>
+          <td id="T_42a2a_row2_col4" class="data row2 col4" >0.874</td>
         </tr>
         <tr>
-          <th id="T_8efb5_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_8efb5_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_8efb5_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_8efb5_row3_col2" class="data row3 col2" >0.880</td>
-          <td id="T_8efb5_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_8efb5_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_42a2a_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_42a2a_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_42a2a_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_42a2a_row3_col2" class="data row3 col2" >0.874</td>
+          <td id="T_42a2a_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_42a2a_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -846,14 +1002,18 @@ probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 292-296
+.. GENERATED FROM PYTHON SOURCE LINES 448-456
 
 .. code-block:: default
 
-    pd.DataFrame(classification_report(y_test,
-                                       clf_MRC.predict(X_test),
-                                       target_names = ['Survive', 'Decease'],
-                                       output_dict=True)).style.set_caption('Classification report MRC').format(precision=3)
+    pd.DataFrame(
+        classification_report(
+            y_test,
+            clf_MRC.predict(X_test),
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption("Classification report MRC").format(precision=3)
 
 
 
@@ -864,7 +1024,7 @@ probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_ac903_">
+    <table id="T_96136_">
       <caption>Classification report MRC</caption>
       <thead>
         <tr>
@@ -878,36 +1038,36 @@ probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_ac903_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_ac903_row0_col0" class="data row0 col0" >0.818</td>
-          <td id="T_ac903_row0_col1" class="data row0 col1" >0.742</td>
-          <td id="T_ac903_row0_col2" class="data row0 col2" >0.786</td>
-          <td id="T_ac903_row0_col3" class="data row0 col3" >0.780</td>
-          <td id="T_ac903_row0_col4" class="data row0 col4" >0.786</td>
+          <th id="T_96136_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_96136_row0_col0" class="data row0 col0" >0.799</td>
+          <td id="T_96136_row0_col1" class="data row0 col1" >0.727</td>
+          <td id="T_96136_row0_col2" class="data row0 col2" >0.769</td>
+          <td id="T_96136_row0_col3" class="data row0 col3" >0.763</td>
+          <td id="T_96136_row0_col4" class="data row0 col4" >0.769</td>
         </tr>
         <tr>
-          <th id="T_ac903_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_ac903_row1_col0" class="data row1 col0" >0.813</td>
-          <td id="T_ac903_row1_col1" class="data row1 col1" >0.749</td>
-          <td id="T_ac903_row1_col2" class="data row1 col2" >0.786</td>
-          <td id="T_ac903_row1_col3" class="data row1 col3" >0.781</td>
-          <td id="T_ac903_row1_col4" class="data row1 col4" >0.786</td>
+          <th id="T_96136_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_96136_row1_col0" class="data row1 col0" >0.806</td>
+          <td id="T_96136_row1_col1" class="data row1 col1" >0.717</td>
+          <td id="T_96136_row1_col2" class="data row1 col2" >0.769</td>
+          <td id="T_96136_row1_col3" class="data row1 col3" >0.762</td>
+          <td id="T_96136_row1_col4" class="data row1 col4" >0.769</td>
         </tr>
         <tr>
-          <th id="T_ac903_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_ac903_row2_col0" class="data row2 col0" >0.816</td>
-          <td id="T_ac903_row2_col1" class="data row2 col1" >0.746</td>
-          <td id="T_ac903_row2_col2" class="data row2 col2" >0.786</td>
-          <td id="T_ac903_row2_col3" class="data row2 col3" >0.781</td>
-          <td id="T_ac903_row2_col4" class="data row2 col4" >0.786</td>
+          <th id="T_96136_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_96136_row2_col0" class="data row2 col0" >0.803</td>
+          <td id="T_96136_row2_col1" class="data row2 col1" >0.722</td>
+          <td id="T_96136_row2_col2" class="data row2 col2" >0.769</td>
+          <td id="T_96136_row2_col3" class="data row2 col3" >0.762</td>
+          <td id="T_96136_row2_col4" class="data row2 col4" >0.769</td>
         </tr>
         <tr>
-          <th id="T_ac903_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_ac903_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_ac903_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_ac903_row3_col2" class="data row3 col2" >0.786</td>
-          <td id="T_ac903_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_ac903_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_96136_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_96136_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_96136_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_96136_row3_col2" class="data row3 col2" >0.769</td>
+          <td id="T_96136_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_96136_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -916,14 +1076,18 @@ probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 297-301
+.. GENERATED FROM PYTHON SOURCE LINES 457-465
 
 .. code-block:: default
 
-    pd.DataFrame(classification_report(y_test,
-                                       clf_LR.predict(X_test),
-                                       target_names = ['Survive', 'Decease'],
-                                       output_dict=True)).style.set_caption('Classification report LR').format(precision=3)
+    pd.DataFrame(
+        classification_report(
+            y_test,
+            clf_LR.predict(X_test),
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption("Classification report LR").format(precision=3)
 
 
 
@@ -934,7 +1098,7 @@ probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_c7975_">
+    <table id="T_28e69_">
       <caption>Classification report LR</caption>
       <thead>
         <tr>
@@ -948,36 +1112,36 @@ probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_c7975_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_c7975_row0_col0" class="data row0 col0" >0.832</td>
-          <td id="T_c7975_row0_col1" class="data row0 col1" >0.797</td>
-          <td id="T_c7975_row0_col2" class="data row0 col2" >0.818</td>
-          <td id="T_c7975_row0_col3" class="data row0 col3" >0.814</td>
-          <td id="T_c7975_row0_col4" class="data row0 col4" >0.817</td>
+          <th id="T_28e69_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_28e69_row0_col0" class="data row0 col0" >0.826</td>
+          <td id="T_28e69_row0_col1" class="data row0 col1" >0.806</td>
+          <td id="T_28e69_row0_col2" class="data row0 col2" >0.818</td>
+          <td id="T_28e69_row0_col3" class="data row0 col3" >0.816</td>
+          <td id="T_28e69_row0_col4" class="data row0 col4" >0.817</td>
         </tr>
         <tr>
-          <th id="T_c7975_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_c7975_row1_col0" class="data row1 col0" >0.861</td>
-          <td id="T_c7975_row1_col1" class="data row1 col1" >0.758</td>
-          <td id="T_c7975_row1_col2" class="data row1 col2" >0.818</td>
-          <td id="T_c7975_row1_col3" class="data row1 col3" >0.810</td>
-          <td id="T_c7975_row1_col4" class="data row1 col4" >0.818</td>
+          <th id="T_28e69_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_28e69_row1_col0" class="data row1 col0" >0.871</td>
+          <td id="T_28e69_row1_col1" class="data row1 col1" >0.744</td>
+          <td id="T_28e69_row1_col2" class="data row1 col2" >0.818</td>
+          <td id="T_28e69_row1_col3" class="data row1 col3" >0.808</td>
+          <td id="T_28e69_row1_col4" class="data row1 col4" >0.818</td>
         </tr>
         <tr>
-          <th id="T_c7975_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_c7975_row2_col0" class="data row2 col0" >0.846</td>
-          <td id="T_c7975_row2_col1" class="data row2 col1" >0.777</td>
-          <td id="T_c7975_row2_col2" class="data row2 col2" >0.818</td>
-          <td id="T_c7975_row2_col3" class="data row2 col3" >0.812</td>
-          <td id="T_c7975_row2_col4" class="data row2 col4" >0.817</td>
+          <th id="T_28e69_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_28e69_row2_col0" class="data row2 col0" >0.848</td>
+          <td id="T_28e69_row2_col1" class="data row2 col1" >0.774</td>
+          <td id="T_28e69_row2_col2" class="data row2 col2" >0.818</td>
+          <td id="T_28e69_row2_col3" class="data row2 col3" >0.811</td>
+          <td id="T_28e69_row2_col4" class="data row2 col4" >0.817</td>
         </tr>
         <tr>
-          <th id="T_c7975_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_c7975_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_c7975_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_c7975_row3_col2" class="data row3 col2" >0.818</td>
-          <td id="T_c7975_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_c7975_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_28e69_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_28e69_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_28e69_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_28e69_row3_col2" class="data row3 col2" >0.818</td>
+          <td id="T_28e69_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_28e69_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -986,14 +1150,18 @@ probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 302-307
+.. GENERATED FROM PYTHON SOURCE LINES 466-475
 
 .. code-block:: default
 
-    pd.DataFrame(classification_report(y_test,
-                                       clf_SVC.predict(X_test),
-                                       target_names = ['Survive', 'Decease'],
-                                       output_dict=True)).style.set_caption('Classification report SVC').format(precision=3)
+    pd.DataFrame(
+        classification_report(
+            y_test,
+            clf_SVC.predict(X_test),
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption("Classification report SVC").format(precision=3)
 
 
 
@@ -1005,7 +1173,7 @@ probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_d1262_">
+    <table id="T_4f84d_">
       <caption>Classification report SVC</caption>
       <thead>
         <tr>
@@ -1019,36 +1187,36 @@ probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_d1262_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_d1262_row0_col0" class="data row0 col0" >0.775</td>
-          <td id="T_d1262_row0_col1" class="data row0 col1" >0.718</td>
-          <td id="T_d1262_row0_col2" class="data row0 col2" >0.752</td>
-          <td id="T_d1262_row0_col3" class="data row0 col3" >0.746</td>
-          <td id="T_d1262_row0_col4" class="data row0 col4" >0.751</td>
+          <th id="T_4f84d_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_4f84d_row0_col0" class="data row0 col0" >0.786</td>
+          <td id="T_4f84d_row0_col1" class="data row0 col1" >0.721</td>
+          <td id="T_4f84d_row0_col2" class="data row0 col2" >0.760</td>
+          <td id="T_4f84d_row0_col3" class="data row0 col3" >0.754</td>
+          <td id="T_4f84d_row0_col4" class="data row0 col4" >0.759</td>
         </tr>
         <tr>
-          <th id="T_d1262_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_d1262_row1_col0" class="data row1 col0" >0.810</td>
-          <td id="T_d1262_row1_col1" class="data row1 col1" >0.673</td>
-          <td id="T_d1262_row1_col2" class="data row1 col2" >0.752</td>
-          <td id="T_d1262_row1_col3" class="data row1 col3" >0.741</td>
-          <td id="T_d1262_row1_col4" class="data row1 col4" >0.752</td>
+          <th id="T_4f84d_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_4f84d_row1_col0" class="data row1 col0" >0.806</td>
+          <td id="T_4f84d_row1_col1" class="data row1 col1" >0.695</td>
+          <td id="T_4f84d_row1_col2" class="data row1 col2" >0.760</td>
+          <td id="T_4f84d_row1_col3" class="data row1 col3" >0.751</td>
+          <td id="T_4f84d_row1_col4" class="data row1 col4" >0.760</td>
         </tr>
         <tr>
-          <th id="T_d1262_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_d1262_row2_col0" class="data row2 col0" >0.792</td>
-          <td id="T_d1262_row2_col1" class="data row2 col1" >0.694</td>
-          <td id="T_d1262_row2_col2" class="data row2 col2" >0.752</td>
-          <td id="T_d1262_row2_col3" class="data row2 col3" >0.743</td>
-          <td id="T_d1262_row2_col4" class="data row2 col4" >0.751</td>
+          <th id="T_4f84d_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_4f84d_row2_col0" class="data row2 col0" >0.796</td>
+          <td id="T_4f84d_row2_col1" class="data row2 col1" >0.708</td>
+          <td id="T_4f84d_row2_col2" class="data row2 col2" >0.760</td>
+          <td id="T_4f84d_row2_col3" class="data row2 col3" >0.752</td>
+          <td id="T_4f84d_row2_col4" class="data row2 col4" >0.759</td>
         </tr>
         <tr>
-          <th id="T_d1262_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_d1262_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_d1262_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_d1262_row3_col2" class="data row3 col2" >0.752</td>
-          <td id="T_d1262_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_d1262_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_4f84d_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_4f84d_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_4f84d_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_4f84d_row3_col2" class="data row3 col2" >0.760</td>
+          <td id="T_4f84d_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_4f84d_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1057,36 +1225,42 @@ probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 308-310
+.. GENERATED FROM PYTHON SOURCE LINES 476-478
 
-We can see in the classification reports and the confusion matrices the 
-outperformance of CMRC. 
+We can see in the classification reports and the confusion matrices the
+outperformance of CMRC.
 
-.. GENERATED FROM PYTHON SOURCE LINES 314-322
+.. GENERATED FROM PYTHON SOURCE LINES 481-489
 
 Settind the cut-off point for binary classification:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In this section we will use beeswarm-boxplot to select the cut-off point
-to optimise the tradeoff between false positives and false negatives.
-The beeswarm-boxplot is a great tool to determine the performance of the model
+to optimise the tradeoff between false positives and false negatives. The
+beeswarm-boxplot is a great tool to determine the performance of the model
 in each of the cases of the confusion matrix. On an ideal scenario the errors
-are located near the cut-off point and the true guesses are located near the 
-0 and 1 values. 
+are located near the cut-off point and the true guesses are located near the
+0 and 1 values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 322-333
+.. GENERATED FROM PYTHON SOURCE LINES 489-506
 
 .. code-block:: default
 
-    fig, ax = plt.subplots(nrows = 2,ncols = 2, figsize = (10,12), sharex = 'all', 
-                           sharey = 'all', gridspec_kw={'wspace':0.1,'hspace':0.20}) 
-    scatterPlot(df_CMRC, ax[0,0])
-    ax[0,0].set_title('CMRC')
-    scatterPlot(df_MRC, ax[1,0])
-    ax[1,0].set_title('MRC')
-    scatterPlot(df_LR, ax[0,1])
-    ax[0,1].set_title('LR')
-    scatterPlot(df_SVC, ax[1,1])
-    ax[1,1].set_title('SVC')
+    fig, ax = plt.subplots(
+        nrows=2,
+        ncols=2,
+        figsize=(10, 12),
+        sharex="all",
+        sharey="all",
+        gridspec_kw={"wspace": 0.1, "hspace": 0.20},
+    )
+    scatterPlot(df_CMRC, ax[0, 0])
+    ax[0, 0].set_title("CMRC")
+    scatterPlot(df_MRC, ax[1, 0])
+    ax[1, 0].set_title("MRC")
+    scatterPlot(df_LR, ax[0, 1])
+    ax[0, 1].set_title("LR")
+    scatterPlot(df_SVC, ax[1, 1])
+    ax[1, 1].set_title("SVC")
     plt.tight_layout()
 
 
@@ -1100,29 +1274,41 @@ are located near the cut-off point and the true guesses are located near the
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 334-341
+.. GENERATED FROM PYTHON SOURCE LINES 507-514
 
 We see in the CMRC that the correct cases have a very good
-conditional probability estimation with around 75% of the cases very close to 
-the extreme values. The most problematic cases are those with a low mortality 
+conditional probability estimation with around 75% of the cases very close to
+the extreme values. The most problematic cases are those with a low mortality
 probability estimation that had a fatal outcome (FN). In the CMRC
-model adjusting the threshold to 0.35 reduces the false negatives by 25% 
-adding just some cases to the FP. In the MRC model adjusting the cutoff to 
+model adjusting the threshold to 0.35 reduces the false negatives by 25%
+adding just some cases to the FP. In the MRC model adjusting the cutoff to
 0.4 reduces half of the false negatives by trading of 25% of the TP.
 
-.. GENERATED FROM PYTHON SOURCE LINES 341-350
+.. GENERATED FROM PYTHON SOURCE LINES 514-535
 
 .. code-block:: default
 
 
     threshold = 0.35
-    df_CMRC = defDataFrame(model = clf_CMRC,x_test = X_test, y_test = y_test, threshold = threshold)
+    df_CMRC = defDataFrame(
+        model=clf_CMRC, x_test=X_test, y_test=y_test, threshold=threshold
+    )
     threshold = 0.4
-    df_MRC = defDataFrame(model = clf_MRC,x_test = X_test, y_test = y_test,  threshold = threshold)
-    pd.DataFrame(classification_report(df_CMRC.Real, 
-                                       df_CMRC.Prediction, 
-                                       target_names = ['Survive', 'Decease'], 
-                                       output_dict=True)).style.set_caption('Classification report CMRC \n adjusted threshold').format(precision=3)
+    df_MRC = defDataFrame(
+        model=clf_MRC, x_test=X_test, y_test=y_test, threshold=threshold
+    )
+    pd.DataFrame(
+        classification_report(
+            df_CMRC.Real,
+            df_CMRC.Prediction,
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption(
+        "Classification report CMRC \n adjusted threshold"
+    ).format(
+        precision=3
+    )
 
 
 
@@ -1133,7 +1319,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_ab8c9_">
+    <table id="T_31ca0_">
       <caption>Classification report CMRC 
      adjusted threshold</caption>
       <thead>
@@ -1148,36 +1334,36 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
       </thead>
       <tbody>
         <tr>
-          <th id="T_ab8c9_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_ab8c9_row0_col0" class="data row0 col0" >0.941</td>
-          <td id="T_ab8c9_row0_col1" class="data row0 col1" >0.793</td>
-          <td id="T_ab8c9_row0_col2" class="data row0 col2" >0.869</td>
-          <td id="T_ab8c9_row0_col3" class="data row0 col3" >0.867</td>
-          <td id="T_ab8c9_row0_col4" class="data row0 col4" >0.879</td>
+          <th id="T_31ca0_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_31ca0_row0_col0" class="data row0 col0" >0.921</td>
+          <td id="T_31ca0_row0_col1" class="data row0 col1" >0.785</td>
+          <td id="T_31ca0_row0_col2" class="data row0 col2" >0.856</td>
+          <td id="T_31ca0_row0_col3" class="data row0 col3" >0.853</td>
+          <td id="T_31ca0_row0_col4" class="data row0 col4" >0.864</td>
         </tr>
         <tr>
-          <th id="T_ab8c9_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_ab8c9_row1_col0" class="data row1 col0" >0.826</td>
-          <td id="T_ab8c9_row1_col1" class="data row1 col1" >0.928</td>
-          <td id="T_ab8c9_row1_col2" class="data row1 col2" >0.869</td>
-          <td id="T_ab8c9_row1_col3" class="data row1 col3" >0.877</td>
-          <td id="T_ab8c9_row1_col4" class="data row1 col4" >0.869</td>
+          <th id="T_31ca0_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_31ca0_row1_col0" class="data row1 col0" >0.823</td>
+          <td id="T_31ca0_row1_col1" class="data row1 col1" >0.901</td>
+          <td id="T_31ca0_row1_col2" class="data row1 col2" >0.856</td>
+          <td id="T_31ca0_row1_col3" class="data row1 col3" >0.862</td>
+          <td id="T_31ca0_row1_col4" class="data row1 col4" >0.856</td>
         </tr>
         <tr>
-          <th id="T_ab8c9_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_ab8c9_row2_col0" class="data row2 col0" >0.880</td>
-          <td id="T_ab8c9_row2_col1" class="data row2 col1" >0.855</td>
-          <td id="T_ab8c9_row2_col2" class="data row2 col2" >0.869</td>
-          <td id="T_ab8c9_row2_col3" class="data row2 col3" >0.868</td>
-          <td id="T_ab8c9_row2_col4" class="data row2 col4" >0.870</td>
+          <th id="T_31ca0_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_31ca0_row2_col0" class="data row2 col0" >0.869</td>
+          <td id="T_31ca0_row2_col1" class="data row2 col1" >0.839</td>
+          <td id="T_31ca0_row2_col2" class="data row2 col2" >0.856</td>
+          <td id="T_31ca0_row2_col3" class="data row2 col3" >0.854</td>
+          <td id="T_31ca0_row2_col4" class="data row2 col4" >0.856</td>
         </tr>
         <tr>
-          <th id="T_ab8c9_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_ab8c9_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_ab8c9_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_ab8c9_row3_col2" class="data row3 col2" >0.869</td>
-          <td id="T_ab8c9_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_ab8c9_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_31ca0_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_31ca0_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_31ca0_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_31ca0_row3_col2" class="data row3 col2" >0.856</td>
+          <td id="T_31ca0_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_31ca0_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1186,14 +1372,20 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 351-355
+.. GENERATED FROM PYTHON SOURCE LINES 536-546
 
 .. code-block:: default
 
-    pd.DataFrame(classification_report(df_MRC.Real,
-                                       df_MRC.Prediction,
-                                       target_names = ['Survive', 'Decease'],
-                                       output_dict=True)).style.set_caption('Classification report MRC \n adjusted threshold').format(precision=3)
+    pd.DataFrame(
+        classification_report(
+            df_MRC.Real,
+            df_MRC.Prediction,
+            target_names=["Survive", "Decease"],
+            output_dict=True,
+        )
+    ).style.set_caption("Classification report MRC \n adjusted threshold").format(
+        precision=3
+    )
 
 
 
@@ -1204,7 +1396,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_e59f5_">
+    <table id="T_8fef4_">
       <caption>Classification report MRC 
      adjusted threshold</caption>
       <thead>
@@ -1219,36 +1411,36 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
       </thead>
       <tbody>
         <tr>
-          <th id="T_e59f5_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_e59f5_row0_col0" class="data row0 col0" >0.877</td>
-          <td id="T_e59f5_row0_col1" class="data row0 col1" >0.686</td>
-          <td id="T_e59f5_row0_col2" class="data row0 col2" >0.777</td>
-          <td id="T_e59f5_row0_col3" class="data row0 col3" >0.782</td>
-          <td id="T_e59f5_row0_col4" class="data row0 col4" >0.797</td>
+          <th id="T_8fef4_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_8fef4_row0_col0" class="data row0 col0" >0.852</td>
+          <td id="T_8fef4_row0_col1" class="data row0 col1" >0.647</td>
+          <td id="T_8fef4_row0_col2" class="data row0 col2" >0.741</td>
+          <td id="T_8fef4_row0_col3" class="data row0 col3" >0.750</td>
+          <td id="T_8fef4_row0_col4" class="data row0 col4" >0.767</td>
         </tr>
         <tr>
-          <th id="T_e59f5_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_e59f5_row1_col0" class="data row1 col0" >0.716</td>
-          <td id="T_e59f5_row1_col1" class="data row1 col1" >0.861</td>
-          <td id="T_e59f5_row1_col2" class="data row1 col2" >0.777</td>
-          <td id="T_e59f5_row1_col3" class="data row1 col3" >0.789</td>
-          <td id="T_e59f5_row1_col4" class="data row1 col4" >0.777</td>
+          <th id="T_8fef4_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_8fef4_row1_col0" class="data row1 col0" >0.671</td>
+          <td id="T_8fef4_row1_col1" class="data row1 col1" >0.839</td>
+          <td id="T_8fef4_row1_col2" class="data row1 col2" >0.741</td>
+          <td id="T_8fef4_row1_col3" class="data row1 col3" >0.755</td>
+          <td id="T_8fef4_row1_col4" class="data row1 col4" >0.741</td>
         </tr>
         <tr>
-          <th id="T_e59f5_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_e59f5_row2_col0" class="data row2 col0" >0.789</td>
-          <td id="T_e59f5_row2_col1" class="data row2 col1" >0.763</td>
-          <td id="T_e59f5_row2_col2" class="data row2 col2" >0.777</td>
-          <td id="T_e59f5_row2_col3" class="data row2 col3" >0.776</td>
-          <td id="T_e59f5_row2_col4" class="data row2 col4" >0.778</td>
+          <th id="T_8fef4_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_8fef4_row2_col0" class="data row2 col0" >0.751</td>
+          <td id="T_8fef4_row2_col1" class="data row2 col1" >0.730</td>
+          <td id="T_8fef4_row2_col2" class="data row2 col2" >0.741</td>
+          <td id="T_8fef4_row2_col3" class="data row2 col3" >0.741</td>
+          <td id="T_8fef4_row2_col4" class="data row2 col4" >0.742</td>
         </tr>
         <tr>
-          <th id="T_e59f5_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_e59f5_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_e59f5_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_e59f5_row3_col2" class="data row3 col2" >0.777</td>
-          <td id="T_e59f5_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_e59f5_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_8fef4_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_8fef4_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_8fef4_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_8fef4_row3_col2" class="data row3 col2" >0.741</td>
+          <td id="T_8fef4_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_8fef4_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1257,22 +1449,24 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 356-364
+.. GENERATED FROM PYTHON SOURCE LINES 547-558
 
 Results:
 -----------------
-Comparing the outputs of this example we can determine that MRCs work 
-significantly well for estimating the outcome of COVID-19 patients at hospital triage. 
+Comparing the outputs of this example we can determine that MRCs work
+significantly well for estimating the outcome of COVID-19 patients at
+hospital triage.
 
-Furthermore, the CMRC model with threhsold feature mapping has shown a great 
+Furthermore, the CMRC model with threhsold feature mapping has shown a great
 performance both for classifying and for estimating conditional probabilities
-Finally we have seen how to select the cut-off values based on data visualization
-with beeswarm-boxplots to increase the recall in the desired class.  
+Finally we have seen how to select the cut-off values based on data
+visualization with beeswarm-boxplots to increase the recall in the desired
+class.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 7 minutes  3.173 seconds)
+   **Total running time of the script:** ( 6 minutes  51.280 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_COVID.py:

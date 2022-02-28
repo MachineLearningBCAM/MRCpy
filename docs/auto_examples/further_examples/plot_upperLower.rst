@@ -23,19 +23,23 @@
 Example: Use of Upper and Lower bound as error estimation
 ==================================================================
 
-This example is an extension to `ex2` where we will prove how the upper and lower
-bound of the loss are an unbiased estimator of the error. The models are trained 
-with different number of cases ranging from 10% to 80% of the data and then are
-tested with 20% of the samples. The graphs show how in most of the cases 
-the error is between those bounds which proves the potential of this feature of
-the MRCs. The results are for a :mod:`MRC(phi = 'fourier', loss = '0-1', s = 1)`
+This example is an extension to `ex2` where we will prove how the upper and
+lower bound of the loss are an unbiased estimator of the error. The models are
+trained with different number of cases ranging from 10% to 80% of the data and
+then are tested with 20% of the samples. The graphs show how in most of the
+cases the error is between those bounds which proves the potential of this
+feature of the MRCs. The results are for a
+:mod:`MRC(phi = 'fourier', loss = '0-1', s = 1)`
 
 
-.. note::    Note that there is an additional dataset related to COVID-19 patients
-             that is available upon requesting to HM Hospitales `here <https://www.hmhospitales.com/coronavirus/covid-data-save-lives/english-version>`_  .
-             More information about this dataset can be found in the `COVID example<ex_covid>`
+.. note::    Note that there is an additional dataset related to COVID-19
+             patients that is available upon requesting to HM Hospitales
+             `here
+             <www.hmhospitales.com/coronavirus/covid-data-save-lives/>`_.
+             More information about this dataset can be found in the
+             `COVID example<ex_covid>`
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-138
+.. GENERATED FROM PYTHON SOURCE LINES 24-196
 
 .. code-block:: default
 
@@ -44,64 +48,84 @@ the MRCs. The results are for a :mod:`MRC(phi = 'fourier', loss = '0-1', s = 1)`
     import pandas as pd
     import numpy as np
     import time
-    import tabulate 
 
     # sklearn
     from sklearn import preprocessing
-    from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold
-    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
-    # SMOTE over-sampling 
+    from sklearn.model_selection import RepeatedStratifiedKFold
+
+    # SMOTE over-sampling
     from imblearn.over_sampling import SMOTE
 
-    #MRCpy
-    from MRCpy import MRC,CMRC
+    # MRCpy
+    from MRCpy import MRC
+    from MRCpy.datasets import *
 
     # Data visualisation
 
     import seaborn as sns
+    import matplotlib.pyplot as plt
     sns.set_style("whitegrid")
     sns.set_context("paper")
-    import matplotlib.pyplot as plt
 
 
-    def load_covid(norm = False, array = True ):
+    def load_covid(norm=False, array=True):
         data_consensus = pd.read_csv("data/data_consensus.csv", sep=";")
 
-        variable_dict = {'CD0000AGE': 'Age', 'CORE': 'PATIENT_ID', 'CT000000U': 'Urea',
-                         'CT00000BT': 'Bilirubin', 'CT00000NA': 'Sodium', 
-                         'CT00000TP': 'Proth_time', 'CT0000COM': 'Com', 
-                         'CT0000LDH': 'LDH', 'CT0000NEU': 'Neutrophils', 
-                         'CT0000PCR': 'Pro_C_Rea', 'CT0000VCM': 'Med_corp_vol', 
-                         'CT000APTT': 'Ceph_time','CT000CHCM': 'Mean_corp_Hgb',
-                         'CT000EOSP': 'Eosinophils%', 'CT000LEUC': 'Leukocytes',
-                         'CT000LINP': 'Lymphocytes%', 'CT000NEUP': 'Neutrophils%',
-                         'CT000PLAQ': 'Platelet_count', 'CTHSDXXRATE': 'Rate',
-                         'CTHSDXXSAT': 'Sat', 'ED0DISWHY': 'Status',
-                         'F_INGRESO/ADMISSION_D_ING/INPAT': 'Fecha_admision',
-                         'SEXO/SEX': 'Sexo'}
+        variable_dict = {
+            "CD0000AGE": "Age",
+            "CORE": "PATIENT_ID",
+            "CT000000U": "Urea",
+            "CT00000BT": "Bilirubin",
+            "CT00000NA": "Sodium",
+            "CT00000TP": "Proth_time",
+            "CT0000COM": "Com",
+            "CT0000LDH": "LDH",
+            "CT0000NEU": "Neutrophils",
+            "CT0000PCR": "Pro_C_Rea",
+            "CT0000VCM": "Med_corp_vol",
+            "CT000APTT": "Ceph_time",
+            "CT000CHCM": "Mean_corp_Hgb",
+            "CT000EOSP": "Eosinophils%",
+            "CT000LEUC": "Leukocytes",
+            "CT000LINP": "Lymphocytes%",
+            "CT000NEUP": "Neutrophils%",
+            "CT000PLAQ": "Platelet_count",
+            "CTHSDXXRATE": "Rate",
+            "CTHSDXXSAT": "Sat",
+            "ED0DISWHY": "Status",
+            "F_INGRESO/ADMISSION_D_ING/INPAT": "Fecha_admision",
+            "SEXO/SEX": "Sexo",
+        }
         data_consensus = data_consensus.rename(columns=variable_dict)
         if norm:
-            x_consensus = data_consensus[data_consensus.columns.difference(
-                ['Status', 'PATIENT_ID'])][:]
+            x_consensus = data_consensus[
+                data_consensus.columns.difference(["Status", "PATIENT_ID"])
+            ][:]
             std_scale = preprocessing.StandardScaler().fit(x_consensus)
             x_consensus_std = std_scale.transform(x_consensus)
             dataframex_consensus = pd.DataFrame(
-                x_consensus_std, columns=x_consensus.columns)
+                x_consensus_std, columns=x_consensus.columns
+            )
             data_consensus.reset_index(drop=True, inplace=True)
             data_consensus = pd.concat(
-                [dataframex_consensus, data_consensus[["Status"]]], axis=1)
+                [dataframex_consensus, data_consensus[["Status"]]], axis=1
+            )
 
-        data_consensus = data_consensus[data_consensus.columns.difference([
-                                                                          'PATIENT_ID'])]
-        X = data_consensus[data_consensus.columns.difference(
-            ['Status', 'PATIENT_ID'])]
-        y = data_consensus['Status']
+        data_consensus = data_consensus[
+            data_consensus.columns.difference(["PATIENT_ID"])
+        ]
+        X = data_consensus[
+            data_consensus.columns.difference(["Status", "PATIENT_ID"])
+        ]
+        y = data_consensus["Status"]
         if array:
             X = X.to_numpy()
             y = y.to_numpy()
-        return X,y
-    def getUpperLowerdf(train_size, X, y , cv, paramsMRC, smote = True):
-        '''
+        return X, y
+
+
+    def getUpperLowerdf(train_size, X, y, cv, paramsMRC, smote=True):
+        """
         Parameters
         ----------
         train_size : array
@@ -111,51 +135,85 @@ the MRCs. The results are for a :mod:`MRC(phi = 'fourier', loss = '0-1', s = 1)`
         paramsMRC : TYPE
             Parameters for the MRCs.
         smote : Bool, optional
-            Class imbalance corrector, set to false to disable. The default is True.
+            Class imbalance corrector, set to false to disable. The default is
+            True.
         Returns
         -------
         table : dataFrame
             Dataframe with the results of the training for each training size.
 
-        '''
+        """
         if smote:
-            smotefit = SMOTE(sampling_strategy='auto')
+            smotefit = SMOTE(sampling_strategy="auto")
             X, y = smotefit.fit_resample(X, y)
         table = pd.DataFrame()
         for train_set in train_size:
             for j, (train_index, test_index) in enumerate(cv.split(X, y)):
                 X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y[train_index], y[test_index]
-            
-                random_indices = np.random.choice(X_train.shape[0], size=int(X.shape[0]*train_set), replace=False)
-                X_train = X_train[random_indices,:]
+
+                random_indices = np.random.choice(
+                    X_train.shape[0],
+                    size=int(X.shape[0] * train_set),
+                    replace=False,
+                )
+                X_train = X_train[random_indices, :]
                 y_train = y_train[random_indices]
                 std_scale = preprocessing.StandardScaler().fit(X_train, y_train)
                 X_train = std_scale.transform(X_train)
                 X_test = std_scale.transform(X_test)
                 start_time = time.time()
-                MRC_model = MRC(phi='fourier', s =1, **paramsMRC).fit(X_train, y_train)
-                train_time = time.time()-start_time
-                auxtable = pd.DataFrame(columns = ['Error','Upper', 'Lower', 'iteration', 'train_size', 'Time'], index = range(0,1))
-                auxtable['train_size'] = train_set
-                auxtable['iteration'] = j
-                auxtable['Error'] = 1-MRC_model.score(X_test,y_test)
-                auxtable['Time'] = train_time
-                auxtable['Upper'] = MRC_model.get_upper_bound()
-                auxtable['Lower'] = MRC_model.get_lower_bound()
+                MRC_model = MRC(phi="fourier", s=1, **paramsMRC).fit(
+                    X_train, y_train
+                )
+                train_time = time.time() - start_time
+                auxtable = pd.DataFrame(
+                    columns=[
+                        "Error",
+                        "Upper",
+                        "Lower",
+                        "iteration",
+                        "train_size",
+                        "Time",
+                    ],
+                    index=range(0, 1),
+                )
+                auxtable["train_size"] = train_set
+                auxtable["iteration"] = j
+                auxtable["Error"] = 1 - MRC_model.score(X_test, y_test)
+                auxtable["Time"] = train_time
+                auxtable["Upper"] = MRC_model.get_upper_bound()
+                auxtable["Lower"] = MRC_model.get_lower_bound()
 
-                table = table.append(auxtable, ignore_index = True)
+                table = table.append(auxtable, ignore_index=True)
         return table
 
-    # Import the datasets
-    from MRCpy.datasets import *
+
     # Data sets
-    loaders = [load_mammographic, load_haberman, load_indian_liver,
-               load_diabetes, load_credit, load_covid]
-    dataName = ["mammographic", "haberman", "indian_liver",
-                "diabetes", "credit",'COVID']
-    paramsMRC = {'deterministic': False,'fit_intercept': False, 'use_cvx': True, 'loss': '0-1'}
-    train = np.arange(0.1,0.81,0.1)
+    loaders = [
+        load_mammographic,
+        load_haberman,
+        load_indian_liver,
+        load_diabetes,
+        load_credit,
+        load_covid,
+    ]
+
+    dataName = [
+        "mammographic",
+        "haberman",
+        "indian_liver",
+        "diabetes",
+        "credit",
+        "COVID",
+    ]
+    paramsMRC = {
+        "deterministic": False,
+        "fit_intercept": False,
+        "use_cvx": True,
+        "loss": "0-1",
+    }
+    train = np.arange(0.1, 0.81, 0.1)
 
 
 
@@ -164,21 +222,23 @@ the MRCs. The results are for a :mod:`MRC(phi = 'fourier', loss = '0-1', s = 1)`
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-143
+.. GENERATED FROM PYTHON SOURCE LINES 197-201
 
 Cross test validation
 ~~~~~~~~~~~~~~~~~~~~
-5 fold repeated Stratified Cross validation is performed where each of the 
+5 fold repeated Stratified Cross validation is performed where each of the
 fold is trained with 80% of the data and then tested with the remaining 20%
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-148
+.. GENERATED FROM PYTHON SOURCE LINES 201-208
 
 .. code-block:: default
 
 
     n_splits = 5
     n_repeats = 10
-    cv = RepeatedStratifiedKFold(n_splits=n_splits,n_repeats =n_repeats, random_state=1)
+    cv = RepeatedStratifiedKFold(
+        n_splits=n_splits, n_repeats=n_repeats, random_state=1
+    )
 
 
 
@@ -187,21 +247,23 @@ fold is trained with 80% of the data and then tested with the remaining 20%
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-155
+.. GENERATED FROM PYTHON SOURCE LINES 209-217
 
 Results
 ====================
-We will present the results for the 6 datasets. For more information 
-about the dataset refer to the `MRCpy documentation <https://machinelearningbcam.github.io/MRCpy/getting_started.html#dataset-loaders>`_ of the loaders.
-In the results we can see how the upper and lower bounds get closer when the training 
-size is increased. Furthermore, the standard deviation of both bounds is reduced significantly. 
+We will present the results for the 6 datasets. For more information
+about the dataset refer to the
+`MRCpy documentation <https://machinelearningbcam.github.io/MRCpy>`_ of the
+loaders. In the results we can see how the upper and lower bounds get closer
+when the training size is increased. Furthermore, the standard deviation of
+both bounds is reduced significantly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-159
+.. GENERATED FROM PYTHON SOURCE LINES 219-221
 
 Mammographic
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-169
+.. GENERATED FROM PYTHON SOURCE LINES 221-239
 
 .. code-block:: default
 
@@ -209,11 +271,19 @@ Mammographic
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
     # dataframes.append(table)
     # plotUpperLower(table)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -257,59 +327,59 @@ Mammographic
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.222 ± 0.032</td>
-          <td>0.235 ± 0.029</td>
-          <td>0.147 ± 0.031</td>
-          <td>0.221 ± 0.043</td>
+          <td>0.218 ± 0.033</td>
+          <td>0.235 ± 0.028</td>
+          <td>0.145 ± 0.028</td>
+          <td>0.216 ± 0.026</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.202 ± 0.028</td>
-          <td>0.22 ± 0.022</td>
-          <td>0.144 ± 0.024</td>
-          <td>0.354 ± 0.022</td>
+          <td>0.209 ± 0.033</td>
+          <td>0.218 ± 0.025</td>
+          <td>0.144 ± 0.027</td>
+          <td>0.375 ± 0.038</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.203 ± 0.032</td>
-          <td>0.217 ± 0.015</td>
-          <td>0.149 ± 0.017</td>
-          <td>0.527 ± 0.036</td>
+          <td>0.199 ± 0.029</td>
+          <td>0.214 ± 0.018</td>
+          <td>0.145 ± 0.019</td>
+          <td>0.54 ± 0.043</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.2 ± 0.028</td>
-          <td>0.214 ± 0.016</td>
-          <td>0.152 ± 0.02</td>
-          <td>0.62 ± 0.033</td>
+          <td>0.198 ± 0.032</td>
+          <td>0.214 ± 0.014</td>
+          <td>0.151 ± 0.017</td>
+          <td>0.627 ± 0.038</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.2 ± 0.03</td>
-          <td>0.216 ± 0.015</td>
-          <td>0.16 ± 0.018</td>
-          <td>0.718 ± 0.033</td>
+          <td>0.196 ± 0.027</td>
+          <td>0.214 ± 0.014</td>
+          <td>0.157 ± 0.016</td>
+          <td>0.724 ± 0.037</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.197 ± 0.031</td>
-          <td>0.216 ± 0.012</td>
-          <td>0.164 ± 0.015</td>
-          <td>0.844 ± 0.041</td>
+          <td>0.195 ± 0.03</td>
+          <td>0.215 ± 0.012</td>
+          <td>0.159 ± 0.015</td>
+          <td>0.837 ± 0.049</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.197 ± 0.031</td>
-          <td>0.215 ± 0.01</td>
-          <td>0.165 ± 0.013</td>
-          <td>0.954 ± 0.039</td>
+          <td>0.196 ± 0.026</td>
+          <td>0.213 ± 0.011</td>
+          <td>0.163 ± 0.014</td>
+          <td>0.932 ± 0.045</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.2 ± 0.029</td>
-          <td>0.216 ± 0.008</td>
-          <td>0.167 ± 0.01</td>
-          <td>1.056 ± 0.044</td>
+          <td>0.194 ± 0.031</td>
+          <td>0.213 ± 0.008</td>
+          <td>0.165 ± 0.012</td>
+          <td>1.04 ± 0.055</td>
         </tr>
       </tbody>
     </table>
@@ -318,15 +388,31 @@ Mammographic
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 170-177
+.. GENERATED FROM PYTHON SOURCE LINES 240-263
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('Mammographic')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("Mammographic")
     plt.show()
 
 
@@ -341,23 +427,31 @@ Mammographic
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-180
+.. GENERATED FROM PYTHON SOURCE LINES 264-266
 
 Haberman
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 180-189
+.. GENERATED FROM PYTHON SOURCE LINES 266-283
 
 .. code-block:: default
 
 
     X, y = load_haberman()
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -401,59 +495,59 @@ Haberman
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.444 ± 0.057</td>
-          <td>0.424 ± 0.032</td>
-          <td>0.319 ± 0.047</td>
-          <td>0.112 ± 0.017</td>
+          <td>0.449 ± 0.047</td>
+          <td>0.415 ± 0.036</td>
+          <td>0.306 ± 0.049</td>
+          <td>0.137 ± 0.029</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.396 ± 0.052</td>
-          <td>0.406 ± 0.024</td>
-          <td>0.295 ± 0.035</td>
-          <td>0.191 ± 0.023</td>
+          <td>0.404 ± 0.053</td>
+          <td>0.403 ± 0.026</td>
+          <td>0.3 ± 0.032</td>
+          <td>0.2 ± 0.025</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.378 ± 0.054</td>
-          <td>0.398 ± 0.017</td>
-          <td>0.296 ± 0.028</td>
-          <td>0.27 ± 0.019</td>
+          <td>0.38 ± 0.046</td>
+          <td>0.396 ± 0.018</td>
+          <td>0.301 ± 0.024</td>
+          <td>0.294 ± 0.033</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.372 ± 0.052</td>
-          <td>0.391 ± 0.018</td>
-          <td>0.294 ± 0.025</td>
-          <td>0.333 ± 0.022</td>
+          <td>0.381 ± 0.043</td>
+          <td>0.389 ± 0.019</td>
+          <td>0.291 ± 0.025</td>
+          <td>0.348 ± 0.028</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.374 ± 0.046</td>
-          <td>0.387 ± 0.014</td>
-          <td>0.291 ± 0.02</td>
-          <td>0.427 ± 0.026</td>
+          <td>0.365 ± 0.048</td>
+          <td>0.382 ± 0.014</td>
+          <td>0.285 ± 0.02</td>
+          <td>0.439 ± 0.038</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.368 ± 0.045</td>
-          <td>0.384 ± 0.012</td>
-          <td>0.291 ± 0.015</td>
-          <td>0.506 ± 0.027</td>
+          <td>0.367 ± 0.045</td>
+          <td>0.381 ± 0.013</td>
+          <td>0.289 ± 0.017</td>
+          <td>0.524 ± 0.03</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.354 ± 0.047</td>
-          <td>0.38 ± 0.01</td>
-          <td>0.288 ± 0.013</td>
-          <td>0.552 ± 0.031</td>
+          <td>0.366 ± 0.049</td>
+          <td>0.379 ± 0.01</td>
+          <td>0.29 ± 0.014</td>
+          <td>0.569 ± 0.041</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.366 ± 0.059</td>
-          <td>0.379 ± 0.007</td>
-          <td>0.289 ± 0.009</td>
-          <td>0.609 ± 0.03</td>
+          <td>0.359 ± 0.053</td>
+          <td>0.376 ± 0.008</td>
+          <td>0.292 ± 0.008</td>
+          <td>0.615 ± 0.041</td>
         </tr>
       </tbody>
     </table>
@@ -462,15 +556,31 @@ Haberman
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-197
+.. GENERATED FROM PYTHON SOURCE LINES 284-307
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('Haberman')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("Haberman")
     plt.show()
 
 
@@ -485,23 +595,31 @@ Haberman
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-200
+.. GENERATED FROM PYTHON SOURCE LINES 308-310
 
 Indian liver
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-208
+.. GENERATED FROM PYTHON SOURCE LINES 310-326
 
 .. code-block:: default
 
     X, y = load_indian_liver()
 
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -544,59 +662,59 @@ Indian liver
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.388 ± 0.043</td>
-          <td>0.37 ± 0.028</td>
-          <td>0.258 ± 0.033</td>
-          <td>0.172 ± 0.019</td>
+          <td>0.384 ± 0.036</td>
+          <td>0.367 ± 0.029</td>
+          <td>0.251 ± 0.032</td>
+          <td>0.189 ± 0.024</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.364 ± 0.039</td>
-          <td>0.367 ± 0.022</td>
-          <td>0.266 ± 0.026</td>
-          <td>0.313 ± 0.03</td>
+          <td>0.364 ± 0.031</td>
+          <td>0.372 ± 0.021</td>
+          <td>0.269 ± 0.024</td>
+          <td>0.334 ± 0.037</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.358 ± 0.036</td>
-          <td>0.359 ± 0.015</td>
-          <td>0.267 ± 0.018</td>
-          <td>0.478 ± 0.03</td>
+          <td>0.35 ± 0.035</td>
+          <td>0.369 ± 0.015</td>
+          <td>0.279 ± 0.019</td>
+          <td>0.488 ± 0.036</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.354 ± 0.036</td>
-          <td>0.363 ± 0.011</td>
-          <td>0.277 ± 0.015</td>
-          <td>0.579 ± 0.028</td>
+          <td>0.353 ± 0.031</td>
+          <td>0.363 ± 0.012</td>
+          <td>0.277 ± 0.012</td>
+          <td>0.595 ± 0.041</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.352 ± 0.039</td>
-          <td>0.362 ± 0.011</td>
-          <td>0.28 ± 0.014</td>
-          <td>0.707 ± 0.03</td>
+          <td>0.354 ± 0.033</td>
+          <td>0.365 ± 0.012</td>
+          <td>0.283 ± 0.013</td>
+          <td>0.716 ± 0.037</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.348 ± 0.031</td>
-          <td>0.364 ± 0.008</td>
-          <td>0.284 ± 0.01</td>
-          <td>0.856 ± 0.026</td>
+          <td>0.348 ± 0.03</td>
+          <td>0.365 ± 0.009</td>
+          <td>0.286 ± 0.011</td>
+          <td>0.863 ± 0.045</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.348 ± 0.031</td>
-          <td>0.361 ± 0.006</td>
-          <td>0.283 ± 0.008</td>
-          <td>1.02 ± 0.049</td>
+          <td>0.34 ± 0.034</td>
+          <td>0.363 ± 0.008</td>
+          <td>0.285 ± 0.01</td>
+          <td>1.019 ± 0.043</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.346 ± 0.038</td>
-          <td>0.361 ± 0.005</td>
-          <td>0.285 ± 0.008</td>
-          <td>1.142 ± 0.048</td>
+          <td>0.334 ± 0.033</td>
+          <td>0.363 ± 0.006</td>
+          <td>0.288 ± 0.007</td>
+          <td>1.139 ± 0.043</td>
         </tr>
       </tbody>
     </table>
@@ -605,15 +723,31 @@ Indian liver
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 209-215
+.. GENERATED FROM PYTHON SOURCE LINES 327-349
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('Indian Liver')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("Indian Liver")
     plt.show()
 
 
@@ -627,23 +761,31 @@ Indian liver
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 216-218
+.. GENERATED FROM PYTHON SOURCE LINES 350-352
 
 diabetes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-227
+.. GENERATED FROM PYTHON SOURCE LINES 352-369
 
 .. code-block:: default
 
     X, y = load_diabetes()
 
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -687,59 +829,59 @@ diabetes
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.321 ± 0.038</td>
-          <td>0.319 ± 0.023</td>
-          <td>0.226 ± 0.028</td>
-          <td>0.207 ± 0.023</td>
+          <td>0.344 ± 0.031</td>
+          <td>0.329 ± 0.024</td>
+          <td>0.232 ± 0.029</td>
+          <td>0.216 ± 0.028</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.303 ± 0.032</td>
-          <td>0.313 ± 0.017</td>
-          <td>0.234 ± 0.018</td>
-          <td>0.371 ± 0.02</td>
+          <td>0.322 ± 0.038</td>
+          <td>0.324 ± 0.018</td>
+          <td>0.246 ± 0.021</td>
+          <td>0.388 ± 0.033</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.303 ± 0.03</td>
-          <td>0.314 ± 0.013</td>
-          <td>0.24 ± 0.014</td>
-          <td>0.591 ± 0.05</td>
+          <td>0.31 ± 0.035</td>
+          <td>0.324 ± 0.012</td>
+          <td>0.253 ± 0.017</td>
+          <td>0.6 ± 0.037</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.302 ± 0.034</td>
-          <td>0.308 ± 0.012</td>
-          <td>0.241 ± 0.014</td>
-          <td>0.703 ± 0.039</td>
+          <td>0.311 ± 0.03</td>
+          <td>0.317 ± 0.014</td>
+          <td>0.25 ± 0.014</td>
+          <td>0.704 ± 0.035</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.301 ± 0.038</td>
-          <td>0.309 ± 0.007</td>
-          <td>0.241 ± 0.012</td>
-          <td>0.884 ± 0.049</td>
+          <td>0.312 ± 0.03</td>
+          <td>0.317 ± 0.009</td>
+          <td>0.255 ± 0.01</td>
+          <td>0.869 ± 0.037</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.295 ± 0.039</td>
-          <td>0.307 ± 0.009</td>
-          <td>0.245 ± 0.008</td>
-          <td>1.05 ± 0.035</td>
+          <td>0.303 ± 0.03</td>
+          <td>0.315 ± 0.009</td>
+          <td>0.253 ± 0.011</td>
+          <td>1.064 ± 0.044</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.287 ± 0.031</td>
-          <td>0.304 ± 0.008</td>
-          <td>0.243 ± 0.008</td>
-          <td>1.23 ± 0.043</td>
+          <td>0.306 ± 0.03</td>
+          <td>0.315 ± 0.007</td>
+          <td>0.256 ± 0.008</td>
+          <td>1.237 ± 0.057</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.294 ± 0.031</td>
-          <td>0.304 ± 0.005</td>
-          <td>0.244 ± 0.007</td>
-          <td>1.412 ± 0.046</td>
+          <td>0.297 ± 0.031</td>
+          <td>0.314 ± 0.006</td>
+          <td>0.255 ± 0.007</td>
+          <td>1.42 ± 0.045</td>
         </tr>
       </tbody>
     </table>
@@ -748,15 +890,31 @@ diabetes
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 228-234
+.. GENERATED FROM PYTHON SOURCE LINES 370-392
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('Diabetes')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("Diabetes")
     plt.show()
 
 
@@ -770,23 +928,31 @@ diabetes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 235-237
+.. GENERATED FROM PYTHON SOURCE LINES 393-395
 
 credit
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 237-246
+.. GENERATED FROM PYTHON SOURCE LINES 395-412
 
 .. code-block:: default
 
     X, y = load_credit()
 
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -830,59 +996,59 @@ credit
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.185 ± 0.033</td>
-          <td>0.226 ± 0.035</td>
-          <td>0.067 ± 0.039</td>
-          <td>0.161 ± 0.019</td>
+          <td>0.174 ± 0.033</td>
+          <td>0.209 ± 0.025</td>
+          <td>0.054 ± 0.036</td>
+          <td>0.178 ± 0.028</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.171 ± 0.03</td>
-          <td>0.204 ± 0.017</td>
-          <td>0.078 ± 0.018</td>
-          <td>0.298 ± 0.016</td>
+          <td>0.162 ± 0.027</td>
+          <td>0.204 ± 0.026</td>
+          <td>0.078 ± 0.022</td>
+          <td>0.323 ± 0.025</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.168 ± 0.029</td>
-          <td>0.205 ± 0.017</td>
-          <td>0.097 ± 0.019</td>
-          <td>0.441 ± 0.024</td>
+          <td>0.164 ± 0.027</td>
+          <td>0.203 ± 0.019</td>
+          <td>0.093 ± 0.017</td>
+          <td>0.455 ± 0.037</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.169 ± 0.033</td>
-          <td>0.2 ± 0.011</td>
-          <td>0.101 ± 0.012</td>
-          <td>0.557 ± 0.03</td>
+          <td>0.16 ± 0.026</td>
+          <td>0.195 ± 0.017</td>
+          <td>0.096 ± 0.017</td>
+          <td>0.567 ± 0.035</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.165 ± 0.026</td>
-          <td>0.2 ± 0.013</td>
-          <td>0.107 ± 0.013</td>
-          <td>0.692 ± 0.03</td>
+          <td>0.162 ± 0.028</td>
+          <td>0.193 ± 0.013</td>
+          <td>0.101 ± 0.012</td>
+          <td>0.692 ± 0.034</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.17 ± 0.027</td>
-          <td>0.195 ± 0.011</td>
-          <td>0.111 ± 0.01</td>
-          <td>0.81 ± 0.035</td>
+          <td>0.163 ± 0.025</td>
+          <td>0.193 ± 0.01</td>
+          <td>0.107 ± 0.01</td>
+          <td>0.821 ± 0.045</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.166 ± 0.028</td>
-          <td>0.197 ± 0.008</td>
-          <td>0.117 ± 0.008</td>
-          <td>0.963 ± 0.049</td>
+          <td>0.165 ± 0.026</td>
+          <td>0.191 ± 0.008</td>
+          <td>0.109 ± 0.009</td>
+          <td>0.964 ± 0.039</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.169 ± 0.029</td>
-          <td>0.196 ± 0.007</td>
-          <td>0.118 ± 0.006</td>
-          <td>1.082 ± 0.042</td>
+          <td>0.157 ± 0.028</td>
+          <td>0.19 ± 0.006</td>
+          <td>0.111 ± 0.006</td>
+          <td>1.091 ± 0.05</td>
         </tr>
       </tbody>
     </table>
@@ -891,15 +1057,31 @@ credit
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 247-253
+.. GENERATED FROM PYTHON SOURCE LINES 413-435
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('Credit')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("Credit")
     plt.show()
 
 
@@ -913,23 +1095,31 @@ credit
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-256
+.. GENERATED FROM PYTHON SOURCE LINES 436-438
 
 COVID
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 256-265
+.. GENERATED FROM PYTHON SOURCE LINES 438-455
 
 .. code-block:: default
 
     X, y = load_covid()
 
     table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-    means = table[table.columns.difference(['iteration'])].groupby('train_size').mean()
-    std = table[table.columns.difference(['iteration'])].groupby('train_size').std()
+    means = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").mean()
+    )
+    std = (
+        table[table.columns.difference(["iteration"])].groupby("train_size").std()
+    )
     for column in means.columns:
-        means[column] = means[column].round(3).astype(str) + ' ± ' +std[column].round(3).astype(str)
-    means[['Error','Upper','Lower', 'Time']]
+        means[column] = (
+            means[column].round(3).astype(str)
+            + " ± "
+            + std[column].round(3).astype(str)
+        )
+    means[["Error", "Upper", "Lower", "Time"]]
 
 
 
@@ -973,59 +1163,59 @@ COVID
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.278 ± 0.021</td>
-          <td>0.293 ± 0.013</td>
-          <td>0.183 ± 0.019</td>
-          <td>0.542 ± 0.03</td>
+          <td>0.272 ± 0.019</td>
+          <td>0.286 ± 0.012</td>
+          <td>0.179 ± 0.018</td>
+          <td>0.56 ± 0.036</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.271 ± 0.021</td>
-          <td>0.289 ± 0.01</td>
-          <td>0.198 ± 0.012</td>
-          <td>1.069 ± 0.04</td>
+          <td>0.266 ± 0.015</td>
+          <td>0.286 ± 0.009</td>
+          <td>0.194 ± 0.012</td>
+          <td>1.073 ± 0.052</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.265 ± 0.019</td>
-          <td>0.289 ± 0.008</td>
-          <td>0.202 ± 0.009</td>
-          <td>1.608 ± 0.166</td>
+          <td>0.26 ± 0.018</td>
+          <td>0.283 ± 0.008</td>
+          <td>0.198 ± 0.008</td>
+          <td>1.595 ± 0.059</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.264 ± 0.02</td>
-          <td>0.287 ± 0.007</td>
-          <td>0.207 ± 0.008</td>
-          <td>2.138 ± 0.07</td>
+          <td>0.256 ± 0.02</td>
+          <td>0.28 ± 0.008</td>
+          <td>0.199 ± 0.007</td>
+          <td>2.136 ± 0.078</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.264 ± 0.017</td>
-          <td>0.285 ± 0.006</td>
-          <td>0.206 ± 0.007</td>
-          <td>2.729 ± 0.064</td>
+          <td>0.256 ± 0.019</td>
+          <td>0.279 ± 0.006</td>
+          <td>0.201 ± 0.008</td>
+          <td>2.804 ± 0.175</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.259 ± 0.019</td>
-          <td>0.283 ± 0.005</td>
-          <td>0.207 ± 0.006</td>
-          <td>3.29 ± 0.081</td>
+          <td>0.255 ± 0.017</td>
+          <td>0.277 ± 0.005</td>
+          <td>0.2 ± 0.007</td>
+          <td>3.321 ± 0.122</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.263 ± 0.014</td>
-          <td>0.283 ± 0.005</td>
-          <td>0.208 ± 0.005</td>
-          <td>3.902 ± 0.084</td>
+          <td>0.253 ± 0.014</td>
+          <td>0.278 ± 0.005</td>
+          <td>0.203 ± 0.006</td>
+          <td>3.934 ± 0.097</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.257 ± 0.018</td>
-          <td>0.282 ± 0.005</td>
-          <td>0.208 ± 0.007</td>
-          <td>4.446 ± 0.098</td>
+          <td>0.249 ± 0.014</td>
+          <td>0.276 ± 0.005</td>
+          <td>0.202 ± 0.006</td>
+          <td>4.484 ± 0.109</td>
         </tr>
       </tbody>
     </table>
@@ -1034,16 +1224,33 @@ COVID
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 266-271
+.. GENERATED FROM PYTHON SOURCE LINES 456-478
 
 .. code-block:: default
 
     fig, ax = plt.subplots()
-    sns.lineplot(data = table,x ='train_size', y = 'Error', label = 'Test Error', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Upper', color = 'red', label = 'Upper bound', linestyle = 'dotted', ax = ax)
-    sns.lineplot(data = table,x ='train_size', y = 'Lower', color = 'green', label = 'Lower bound',  linestyle = 'dotted', ax = ax)
-    plt.suptitle('COVID')
+    sns.lineplot(data=table, x="train_size", y="Error", label="Test Error", ax=ax)
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Upper",
+        color="red",
+        label="Upper bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    sns.lineplot(
+        data=table,
+        x="train_size",
+        y="Lower",
+        color="green",
+        label="Lower bound",
+        linestyle="dotted",
+        ax=ax,
+    )
+    plt.suptitle("COVID")
     plt.show()
+
 
 
 .. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_006.png
@@ -1058,7 +1265,7 @@ COVID
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 73 minutes  14.371 seconds)
+   **Total running time of the script:** ( 73 minutes  56.322 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_upperLower.py:
