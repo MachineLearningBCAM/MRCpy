@@ -56,29 +56,28 @@ loss = 'log')` & :mod:`MRC(phi = 'fourier' , loss = 'log')` for  the group of
 MRCs and Logistic Regression (LR) & C-Support Vector Classifier(SVC) with the
 implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-63
+.. GENERATED FROM PYTHON SOURCE LINES 44-64
 
 .. code-block:: default
 
-    from MRCpy import CMRC, MRC
 
+    # Import needed modules
     from imblearn.over_sampling import SMOTENC
-
     import matplotlib.pyplot as plt
-
     import numpy as np
-
     import pandas as pd
-
     import seaborn as sns
-
     from sklearn import preprocessing
     from sklearn.linear_model import LogisticRegression
-    from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
-                                 confusion_matrix)
+    from sklearn.metrics import (
+        classification_report,
+        confusion_matrix,
+        ConfusionMatrixDisplay,
+    )
     from sklearn.model_selection import train_test_split
     from sklearn.svm import SVC
 
+    from MRCpy import CMRC, MRC
 
 
 
@@ -86,12 +85,14 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-66
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 COVID dataset Loader:
 --------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-124
+.. GENERATED FROM PYTHON SOURCE LINES 67-122
 
 .. code-block:: default
 
@@ -139,13 +140,10 @@ COVID dataset Loader:
             data_consensus = pd.concat(
                 [dataframex_consensus, data_consensus[["Status"]]], axis=1
             )
-
-        data_consensus = data_consensus[
-            data_consensus.columns.difference(["PATIENT_ID"])
-        ]
-        X = data_consensus[
-            data_consensus.columns.difference(["Status", "PATIENT_ID"])
-        ]
+        data_consensus = data_consensus[data_consensus.columns.difference(
+            ["PATIENT_ID"])]
+        X = data_consensus[data_consensus.columns.difference(
+            ["Status", "PATIENT_ID"])]
         y = data_consensus["Status"]
         if array:
             X = X.to_numpy()
@@ -160,7 +158,7 @@ COVID dataset Loader:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-132
+.. GENERATED FROM PYTHON SOURCE LINES 123-130
 
 Addressing dataset imbalance with SMOTE
 --------------------------------
@@ -170,18 +168,13 @@ has only 276. In this example oversampling will be used to add syintetic
 records to get an almost balanced dataset. :mod:`SMOTE` (Synthetic minority
 over sampling) is a package that implements such oversampling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-143
+.. GENERATED FROM PYTHON SOURCE LINES 130-136
 
 .. code-block:: default
 
-
-
     X, y = load_covid(array=False)
-    described = (
-        X.describe(percentiles=[0.5])
-        .round(2)
-        .transpose()[["count", "mean", "std"]]
-    )
+    described = X.describe(percentiles=[0.5]).round(
+        2).transpose()[["count", "mean", "std"]]
     pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
@@ -230,7 +223,7 @@ over sampling) is a package that implements such oversampling.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-156
+.. GENERATED FROM PYTHON SOURCE LINES 137-149
 
 So we create a set of cases syntehtically using 5 nearest neighbors until
 the class imbalance is almost removed. For more information about
@@ -245,7 +238,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
                    technique. Journal of artificial intelligence
                    research, 16, 321-357.
 
-.. GENERATED FROM PYTHON SOURCE LINES 156-167
+.. GENERATED FROM PYTHON SOURCE LINES 149-160
 
 .. code-block:: default
 
@@ -301,8 +294,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>67.79</td>
           <td>15.67</td>
           <td>2663.0</td>
-          <td>71.82</td>
-          <td>14.89</td>
+          <td>71.76</td>
+          <td>14.87</td>
         </tr>
         <tr>
           <th>Bilirubin</th>
@@ -311,7 +304,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>0.45</td>
           <td>2663.0</td>
           <td>0.60</td>
-          <td>0.50</td>
+          <td>0.47</td>
         </tr>
         <tr>
           <th>Ceph_time</th>
@@ -319,8 +312,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>32.94</td>
           <td>7.03</td>
           <td>2663.0</td>
-          <td>33.28</td>
-          <td>7.23</td>
+          <td>33.37</td>
+          <td>7.73</td>
         </tr>
         <tr>
           <th>Com</th>
@@ -328,8 +321,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>0.50</td>
           <td>0.78</td>
           <td>2663.0</td>
-          <td>0.51</td>
-          <td>0.78</td>
+          <td>0.49</td>
+          <td>0.77</td>
         </tr>
         <tr>
           <th>Eosinophils%</th>
@@ -337,8 +330,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>0.70</td>
           <td>1.57</td>
           <td>2663.0</td>
-          <td>0.56</td>
-          <td>1.34</td>
+          <td>0.54</td>
+          <td>1.33</td>
         </tr>
         <tr>
           <th>LDH</th>
@@ -346,8 +339,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>601.10</td>
           <td>367.24</td>
           <td>2663.0</td>
-          <td>678.94</td>
-          <td>500.32</td>
+          <td>678.69</td>
+          <td>465.23</td>
         </tr>
         <tr>
           <th>Leukocytes</th>
@@ -355,8 +348,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>7.62</td>
           <td>4.54</td>
           <td>2663.0</td>
-          <td>8.34</td>
-          <td>4.91</td>
+          <td>8.17</td>
+          <td>4.81</td>
         </tr>
         <tr>
           <th>Lymphocytes%</th>
@@ -364,8 +357,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>18.19</td>
           <td>10.44</td>
           <td>2663.0</td>
-          <td>16.31</td>
-          <td>10.03</td>
+          <td>16.33</td>
+          <td>10.00</td>
         </tr>
         <tr>
           <th>Mean_corp_Hgb</th>
@@ -373,8 +366,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>33.62</td>
           <td>1.42</td>
           <td>2663.0</td>
-          <td>33.51</td>
-          <td>1.36</td>
+          <td>33.53</td>
+          <td>1.34</td>
         </tr>
         <tr>
           <th>Med_corp_vol</th>
@@ -382,8 +375,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>88.23</td>
           <td>5.77</td>
           <td>2663.0</td>
-          <td>88.68</td>
-          <td>5.80</td>
+          <td>88.63</td>
+          <td>5.79</td>
         </tr>
         <tr>
           <th>Neutrophils</th>
@@ -391,8 +384,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>5.75</td>
           <td>3.77</td>
           <td>2663.0</td>
-          <td>6.51</td>
-          <td>4.20</td>
+          <td>6.36</td>
+          <td>4.02</td>
         </tr>
         <tr>
           <th>Neutrophils%</th>
@@ -400,8 +393,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>73.01</td>
           <td>12.99</td>
           <td>2663.0</td>
-          <td>75.54</td>
-          <td>12.64</td>
+          <td>75.50</td>
+          <td>12.60</td>
         </tr>
         <tr>
           <th>Platelet_count</th>
@@ -409,8 +402,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>225.32</td>
           <td>96.93</td>
           <td>2663.0</td>
-          <td>220.76</td>
-          <td>94.85</td>
+          <td>217.91</td>
+          <td>93.39</td>
         </tr>
         <tr>
           <th>Pro_C_Rea</th>
@@ -418,8 +411,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>101.00</td>
           <td>100.87</td>
           <td>2663.0</td>
-          <td>123.21</td>
-          <td>112.31</td>
+          <td>120.23</td>
+          <td>108.60</td>
         </tr>
         <tr>
           <th>Proth_time</th>
@@ -427,8 +420,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>15.39</td>
           <td>13.89</td>
           <td>2663.0</td>
-          <td>16.02</td>
-          <td>14.58</td>
+          <td>16.41</td>
+          <td>16.53</td>
         </tr>
         <tr>
           <th>Rate</th>
@@ -436,8 +429,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>79.29</td>
           <td>14.75</td>
           <td>2663.0</td>
-          <td>80.77</td>
-          <td>14.50</td>
+          <td>80.84</td>
+          <td>14.91</td>
         </tr>
         <tr>
           <th>Sat</th>
@@ -445,8 +438,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>94.67</td>
           <td>4.81</td>
           <td>2663.0</td>
-          <td>93.68</td>
-          <td>5.54</td>
+          <td>93.61</td>
+          <td>5.60</td>
         </tr>
         <tr>
           <th>Sodium</th>
@@ -454,8 +447,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>136.92</td>
           <td>4.50</td>
           <td>2663.0</td>
-          <td>137.22</td>
-          <td>4.93</td>
+          <td>137.15</td>
+          <td>4.84</td>
         </tr>
         <tr>
           <th>Urea</th>
@@ -463,8 +456,8 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
           <td>43.17</td>
           <td>30.72</td>
           <td>2663.0</td>
-          <td>50.13</td>
-          <td>34.33</td>
+          <td>49.89</td>
+          <td>34.87</td>
         </tr>
       </tbody>
     </table>
@@ -473,20 +466,19 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-171
+.. GENERATED FROM PYTHON SOURCE LINES 161-164
 
 We see how the distribution of the real data and the resampled data is
 different. However the distribution between classes is kept similar due to
 the creation of the synthetic cases through 5 nearest neighbors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 171-176
+.. GENERATED FROM PYTHON SOURCE LINES 164-168
 
 .. code-block:: default
 
 
-    pd.DataFrame(
-        y_resampled.value_counts().rename({0.0: "Survive", 1.0: "Decease"})
-    )
+    pd.DataFrame(y_resampled.value_counts().rename(
+        {0.0: "Survive", 1.0: "Decease"}))
 
 
 
@@ -533,7 +525,7 @@ the creation of the synthetic cases through 5 nearest neighbors.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 177-185
+.. GENERATED FROM PYTHON SOURCE LINES 169-177
 
 Probability estimation
 ----------------------------------
@@ -544,7 +536,7 @@ probability estimation is better when using :mod:`loss = log`. We use
 :mod:`MRC(phi = 'fourier' , loss = 'log'`. We will then compare these MRCs
 with SVC and LR with default parameters.
 
-.. GENERATED FROM PYTHON SOURCE LINES 187-192
+.. GENERATED FROM PYTHON SOURCE LINES 179-184
 
 Load classification function:
 ~~~~~~~~~~~~~~~~~~~~
@@ -552,7 +544,7 @@ These function classify each of the cases in their correspondent
 confusion matrix's category. It also allows to set the desired cut-off
 for the predictions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-231
+.. GENERATED FROM PYTHON SOURCE LINES 184-223
 
 .. code-block:: default
 
@@ -602,14 +594,14 @@ for the predictions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 232-236
+.. GENERATED FROM PYTHON SOURCE LINES 224-228
 
 Train models:
 ~~~~~~~~~~~~~~~~~~~~
 We will train the models with 80% of the data and then test with the other
 20% selected randomly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 236-282
+.. GENERATED FROM PYTHON SOURCE LINES 228-271
 
 .. code-block:: default
 
@@ -625,16 +617,13 @@ We will train the models with 80% of the data and then test with the other
     )
     MRC_values["Freq_MRC"] = MRC_values["MRC"] / sum(MRC_values["MRC"]) * 100
 
-    clf_CMRC = CMRC(phi="threshold", use_cvx=True, loss="log").fit(
-        X_train, y_train
-    )
+    clf_CMRC = CMRC(phi="threshold", use_cvx=True,
+                    loss="log").fit(X_train, y_train)
     df_CMRC = defDataFrame(model=clf_CMRC, x_test=X_test, y_test=y_test)
     CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(
         columns={"Category": type(clf_CMRC).__name__}
     )
-    CMRC_values["Freq_CMRC"] = (
-        CMRC_values["CMRC"] / sum(CMRC_values["CMRC"]) * 100
-    )
+    CMRC_values["Freq_CMRC"] = CMRC_values["CMRC"] / sum(CMRC_values["CMRC"]) * 100
 
     clf_SVC = SVC(probability=True).fit(X_train, y_train)
     df_SVC = defDataFrame(model=clf_SVC, x_test=X_test, y_test=y_test)
@@ -649,15 +638,15 @@ We will train the models with 80% of the data and then test with the other
         columns={"Category": type(clf_LR).__name__}
     )
     LR_values["Freq_LR"] = (
-        LR_values["LogisticRegression"]
-        / sum(LR_values["LogisticRegression"])
-        * 100
+        LR_values["LogisticRegression"] /
+        sum(LR_values["LogisticRegression"]) * 100
     )
 
 
-    pd.concat(
-        [MRC_values, CMRC_values, SVC_values, LR_values], axis=1
-    ).style.set_caption("Classification results by model").format(precision=2)
+    pd.concat([MRC_values, CMRC_values, SVC_values,
+               LR_values], axis=1).style.set_caption(
+        "Classification results by model"
+    ).format(precision=2)
 
 
 
@@ -669,7 +658,7 @@ We will train the models with 80% of the data and then test with the other
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_27796_">
+    <table id="T_53545_">
       <caption>Classification results by model</caption>
       <thead>
         <tr>
@@ -686,48 +675,48 @@ We will train the models with 80% of the data and then test with the other
       </thead>
       <tbody>
         <tr>
-          <th id="T_27796_level0_row0" class="row_heading level0 row0" >True Negative</th>
-          <td id="T_27796_row0_col0" class="data row0 col0" >254</td>
-          <td id="T_27796_row0_col1" class="data row0 col1" >47.65</td>
-          <td id="T_27796_row0_col2" class="data row0 col2" >277</td>
-          <td id="T_27796_row0_col3" class="data row0 col3" >51.97</td>
-          <td id="T_27796_row0_col4" class="data row0 col4" >250</td>
-          <td id="T_27796_row0_col5" class="data row0 col5" >46.90</td>
-          <td id="T_27796_row0_col6" class="data row0 col6" >263</td>
-          <td id="T_27796_row0_col7" class="data row0 col7" >49.34</td>
+          <th id="T_53545_level0_row0" class="row_heading level0 row0" >True Negative</th>
+          <td id="T_53545_row0_col0" class="data row0 col0" >252</td>
+          <td id="T_53545_row0_col1" class="data row0 col1" >47.28</td>
+          <td id="T_53545_row0_col2" class="data row0 col2" >274</td>
+          <td id="T_53545_row0_col3" class="data row0 col3" >51.41</td>
+          <td id="T_53545_row0_col4" class="data row0 col4" >246</td>
+          <td id="T_53545_row0_col5" class="data row0 col5" >46.15</td>
+          <td id="T_53545_row0_col6" class="data row0 col6" >266</td>
+          <td id="T_53545_row0_col7" class="data row0 col7" >49.91</td>
         </tr>
         <tr>
-          <th id="T_27796_level0_row1" class="row_heading level0 row1" >True Positive</th>
-          <td id="T_27796_row1_col0" class="data row1 col0" >161</td>
-          <td id="T_27796_row1_col1" class="data row1 col1" >30.21</td>
-          <td id="T_27796_row1_col2" class="data row1 col2" >193</td>
-          <td id="T_27796_row1_col3" class="data row1 col3" >36.21</td>
-          <td id="T_27796_row1_col4" class="data row1 col4" >153</td>
-          <td id="T_27796_row1_col5" class="data row1 col5" >28.71</td>
-          <td id="T_27796_row1_col6" class="data row1 col6" >177</td>
-          <td id="T_27796_row1_col7" class="data row1 col7" >33.21</td>
+          <th id="T_53545_level0_row1" class="row_heading level0 row1" >True Positive</th>
+          <td id="T_53545_row1_col0" class="data row1 col0" >156</td>
+          <td id="T_53545_row1_col1" class="data row1 col1" >29.27</td>
+          <td id="T_53545_row1_col2" class="data row1 col2" >188</td>
+          <td id="T_53545_row1_col3" class="data row1 col3" >35.27</td>
+          <td id="T_53545_row1_col4" class="data row1 col4" >150</td>
+          <td id="T_53545_row1_col5" class="data row1 col5" >28.14</td>
+          <td id="T_53545_row1_col6" class="data row1 col6" >174</td>
+          <td id="T_53545_row1_col7" class="data row1 col7" >32.65</td>
         </tr>
         <tr>
-          <th id="T_27796_level0_row2" class="row_heading level0 row2" >False Negative</th>
-          <td id="T_27796_row2_col0" class="data row2 col0" >62</td>
-          <td id="T_27796_row2_col1" class="data row2 col1" >11.63</td>
-          <td id="T_27796_row2_col2" class="data row2 col2" >30</td>
-          <td id="T_27796_row2_col3" class="data row2 col3" >5.63</td>
-          <td id="T_27796_row2_col4" class="data row2 col4" >70</td>
-          <td id="T_27796_row2_col5" class="data row2 col5" >13.13</td>
-          <td id="T_27796_row2_col6" class="data row2 col6" >46</td>
-          <td id="T_27796_row2_col7" class="data row2 col7" >8.63</td>
+          <th id="T_53545_level0_row2" class="row_heading level0 row2" >False Negative</th>
+          <td id="T_53545_row2_col0" class="data row2 col0" >67</td>
+          <td id="T_53545_row2_col1" class="data row2 col1" >12.57</td>
+          <td id="T_53545_row2_col2" class="data row2 col2" >35</td>
+          <td id="T_53545_row2_col3" class="data row2 col3" >6.57</td>
+          <td id="T_53545_row2_col4" class="data row2 col4" >73</td>
+          <td id="T_53545_row2_col5" class="data row2 col5" >13.70</td>
+          <td id="T_53545_row2_col6" class="data row2 col6" >49</td>
+          <td id="T_53545_row2_col7" class="data row2 col7" >9.19</td>
         </tr>
         <tr>
-          <th id="T_27796_level0_row3" class="row_heading level0 row3" >False Positive</th>
-          <td id="T_27796_row3_col0" class="data row3 col0" >56</td>
-          <td id="T_27796_row3_col1" class="data row3 col1" >10.51</td>
-          <td id="T_27796_row3_col2" class="data row3 col2" >33</td>
-          <td id="T_27796_row3_col3" class="data row3 col3" >6.19</td>
-          <td id="T_27796_row3_col4" class="data row3 col4" >60</td>
-          <td id="T_27796_row3_col5" class="data row3 col5" >11.26</td>
-          <td id="T_27796_row3_col6" class="data row3 col6" >47</td>
-          <td id="T_27796_row3_col7" class="data row3 col7" >8.82</td>
+          <th id="T_53545_level0_row3" class="row_heading level0 row3" >False Positive</th>
+          <td id="T_53545_row3_col0" class="data row3 col0" >58</td>
+          <td id="T_53545_row3_col1" class="data row3 col1" >10.88</td>
+          <td id="T_53545_row3_col2" class="data row3 col2" >36</td>
+          <td id="T_53545_row3_col3" class="data row3 col3" >6.75</td>
+          <td id="T_53545_row3_col4" class="data row3 col4" >64</td>
+          <td id="T_53545_row3_col5" class="data row3 col5" >12.01</td>
+          <td id="T_53545_row3_col6" class="data row3 col6" >44</td>
+          <td id="T_53545_row3_col7" class="data row3 col7" >8.26</td>
         </tr>
       </tbody>
     </table>
@@ -736,7 +725,7 @@ We will train the models with 80% of the data and then test with the other
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 283-292
+.. GENERATED FROM PYTHON SOURCE LINES 272-281
 
 Comparison of models:
 ~~~~~~~~~~~~~~~~~~~~
@@ -748,7 +737,7 @@ positives (FP). It is important to consider that in this classification
 problem the missclassification of a patient with fatal outcome (FN) is
 considered a much more serious error.
 
-.. GENERATED FROM PYTHON SOURCE LINES 292-390
+.. GENERATED FROM PYTHON SOURCE LINES 281-370
 
 .. code-block:: default
 
@@ -769,12 +758,8 @@ considered a much more serious error.
             linewidth=0,
             dodge=False,
             alpha=0.6,
-            order=[
-                "True Negative",
-                "False Negative",
-                "True Positive",
-                "False Positive",
-            ],
+            order=["True Negative", "False Negative",
+                   "True Positive", "False Positive", ],
         )
         sns.boxplot(
             ax=ax,
@@ -782,12 +767,8 @@ considered a much more serious error.
             y="Category",
             color="White",
             data=df,
-            order=[
-                "True Negative",
-                "False Negative",
-                "True Positive",
-                "False Positive",
-            ],
+            order=["True Negative", "False Negative",
+                   "True Positive", "False Positive", ],
             saturation=15,
         )
         ax.set_xlabel("Probability of mortality")
@@ -827,9 +808,8 @@ considered a much more serious error.
             element="step",
             **norm_params
         )
-        ax.axvline(
-            threshold, 0, 1, linestyle=(0, (1, 10)), linewidth=0.7, color="black"
-        )
+        ax.axvline(threshold, 0, 1, linestyle=(
+            0, (1, 10)), linewidth=0.7, color="black")
 
 
     # visualize results
@@ -862,7 +842,7 @@ considered a much more serious error.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 391-399
+.. GENERATED FROM PYTHON SOURCE LINES 371-379
 
 We see a clear different behaviour with the CMRC and MRC. MRC tends to
 estimate conditional probabilities in a more conservative way, rangin from
@@ -873,7 +853,7 @@ Logistic Regression's but with less overlapping. SVC is the model with the
 worst performance of all having a lot of patients that survived with high
 decease probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 399-434
+.. GENERATED FROM PYTHON SOURCE LINES 379-411
 
 .. code-block:: default
 
@@ -881,12 +861,9 @@ decease probabilities.
 
     cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test))  # CMRC
     cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test))  # MRC
-    cm_lr = confusion_matrix(
-        y_test, clf_LR.predict(X_test)
-    )  # Logistic Regression
-    cm_svc = confusion_matrix(
-        y_test, clf_SVC.predict(X_test)
-    )  # C-Support Vector Machine
+    cm_lr = confusion_matrix(y_test, clf_LR.predict(X_test))  # Logistic Regression
+    cm_svc = confusion_matrix(y_test, clf_SVC.predict(
+        X_test))  # C-Support Vector Machine
 
     fig, ax = plt.subplots(
         nrows=2,
@@ -924,7 +901,7 @@ decease probabilities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 435-443
+.. GENERATED FROM PYTHON SOURCE LINES 412-420
 
 .. code-block:: default
 
@@ -946,7 +923,7 @@ decease probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_eb51c_">
+    <table id="T_ab6d8_">
       <caption>Classification report CMRC</caption>
       <thead>
         <tr>
@@ -960,36 +937,36 @@ decease probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_eb51c_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_eb51c_row0_col0" class="data row0 col0" >0.902</td>
-          <td id="T_eb51c_row0_col1" class="data row0 col1" >0.854</td>
-          <td id="T_eb51c_row0_col2" class="data row0 col2" >0.882</td>
-          <td id="T_eb51c_row0_col3" class="data row0 col3" >0.878</td>
-          <td id="T_eb51c_row0_col4" class="data row0 col4" >0.882</td>
+          <th id="T_ab6d8_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_ab6d8_row0_col0" class="data row0 col0" >0.887</td>
+          <td id="T_ab6d8_row0_col1" class="data row0 col1" >0.839</td>
+          <td id="T_ab6d8_row0_col2" class="data row0 col2" >0.867</td>
+          <td id="T_ab6d8_row0_col3" class="data row0 col3" >0.863</td>
+          <td id="T_ab6d8_row0_col4" class="data row0 col4" >0.867</td>
         </tr>
         <tr>
-          <th id="T_eb51c_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_eb51c_row1_col0" class="data row1 col0" >0.894</td>
-          <td id="T_eb51c_row1_col1" class="data row1 col1" >0.865</td>
-          <td id="T_eb51c_row1_col2" class="data row1 col2" >0.882</td>
-          <td id="T_eb51c_row1_col3" class="data row1 col3" >0.880</td>
-          <td id="T_eb51c_row1_col4" class="data row1 col4" >0.882</td>
+          <th id="T_ab6d8_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_ab6d8_row1_col0" class="data row1 col0" >0.884</td>
+          <td id="T_ab6d8_row1_col1" class="data row1 col1" >0.843</td>
+          <td id="T_ab6d8_row1_col2" class="data row1 col2" >0.867</td>
+          <td id="T_ab6d8_row1_col3" class="data row1 col3" >0.863</td>
+          <td id="T_ab6d8_row1_col4" class="data row1 col4" >0.867</td>
         </tr>
         <tr>
-          <th id="T_eb51c_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_eb51c_row2_col0" class="data row2 col0" >0.898</td>
-          <td id="T_eb51c_row2_col1" class="data row2 col1" >0.860</td>
-          <td id="T_eb51c_row2_col2" class="data row2 col2" >0.882</td>
-          <td id="T_eb51c_row2_col3" class="data row2 col3" >0.879</td>
-          <td id="T_eb51c_row2_col4" class="data row2 col4" >0.882</td>
+          <th id="T_ab6d8_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_ab6d8_row2_col0" class="data row2 col0" >0.885</td>
+          <td id="T_ab6d8_row2_col1" class="data row2 col1" >0.841</td>
+          <td id="T_ab6d8_row2_col2" class="data row2 col2" >0.867</td>
+          <td id="T_ab6d8_row2_col3" class="data row2 col3" >0.863</td>
+          <td id="T_ab6d8_row2_col4" class="data row2 col4" >0.867</td>
         </tr>
         <tr>
-          <th id="T_eb51c_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_eb51c_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_eb51c_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_eb51c_row3_col2" class="data row3 col2" >0.882</td>
-          <td id="T_eb51c_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_eb51c_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_ab6d8_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_ab6d8_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_ab6d8_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_ab6d8_row3_col2" class="data row3 col2" >0.867</td>
+          <td id="T_ab6d8_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_ab6d8_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -998,7 +975,7 @@ decease probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 444-452
+.. GENERATED FROM PYTHON SOURCE LINES 421-429
 
 .. code-block:: default
 
@@ -1020,7 +997,7 @@ decease probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_07405_">
+    <table id="T_7debc_">
       <caption>Classification report MRC</caption>
       <thead>
         <tr>
@@ -1034,36 +1011,36 @@ decease probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_07405_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_07405_row0_col0" class="data row0 col0" >0.804</td>
-          <td id="T_07405_row0_col1" class="data row0 col1" >0.742</td>
-          <td id="T_07405_row0_col2" class="data row0 col2" >0.779</td>
-          <td id="T_07405_row0_col3" class="data row0 col3" >0.773</td>
-          <td id="T_07405_row0_col4" class="data row0 col4" >0.778</td>
+          <th id="T_7debc_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_7debc_row0_col0" class="data row0 col0" >0.790</td>
+          <td id="T_7debc_row0_col1" class="data row0 col1" >0.729</td>
+          <td id="T_7debc_row0_col2" class="data row0 col2" >0.765</td>
+          <td id="T_7debc_row0_col3" class="data row0 col3" >0.759</td>
+          <td id="T_7debc_row0_col4" class="data row0 col4" >0.764</td>
         </tr>
         <tr>
-          <th id="T_07405_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_07405_row1_col0" class="data row1 col0" >0.819</td>
-          <td id="T_07405_row1_col1" class="data row1 col1" >0.722</td>
-          <td id="T_07405_row1_col2" class="data row1 col2" >0.779</td>
-          <td id="T_07405_row1_col3" class="data row1 col3" >0.771</td>
-          <td id="T_07405_row1_col4" class="data row1 col4" >0.779</td>
+          <th id="T_7debc_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_7debc_row1_col0" class="data row1 col0" >0.813</td>
+          <td id="T_7debc_row1_col1" class="data row1 col1" >0.700</td>
+          <td id="T_7debc_row1_col2" class="data row1 col2" >0.765</td>
+          <td id="T_7debc_row1_col3" class="data row1 col3" >0.756</td>
+          <td id="T_7debc_row1_col4" class="data row1 col4" >0.765</td>
         </tr>
         <tr>
-          <th id="T_07405_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_07405_row2_col0" class="data row2 col0" >0.812</td>
-          <td id="T_07405_row2_col1" class="data row2 col1" >0.732</td>
-          <td id="T_07405_row2_col2" class="data row2 col2" >0.779</td>
-          <td id="T_07405_row2_col3" class="data row2 col3" >0.772</td>
-          <td id="T_07405_row2_col4" class="data row2 col4" >0.778</td>
+          <th id="T_7debc_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_7debc_row2_col0" class="data row2 col0" >0.801</td>
+          <td id="T_7debc_row2_col1" class="data row2 col1" >0.714</td>
+          <td id="T_7debc_row2_col2" class="data row2 col2" >0.765</td>
+          <td id="T_7debc_row2_col3" class="data row2 col3" >0.758</td>
+          <td id="T_7debc_row2_col4" class="data row2 col4" >0.765</td>
         </tr>
         <tr>
-          <th id="T_07405_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_07405_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_07405_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_07405_row3_col2" class="data row3 col2" >0.779</td>
-          <td id="T_07405_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_07405_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_7debc_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_7debc_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_7debc_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_7debc_row3_col2" class="data row3 col2" >0.765</td>
+          <td id="T_7debc_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_7debc_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1072,7 +1049,7 @@ decease probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 453-461
+.. GENERATED FROM PYTHON SOURCE LINES 430-438
 
 .. code-block:: default
 
@@ -1094,7 +1071,7 @@ decease probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_326aa_">
+    <table id="T_2b27f_">
       <caption>Classification report LR</caption>
       <thead>
         <tr>
@@ -1108,36 +1085,36 @@ decease probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_326aa_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_326aa_row0_col0" class="data row0 col0" >0.851</td>
-          <td id="T_326aa_row0_col1" class="data row0 col1" >0.790</td>
-          <td id="T_326aa_row0_col2" class="data row0 col2" >0.826</td>
-          <td id="T_326aa_row0_col3" class="data row0 col3" >0.821</td>
-          <td id="T_326aa_row0_col4" class="data row0 col4" >0.826</td>
+          <th id="T_2b27f_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_2b27f_row0_col0" class="data row0 col0" >0.844</td>
+          <td id="T_2b27f_row0_col1" class="data row0 col1" >0.798</td>
+          <td id="T_2b27f_row0_col2" class="data row0 col2" >0.826</td>
+          <td id="T_2b27f_row0_col3" class="data row0 col3" >0.821</td>
+          <td id="T_2b27f_row0_col4" class="data row0 col4" >0.825</td>
         </tr>
         <tr>
-          <th id="T_326aa_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_326aa_row1_col0" class="data row1 col0" >0.848</td>
-          <td id="T_326aa_row1_col1" class="data row1 col1" >0.794</td>
-          <td id="T_326aa_row1_col2" class="data row1 col2" >0.826</td>
-          <td id="T_326aa_row1_col3" class="data row1 col3" >0.821</td>
-          <td id="T_326aa_row1_col4" class="data row1 col4" >0.826</td>
+          <th id="T_2b27f_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_2b27f_row1_col0" class="data row1 col0" >0.858</td>
+          <td id="T_2b27f_row1_col1" class="data row1 col1" >0.780</td>
+          <td id="T_2b27f_row1_col2" class="data row1 col2" >0.826</td>
+          <td id="T_2b27f_row1_col3" class="data row1 col3" >0.819</td>
+          <td id="T_2b27f_row1_col4" class="data row1 col4" >0.826</td>
         </tr>
         <tr>
-          <th id="T_326aa_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_326aa_row2_col0" class="data row2 col0" >0.850</td>
-          <td id="T_326aa_row2_col1" class="data row2 col1" >0.792</td>
-          <td id="T_326aa_row2_col2" class="data row2 col2" >0.826</td>
-          <td id="T_326aa_row2_col3" class="data row2 col3" >0.821</td>
-          <td id="T_326aa_row2_col4" class="data row2 col4" >0.826</td>
+          <th id="T_2b27f_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_2b27f_row2_col0" class="data row2 col0" >0.851</td>
+          <td id="T_2b27f_row2_col1" class="data row2 col1" >0.789</td>
+          <td id="T_2b27f_row2_col2" class="data row2 col2" >0.826</td>
+          <td id="T_2b27f_row2_col3" class="data row2 col3" >0.820</td>
+          <td id="T_2b27f_row2_col4" class="data row2 col4" >0.825</td>
         </tr>
         <tr>
-          <th id="T_326aa_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_326aa_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_326aa_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_326aa_row3_col2" class="data row3 col2" >0.826</td>
-          <td id="T_326aa_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_326aa_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_2b27f_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_2b27f_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_2b27f_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_2b27f_row3_col2" class="data row3 col2" >0.826</td>
+          <td id="T_2b27f_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_2b27f_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1146,7 +1123,7 @@ decease probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 462-471
+.. GENERATED FROM PYTHON SOURCE LINES 439-448
 
 .. code-block:: default
 
@@ -1169,7 +1146,7 @@ decease probabilities.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_fcd77_">
+    <table id="T_f6010_">
       <caption>Classification report SVC</caption>
       <thead>
         <tr>
@@ -1183,36 +1160,36 @@ decease probabilities.
       </thead>
       <tbody>
         <tr>
-          <th id="T_fcd77_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_fcd77_row0_col0" class="data row0 col0" >0.767</td>
-          <td id="T_fcd77_row0_col1" class="data row0 col1" >0.732</td>
-          <td id="T_fcd77_row0_col2" class="data row0 col2" >0.754</td>
-          <td id="T_fcd77_row0_col3" class="data row0 col3" >0.750</td>
-          <td id="T_fcd77_row0_col4" class="data row0 col4" >0.753</td>
+          <th id="T_f6010_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_f6010_row0_col0" class="data row0 col0" >0.755</td>
+          <td id="T_f6010_row0_col1" class="data row0 col1" >0.700</td>
+          <td id="T_f6010_row0_col2" class="data row0 col2" >0.734</td>
+          <td id="T_f6010_row0_col3" class="data row0 col3" >0.727</td>
+          <td id="T_f6010_row0_col4" class="data row0 col4" >0.732</td>
         </tr>
         <tr>
-          <th id="T_fcd77_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_fcd77_row1_col0" class="data row1 col0" >0.829</td>
-          <td id="T_fcd77_row1_col1" class="data row1 col1" >0.650</td>
-          <td id="T_fcd77_row1_col2" class="data row1 col2" >0.754</td>
-          <td id="T_fcd77_row1_col3" class="data row1 col3" >0.740</td>
-          <td id="T_fcd77_row1_col4" class="data row1 col4" >0.754</td>
+          <th id="T_f6010_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_f6010_row1_col0" class="data row1 col0" >0.803</td>
+          <td id="T_f6010_row1_col1" class="data row1 col1" >0.637</td>
+          <td id="T_f6010_row1_col2" class="data row1 col2" >0.734</td>
+          <td id="T_f6010_row1_col3" class="data row1 col3" >0.720</td>
+          <td id="T_f6010_row1_col4" class="data row1 col4" >0.734</td>
         </tr>
         <tr>
-          <th id="T_fcd77_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_fcd77_row2_col0" class="data row2 col0" >0.797</td>
-          <td id="T_fcd77_row2_col1" class="data row2 col1" >0.689</td>
-          <td id="T_fcd77_row2_col2" class="data row2 col2" >0.754</td>
-          <td id="T_fcd77_row2_col3" class="data row2 col3" >0.743</td>
-          <td id="T_fcd77_row2_col4" class="data row2 col4" >0.752</td>
+          <th id="T_f6010_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_f6010_row2_col0" class="data row2 col0" >0.778</td>
+          <td id="T_f6010_row2_col1" class="data row2 col1" >0.667</td>
+          <td id="T_f6010_row2_col2" class="data row2 col2" >0.734</td>
+          <td id="T_f6010_row2_col3" class="data row2 col3" >0.722</td>
+          <td id="T_f6010_row2_col4" class="data row2 col4" >0.731</td>
         </tr>
         <tr>
-          <th id="T_fcd77_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_fcd77_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_fcd77_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_fcd77_row3_col2" class="data row3 col2" >0.754</td>
-          <td id="T_fcd77_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_fcd77_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_f6010_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_f6010_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_f6010_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_f6010_row3_col2" class="data row3 col2" >0.734</td>
+          <td id="T_f6010_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_f6010_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1221,12 +1198,12 @@ decease probabilities.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 472-474
+.. GENERATED FROM PYTHON SOURCE LINES 449-451
 
 We can see in the classification reports and the confusion matrices the
 outperformance of CMRC.
 
-.. GENERATED FROM PYTHON SOURCE LINES 477-485
+.. GENERATED FROM PYTHON SOURCE LINES 454-462
 
 Settind the cut-off point for binary classification:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1237,7 +1214,7 @@ in each of the cases of the confusion matrix. On an ideal scenario the errors
 are located near the cut-off point and the true guesses are located near the
 0 and 1 values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 485-502
+.. GENERATED FROM PYTHON SOURCE LINES 462-479
 
 .. code-block:: default
 
@@ -1270,7 +1247,7 @@ are located near the cut-off point and the true guesses are located near the
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 503-510
+.. GENERATED FROM PYTHON SOURCE LINES 480-487
 
 We see in the CMRC that the correct cases have a very good
 conditional probability estimation with around 75% of the cases very close to
@@ -1280,7 +1257,7 @@ model adjusting the threshold to 0.35 reduces the false negatives by 25%
 adding just some cases to the FP. In the MRC model adjusting the cutoff to
 0.4 reduces half of the false negatives by trading of 25% of the TP.
 
-.. GENERATED FROM PYTHON SOURCE LINES 510-531
+.. GENERATED FROM PYTHON SOURCE LINES 487-505
 
 .. code-block:: default
 
@@ -1290,9 +1267,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
         model=clf_CMRC, x_test=X_test, y_test=y_test, threshold=threshold
     )
     threshold = 0.4
-    df_MRC = defDataFrame(
-        model=clf_MRC, x_test=X_test, y_test=y_test, threshold=threshold
-    )
+    df_MRC = defDataFrame(model=clf_MRC, x_test=X_test,
+                          y_test=y_test, threshold=threshold)
     pd.DataFrame(
         classification_report(
             df_CMRC.Real,
@@ -1300,9 +1276,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
             target_names=["Survive", "Decease"],
             output_dict=True,
         )
-    ).style.set_caption(
-        "Classification report CMRC \n adjusted threshold"
-    ).format(
+    ).style.set_caption("Classification report CMRC \n adjusted threshold").format(
         precision=3
     )
 
@@ -1315,7 +1289,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_288ae_">
+    <table id="T_c6872_">
       <caption>Classification report CMRC 
      adjusted threshold</caption>
       <thead>
@@ -1330,36 +1304,36 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
       </thead>
       <tbody>
         <tr>
-          <th id="T_288ae_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_288ae_row0_col0" class="data row0 col0" >0.935</td>
-          <td id="T_288ae_row0_col1" class="data row0 col1" >0.798</td>
-          <td id="T_288ae_row0_col2" class="data row0 col2" >0.869</td>
-          <td id="T_288ae_row0_col3" class="data row0 col3" >0.866</td>
-          <td id="T_288ae_row0_col4" class="data row0 col4" >0.877</td>
+          <th id="T_c6872_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_c6872_row0_col0" class="data row0 col0" >0.921</td>
+          <td id="T_c6872_row0_col1" class="data row0 col1" >0.788</td>
+          <td id="T_c6872_row0_col2" class="data row0 col2" >0.857</td>
+          <td id="T_c6872_row0_col3" class="data row0 col3" >0.855</td>
+          <td id="T_c6872_row0_col4" class="data row0 col4" >0.865</td>
         </tr>
         <tr>
-          <th id="T_288ae_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_288ae_row1_col0" class="data row1 col0" >0.832</td>
-          <td id="T_288ae_row1_col1" class="data row1 col1" >0.919</td>
-          <td id="T_288ae_row1_col2" class="data row1 col2" >0.869</td>
-          <td id="T_288ae_row1_col3" class="data row1 col3" >0.876</td>
-          <td id="T_288ae_row1_col4" class="data row1 col4" >0.869</td>
+          <th id="T_c6872_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_c6872_row1_col0" class="data row1 col0" >0.826</td>
+          <td id="T_c6872_row1_col1" class="data row1 col1" >0.901</td>
+          <td id="T_c6872_row1_col2" class="data row1 col2" >0.857</td>
+          <td id="T_c6872_row1_col3" class="data row1 col3" >0.864</td>
+          <td id="T_c6872_row1_col4" class="data row1 col4" >0.857</td>
         </tr>
         <tr>
-          <th id="T_288ae_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_288ae_row2_col0" class="data row2 col0" >0.881</td>
-          <td id="T_288ae_row2_col1" class="data row2 col1" >0.854</td>
-          <td id="T_288ae_row2_col2" class="data row2 col2" >0.869</td>
-          <td id="T_288ae_row2_col3" class="data row2 col3" >0.867</td>
-          <td id="T_288ae_row2_col4" class="data row2 col4" >0.870</td>
+          <th id="T_c6872_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_c6872_row2_col0" class="data row2 col0" >0.871</td>
+          <td id="T_c6872_row2_col1" class="data row2 col1" >0.841</td>
+          <td id="T_c6872_row2_col2" class="data row2 col2" >0.857</td>
+          <td id="T_c6872_row2_col3" class="data row2 col3" >0.856</td>
+          <td id="T_c6872_row2_col4" class="data row2 col4" >0.858</td>
         </tr>
         <tr>
-          <th id="T_288ae_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_288ae_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_288ae_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_288ae_row3_col2" class="data row3 col2" >0.869</td>
-          <td id="T_288ae_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_288ae_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_c6872_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_c6872_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_c6872_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_c6872_row3_col2" class="data row3 col2" >0.857</td>
+          <td id="T_c6872_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_c6872_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1368,7 +1342,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 532-542
+.. GENERATED FROM PYTHON SOURCE LINES 506-516
 
 .. code-block:: default
 
@@ -1392,7 +1366,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_49635_">
+    <table id="T_2adb5_">
       <caption>Classification report MRC 
      adjusted threshold</caption>
       <thead>
@@ -1407,36 +1381,36 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
       </thead>
       <tbody>
         <tr>
-          <th id="T_49635_level0_row0" class="row_heading level0 row0" >precision</th>
-          <td id="T_49635_row0_col0" class="data row0 col0" >0.880</td>
-          <td id="T_49635_row0_col1" class="data row0 col1" >0.652</td>
-          <td id="T_49635_row0_col2" class="data row0 col2" >0.752</td>
-          <td id="T_49635_row0_col3" class="data row0 col3" >0.766</td>
-          <td id="T_49635_row0_col4" class="data row0 col4" >0.785</td>
+          <th id="T_2adb5_level0_row0" class="row_heading level0 row0" >precision</th>
+          <td id="T_2adb5_row0_col0" class="data row0 col0" >0.869</td>
+          <td id="T_2adb5_row0_col1" class="data row0 col1" >0.661</td>
+          <td id="T_2adb5_row0_col2" class="data row0 col2" >0.756</td>
+          <td id="T_2adb5_row0_col3" class="data row0 col3" >0.765</td>
+          <td id="T_2adb5_row0_col4" class="data row0 col4" >0.782</td>
         </tr>
         <tr>
-          <th id="T_49635_level0_row1" class="row_heading level0 row1" >recall</th>
-          <td id="T_49635_row1_col0" class="data row1 col0" >0.665</td>
-          <td id="T_49635_row1_col1" class="data row1 col1" >0.874</td>
-          <td id="T_49635_row1_col2" class="data row1 col2" >0.752</td>
-          <td id="T_49635_row1_col3" class="data row1 col3" >0.769</td>
-          <td id="T_49635_row1_col4" class="data row1 col4" >0.752</td>
+          <th id="T_2adb5_level0_row1" class="row_heading level0 row1" >recall</th>
+          <td id="T_2adb5_row1_col0" class="data row1 col0" >0.684</td>
+          <td id="T_2adb5_row1_col1" class="data row1 col1" >0.857</td>
+          <td id="T_2adb5_row1_col2" class="data row1 col2" >0.756</td>
+          <td id="T_2adb5_row1_col3" class="data row1 col3" >0.770</td>
+          <td id="T_2adb5_row1_col4" class="data row1 col4" >0.756</td>
         </tr>
         <tr>
-          <th id="T_49635_level0_row2" class="row_heading level0 row2" >f1-score</th>
-          <td id="T_49635_row2_col0" class="data row2 col0" >0.757</td>
-          <td id="T_49635_row2_col1" class="data row2 col1" >0.747</td>
-          <td id="T_49635_row2_col2" class="data row2 col2" >0.752</td>
-          <td id="T_49635_row2_col3" class="data row2 col3" >0.752</td>
-          <td id="T_49635_row2_col4" class="data row2 col4" >0.753</td>
+          <th id="T_2adb5_level0_row2" class="row_heading level0 row2" >f1-score</th>
+          <td id="T_2adb5_row2_col0" class="data row2 col0" >0.765</td>
+          <td id="T_2adb5_row2_col1" class="data row2 col1" >0.746</td>
+          <td id="T_2adb5_row2_col2" class="data row2 col2" >0.756</td>
+          <td id="T_2adb5_row2_col3" class="data row2 col3" >0.756</td>
+          <td id="T_2adb5_row2_col4" class="data row2 col4" >0.757</td>
         </tr>
         <tr>
-          <th id="T_49635_level0_row3" class="row_heading level0 row3" >support</th>
-          <td id="T_49635_row3_col0" class="data row3 col0" >310.000</td>
-          <td id="T_49635_row3_col1" class="data row3 col1" >223.000</td>
-          <td id="T_49635_row3_col2" class="data row3 col2" >0.752</td>
-          <td id="T_49635_row3_col3" class="data row3 col3" >533.000</td>
-          <td id="T_49635_row3_col4" class="data row3 col4" >533.000</td>
+          <th id="T_2adb5_level0_row3" class="row_heading level0 row3" >support</th>
+          <td id="T_2adb5_row3_col0" class="data row3 col0" >310.000</td>
+          <td id="T_2adb5_row3_col1" class="data row3 col1" >223.000</td>
+          <td id="T_2adb5_row3_col2" class="data row3 col2" >0.756</td>
+          <td id="T_2adb5_row3_col3" class="data row3 col3" >533.000</td>
+          <td id="T_2adb5_row3_col4" class="data row3 col4" >533.000</td>
         </tr>
       </tbody>
     </table>
@@ -1445,7 +1419,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 543-554
+.. GENERATED FROM PYTHON SOURCE LINES 517-528
 
 Results:
 -----------------
@@ -1462,7 +1436,7 @@ class.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 7 minutes  17.074 seconds)
+   **Total running time of the script:** ( 7 minutes  45.680 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_COVID.py:

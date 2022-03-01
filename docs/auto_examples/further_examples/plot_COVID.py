@@ -41,24 +41,25 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 
 """
-from MRCpy import CMRC, MRC
 
+# Import needed modules
 from imblearn.over_sampling import SMOTENC
-
 import matplotlib.pyplot as plt
-
 import numpy as np
-
 import pandas as pd
-
 import seaborn as sns
-
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
-                             confusion_matrix)
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+
+from MRCpy import CMRC, MRC
+
 
 #############################################
 # COVID dataset Loader:
@@ -107,13 +108,10 @@ def load_covid(norm=False, array=True):
         data_consensus = pd.concat(
             [dataframex_consensus, data_consensus[["Status"]]], axis=1
         )
-
-    data_consensus = data_consensus[
-        data_consensus.columns.difference(["PATIENT_ID"])
-    ]
-    X = data_consensus[
-        data_consensus.columns.difference(["Status", "PATIENT_ID"])
-    ]
+    data_consensus = data_consensus[data_consensus.columns.difference(
+        ["PATIENT_ID"])]
+    X = data_consensus[data_consensus.columns.difference(
+        ["Status", "PATIENT_ID"])]
     y = data_consensus["Status"]
     if array:
         X = X.to_numpy()
@@ -129,14 +127,9 @@ def load_covid(norm=False, array=True):
 # has only 276. In this example oversampling will be used to add syintetic
 # records to get an almost balanced dataset. :mod:`SMOTE` (Synthetic minority
 # over sampling) is a package that implements such oversampling.
-
-
 X, y = load_covid(array=False)
-described = (
-    X.describe(percentiles=[0.5])
-    .round(2)
-    .transpose()[["count", "mean", "std"]]
-)
+described = X.describe(percentiles=[0.5]).round(
+    2).transpose()[["count", "mean", "std"]]
 pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
@@ -169,9 +162,8 @@ pd.concat([described, described_resample], axis=1)
 # different. However the distribution between classes is kept similar due to
 # the creation of the synthetic cases through 5 nearest neighbors.
 
-pd.DataFrame(
-    y_resampled.value_counts().rename({0.0: "Survive", 1.0: "Decease"})
-)
+pd.DataFrame(y_resampled.value_counts().rename(
+    {0.0: "Survive", 1.0: "Decease"}))
 
 #############################################
 # Probability estimation
@@ -245,16 +237,13 @@ MRC_values = pd.DataFrame(df_MRC.Category.value_counts()).rename(
 )
 MRC_values["Freq_MRC"] = MRC_values["MRC"] / sum(MRC_values["MRC"]) * 100
 
-clf_CMRC = CMRC(phi="threshold", use_cvx=True, loss="log").fit(
-    X_train, y_train
-)
+clf_CMRC = CMRC(phi="threshold", use_cvx=True,
+                loss="log").fit(X_train, y_train)
 df_CMRC = defDataFrame(model=clf_CMRC, x_test=X_test, y_test=y_test)
 CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(
     columns={"Category": type(clf_CMRC).__name__}
 )
-CMRC_values["Freq_CMRC"] = (
-    CMRC_values["CMRC"] / sum(CMRC_values["CMRC"]) * 100
-)
+CMRC_values["Freq_CMRC"] = CMRC_values["CMRC"] / sum(CMRC_values["CMRC"]) * 100
 
 clf_SVC = SVC(probability=True).fit(X_train, y_train)
 df_SVC = defDataFrame(model=clf_SVC, x_test=X_test, y_test=y_test)
@@ -269,15 +258,15 @@ LR_values = pd.DataFrame(df_LR.Category.value_counts()).rename(
     columns={"Category": type(clf_LR).__name__}
 )
 LR_values["Freq_LR"] = (
-    LR_values["LogisticRegression"]
-    / sum(LR_values["LogisticRegression"])
-    * 100
+    LR_values["LogisticRegression"] /
+    sum(LR_values["LogisticRegression"]) * 100
 )
 
 
-pd.concat(
-    [MRC_values, CMRC_values, SVC_values, LR_values], axis=1
-).style.set_caption("Classification results by model").format(precision=2)
+pd.concat([MRC_values, CMRC_values, SVC_values,
+           LR_values], axis=1).style.set_caption(
+    "Classification results by model"
+).format(precision=2)
 
 #############################################
 # Comparison of models:
@@ -306,12 +295,8 @@ def scatterPlot(df, ax):
         linewidth=0,
         dodge=False,
         alpha=0.6,
-        order=[
-            "True Negative",
-            "False Negative",
-            "True Positive",
-            "False Positive",
-        ],
+        order=["True Negative", "False Negative",
+               "True Positive", "False Positive", ],
     )
     sns.boxplot(
         ax=ax,
@@ -319,12 +304,8 @@ def scatterPlot(df, ax):
         y="Category",
         color="White",
         data=df,
-        order=[
-            "True Negative",
-            "False Negative",
-            "True Positive",
-            "False Positive",
-        ],
+        order=["True Negative", "False Negative",
+               "True Positive", "False Positive", ],
         saturation=15,
     )
     ax.set_xlabel("Probability of mortality")
@@ -364,9 +345,8 @@ def plotHisto(df, ax, threshold=0.5, normalize=True):
         element="step",
         **norm_params
     )
-    ax.axvline(
-        threshold, 0, 1, linestyle=(0, (1, 10)), linewidth=0.7, color="black"
-    )
+    ax.axvline(threshold, 0, 1, linestyle=(
+        0, (1, 10)), linewidth=0.7, color="black")
 
 
 # visualize results
@@ -400,12 +380,9 @@ fig.tight_layout()
 
 cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test))  # CMRC
 cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test))  # MRC
-cm_lr = confusion_matrix(
-    y_test, clf_LR.predict(X_test)
-)  # Logistic Regression
-cm_svc = confusion_matrix(
-    y_test, clf_SVC.predict(X_test)
-)  # C-Support Vector Machine
+cm_lr = confusion_matrix(y_test, clf_LR.predict(X_test))  # Logistic Regression
+cm_svc = confusion_matrix(y_test, clf_SVC.predict(
+    X_test))  # C-Support Vector Machine
 
 fig, ax = plt.subplots(
     nrows=2,
@@ -513,9 +490,8 @@ df_CMRC = defDataFrame(
     model=clf_CMRC, x_test=X_test, y_test=y_test, threshold=threshold
 )
 threshold = 0.4
-df_MRC = defDataFrame(
-    model=clf_MRC, x_test=X_test, y_test=y_test, threshold=threshold
-)
+df_MRC = defDataFrame(model=clf_MRC, x_test=X_test,
+                      y_test=y_test, threshold=threshold)
 pd.DataFrame(
     classification_report(
         df_CMRC.Real,
@@ -523,9 +499,7 @@ pd.DataFrame(
         target_names=["Survive", "Decease"],
         output_dict=True,
     )
-).style.set_caption(
-    "Classification report CMRC \n adjusted threshold"
-).format(
+).style.set_caption("Classification report CMRC \n adjusted threshold").format(
     precision=3
 )
 #############################################

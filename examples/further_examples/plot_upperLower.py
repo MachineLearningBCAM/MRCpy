@@ -25,21 +25,17 @@ feature of the MRCs. The results are for a
 # Import needed modules
 import time
 
+from imblearn.over_sampling import SMOTE
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from sklearn import preprocessing
+from sklearn.model_selection import RepeatedStratifiedKFold
+
 from MRCpy import MRC
 from MRCpy.datasets import *
 
-from imblearn.over_sampling import SMOTE
-
-import matplotlib.pyplot as plt
-
-import numpy as np
-
-import pandas as pd
-
-import seaborn as sns
-
-from sklearn import preprocessing
-from sklearn.model_selection import RepeatedStratifiedKFold
 
 sns.set_style("whitegrid")
 sns.set_context("paper")
@@ -87,13 +83,10 @@ def load_covid(norm=False, array=True):
         data_consensus = pd.concat(
             [dataframex_consensus, data_consensus[["Status"]]], axis=1
         )
-
-    data_consensus = data_consensus[
-        data_consensus.columns.difference(["PATIENT_ID"])
-    ]
-    X = data_consensus[
-        data_consensus.columns.difference(["Status", "PATIENT_ID"])
-    ]
+    data_consensus = data_consensus[data_consensus.columns.difference(
+        ["PATIENT_ID"])]
+    X = data_consensus[data_consensus.columns.difference(
+        ["Status", "PATIENT_ID"])]
     y = data_consensus["Status"]
     if array:
         X = X.to_numpy()
@@ -130,8 +123,7 @@ def getUpperLowerdf(train_size, X, y, cv, paramsMRC, smote=True):
             y_train, y_test = y[train_index], y[test_index]
 
             random_indices = np.random.choice(
-                X_train.shape[0],
-                size=int(X.shape[0] * train_set),
+                X_train.shape[0], size=int(X.shape[0] * train_set),
                 replace=False,
             )
             X_train = X_train[random_indices, :]
@@ -140,19 +132,12 @@ def getUpperLowerdf(train_size, X, y, cv, paramsMRC, smote=True):
             X_train = std_scale.transform(X_train)
             X_test = std_scale.transform(X_test)
             start_time = time.time()
-            MRC_model = MRC(phi="fourier", s=1, **paramsMRC).fit(
-                X_train, y_train
-            )
+            MRC_model = MRC(phi="fourier", s=1, **
+                            paramsMRC).fit(X_train, y_train)
             train_time = time.time() - start_time
             auxtable = pd.DataFrame(
-                columns=[
-                    "Error",
-                    "Upper",
-                    "Lower",
-                    "iteration",
-                    "train_size",
-                    "Time",
-                ],
+                columns=["Error", "Upper", "Lower", "iteration", "train_size",
+                         "Time", ],
                 index=range(0, 1),
             )
             auxtable["train_size"] = train_set
@@ -200,9 +185,8 @@ train = np.arange(0.1, 0.81, 0.1)
 
 n_splits = 5
 n_repeats = 10
-cv = RepeatedStratifiedKFold(
-    n_splits=n_splits, n_repeats=n_repeats, random_state=1
-)
+cv = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats,
+                             random_state=1)
 
 ############################
 # Results
@@ -221,17 +205,14 @@ X, y = load_mammographic()
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
 # dataframes.append(table)
 # plotUpperLower(table)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(["iteration"])].groupby(
+    "train_size").mean()
+std = table[table.columns.difference(["iteration"])].groupby(
+    "train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(str) + " ± " + std[column].round(
+            3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 
@@ -265,17 +246,14 @@ plt.show()
 
 X, y = load_haberman()
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").mean()
+std = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(
+            str) + " ± " + std[column].round(3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 
@@ -309,17 +287,14 @@ plt.show()
 X, y = load_indian_liver()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").mean()
+std = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(str) + " ± " +
+        std[column].round(3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 #######################################
@@ -351,17 +326,14 @@ plt.show()
 X, y = load_diabetes()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").mean()
+std = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(str) + " ± " +
+        std[column].round(3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 
@@ -394,17 +366,14 @@ plt.show()
 X, y = load_credit()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").mean()
+std = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(str) + " ± " +
+        std[column].round(3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 
@@ -437,17 +406,14 @@ plt.show()
 X, y = load_covid()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-means = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").mean()
-)
-std = (
-    table[table.columns.difference(["iteration"])].groupby("train_size").std()
-)
+means = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").mean()
+std = table[table.columns.difference(
+    ["iteration"])].groupby("train_size").std()
 for column in means.columns:
     means[column] = (
-        means[column].round(3).astype(str)
-        + " ± "
-        + std[column].round(3).astype(str)
+        means[column].round(3).astype(str) + " ± " +
+        std[column].round(3).astype(str)
     )
 means[["Error", "Upper", "Lower", "Time"]]
 
