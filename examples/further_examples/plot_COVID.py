@@ -41,32 +41,30 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 
 """
-# Import needed modules
-import seaborn as sns
+from MRCpy import CMRC, MRC
+
+from imblearn.over_sampling import SMOTENC
+
 import matplotlib.pyplot as plt
+
 import numpy as np
+
 import pandas as pd
 
-# sklearn
+import seaborn as sns
+
 from sklearn import preprocessing
-from sklearn.metrics import (
-    classification_report,
-    confusion_matrix,
-    ConfusionMatrixDisplay
-)
-from sklearn.model_selection import train_test_split
-# SMOTE over-sampling
-from imblearn.over_sampling import SMOTENC
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (ConfusionMatrixDisplay, classification_report,
+                             confusion_matrix)
+from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-
-
-# MRCpy
-from MRCpy import CMRC, MRC
 
 #############################################
 # COVID dataset Loader:
 # --------------------------------
+
+
 def load_covid(norm=False, array=True):
     data_consensus = pd.read_csv("data/data_consensus.csv", sep=";")
     # rename variables
