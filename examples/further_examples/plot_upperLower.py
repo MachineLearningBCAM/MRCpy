@@ -23,25 +23,22 @@ feature of the MRCs. The results are for a
 """
 
 # Import needed modules
-import pandas as pd
-import numpy as np
 import time
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-# sklearn
+import numpy as np
+import pandas as pd
+
 from sklearn import preprocessing
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import RepeatedStratifiedKFold
 
-# SMOTE over-sampling
-from imblearn.over_sampling import SMOTE
-
-# MRCpy
 from MRCpy import MRC
 from MRCpy.datasets import *
 
-# Data visualisation
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 sns.set_style("whitegrid")
 sns.set_context("paper")
 

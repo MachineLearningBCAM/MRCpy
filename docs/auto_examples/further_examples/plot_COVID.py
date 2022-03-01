@@ -4,7 +4,8 @@
 .. _ex_covid:
 
 
-Example: Predicting COVID-19 patients outcome using MRCs
+Example: Predicting COVID-19 patients outcome using MRCs in highly class
+imbalanced dataset.
 ==================================================================
 
 In this example we will use `MRCpy.MRC` and `MRCpy.CMRC` to predict the outcome
@@ -41,30 +42,27 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 """
 # Import needed modules
-import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 # sklearn
 from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
-    ConfusionMatrixDisplay,
     classification_report,
     confusion_matrix,
+    ConfusionMatrixDisplay
 )
-from sklearn.svm import SVC
-from sklearn.linear_model import LogisticRegression
-
+from sklearn.model_selection import train_test_split
 # SMOTE over-sampling
 from imblearn.over_sampling import SMOTENC
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+
 
 # MRCpy
-from MRCpy import MRC, CMRC
-
-# Data visualisation
-import seaborn as sns
-import matplotlib.pyplot as plt
-
+from MRCpy import CMRC, MRC
 
 #############################################
 # COVID dataset Loader:
