@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" href="plot_grid.html" />
-    <link rel="prev" title="Example: Predicting COVID-19 patients outcome using MRCs in highly class imbalanced dataset." href="plot_COVID.html" /> 
+    <link rel="prev" title="COVID dataset Loader:" href="plot_COVID.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,7 +53,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="plot_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs in highly class imbalanced dataset.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_COVID.html">COVID dataset Loader:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_COVID.html#addressing-dataset-imbalance-with-smote">Addressing dataset imbalance with SMOTE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_COVID.html#probability-estimation">Probability estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_COVID.html#results">Results:</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Use of Upper and Lower bound as error estimation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#cross-test-validation">Cross test validation</a></li>
 </ul>
@@ -108,80 +111,100 @@ to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-use-of-upper-and-lower-bound-as-error-estimation">
 <span id="pruebas"></span><span id="sphx-glr-auto-examples-further-examples-plot-upperlower-py"></span><h1>Example: Use of Upper and Lower bound as error estimation<a class="headerlink" href="#example-use-of-upper-and-lower-bound-as-error-estimation" title="Permalink to this headline"></a></h1>
-<p>This example is an extension to <a class="reference internal" href="../plot_example2.html#ex2"><span class="std std-ref">Example: Use of CMRC with different settings</span></a> where we will prove how the upper and lower
-bound of the loss are an unbiased estimator of the error. The models are trained
-with different number of cases ranging from 10% to 80% of the data and then are
-tested with 20% of the samples. The graphs show how in most of the cases
-the error is between those bounds which proves the potential of this feature of
-the MRCs. The results are for a <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier',</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'0-1',</span> <span class="pre">s</span> <span class="pre">=</span> <span class="pre">1)</span></code></p>
+<p>This example is an extension to <a class="reference internal" href="../plot_example2.html#ex2"><span class="std std-ref">Example: Use of CMRC with different settings</span></a> where we will prove how the upper and
+lower bound of the loss are an unbiased estimator of the error. The models are
+trained with different number of cases ranging from 10% to 80% of the data and
+then are tested with 20% of the samples. The graphs show how in most of the
+cases the error is between those bounds which proves the potential of this
+feature of the MRCs. The results are for a
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier',</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'0-1',</span> <span class="pre">s</span> <span class="pre">=</span> <span class="pre">1)</span></code></p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Note that there is an additional dataset related to COVID-19 patients
-that is available upon requesting to HM Hospitales <a class="reference external" href="https://www.hmhospitales.com/coronavirus/covid-data-save-lives/english-version">here</a>  .
-More information about this dataset can be found in the <a class="reference internal" href="plot_COVID.html#ex-covid"><span class="std std-ref">COVID example</span></a></p>
+<p class="last">Note that there is an additional dataset related to COVID-19
+patients that is available upon requesting to HM Hospitales
+<a class="reference external" href="www.hmhospitales.com/coronavirus/covid-data-save-lives/">here</a>.
+More information about this dataset can be found in the
+<a class="reference internal" href="plot_COVID.html#ex-covid"><span class="std std-ref">COVID example</span></a></p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">tabulate</span>
-
-<span class="c1"># sklearn</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span><span class="p">,</span> <span class="n">RepeatedStratifiedKFold</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span><span class="p">,</span> <span class="n">classification_report</span>
-<span class="c1"># SMOTE over-sampling</span>
-<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
-
-<span class="c1">#MRCpy</span>
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span><span class="p">,</span><span class="n">CMRC</span>
-
-<span class="c1"># Data visualisation</span>
-
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedStratifiedKFold</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span>
+<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 
-<span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">array</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">):</span>
+<span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/data_consensus.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
 
-    <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;CD0000AGE&#39;</span><span class="p">:</span> <span class="s1">&#39;Age&#39;</span><span class="p">,</span> <span class="s1">&#39;CORE&#39;</span><span class="p">:</span> <span class="s1">&#39;PATIENT_ID&#39;</span><span class="p">,</span> <span class="s1">&#39;CT000000U&#39;</span><span class="p">:</span> <span class="s1">&#39;Urea&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT00000BT&#39;</span><span class="p">:</span> <span class="s1">&#39;Bilirubin&#39;</span><span class="p">,</span> <span class="s1">&#39;CT00000NA&#39;</span><span class="p">:</span> <span class="s1">&#39;Sodium&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT00000TP&#39;</span><span class="p">:</span> <span class="s1">&#39;Proth_time&#39;</span><span class="p">,</span> <span class="s1">&#39;CT0000COM&#39;</span><span class="p">:</span> <span class="s1">&#39;Com&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT0000LDH&#39;</span><span class="p">:</span> <span class="s1">&#39;LDH&#39;</span><span class="p">,</span> <span class="s1">&#39;CT0000NEU&#39;</span><span class="p">:</span> <span class="s1">&#39;Neutrophils&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT0000PCR&#39;</span><span class="p">:</span> <span class="s1">&#39;Pro_C_Rea&#39;</span><span class="p">,</span> <span class="s1">&#39;CT0000VCM&#39;</span><span class="p">:</span> <span class="s1">&#39;Med_corp_vol&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT000APTT&#39;</span><span class="p">:</span> <span class="s1">&#39;Ceph_time&#39;</span><span class="p">,</span><span class="s1">&#39;CT000CHCM&#39;</span><span class="p">:</span> <span class="s1">&#39;Mean_corp_Hgb&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT000EOSP&#39;</span><span class="p">:</span> <span class="s1">&#39;Eosinophils%&#39;</span><span class="p">,</span> <span class="s1">&#39;CT000LEUC&#39;</span><span class="p">:</span> <span class="s1">&#39;Leukocytes&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT000LINP&#39;</span><span class="p">:</span> <span class="s1">&#39;Lymphocytes%&#39;</span><span class="p">,</span> <span class="s1">&#39;CT000NEUP&#39;</span><span class="p">:</span> <span class="s1">&#39;Neutrophils%&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CT000PLAQ&#39;</span><span class="p">:</span> <span class="s1">&#39;Platelet_count&#39;</span><span class="p">,</span> <span class="s1">&#39;CTHSDXXRATE&#39;</span><span class="p">:</span> <span class="s1">&#39;Rate&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;CTHSDXXSAT&#39;</span><span class="p">:</span> <span class="s1">&#39;Sat&#39;</span><span class="p">,</span> <span class="s1">&#39;ED0DISWHY&#39;</span><span class="p">:</span> <span class="s1">&#39;Status&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;F_INGRESO/ADMISSION_D_ING/INPAT&#39;</span><span class="p">:</span> <span class="s1">&#39;Fecha_admision&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;SEXO/SEX&#39;</span><span class="p">:</span> <span class="s1">&#39;Sexo&#39;</span><span class="p">}</span>
+    <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;CD0000AGE&quot;</span><span class="p">:</span> <span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CORE&quot;</span><span class="p">:</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000000U&quot;</span><span class="p">:</span> <span class="s2">&quot;Urea&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000BT&quot;</span><span class="p">:</span> <span class="s2">&quot;Bilirubin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000NA&quot;</span><span class="p">:</span> <span class="s2">&quot;Sodium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000TP&quot;</span><span class="p">:</span> <span class="s2">&quot;Proth_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000COM&quot;</span><span class="p">:</span> <span class="s2">&quot;Com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000LDH&quot;</span><span class="p">:</span> <span class="s2">&quot;LDH&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000NEU&quot;</span><span class="p">:</span> <span class="s2">&quot;Neutrophils&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000PCR&quot;</span><span class="p">:</span> <span class="s2">&quot;Pro_C_Rea&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000VCM&quot;</span><span class="p">:</span> <span class="s2">&quot;Med_corp_vol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000APTT&quot;</span><span class="p">:</span> <span class="s2">&quot;Ceph_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000CHCM&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean_corp_Hgb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000EOSP&quot;</span><span class="p">:</span> <span class="s2">&quot;Eosinophils%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000LEUC&quot;</span><span class="p">:</span> <span class="s2">&quot;Leukocytes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000LINP&quot;</span><span class="p">:</span> <span class="s2">&quot;Lymphocytes%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000NEUP&quot;</span><span class="p">:</span> <span class="s2">&quot;Neutrophils%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000PLAQ&quot;</span><span class="p">:</span> <span class="s2">&quot;Platelet_count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CTHSDXXRATE&quot;</span><span class="p">:</span> <span class="s2">&quot;Rate&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CTHSDXXSAT&quot;</span><span class="p">:</span> <span class="s2">&quot;Sat&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ED0DISWHY&quot;</span><span class="p">:</span> <span class="s2">&quot;Status&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F_INGRESO/ADMISSION_D_ING/INPAT&quot;</span><span class="p">:</span> <span class="s2">&quot;Fecha_admision&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;SEXO/SEX&quot;</span><span class="p">:</span> <span class="s2">&quot;Sexo&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">variable_dict</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-        <span class="n">x_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
-            <span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">,</span> <span class="s1">&#39;PATIENT_ID&#39;</span><span class="p">])][:]</span>
+        <span class="n">x_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
+            <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
+        <span class="p">][:]</span>
         <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_consensus</span><span class="p">)</span>
         <span class="n">x_consensus_std</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_consensus</span><span class="p">)</span>
         <span class="n">dataframex_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">x_consensus_std</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">x_consensus</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="n">x_consensus_std</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">x_consensus</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">)</span>
         <span class="n">data_consensus</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">dataframex_consensus</span><span class="p">,</span> <span class="n">data_consensus</span><span class="p">[[</span><span class="s2">&quot;Status&quot;</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">[</span><span class="n">dataframex_consensus</span><span class="p">,</span> <span class="n">data_consensus</span><span class="p">[[</span><span class="s2">&quot;Status&quot;</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
 
-    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span>
-                                                                      <span class="s1">&#39;PATIENT_ID&#39;</span><span class="p">])]</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
-        <span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">,</span> <span class="s1">&#39;PATIENT_ID&#39;</span><span class="p">])]</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s1">&#39;Status&#39;</span><span class="p">]</span>
+    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
+        <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
+    <span class="p">]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
+        <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
+    <span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">array</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span><span class="n">y</span>
-<span class="k">def</span> <span class="nf">getUpperLowerdf</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">,</span> <span class="n">smote</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">getUpperLowerdf</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">,</span> <span class="n">smote</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    train_size : array</span>
@@ -191,15 +214,16 @@ More information about this dataset can be found in the <a class="reference inte
 <span class="sd">    paramsMRC : TYPE</span>
 <span class="sd">        Parameters for the MRCs.</span>
 <span class="sd">    smote : Bool, optional</span>
-<span class="sd">        Class imbalance corrector, set to false to disable. The default is True.</span>
+<span class="sd">        Class imbalance corrector, set to false to disable. The default is</span>
+<span class="sd">        True.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    table : dataFrame</span>
 <span class="sd">        Dataframe with the results of the training for each training size.</span>
 
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">smote</span><span class="p">:</span>
-        <span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+        <span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
         <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">train_set</span> <span class="ow">in</span> <span class="n">train_size</span><span class="p">:</span>
@@ -207,35 +231,68 @@ More information about this dataset can be found in the <a class="reference inte
             <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
             <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
 
-            <span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">train_set</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">random_indices</span><span class="p">,:]</span>
+            <span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
+                <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">train_set</span><span class="p">),</span>
+                <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">random_indices</span><span class="p">,</span> <span class="p">:]</span>
             <span class="n">y_train</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">[</span><span class="n">random_indices</span><span class="p">]</span>
             <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
             <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
             <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">MRC_model</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;fourier&#39;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">paramsMRC</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-            <span class="n">train_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start_time</span>
-            <span class="n">auxtable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;iteration&#39;</span><span class="p">,</span> <span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">],</span> <span class="n">index</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;train_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_set</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;iteration&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">MRC_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span><span class="n">y_test</span><span class="p">)</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_time</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;Upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MRC_model</span><span class="o">.</span><span class="n">get_upper_bound</span><span class="p">()</span>
-            <span class="n">auxtable</span><span class="p">[</span><span class="s1">&#39;Lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MRC_model</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">()</span>
+            <span class="n">MRC_model</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;fourier&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">paramsMRC</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+                <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span>
+            <span class="p">)</span>
+            <span class="n">train_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="n">auxtable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;Error&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;iteration&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Time&quot;</span><span class="p">,</span>
+                <span class="p">],</span>
+                <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;train_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_set</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">MRC_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;Time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_time</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;Upper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MRC_model</span><span class="o">.</span><span class="n">get_upper_bound</span><span class="p">()</span>
+            <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;Lower&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MRC_model</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">()</span>
 
-            <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auxtable</span><span class="p">,</span> <span class="n">ignore_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">auxtable</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">table</span>
 
-<span class="c1"># Import the datasets</span>
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
+
 <span class="c1"># Data sets</span>
-<span class="n">loaders</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_mammographic</span><span class="p">,</span> <span class="n">load_haberman</span><span class="p">,</span> <span class="n">load_indian_liver</span><span class="p">,</span>
-           <span class="n">load_diabetes</span><span class="p">,</span> <span class="n">load_credit</span><span class="p">,</span> <span class="n">load_covid</span><span class="p">]</span>
-<span class="n">dataName</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mammographic&quot;</span><span class="p">,</span> <span class="s2">&quot;haberman&quot;</span><span class="p">,</span> <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">,</span><span class="s1">&#39;COVID&#39;</span><span class="p">]</span>
-<span class="n">paramsMRC</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;deterministic&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span><span class="s1">&#39;fit_intercept&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;use_cvx&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="s1">&#39;0-1&#39;</span><span class="p">}</span>
-<span class="n">train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.81</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">loaders</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">load_mammographic</span><span class="p">,</span>
+    <span class="n">load_haberman</span><span class="p">,</span>
+    <span class="n">load_indian_liver</span><span class="p">,</span>
+    <span class="n">load_diabetes</span><span class="p">,</span>
+    <span class="n">load_credit</span><span class="p">,</span>
+    <span class="n">load_covid</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">dataName</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;mammographic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;haberman&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;credit&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;COVID&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">paramsMRC</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;deterministic&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;fit_intercept&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;use_cvx&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.81</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="cross-test-validation">
@@ -244,7 +301,9 @@ More information about this dataset can be found in the <a class="reference inte
 fold is trained with 80% of the data and then tested with the remaining 20%</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">n_repeats</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span><span class="n">n_repeats</span> <span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span>
+    <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -252,20 +311,30 @@ fold is trained with 80% of the data and then tested with the remaining 20%</p>
 <div class="section" id="results">
 <h1>Results<a class="headerlink" href="#results" title="Permalink to this headline"></a></h1>
 <p>We will present the results for the 6 datasets. For more information
-about the dataset refer to the <a class="reference external" href="https://machinelearningbcam.github.io/MRCpy/getting_started.html#dataset-loaders">MRCpy documentation</a> of the loaders.
-In the results we can see how the upper and lower bounds get closer when the training
-size is increased. Furthermore, the standard deviation of both bounds is reduced significantly.</p>
+about the dataset refer to the
+<a class="reference external" href="https://machinelearningbcam.github.io/MRCpy">MRCpy documentation</a> of the
+loaders. In the results we can see how the upper and lower bounds get closer
+when the training size is increased. Furthermore, the standard deviation of
+both bounds is reduced significantly.</p>
 <div class="section" id="mammographic">
 <h2>Mammographic<a class="headerlink" href="#mammographic" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">()</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
 <span class="c1"># dataframes.append(table)</span>
 <span class="c1"># plotUpperLower(table)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -303,59 +372,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.222 ± 0.032</td>
-      <td>0.235 ± 0.029</td>
-      <td>0.147 ± 0.031</td>
-      <td>0.221 ± 0.043</td>
+      <td>0.221 ± 0.035</td>
+      <td>0.235 ± 0.028</td>
+      <td>0.149 ± 0.031</td>
+      <td>0.223 ± 0.035</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.202 ± 0.028</td>
-      <td>0.22 ± 0.022</td>
-      <td>0.144 ± 0.024</td>
-      <td>0.354 ± 0.022</td>
+      <td>0.21 ± 0.033</td>
+      <td>0.221 ± 0.022</td>
+      <td>0.146 ± 0.025</td>
+      <td>0.361 ± 0.039</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.203 ± 0.032</td>
-      <td>0.217 ± 0.015</td>
-      <td>0.149 ± 0.017</td>
-      <td>0.527 ± 0.036</td>
+      <td>0.197 ± 0.029</td>
+      <td>0.214 ± 0.016</td>
+      <td>0.146 ± 0.016</td>
+      <td>0.531 ± 0.03</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.2 ± 0.028</td>
-      <td>0.214 ± 0.016</td>
-      <td>0.152 ± 0.02</td>
-      <td>0.62 ± 0.033</td>
+      <td>0.198 ± 0.029</td>
+      <td>0.215 ± 0.017</td>
+      <td>0.154 ± 0.018</td>
+      <td>0.624 ± 0.05</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.2 ± 0.03</td>
-      <td>0.216 ± 0.015</td>
-      <td>0.16 ± 0.018</td>
-      <td>0.718 ± 0.033</td>
+      <td>0.199 ± 0.029</td>
+      <td>0.217 ± 0.016</td>
+      <td>0.159 ± 0.018</td>
+      <td>0.725 ± 0.035</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.197 ± 0.031</td>
-      <td>0.216 ± 0.012</td>
-      <td>0.164 ± 0.015</td>
-      <td>0.844 ± 0.041</td>
+      <td>0.201 ± 0.031</td>
+      <td>0.215 ± 0.014</td>
+      <td>0.161 ± 0.016</td>
+      <td>0.837 ± 0.045</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.197 ± 0.031</td>
-      <td>0.215 ± 0.01</td>
-      <td>0.165 ± 0.013</td>
-      <td>0.954 ± 0.039</td>
+      <td>0.196 ± 0.027</td>
+      <td>0.215 ± 0.011</td>
+      <td>0.163 ± 0.011</td>
+      <td>0.955 ± 0.051</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.2 ± 0.029</td>
-      <td>0.216 ± 0.008</td>
-      <td>0.167 ± 0.01</td>
-      <td>1.056 ± 0.044</td>
+      <td>0.2 ± 0.028</td>
+      <td>0.215 ± 0.009</td>
+      <td>0.165 ± 0.011</td>
+      <td>1.044 ± 0.039</td>
     </tr>
   </tbody>
 </table>
@@ -363,10 +432,26 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Mammographic&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Mammographic&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -375,11 +460,19 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 <h2>Haberman<a class="headerlink" href="#haberman" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -417,59 +510,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.444 ± 0.057</td>
-      <td>0.424 ± 0.032</td>
-      <td>0.319 ± 0.047</td>
-      <td>0.112 ± 0.017</td>
+      <td>0.435 ± 0.054</td>
+      <td>0.417 ± 0.033</td>
+      <td>0.305 ± 0.05</td>
+      <td>0.132 ± 0.023</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.396 ± 0.052</td>
-      <td>0.406 ± 0.024</td>
-      <td>0.295 ± 0.035</td>
-      <td>0.191 ± 0.023</td>
+      <td>0.412 ± 0.057</td>
+      <td>0.4 ± 0.024</td>
+      <td>0.301 ± 0.029</td>
+      <td>0.203 ± 0.032</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.378 ± 0.054</td>
-      <td>0.398 ± 0.017</td>
-      <td>0.296 ± 0.028</td>
-      <td>0.27 ± 0.019</td>
+      <td>0.408 ± 0.04</td>
+      <td>0.403 ± 0.017</td>
+      <td>0.307 ± 0.023</td>
+      <td>0.288 ± 0.034</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.372 ± 0.052</td>
-      <td>0.391 ± 0.018</td>
-      <td>0.294 ± 0.025</td>
-      <td>0.333 ± 0.022</td>
+      <td>0.39 ± 0.051</td>
+      <td>0.393 ± 0.018</td>
+      <td>0.305 ± 0.023</td>
+      <td>0.35 ± 0.03</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.374 ± 0.046</td>
-      <td>0.387 ± 0.014</td>
-      <td>0.291 ± 0.02</td>
-      <td>0.427 ± 0.026</td>
+      <td>0.392 ± 0.056</td>
+      <td>0.397 ± 0.014</td>
+      <td>0.305 ± 0.021</td>
+      <td>0.435 ± 0.033</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.368 ± 0.045</td>
-      <td>0.384 ± 0.012</td>
-      <td>0.291 ± 0.015</td>
-      <td>0.506 ± 0.027</td>
+      <td>0.385 ± 0.042</td>
+      <td>0.393 ± 0.012</td>
+      <td>0.301 ± 0.017</td>
+      <td>0.528 ± 0.036</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.354 ± 0.047</td>
-      <td>0.38 ± 0.01</td>
-      <td>0.288 ± 0.013</td>
-      <td>0.552 ± 0.031</td>
+      <td>0.378 ± 0.042</td>
+      <td>0.389 ± 0.009</td>
+      <td>0.301 ± 0.014</td>
+      <td>0.566 ± 0.037</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.366 ± 0.059</td>
-      <td>0.379 ± 0.007</td>
-      <td>0.289 ± 0.009</td>
-      <td>0.609 ± 0.03</td>
+      <td>0.383 ± 0.049</td>
+      <td>0.387 ± 0.007</td>
+      <td>0.302 ± 0.01</td>
+      <td>0.621 ± 0.035</td>
     </tr>
   </tbody>
 </table>
@@ -477,10 +570,26 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Haberman&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Haberman&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -490,11 +599,19 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_indian_liver</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -532,59 +649,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.388 ± 0.043</td>
-      <td>0.37 ± 0.028</td>
-      <td>0.258 ± 0.033</td>
-      <td>0.172 ± 0.019</td>
+      <td>0.394 ± 0.041</td>
+      <td>0.373 ± 0.034</td>
+      <td>0.262 ± 0.038</td>
+      <td>0.19 ± 0.032</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.364 ± 0.039</td>
-      <td>0.367 ± 0.022</td>
-      <td>0.266 ± 0.026</td>
-      <td>0.313 ± 0.03</td>
+      <td>0.382 ± 0.034</td>
+      <td>0.38 ± 0.027</td>
+      <td>0.283 ± 0.031</td>
+      <td>0.33 ± 0.028</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.358 ± 0.036</td>
-      <td>0.359 ± 0.015</td>
-      <td>0.267 ± 0.018</td>
-      <td>0.478 ± 0.03</td>
+      <td>0.363 ± 0.031</td>
+      <td>0.378 ± 0.018</td>
+      <td>0.289 ± 0.02</td>
+      <td>0.504 ± 0.046</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.354 ± 0.036</td>
-      <td>0.363 ± 0.011</td>
-      <td>0.277 ± 0.015</td>
-      <td>0.579 ± 0.028</td>
+      <td>0.366 ± 0.032</td>
+      <td>0.373 ± 0.011</td>
+      <td>0.287 ± 0.015</td>
+      <td>0.594 ± 0.04</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.352 ± 0.039</td>
-      <td>0.362 ± 0.011</td>
-      <td>0.28 ± 0.014</td>
-      <td>0.707 ± 0.03</td>
+      <td>0.363 ± 0.032</td>
+      <td>0.375 ± 0.009</td>
+      <td>0.293 ± 0.012</td>
+      <td>0.745 ± 0.058</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.348 ± 0.031</td>
-      <td>0.364 ± 0.008</td>
-      <td>0.284 ± 0.01</td>
-      <td>0.856 ± 0.026</td>
+      <td>0.355 ± 0.035</td>
+      <td>0.37 ± 0.008</td>
+      <td>0.293 ± 0.011</td>
+      <td>0.873 ± 0.045</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.348 ± 0.031</td>
-      <td>0.361 ± 0.006</td>
-      <td>0.283 ± 0.008</td>
-      <td>1.02 ± 0.049</td>
+      <td>0.358 ± 0.033</td>
+      <td>0.371 ± 0.007</td>
+      <td>0.294 ± 0.008</td>
+      <td>1.011 ± 0.047</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.346 ± 0.038</td>
-      <td>0.361 ± 0.005</td>
-      <td>0.285 ± 0.008</td>
-      <td>1.142 ± 0.048</td>
+      <td>0.359 ± 0.034</td>
+      <td>0.371 ± 0.004</td>
+      <td>0.297 ± 0.007</td>
+      <td>1.153 ± 0.065</td>
     </tr>
   </tbody>
 </table>
@@ -592,10 +709,26 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Indian Liver&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Indian Liver&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -605,11 +738,19 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -647,59 +788,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.321 ± 0.038</td>
-      <td>0.319 ± 0.023</td>
-      <td>0.226 ± 0.028</td>
-      <td>0.207 ± 0.023</td>
+      <td>0.325 ± 0.034</td>
+      <td>0.326 ± 0.027</td>
+      <td>0.231 ± 0.028</td>
+      <td>0.222 ± 0.038</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.303 ± 0.032</td>
-      <td>0.313 ± 0.017</td>
-      <td>0.234 ± 0.018</td>
-      <td>0.371 ± 0.02</td>
+      <td>0.314 ± 0.042</td>
+      <td>0.322 ± 0.016</td>
+      <td>0.244 ± 0.021</td>
+      <td>0.385 ± 0.042</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.303 ± 0.03</td>
-      <td>0.314 ± 0.013</td>
-      <td>0.24 ± 0.014</td>
-      <td>0.591 ± 0.05</td>
+      <td>0.304 ± 0.038</td>
+      <td>0.316 ± 0.014</td>
+      <td>0.241 ± 0.017</td>
+      <td>0.608 ± 0.088</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.302 ± 0.034</td>
-      <td>0.308 ± 0.012</td>
-      <td>0.241 ± 0.014</td>
-      <td>0.703 ± 0.039</td>
+      <td>0.303 ± 0.026</td>
+      <td>0.313 ± 0.009</td>
+      <td>0.24 ± 0.014</td>
+      <td>0.702 ± 0.039</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.301 ± 0.038</td>
-      <td>0.309 ± 0.007</td>
-      <td>0.241 ± 0.012</td>
-      <td>0.884 ± 0.049</td>
+      <td>0.296 ± 0.022</td>
+      <td>0.311 ± 0.01</td>
+      <td>0.246 ± 0.01</td>
+      <td>0.923 ± 0.164</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.295 ± 0.039</td>
-      <td>0.307 ± 0.009</td>
-      <td>0.245 ± 0.008</td>
-      <td>1.05 ± 0.035</td>
+      <td>0.295 ± 0.028</td>
+      <td>0.309 ± 0.008</td>
+      <td>0.244 ± 0.01</td>
+      <td>1.061 ± 0.045</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.287 ± 0.031</td>
-      <td>0.304 ± 0.008</td>
-      <td>0.243 ± 0.008</td>
-      <td>1.23 ± 0.043</td>
+      <td>0.291 ± 0.027</td>
+      <td>0.306 ± 0.006</td>
+      <td>0.245 ± 0.008</td>
+      <td>1.233 ± 0.069</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.294 ± 0.031</td>
-      <td>0.304 ± 0.005</td>
+      <td>0.288 ± 0.034</td>
+      <td>0.307 ± 0.006</td>
       <td>0.244 ± 0.007</td>
-      <td>1.412 ± 0.046</td>
+      <td>1.409 ± 0.059</td>
     </tr>
   </tbody>
 </table>
@@ -707,10 +848,26 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Diabetes&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Diabetes&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -720,11 +877,19 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -762,59 +927,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.185 ± 0.033</td>
-      <td>0.226 ± 0.035</td>
-      <td>0.067 ± 0.039</td>
-      <td>0.161 ± 0.019</td>
+      <td>0.181 ± 0.029</td>
+      <td>0.229 ± 0.032</td>
+      <td>0.066 ± 0.034</td>
+      <td>0.183 ± 0.04</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.171 ± 0.03</td>
-      <td>0.204 ± 0.017</td>
-      <td>0.078 ± 0.018</td>
-      <td>0.298 ± 0.016</td>
+      <td>0.169 ± 0.028</td>
+      <td>0.206 ± 0.022</td>
+      <td>0.08 ± 0.022</td>
+      <td>0.335 ± 0.043</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.168 ± 0.029</td>
-      <td>0.205 ± 0.017</td>
-      <td>0.097 ± 0.019</td>
-      <td>0.441 ± 0.024</td>
+      <td>0.159 ± 0.028</td>
+      <td>0.204 ± 0.019</td>
+      <td>0.096 ± 0.019</td>
+      <td>0.456 ± 0.042</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.169 ± 0.033</td>
-      <td>0.2 ± 0.011</td>
+      <td>0.164 ± 0.024</td>
+      <td>0.198 ± 0.011</td>
       <td>0.101 ± 0.012</td>
-      <td>0.557 ± 0.03</td>
+      <td>0.578 ± 0.035</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.165 ± 0.026</td>
-      <td>0.2 ± 0.013</td>
-      <td>0.107 ± 0.013</td>
-      <td>0.692 ± 0.03</td>
+      <td>0.165 ± 0.029</td>
+      <td>0.198 ± 0.013</td>
+      <td>0.108 ± 0.013</td>
+      <td>0.715 ± 0.041</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.17 ± 0.027</td>
-      <td>0.195 ± 0.011</td>
-      <td>0.111 ± 0.01</td>
-      <td>0.81 ± 0.035</td>
+      <td>0.163 ± 0.028</td>
+      <td>0.196 ± 0.008</td>
+      <td>0.111 ± 0.008</td>
+      <td>0.829 ± 0.038</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.166 ± 0.028</td>
-      <td>0.197 ± 0.008</td>
-      <td>0.117 ± 0.008</td>
-      <td>0.963 ± 0.049</td>
+      <td>0.169 ± 0.026</td>
+      <td>0.194 ± 0.008</td>
+      <td>0.114 ± 0.007</td>
+      <td>0.956 ± 0.036</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.169 ± 0.029</td>
-      <td>0.196 ± 0.007</td>
-      <td>0.118 ± 0.006</td>
-      <td>1.082 ± 0.042</td>
+      <td>0.158 ± 0.022</td>
+      <td>0.194 ± 0.007</td>
+      <td>0.117 ± 0.006</td>
+      <td>1.092 ± 0.053</td>
     </tr>
   </tbody>
 </table>
@@ -822,10 +987,26 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Credit&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Credit&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -835,11 +1016,19 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_covid</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;iteration&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;train_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; ± &#39;</span> <span class="o">+</span><span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<span class="n">means</span><span class="p">[[</span><span class="s1">&#39;Error&#39;</span><span class="p">,</span><span class="s1">&#39;Upper&#39;</span><span class="p">,</span><span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">]]</span>
+    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
+        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -877,59 +1066,59 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.278 ± 0.021</td>
-      <td>0.293 ± 0.013</td>
-      <td>0.183 ± 0.019</td>
-      <td>0.542 ± 0.03</td>
+      <td>0.272 ± 0.016</td>
+      <td>0.293 ± 0.011</td>
+      <td>0.188 ± 0.018</td>
+      <td>0.552 ± 0.041</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.271 ± 0.021</td>
-      <td>0.289 ± 0.01</td>
-      <td>0.198 ± 0.012</td>
-      <td>1.069 ± 0.04</td>
+      <td>0.267 ± 0.015</td>
+      <td>0.288 ± 0.009</td>
+      <td>0.195 ± 0.011</td>
+      <td>1.075 ± 0.046</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.265 ± 0.019</td>
-      <td>0.289 ± 0.008</td>
-      <td>0.202 ± 0.009</td>
-      <td>1.608 ± 0.166</td>
+      <td>0.259 ± 0.016</td>
+      <td>0.286 ± 0.007</td>
+      <td>0.202 ± 0.01</td>
+      <td>1.601 ± 0.063</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.264 ± 0.02</td>
-      <td>0.287 ± 0.007</td>
-      <td>0.207 ± 0.008</td>
-      <td>2.138 ± 0.07</td>
+      <td>0.263 ± 0.016</td>
+      <td>0.284 ± 0.006</td>
+      <td>0.2 ± 0.007</td>
+      <td>2.151 ± 0.081</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.264 ± 0.017</td>
-      <td>0.285 ± 0.006</td>
-      <td>0.206 ± 0.007</td>
-      <td>2.729 ± 0.064</td>
+      <td>0.258 ± 0.017</td>
+      <td>0.284 ± 0.006</td>
+      <td>0.204 ± 0.008</td>
+      <td>2.75 ± 0.08</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.259 ± 0.019</td>
-      <td>0.283 ± 0.005</td>
-      <td>0.207 ± 0.006</td>
-      <td>3.29 ± 0.081</td>
+      <td>0.261 ± 0.018</td>
+      <td>0.282 ± 0.006</td>
+      <td>0.206 ± 0.005</td>
+      <td>3.297 ± 0.084</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.263 ± 0.014</td>
-      <td>0.283 ± 0.005</td>
-      <td>0.208 ± 0.005</td>
-      <td>3.902 ± 0.084</td>
+      <td>0.252 ± 0.016</td>
+      <td>0.282 ± 0.005</td>
+      <td>0.206 ± 0.006</td>
+      <td>3.942 ± 0.111</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.257 ± 0.018</td>
-      <td>0.282 ± 0.005</td>
-      <td>0.208 ± 0.007</td>
-      <td>4.446 ± 0.098</td>
+      <td>0.257 ± 0.019</td>
+      <td>0.28 ± 0.005</td>
+      <td>0.208 ± 0.006</td>
+      <td>4.461 ± 0.115</td>
     </tr>
   </tbody>
 </table>
@@ -937,14 +1126,30 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Test Error&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Upper&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Upper bound&#39;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">table</span><span class="p">,</span><span class="n">x</span> <span class="o">=</span><span class="s1">&#39;train_size&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Lower&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Lower bound&#39;</span><span class="p">,</span>  <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;COVID&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
+    <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;COVID&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 73 minutes  14.371 seconds)</p>
+<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 73 minutes  59.652 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-plot-upperlower-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/9aad477d42f80a103f8fc4eea1115903/plot_upperLower.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_upperLower.py</span></code></a></div>
@@ -959,7 +1164,7 @@ size is increased. Furthermore, the standard deviation of both bounds is reduced
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plot_COVID.html" class="btn btn-neutral float-left" title="Example: Predicting COVID-19 patients outcome using MRCs in highly class imbalanced dataset." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_COVID.html" class="btn btn-neutral float-left" title="COVID dataset Loader:" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="plot_grid.html" class="btn btn-neutral float-right" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
