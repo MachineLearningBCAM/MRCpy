@@ -129,21 +129,17 @@ More information about this dataset can be found in the
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedStratifiedKFold</span>
+
 <span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span>
 <span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">RepeatedStratifiedKFold</span>
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
@@ -191,13 +187,10 @@ More information about this dataset can be found in the
         <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
             <span class="p">[</span><span class="n">dataframex_consensus</span><span class="p">,</span> <span class="n">data_consensus</span><span class="p">[[</span><span class="s2">&quot;Status&quot;</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
         <span class="p">)</span>
-
-    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
-        <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
-    <span class="p">]</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
-        <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
-    <span class="p">]</span>
+    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">array</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
@@ -234,8 +227,7 @@ More information about this dataset can be found in the
             <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
 
             <span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-                <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">train_set</span><span class="p">),</span>
+                <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">train_set</span><span class="p">),</span>
                 <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">random_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -244,19 +236,12 @@ More information about this dataset can be found in the
             <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
             <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="n">MRC_model</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;fourier&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">paramsMRC</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-                <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span>
-            <span class="p">)</span>
+            <span class="n">MRC_model</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;fourier&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span>
+                            <span class="n">paramsMRC</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
             <span class="n">train_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
             <span class="n">auxtable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;Error&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;iteration&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;Time&quot;</span><span class="p">,</span>
-                <span class="p">],</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
+                         <span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="p">],</span>
                 <span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">auxtable</span><span class="p">[</span><span class="s2">&quot;train_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">train_set</span>
@@ -303,9 +288,8 @@ More information about this dataset can be found in the
 fold is trained with 80% of the data and then tested with the remaining 20%</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">n_repeats</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span>
-    <span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span>
-<span class="p">)</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span>
+                             <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -324,17 +308,14 @@ both bounds is reduced significantly.</p>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
 <span class="c1"># dataframes.append(table)</span>
 <span class="c1"># plotUpperLower(table)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
+    <span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -374,59 +355,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.234 ± 0.03</td>
-      <td>0.245 ± 0.029</td>
-      <td>0.16 ± 0.031</td>
-      <td>0.235 ± 0.035</td>
+      <td>0.225 ± 0.029</td>
+      <td>0.241 ± 0.034</td>
+      <td>0.156 ± 0.034</td>
+      <td>0.232 ± 0.035</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.211 ± 0.031</td>
-      <td>0.225 ± 0.025</td>
-      <td>0.151 ± 0.029</td>
-      <td>0.385 ± 0.031</td>
+      <td>0.207 ± 0.036</td>
+      <td>0.223 ± 0.024</td>
+      <td>0.148 ± 0.025</td>
+      <td>0.383 ± 0.038</td>
     </tr>
     <tr>
       <th>0.3</th>
       <td>0.203 ± 0.03</td>
-      <td>0.221 ± 0.018</td>
-      <td>0.154 ± 0.018</td>
-      <td>0.59 ± 0.05</td>
+      <td>0.222 ± 0.015</td>
+      <td>0.155 ± 0.015</td>
+      <td>0.598 ± 0.091</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.203 ± 0.032</td>
-      <td>0.223 ± 0.014</td>
-      <td>0.161 ± 0.016</td>
-      <td>0.676 ± 0.037</td>
+      <td>0.202 ± 0.031</td>
+      <td>0.222 ± 0.019</td>
+      <td>0.16 ± 0.021</td>
+      <td>0.638 ± 0.037</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.202 ± 0.028</td>
-      <td>0.216 ± 0.016</td>
-      <td>0.159 ± 0.017</td>
-      <td>0.775 ± 0.037</td>
+      <td>0.203 ± 0.027</td>
+      <td>0.222 ± 0.013</td>
+      <td>0.163 ± 0.013</td>
+      <td>0.74 ± 0.038</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.208 ± 0.034</td>
-      <td>0.219 ± 0.012</td>
-      <td>0.166 ± 0.015</td>
-      <td>0.929 ± 0.053</td>
+      <td>0.2 ± 0.029</td>
+      <td>0.218 ± 0.014</td>
+      <td>0.164 ± 0.015</td>
+      <td>0.882 ± 0.088</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.197 ± 0.029</td>
-      <td>0.218 ± 0.01</td>
-      <td>0.167 ± 0.012</td>
-      <td>1.039 ± 0.063</td>
+      <td>0.201 ± 0.026</td>
+      <td>0.219 ± 0.009</td>
+      <td>0.166 ± 0.011</td>
+      <td>0.958 ± 0.057</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.195 ± 0.03</td>
-      <td>0.216 ± 0.009</td>
-      <td>0.168 ± 0.01</td>
-      <td>1.116 ± 0.036</td>
+      <td>0.2 ± 0.034</td>
+      <td>0.219 ± 0.009</td>
+      <td>0.17 ± 0.01</td>
+      <td>1.095 ± 0.111</td>
     </tr>
   </tbody>
 </table>
@@ -462,17 +443,14 @@ both bounds is reduced significantly.</p>
 <h2>Haberman<a class="headerlink" href="#haberman" title="Permalink to this headline"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -512,59 +490,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.411 ± 0.052</td>
-      <td>0.409 ± 0.035</td>
-      <td>0.297 ± 0.041</td>
-      <td>0.145 ± 0.028</td>
+      <td>0.417 ± 0.049</td>
+      <td>0.408 ± 0.048</td>
+      <td>0.295 ± 0.056</td>
+      <td>0.133 ± 0.022</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.377 ± 0.05</td>
-      <td>0.392 ± 0.029</td>
-      <td>0.295 ± 0.033</td>
-      <td>0.213 ± 0.025</td>
+      <td>0.4 ± 0.046</td>
+      <td>0.396 ± 0.024</td>
+      <td>0.296 ± 0.026</td>
+      <td>0.2 ± 0.025</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.372 ± 0.045</td>
-      <td>0.378 ± 0.023</td>
-      <td>0.285 ± 0.024</td>
-      <td>0.304 ± 0.031</td>
+      <td>0.377 ± 0.045</td>
+      <td>0.389 ± 0.018</td>
+      <td>0.294 ± 0.025</td>
+      <td>0.291 ± 0.025</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.355 ± 0.052</td>
-      <td>0.376 ± 0.017</td>
-      <td>0.287 ± 0.022</td>
-      <td>0.37 ± 0.03</td>
+      <td>0.364 ± 0.048</td>
+      <td>0.387 ± 0.019</td>
+      <td>0.289 ± 0.024</td>
+      <td>0.349 ± 0.024</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.355 ± 0.043</td>
-      <td>0.376 ± 0.015</td>
-      <td>0.289 ± 0.02</td>
-      <td>0.47 ± 0.035</td>
+      <td>0.356 ± 0.054</td>
+      <td>0.381 ± 0.015</td>
+      <td>0.291 ± 0.017</td>
+      <td>0.448 ± 0.031</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.341 ± 0.035</td>
-      <td>0.369 ± 0.011</td>
-      <td>0.284 ± 0.014</td>
-      <td>0.538 ± 0.029</td>
+      <td>0.36 ± 0.048</td>
+      <td>0.375 ± 0.012</td>
+      <td>0.285 ± 0.016</td>
+      <td>0.557 ± 0.039</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.339 ± 0.048</td>
-      <td>0.365 ± 0.009</td>
-      <td>0.285 ± 0.009</td>
-      <td>0.601 ± 0.041</td>
+      <td>0.354 ± 0.048</td>
+      <td>0.373 ± 0.011</td>
+      <td>0.286 ± 0.011</td>
+      <td>0.583 ± 0.042</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.341 ± 0.036</td>
-      <td>0.363 ± 0.007</td>
-      <td>0.286 ± 0.009</td>
-      <td>0.639 ± 0.036</td>
+      <td>0.352 ± 0.045</td>
+      <td>0.372 ± 0.009</td>
+      <td>0.289 ± 0.01</td>
+      <td>0.637 ± 0.039</td>
     </tr>
   </tbody>
 </table>
@@ -601,17 +579,14 @@ both bounds is reduced significantly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_indian_liver</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -651,59 +626,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.387 ± 0.035</td>
-      <td>0.374 ± 0.026</td>
-      <td>0.258 ± 0.029</td>
-      <td>0.205 ± 0.027</td>
+      <td>0.387 ± 0.036</td>
+      <td>0.374 ± 0.032</td>
+      <td>0.265 ± 0.038</td>
+      <td>0.175 ± 0.022</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.37 ± 0.037</td>
-      <td>0.371 ± 0.019</td>
-      <td>0.272 ± 0.022</td>
-      <td>0.35 ± 0.03</td>
+      <td>0.364 ± 0.037</td>
+      <td>0.363 ± 0.022</td>
+      <td>0.264 ± 0.025</td>
+      <td>0.339 ± 0.029</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.365 ± 0.033</td>
-      <td>0.364 ± 0.016</td>
-      <td>0.268 ± 0.02</td>
-      <td>0.51 ± 0.031</td>
+      <td>0.35 ± 0.031</td>
+      <td>0.366 ± 0.014</td>
+      <td>0.276 ± 0.018</td>
+      <td>0.494 ± 0.037</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.352 ± 0.032</td>
-      <td>0.368 ± 0.013</td>
-      <td>0.282 ± 0.015</td>
-      <td>0.606 ± 0.041</td>
+      <td>0.35 ± 0.031</td>
+      <td>0.364 ± 0.012</td>
+      <td>0.278 ± 0.014</td>
+      <td>0.598 ± 0.049</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.353 ± 0.037</td>
-      <td>0.364 ± 0.011</td>
-      <td>0.28 ± 0.015</td>
-      <td>0.746 ± 0.051</td>
+      <td>0.352 ± 0.033</td>
+      <td>0.363 ± 0.01</td>
+      <td>0.283 ± 0.012</td>
+      <td>0.743 ± 0.052</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.35 ± 0.039</td>
-      <td>0.365 ± 0.008</td>
-      <td>0.287 ± 0.011</td>
-      <td>0.883 ± 0.073</td>
+      <td>0.352 ± 0.036</td>
+      <td>0.362 ± 0.008</td>
+      <td>0.285 ± 0.01</td>
+      <td>0.867 ± 0.037</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.352 ± 0.027</td>
-      <td>0.366 ± 0.006</td>
-      <td>0.292 ± 0.009</td>
-      <td>1.056 ± 0.057</td>
+      <td>0.344 ± 0.031</td>
+      <td>0.361 ± 0.008</td>
+      <td>0.287 ± 0.01</td>
+      <td>1.033 ± 0.072</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.356 ± 0.031</td>
-      <td>0.364 ± 0.005</td>
-      <td>0.291 ± 0.008</td>
-      <td>1.247 ± 0.058</td>
+      <td>0.341 ± 0.033</td>
+      <td>0.36 ± 0.005</td>
+      <td>0.287 ± 0.008</td>
+      <td>1.161 ± 0.041</td>
     </tr>
   </tbody>
 </table>
@@ -740,17 +715,14 @@ both bounds is reduced significantly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -790,59 +762,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.333 ± 0.035</td>
-      <td>0.328 ± 0.027</td>
-      <td>0.23 ± 0.031</td>
-      <td>0.234 ± 0.033</td>
+      <td>0.325 ± 0.031</td>
+      <td>0.323 ± 0.023</td>
+      <td>0.226 ± 0.027</td>
+      <td>0.221 ± 0.027</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.319 ± 0.033</td>
-      <td>0.322 ± 0.017</td>
-      <td>0.24 ± 0.017</td>
-      <td>0.423 ± 0.035</td>
+      <td>0.306 ± 0.035</td>
+      <td>0.316 ± 0.019</td>
+      <td>0.235 ± 0.021</td>
+      <td>0.393 ± 0.038</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.314 ± 0.037</td>
-      <td>0.318 ± 0.013</td>
-      <td>0.245 ± 0.016</td>
-      <td>0.63 ± 0.036</td>
+      <td>0.299 ± 0.033</td>
+      <td>0.313 ± 0.014</td>
+      <td>0.238 ± 0.018</td>
+      <td>0.606 ± 0.034</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.308 ± 0.03</td>
-      <td>0.319 ± 0.01</td>
-      <td>0.249 ± 0.013</td>
-      <td>0.746 ± 0.034</td>
+      <td>0.293 ± 0.029</td>
+      <td>0.308 ± 0.012</td>
+      <td>0.24 ± 0.015</td>
+      <td>0.716 ± 0.042</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.3 ± 0.028</td>
-      <td>0.317 ± 0.01</td>
-      <td>0.253 ± 0.011</td>
-      <td>0.952 ± 0.051</td>
+      <td>0.299 ± 0.032</td>
+      <td>0.308 ± 0.009</td>
+      <td>0.243 ± 0.012</td>
+      <td>0.898 ± 0.044</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.301 ± 0.027</td>
-      <td>0.315 ± 0.007</td>
-      <td>0.251 ± 0.009</td>
-      <td>1.121 ± 0.039</td>
+      <td>0.3 ± 0.033</td>
+      <td>0.305 ± 0.009</td>
+      <td>0.243 ± 0.01</td>
+      <td>1.104 ± 0.057</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.301 ± 0.033</td>
-      <td>0.314 ± 0.007</td>
-      <td>0.251 ± 0.009</td>
-      <td>1.323 ± 0.066</td>
+      <td>0.287 ± 0.031</td>
+      <td>0.306 ± 0.006</td>
+      <td>0.243 ± 0.009</td>
+      <td>1.322 ± 0.112</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.299 ± 0.034</td>
-      <td>0.314 ± 0.005</td>
-      <td>0.252 ± 0.008</td>
-      <td>1.493 ± 0.056</td>
+      <td>0.277 ± 0.031</td>
+      <td>0.304 ± 0.006</td>
+      <td>0.244 ± 0.007</td>
+      <td>1.524 ± 0.129</td>
     </tr>
   </tbody>
 </table>
@@ -879,17 +851,14 @@ both bounds is reduced significantly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -929,59 +898,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.173 ± 0.027</td>
-      <td>0.222 ± 0.032</td>
-      <td>0.063 ± 0.033</td>
-      <td>0.176 ± 0.025</td>
+      <td>0.179 ± 0.03</td>
+      <td>0.216 ± 0.035</td>
+      <td>0.063 ± 0.041</td>
+      <td>0.173 ± 0.044</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.166 ± 0.027</td>
-      <td>0.203 ± 0.023</td>
-      <td>0.075 ± 0.025</td>
-      <td>0.341 ± 0.095</td>
+      <td>0.164 ± 0.027</td>
+      <td>0.208 ± 0.022</td>
+      <td>0.083 ± 0.02</td>
+      <td>0.336 ± 0.047</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.157 ± 0.027</td>
-      <td>0.199 ± 0.017</td>
-      <td>0.09 ± 0.017</td>
-      <td>0.491 ± 0.035</td>
+      <td>0.168 ± 0.028</td>
+      <td>0.198 ± 0.014</td>
+      <td>0.088 ± 0.014</td>
+      <td>0.483 ± 0.05</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.161 ± 0.024</td>
-      <td>0.194 ± 0.016</td>
-      <td>0.095 ± 0.015</td>
-      <td>0.6 ± 0.034</td>
+      <td>0.168 ± 0.029</td>
+      <td>0.195 ± 0.016</td>
+      <td>0.097 ± 0.014</td>
+      <td>0.578 ± 0.032</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.159 ± 0.024</td>
-      <td>0.192 ± 0.012</td>
-      <td>0.101 ± 0.012</td>
-      <td>0.75 ± 0.041</td>
+      <td>0.159 ± 0.028</td>
+      <td>0.196 ± 0.011</td>
+      <td>0.105 ± 0.01</td>
+      <td>0.738 ± 0.056</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.168 ± 0.029</td>
-      <td>0.194 ± 0.01</td>
-      <td>0.107 ± 0.01</td>
-      <td>0.867 ± 0.037</td>
+      <td>0.166 ± 0.028</td>
+      <td>0.192 ± 0.009</td>
+      <td>0.108 ± 0.007</td>
+      <td>0.859 ± 0.057</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.16 ± 0.023</td>
-      <td>0.19 ± 0.009</td>
-      <td>0.108 ± 0.008</td>
-      <td>1.026 ± 0.048</td>
+      <td>0.164 ± 0.027</td>
+      <td>0.192 ± 0.007</td>
+      <td>0.111 ± 0.008</td>
+      <td>0.998 ± 0.051</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.162 ± 0.028</td>
-      <td>0.188 ± 0.006</td>
-      <td>0.111 ± 0.008</td>
-      <td>1.168 ± 0.04</td>
+      <td>0.163 ± 0.024</td>
+      <td>0.19 ± 0.007</td>
+      <td>0.114 ± 0.008</td>
+      <td>1.1 ± 0.043</td>
     </tr>
   </tbody>
 </table>
@@ -1018,17 +987,14 @@ both bounds is reduced significantly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_covid</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
-<span class="n">means</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="p">)</span>
-<span class="n">std</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="p">)</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="o">+</span> <span class="s2">&quot; ± &quot;</span>
-        <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -1068,59 +1034,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.278 ± 0.014</td>
-      <td>0.294 ± 0.012</td>
-      <td>0.185 ± 0.017</td>
-      <td>0.584 ± 0.034</td>
+      <td>0.279 ± 0.02</td>
+      <td>0.289 ± 0.012</td>
+      <td>0.187 ± 0.015</td>
+      <td>0.557 ± 0.031</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.274 ± 0.016</td>
-      <td>0.292 ± 0.008</td>
-      <td>0.2 ± 0.01</td>
-      <td>1.14 ± 0.052</td>
+      <td>0.266 ± 0.019</td>
+      <td>0.291 ± 0.01</td>
+      <td>0.198 ± 0.012</td>
+      <td>1.081 ± 0.047</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.268 ± 0.017</td>
-      <td>0.288 ± 0.007</td>
+      <td>0.264 ± 0.017</td>
+      <td>0.286 ± 0.008</td>
       <td>0.201 ± 0.009</td>
-      <td>1.706 ± 0.069</td>
+      <td>1.602 ± 0.071</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.265 ± 0.016</td>
-      <td>0.286 ± 0.006</td>
-      <td>0.204 ± 0.009</td>
-      <td>2.268 ± 0.063</td>
+      <td>0.263 ± 0.019</td>
+      <td>0.284 ± 0.008</td>
+      <td>0.203 ± 0.008</td>
+      <td>2.169 ± 0.094</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.262 ± 0.019</td>
-      <td>0.285 ± 0.005</td>
-      <td>0.208 ± 0.007</td>
-      <td>2.905 ± 0.067</td>
+      <td>0.261 ± 0.022</td>
+      <td>0.284 ± 0.004</td>
+      <td>0.207 ± 0.006</td>
+      <td>2.764 ± 0.094</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.262 ± 0.018</td>
-      <td>0.284 ± 0.006</td>
-      <td>0.208 ± 0.006</td>
-      <td>3.503 ± 0.112</td>
+      <td>0.258 ± 0.014</td>
+      <td>0.282 ± 0.005</td>
+      <td>0.205 ± 0.006</td>
+      <td>3.337 ± 0.103</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.255 ± 0.018</td>
+      <td>0.256 ± 0.018</td>
       <td>0.282 ± 0.005</td>
       <td>0.208 ± 0.006</td>
-      <td>4.14 ± 0.106</td>
+      <td>3.982 ± 0.165</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.262 ± 0.016</td>
-      <td>0.283 ± 0.005</td>
+      <td>0.259 ± 0.021</td>
+      <td>0.28 ± 0.004</td>
       <td>0.209 ± 0.005</td>
-      <td>4.741 ± 0.15</td>
+      <td>4.516 ± 0.132</td>
     </tr>
   </tbody>
 </table>
@@ -1151,7 +1117,7 @@ both bounds is reduced significantly.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 78 minutes  12.373 seconds)</p>
+<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 75 minutes  21.527 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-plot-upperlower-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/9aad477d42f80a103f8fc4eea1115903/plot_upperLower.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_upperLower.py</span></code></a></div>
