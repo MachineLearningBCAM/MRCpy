@@ -43,8 +43,8 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 """
 
 # Import needed modules
-from imblearn.over_sampling import SMOTENC
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import SMOTENC
 import numpy as np
 import pandas as pd
 import seaborn as sns

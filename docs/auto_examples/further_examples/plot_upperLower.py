@@ -25,8 +25,8 @@ feature of the MRCs. The results are for a
 # Import needed modules
 import time
 
-from imblearn.over_sampling import SMOTE
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import SMOTE
 import numpy as np
 import pandas as pd
 import seaborn as sns

@@ -47,8 +47,8 @@ feature of the MRCs. The results are for a
     # Import needed modules
     import time
 
-    from imblearn.over_sampling import SMOTE
     import matplotlib.pyplot as plt
+    from imblearn.over_sampling import SMOTE
     import numpy as np
     import pandas as pd
     import seaborn as sns
@@ -267,106 +267,29 @@ Mammographic
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 205, in <module>
+        table = getUpperLowerdf(train, X, y, cv, paramsMRC)
+      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 148, in getUpperLowerdf
+        auxtable["Lower"] = MRC_model.get_lower_bound()
+      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\mrc.py", line 497, in get_lower_bound
+        self.try_solvers(objective, None, low_mu)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\base_mrc.py", line 393, in try_solvers
+        prob.solve(solver=self.solver, verbose=False)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 472, in solve
+        return solve_func(self, *args, **kwargs)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 978, in _solve
+        self.unpack_results(solution, solving_chain, inverse_data)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 1300, in unpack_results
+        raise error.SolverError(
+    cvxpy.error.SolverError: Solver 'MOSEK' failed. Try another solver, or solve with verbose=True for more information.
 
 
 
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.225 ± 0.029</td>
-          <td>0.241 ± 0.034</td>
-          <td>0.156 ± 0.034</td>
-          <td>0.232 ± 0.035</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.207 ± 0.036</td>
-          <td>0.223 ± 0.024</td>
-          <td>0.148 ± 0.025</td>
-          <td>0.383 ± 0.038</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.203 ± 0.03</td>
-          <td>0.222 ± 0.015</td>
-          <td>0.155 ± 0.015</td>
-          <td>0.598 ± 0.091</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.202 ± 0.031</td>
-          <td>0.222 ± 0.019</td>
-          <td>0.16 ± 0.021</td>
-          <td>0.638 ± 0.037</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.203 ± 0.027</td>
-          <td>0.222 ± 0.013</td>
-          <td>0.163 ± 0.013</td>
-          <td>0.74 ± 0.038</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.2 ± 0.029</td>
-          <td>0.218 ± 0.014</td>
-          <td>0.164 ± 0.015</td>
-          <td>0.882 ± 0.088</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.201 ± 0.026</td>
-          <td>0.219 ± 0.009</td>
-          <td>0.166 ± 0.011</td>
-          <td>0.958 ± 0.057</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.2 ± 0.034</td>
-          <td>0.219 ± 0.009</td>
-          <td>0.17 ± 0.01</td>
-          <td>1.095 ± 0.111</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 220-243
 
@@ -396,17 +319,6 @@ Mammographic
     plt.show()
 
 
-
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_001.png
-   :alt: Mammographic
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_001.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 244-246
 
 Haberman
@@ -430,108 +342,6 @@ Haberman
         )
     means[["Error", "Upper", "Lower", "Time"]]
 
-
-
-
-
-
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.417 ± 0.049</td>
-          <td>0.408 ± 0.048</td>
-          <td>0.295 ± 0.056</td>
-          <td>0.133 ± 0.022</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.4 ± 0.046</td>
-          <td>0.396 ± 0.024</td>
-          <td>0.296 ± 0.026</td>
-          <td>0.2 ± 0.025</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.377 ± 0.045</td>
-          <td>0.389 ± 0.018</td>
-          <td>0.294 ± 0.025</td>
-          <td>0.291 ± 0.025</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.364 ± 0.048</td>
-          <td>0.387 ± 0.019</td>
-          <td>0.289 ± 0.024</td>
-          <td>0.349 ± 0.024</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.356 ± 0.054</td>
-          <td>0.381 ± 0.015</td>
-          <td>0.291 ± 0.017</td>
-          <td>0.448 ± 0.031</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.36 ± 0.048</td>
-          <td>0.375 ± 0.012</td>
-          <td>0.285 ± 0.016</td>
-          <td>0.557 ± 0.039</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.354 ± 0.048</td>
-          <td>0.373 ± 0.011</td>
-          <td>0.286 ± 0.011</td>
-          <td>0.583 ± 0.042</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.352 ± 0.045</td>
-          <td>0.372 ± 0.009</td>
-          <td>0.289 ± 0.01</td>
-          <td>0.637 ± 0.039</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 261-284
 
@@ -561,17 +371,6 @@ Haberman
     plt.show()
 
 
-
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_002.png
-   :alt: Haberman
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_002.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 285-287
 
 Indian liver
@@ -594,108 +393,6 @@ Indian liver
             std[column].round(3).astype(str)
         )
     means[["Error", "Upper", "Lower", "Time"]]
-
-
-
-
-
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.387 ± 0.036</td>
-          <td>0.374 ± 0.032</td>
-          <td>0.265 ± 0.038</td>
-          <td>0.175 ± 0.022</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.364 ± 0.037</td>
-          <td>0.363 ± 0.022</td>
-          <td>0.264 ± 0.025</td>
-          <td>0.339 ± 0.029</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.35 ± 0.031</td>
-          <td>0.366 ± 0.014</td>
-          <td>0.276 ± 0.018</td>
-          <td>0.494 ± 0.037</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.35 ± 0.031</td>
-          <td>0.364 ± 0.012</td>
-          <td>0.278 ± 0.014</td>
-          <td>0.598 ± 0.049</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.352 ± 0.033</td>
-          <td>0.363 ± 0.01</td>
-          <td>0.283 ± 0.012</td>
-          <td>0.743 ± 0.052</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.352 ± 0.036</td>
-          <td>0.362 ± 0.008</td>
-          <td>0.285 ± 0.01</td>
-          <td>0.867 ± 0.037</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.344 ± 0.031</td>
-          <td>0.361 ± 0.008</td>
-          <td>0.287 ± 0.01</td>
-          <td>1.033 ± 0.072</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.341 ± 0.033</td>
-          <td>0.36 ± 0.005</td>
-          <td>0.287 ± 0.008</td>
-          <td>1.161 ± 0.041</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 301-323
 
@@ -724,17 +421,6 @@ Indian liver
     plt.suptitle("Indian Liver")
     plt.show()
 
-
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_003.png
-   :alt: Indian Liver
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_003.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 324-326
 
 diabetes
@@ -758,108 +444,6 @@ diabetes
         )
     means[["Error", "Upper", "Lower", "Time"]]
 
-
-
-
-
-
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.325 ± 0.031</td>
-          <td>0.323 ± 0.023</td>
-          <td>0.226 ± 0.027</td>
-          <td>0.221 ± 0.027</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.306 ± 0.035</td>
-          <td>0.316 ± 0.019</td>
-          <td>0.235 ± 0.021</td>
-          <td>0.393 ± 0.038</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.299 ± 0.033</td>
-          <td>0.313 ± 0.014</td>
-          <td>0.238 ± 0.018</td>
-          <td>0.606 ± 0.034</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.293 ± 0.029</td>
-          <td>0.308 ± 0.012</td>
-          <td>0.24 ± 0.015</td>
-          <td>0.716 ± 0.042</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.299 ± 0.032</td>
-          <td>0.308 ± 0.009</td>
-          <td>0.243 ± 0.012</td>
-          <td>0.898 ± 0.044</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.3 ± 0.033</td>
-          <td>0.305 ± 0.009</td>
-          <td>0.243 ± 0.01</td>
-          <td>1.104 ± 0.057</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.287 ± 0.031</td>
-          <td>0.306 ± 0.006</td>
-          <td>0.243 ± 0.009</td>
-          <td>1.322 ± 0.112</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.277 ± 0.031</td>
-          <td>0.304 ± 0.006</td>
-          <td>0.244 ± 0.007</td>
-          <td>1.524 ± 0.129</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 341-363
 
@@ -888,17 +472,6 @@ diabetes
     plt.suptitle("Diabetes")
     plt.show()
 
-
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_004.png
-   :alt: Diabetes
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_004.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 364-366
 
 credit
@@ -922,108 +495,6 @@ credit
         )
     means[["Error", "Upper", "Lower", "Time"]]
 
-
-
-
-
-
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.179 ± 0.03</td>
-          <td>0.216 ± 0.035</td>
-          <td>0.063 ± 0.041</td>
-          <td>0.173 ± 0.044</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.164 ± 0.027</td>
-          <td>0.208 ± 0.022</td>
-          <td>0.083 ± 0.02</td>
-          <td>0.336 ± 0.047</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.168 ± 0.028</td>
-          <td>0.198 ± 0.014</td>
-          <td>0.088 ± 0.014</td>
-          <td>0.483 ± 0.05</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.168 ± 0.029</td>
-          <td>0.195 ± 0.016</td>
-          <td>0.097 ± 0.014</td>
-          <td>0.578 ± 0.032</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.159 ± 0.028</td>
-          <td>0.196 ± 0.011</td>
-          <td>0.105 ± 0.01</td>
-          <td>0.738 ± 0.056</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.166 ± 0.028</td>
-          <td>0.192 ± 0.009</td>
-          <td>0.108 ± 0.007</td>
-          <td>0.859 ± 0.057</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.164 ± 0.027</td>
-          <td>0.192 ± 0.007</td>
-          <td>0.111 ± 0.008</td>
-          <td>0.998 ± 0.051</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.163 ± 0.024</td>
-          <td>0.19 ± 0.007</td>
-          <td>0.114 ± 0.008</td>
-          <td>1.1 ± 0.043</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 381-403
 
@@ -1052,17 +523,6 @@ credit
     plt.suptitle("Credit")
     plt.show()
 
-
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_005.png
-   :alt: Credit
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_005.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 .. GENERATED FROM PYTHON SOURCE LINES 404-406
 
 COVID
@@ -1086,108 +546,6 @@ COVID
         )
     means[["Error", "Upper", "Lower", "Time"]]
 
-
-
-
-
-
-.. raw:: html
-
-    <div class="output_subarea output_html rendered_html output_result">
-    <div>
-    <style scoped>
-        .dataframe tbody tr th:only-of-type {
-            vertical-align: middle;
-        }
-
-        .dataframe tbody tr th {
-            vertical-align: top;
-        }
-
-        .dataframe thead th {
-            text-align: right;
-        }
-    </style>
-    <table border="1" class="dataframe">
-      <thead>
-        <tr style="text-align: right;">
-          <th></th>
-          <th>Error</th>
-          <th>Upper</th>
-          <th>Lower</th>
-          <th>Time</th>
-        </tr>
-        <tr>
-          <th>train_size</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>0.1</th>
-          <td>0.279 ± 0.02</td>
-          <td>0.289 ± 0.012</td>
-          <td>0.187 ± 0.015</td>
-          <td>0.557 ± 0.031</td>
-        </tr>
-        <tr>
-          <th>0.2</th>
-          <td>0.266 ± 0.019</td>
-          <td>0.291 ± 0.01</td>
-          <td>0.198 ± 0.012</td>
-          <td>1.081 ± 0.047</td>
-        </tr>
-        <tr>
-          <th>0.3</th>
-          <td>0.264 ± 0.017</td>
-          <td>0.286 ± 0.008</td>
-          <td>0.201 ± 0.009</td>
-          <td>1.602 ± 0.071</td>
-        </tr>
-        <tr>
-          <th>0.4</th>
-          <td>0.263 ± 0.019</td>
-          <td>0.284 ± 0.008</td>
-          <td>0.203 ± 0.008</td>
-          <td>2.169 ± 0.094</td>
-        </tr>
-        <tr>
-          <th>0.5</th>
-          <td>0.261 ± 0.022</td>
-          <td>0.284 ± 0.004</td>
-          <td>0.207 ± 0.006</td>
-          <td>2.764 ± 0.094</td>
-        </tr>
-        <tr>
-          <th>0.6</th>
-          <td>0.258 ± 0.014</td>
-          <td>0.282 ± 0.005</td>
-          <td>0.205 ± 0.006</td>
-          <td>3.337 ± 0.103</td>
-        </tr>
-        <tr>
-          <th>0.7</th>
-          <td>0.256 ± 0.018</td>
-          <td>0.282 ± 0.005</td>
-          <td>0.208 ± 0.006</td>
-          <td>3.982 ± 0.165</td>
-        </tr>
-        <tr>
-          <th>0.8</th>
-          <td>0.259 ± 0.021</td>
-          <td>0.28 ± 0.004</td>
-          <td>0.209 ± 0.005</td>
-          <td>4.516 ± 0.132</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
-    </div>
-    <br />
-    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 421-443
 
@@ -1217,20 +575,9 @@ COVID
     plt.show()
 
 
-
-.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_006.png
-   :alt: COVID
-   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_006.png
-   :class: sphx-glr-single-img
-
-
-
-
-
-
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 75 minutes  21.527 seconds)
+   **Total running time of the script:** ( 1 minutes  10.798 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_upperLower.py:
