@@ -39,27 +39,29 @@ feature of the MRCs. The results are for a
              More information about this dataset can be found in the
              `COVID example<ex_covid>`
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-193
+.. GENERATED FROM PYTHON SOURCE LINES 24-195
 
 .. code-block:: default
 
 
     # Import needed modules
     import time
-    import matplotlib.pyplot as plt
-    import seaborn as sns
-
-    import numpy as np
-    import pandas as pd
-
-    from sklearn import preprocessing
-    from imblearn.over_sampling import SMOTE
-    from sklearn.model_selection import RepeatedStratifiedKFold
 
     from MRCpy import MRC
     from MRCpy.datasets import *
 
+    from imblearn.over_sampling import SMOTE
 
+    import matplotlib.pyplot as plt
+
+    import numpy as np
+
+    import pandas as pd
+
+    import seaborn as sns
+
+    from sklearn import preprocessing
+    from sklearn.model_selection import RepeatedStratifiedKFold
 
     sns.set_style("whitegrid")
     sns.set_context("paper")
@@ -219,14 +221,14 @@ feature of the MRCs. The results are for a
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 194-198
+.. GENERATED FROM PYTHON SOURCE LINES 196-200
 
 Cross test validation
 ~~~~~~~~~~~~~~~~~~~~
 5 fold repeated Stratified Cross validation is performed where each of the
 fold is trained with 80% of the data and then tested with the remaining 20%
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-205
+.. GENERATED FROM PYTHON SOURCE LINES 200-207
 
 .. code-block:: default
 
@@ -244,7 +246,7 @@ fold is trained with 80% of the data and then tested with the remaining 20%
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 206-214
+.. GENERATED FROM PYTHON SOURCE LINES 208-216
 
 Results
 ====================
@@ -255,12 +257,12 @@ loaders. In the results we can see how the upper and lower bounds get closer
 when the training size is increased. Furthermore, the standard deviation of
 both bounds is reduced significantly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 216-218
+.. GENERATED FROM PYTHON SOURCE LINES 218-220
 
 Mammographic
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-236
+.. GENERATED FROM PYTHON SOURCE LINES 220-238
 
 .. code-block:: default
 
@@ -324,59 +326,59 @@ Mammographic
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.221 ± 0.035</td>
-          <td>0.235 ± 0.028</td>
-          <td>0.149 ± 0.031</td>
-          <td>0.223 ± 0.035</td>
+          <td>0.234 ± 0.03</td>
+          <td>0.245 ± 0.029</td>
+          <td>0.16 ± 0.031</td>
+          <td>0.235 ± 0.035</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.21 ± 0.033</td>
-          <td>0.221 ± 0.022</td>
-          <td>0.146 ± 0.025</td>
-          <td>0.361 ± 0.039</td>
+          <td>0.211 ± 0.031</td>
+          <td>0.225 ± 0.025</td>
+          <td>0.151 ± 0.029</td>
+          <td>0.385 ± 0.031</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.197 ± 0.029</td>
-          <td>0.214 ± 0.016</td>
-          <td>0.146 ± 0.016</td>
-          <td>0.531 ± 0.03</td>
+          <td>0.203 ± 0.03</td>
+          <td>0.221 ± 0.018</td>
+          <td>0.154 ± 0.018</td>
+          <td>0.59 ± 0.05</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.198 ± 0.029</td>
-          <td>0.215 ± 0.017</td>
-          <td>0.154 ± 0.018</td>
-          <td>0.624 ± 0.05</td>
+          <td>0.203 ± 0.032</td>
+          <td>0.223 ± 0.014</td>
+          <td>0.161 ± 0.016</td>
+          <td>0.676 ± 0.037</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.199 ± 0.029</td>
-          <td>0.217 ± 0.016</td>
-          <td>0.159 ± 0.018</td>
-          <td>0.725 ± 0.035</td>
+          <td>0.202 ± 0.028</td>
+          <td>0.216 ± 0.016</td>
+          <td>0.159 ± 0.017</td>
+          <td>0.775 ± 0.037</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.201 ± 0.031</td>
-          <td>0.215 ± 0.014</td>
-          <td>0.161 ± 0.016</td>
-          <td>0.837 ± 0.045</td>
+          <td>0.208 ± 0.034</td>
+          <td>0.219 ± 0.012</td>
+          <td>0.166 ± 0.015</td>
+          <td>0.929 ± 0.053</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.196 ± 0.027</td>
-          <td>0.215 ± 0.011</td>
-          <td>0.163 ± 0.011</td>
-          <td>0.955 ± 0.051</td>
+          <td>0.197 ± 0.029</td>
+          <td>0.218 ± 0.01</td>
+          <td>0.167 ± 0.012</td>
+          <td>1.039 ± 0.063</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.2 ± 0.028</td>
-          <td>0.215 ± 0.009</td>
-          <td>0.165 ± 0.011</td>
-          <td>1.044 ± 0.039</td>
+          <td>0.195 ± 0.03</td>
+          <td>0.216 ± 0.009</td>
+          <td>0.168 ± 0.01</td>
+          <td>1.116 ± 0.036</td>
         </tr>
       </tbody>
     </table>
@@ -385,7 +387,7 @@ Mammographic
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 237-260
+.. GENERATED FROM PYTHON SOURCE LINES 239-262
 
 .. code-block:: default
 
@@ -424,12 +426,12 @@ Mammographic
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 261-263
+.. GENERATED FROM PYTHON SOURCE LINES 263-265
 
 Haberman
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 263-280
+.. GENERATED FROM PYTHON SOURCE LINES 265-282
 
 .. code-block:: default
 
@@ -492,59 +494,59 @@ Haberman
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.435 ± 0.054</td>
-          <td>0.417 ± 0.033</td>
-          <td>0.305 ± 0.05</td>
-          <td>0.132 ± 0.023</td>
+          <td>0.411 ± 0.052</td>
+          <td>0.409 ± 0.035</td>
+          <td>0.297 ± 0.041</td>
+          <td>0.145 ± 0.028</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.412 ± 0.057</td>
-          <td>0.4 ± 0.024</td>
-          <td>0.301 ± 0.029</td>
-          <td>0.203 ± 0.032</td>
+          <td>0.377 ± 0.05</td>
+          <td>0.392 ± 0.029</td>
+          <td>0.295 ± 0.033</td>
+          <td>0.213 ± 0.025</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.408 ± 0.04</td>
-          <td>0.403 ± 0.017</td>
-          <td>0.307 ± 0.023</td>
-          <td>0.288 ± 0.034</td>
+          <td>0.372 ± 0.045</td>
+          <td>0.378 ± 0.023</td>
+          <td>0.285 ± 0.024</td>
+          <td>0.304 ± 0.031</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.39 ± 0.051</td>
-          <td>0.393 ± 0.018</td>
-          <td>0.305 ± 0.023</td>
-          <td>0.35 ± 0.03</td>
+          <td>0.355 ± 0.052</td>
+          <td>0.376 ± 0.017</td>
+          <td>0.287 ± 0.022</td>
+          <td>0.37 ± 0.03</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.392 ± 0.056</td>
-          <td>0.397 ± 0.014</td>
-          <td>0.305 ± 0.021</td>
-          <td>0.435 ± 0.033</td>
+          <td>0.355 ± 0.043</td>
+          <td>0.376 ± 0.015</td>
+          <td>0.289 ± 0.02</td>
+          <td>0.47 ± 0.035</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.385 ± 0.042</td>
-          <td>0.393 ± 0.012</td>
-          <td>0.301 ± 0.017</td>
-          <td>0.528 ± 0.036</td>
+          <td>0.341 ± 0.035</td>
+          <td>0.369 ± 0.011</td>
+          <td>0.284 ± 0.014</td>
+          <td>0.538 ± 0.029</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.378 ± 0.042</td>
-          <td>0.389 ± 0.009</td>
-          <td>0.301 ± 0.014</td>
-          <td>0.566 ± 0.037</td>
+          <td>0.339 ± 0.048</td>
+          <td>0.365 ± 0.009</td>
+          <td>0.285 ± 0.009</td>
+          <td>0.601 ± 0.041</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.383 ± 0.049</td>
-          <td>0.387 ± 0.007</td>
-          <td>0.302 ± 0.01</td>
-          <td>0.621 ± 0.035</td>
+          <td>0.341 ± 0.036</td>
+          <td>0.363 ± 0.007</td>
+          <td>0.286 ± 0.009</td>
+          <td>0.639 ± 0.036</td>
         </tr>
       </tbody>
     </table>
@@ -553,7 +555,7 @@ Haberman
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 281-304
+.. GENERATED FROM PYTHON SOURCE LINES 283-306
 
 .. code-block:: default
 
@@ -592,12 +594,12 @@ Haberman
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 305-307
+.. GENERATED FROM PYTHON SOURCE LINES 307-309
 
 Indian liver
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 307-323
+.. GENERATED FROM PYTHON SOURCE LINES 309-325
 
 .. code-block:: default
 
@@ -659,59 +661,59 @@ Indian liver
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.394 ± 0.041</td>
-          <td>0.373 ± 0.034</td>
-          <td>0.262 ± 0.038</td>
-          <td>0.19 ± 0.032</td>
+          <td>0.387 ± 0.035</td>
+          <td>0.374 ± 0.026</td>
+          <td>0.258 ± 0.029</td>
+          <td>0.205 ± 0.027</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.382 ± 0.034</td>
-          <td>0.38 ± 0.027</td>
-          <td>0.283 ± 0.031</td>
-          <td>0.33 ± 0.028</td>
+          <td>0.37 ± 0.037</td>
+          <td>0.371 ± 0.019</td>
+          <td>0.272 ± 0.022</td>
+          <td>0.35 ± 0.03</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.363 ± 0.031</td>
-          <td>0.378 ± 0.018</td>
-          <td>0.289 ± 0.02</td>
-          <td>0.504 ± 0.046</td>
+          <td>0.365 ± 0.033</td>
+          <td>0.364 ± 0.016</td>
+          <td>0.268 ± 0.02</td>
+          <td>0.51 ± 0.031</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.366 ± 0.032</td>
-          <td>0.373 ± 0.011</td>
-          <td>0.287 ± 0.015</td>
-          <td>0.594 ± 0.04</td>
+          <td>0.352 ± 0.032</td>
+          <td>0.368 ± 0.013</td>
+          <td>0.282 ± 0.015</td>
+          <td>0.606 ± 0.041</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.363 ± 0.032</td>
-          <td>0.375 ± 0.009</td>
-          <td>0.293 ± 0.012</td>
-          <td>0.745 ± 0.058</td>
+          <td>0.353 ± 0.037</td>
+          <td>0.364 ± 0.011</td>
+          <td>0.28 ± 0.015</td>
+          <td>0.746 ± 0.051</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.355 ± 0.035</td>
-          <td>0.37 ± 0.008</td>
-          <td>0.293 ± 0.011</td>
-          <td>0.873 ± 0.045</td>
+          <td>0.35 ± 0.039</td>
+          <td>0.365 ± 0.008</td>
+          <td>0.287 ± 0.011</td>
+          <td>0.883 ± 0.073</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.358 ± 0.033</td>
-          <td>0.371 ± 0.007</td>
-          <td>0.294 ± 0.008</td>
-          <td>1.011 ± 0.047</td>
+          <td>0.352 ± 0.027</td>
+          <td>0.366 ± 0.006</td>
+          <td>0.292 ± 0.009</td>
+          <td>1.056 ± 0.057</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.359 ± 0.034</td>
-          <td>0.371 ± 0.004</td>
-          <td>0.297 ± 0.007</td>
-          <td>1.153 ± 0.065</td>
+          <td>0.356 ± 0.031</td>
+          <td>0.364 ± 0.005</td>
+          <td>0.291 ± 0.008</td>
+          <td>1.247 ± 0.058</td>
         </tr>
       </tbody>
     </table>
@@ -720,7 +722,7 @@ Indian liver
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 324-346
+.. GENERATED FROM PYTHON SOURCE LINES 326-348
 
 .. code-block:: default
 
@@ -758,12 +760,12 @@ Indian liver
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 347-349
+.. GENERATED FROM PYTHON SOURCE LINES 349-351
 
 diabetes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 349-366
+.. GENERATED FROM PYTHON SOURCE LINES 351-368
 
 .. code-block:: default
 
@@ -826,59 +828,59 @@ diabetes
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.325 ± 0.034</td>
-          <td>0.326 ± 0.027</td>
-          <td>0.231 ± 0.028</td>
-          <td>0.222 ± 0.038</td>
+          <td>0.333 ± 0.035</td>
+          <td>0.328 ± 0.027</td>
+          <td>0.23 ± 0.031</td>
+          <td>0.234 ± 0.033</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.314 ± 0.042</td>
-          <td>0.322 ± 0.016</td>
-          <td>0.244 ± 0.021</td>
-          <td>0.385 ± 0.042</td>
+          <td>0.319 ± 0.033</td>
+          <td>0.322 ± 0.017</td>
+          <td>0.24 ± 0.017</td>
+          <td>0.423 ± 0.035</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.304 ± 0.038</td>
-          <td>0.316 ± 0.014</td>
-          <td>0.241 ± 0.017</td>
-          <td>0.608 ± 0.088</td>
+          <td>0.314 ± 0.037</td>
+          <td>0.318 ± 0.013</td>
+          <td>0.245 ± 0.016</td>
+          <td>0.63 ± 0.036</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.303 ± 0.026</td>
-          <td>0.313 ± 0.009</td>
-          <td>0.24 ± 0.014</td>
-          <td>0.702 ± 0.039</td>
+          <td>0.308 ± 0.03</td>
+          <td>0.319 ± 0.01</td>
+          <td>0.249 ± 0.013</td>
+          <td>0.746 ± 0.034</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.296 ± 0.022</td>
-          <td>0.311 ± 0.01</td>
-          <td>0.246 ± 0.01</td>
-          <td>0.923 ± 0.164</td>
+          <td>0.3 ± 0.028</td>
+          <td>0.317 ± 0.01</td>
+          <td>0.253 ± 0.011</td>
+          <td>0.952 ± 0.051</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.295 ± 0.028</td>
-          <td>0.309 ± 0.008</td>
-          <td>0.244 ± 0.01</td>
-          <td>1.061 ± 0.045</td>
+          <td>0.301 ± 0.027</td>
+          <td>0.315 ± 0.007</td>
+          <td>0.251 ± 0.009</td>
+          <td>1.121 ± 0.039</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.291 ± 0.027</td>
-          <td>0.306 ± 0.006</td>
-          <td>0.245 ± 0.008</td>
-          <td>1.233 ± 0.069</td>
+          <td>0.301 ± 0.033</td>
+          <td>0.314 ± 0.007</td>
+          <td>0.251 ± 0.009</td>
+          <td>1.323 ± 0.066</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.288 ± 0.034</td>
-          <td>0.307 ± 0.006</td>
-          <td>0.244 ± 0.007</td>
-          <td>1.409 ± 0.059</td>
+          <td>0.299 ± 0.034</td>
+          <td>0.314 ± 0.005</td>
+          <td>0.252 ± 0.008</td>
+          <td>1.493 ± 0.056</td>
         </tr>
       </tbody>
     </table>
@@ -887,7 +889,7 @@ diabetes
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 367-389
+.. GENERATED FROM PYTHON SOURCE LINES 369-391
 
 .. code-block:: default
 
@@ -925,12 +927,12 @@ diabetes
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 390-392
+.. GENERATED FROM PYTHON SOURCE LINES 392-394
 
 credit
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 392-409
+.. GENERATED FROM PYTHON SOURCE LINES 394-411
 
 .. code-block:: default
 
@@ -993,59 +995,59 @@ credit
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.181 ± 0.029</td>
-          <td>0.229 ± 0.032</td>
-          <td>0.066 ± 0.034</td>
-          <td>0.183 ± 0.04</td>
+          <td>0.173 ± 0.027</td>
+          <td>0.222 ± 0.032</td>
+          <td>0.063 ± 0.033</td>
+          <td>0.176 ± 0.025</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.169 ± 0.028</td>
-          <td>0.206 ± 0.022</td>
-          <td>0.08 ± 0.022</td>
-          <td>0.335 ± 0.043</td>
+          <td>0.166 ± 0.027</td>
+          <td>0.203 ± 0.023</td>
+          <td>0.075 ± 0.025</td>
+          <td>0.341 ± 0.095</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.159 ± 0.028</td>
-          <td>0.204 ± 0.019</td>
-          <td>0.096 ± 0.019</td>
-          <td>0.456 ± 0.042</td>
+          <td>0.157 ± 0.027</td>
+          <td>0.199 ± 0.017</td>
+          <td>0.09 ± 0.017</td>
+          <td>0.491 ± 0.035</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.164 ± 0.024</td>
-          <td>0.198 ± 0.011</td>
-          <td>0.101 ± 0.012</td>
-          <td>0.578 ± 0.035</td>
+          <td>0.161 ± 0.024</td>
+          <td>0.194 ± 0.016</td>
+          <td>0.095 ± 0.015</td>
+          <td>0.6 ± 0.034</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.165 ± 0.029</td>
-          <td>0.198 ± 0.013</td>
-          <td>0.108 ± 0.013</td>
-          <td>0.715 ± 0.041</td>
+          <td>0.159 ± 0.024</td>
+          <td>0.192 ± 0.012</td>
+          <td>0.101 ± 0.012</td>
+          <td>0.75 ± 0.041</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.163 ± 0.028</td>
-          <td>0.196 ± 0.008</td>
-          <td>0.111 ± 0.008</td>
-          <td>0.829 ± 0.038</td>
+          <td>0.168 ± 0.029</td>
+          <td>0.194 ± 0.01</td>
+          <td>0.107 ± 0.01</td>
+          <td>0.867 ± 0.037</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.169 ± 0.026</td>
-          <td>0.194 ± 0.008</td>
-          <td>0.114 ± 0.007</td>
-          <td>0.956 ± 0.036</td>
+          <td>0.16 ± 0.023</td>
+          <td>0.19 ± 0.009</td>
+          <td>0.108 ± 0.008</td>
+          <td>1.026 ± 0.048</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.158 ± 0.022</td>
-          <td>0.194 ± 0.007</td>
-          <td>0.117 ± 0.006</td>
-          <td>1.092 ± 0.053</td>
+          <td>0.162 ± 0.028</td>
+          <td>0.188 ± 0.006</td>
+          <td>0.111 ± 0.008</td>
+          <td>1.168 ± 0.04</td>
         </tr>
       </tbody>
     </table>
@@ -1054,7 +1056,7 @@ credit
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 410-432
+.. GENERATED FROM PYTHON SOURCE LINES 412-434
 
 .. code-block:: default
 
@@ -1092,12 +1094,12 @@ credit
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 433-435
+.. GENERATED FROM PYTHON SOURCE LINES 435-437
 
 COVID
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. GENERATED FROM PYTHON SOURCE LINES 435-452
+.. GENERATED FROM PYTHON SOURCE LINES 437-454
 
 .. code-block:: default
 
@@ -1160,59 +1162,59 @@ COVID
       <tbody>
         <tr>
           <th>0.1</th>
-          <td>0.272 ± 0.016</td>
-          <td>0.293 ± 0.011</td>
-          <td>0.188 ± 0.018</td>
-          <td>0.552 ± 0.041</td>
+          <td>0.278 ± 0.014</td>
+          <td>0.294 ± 0.012</td>
+          <td>0.185 ± 0.017</td>
+          <td>0.584 ± 0.034</td>
         </tr>
         <tr>
           <th>0.2</th>
-          <td>0.267 ± 0.015</td>
-          <td>0.288 ± 0.009</td>
-          <td>0.195 ± 0.011</td>
-          <td>1.075 ± 0.046</td>
+          <td>0.274 ± 0.016</td>
+          <td>0.292 ± 0.008</td>
+          <td>0.2 ± 0.01</td>
+          <td>1.14 ± 0.052</td>
         </tr>
         <tr>
           <th>0.3</th>
-          <td>0.259 ± 0.016</td>
-          <td>0.286 ± 0.007</td>
-          <td>0.202 ± 0.01</td>
-          <td>1.601 ± 0.063</td>
+          <td>0.268 ± 0.017</td>
+          <td>0.288 ± 0.007</td>
+          <td>0.201 ± 0.009</td>
+          <td>1.706 ± 0.069</td>
         </tr>
         <tr>
           <th>0.4</th>
-          <td>0.263 ± 0.016</td>
-          <td>0.284 ± 0.006</td>
-          <td>0.2 ± 0.007</td>
-          <td>2.151 ± 0.081</td>
+          <td>0.265 ± 0.016</td>
+          <td>0.286 ± 0.006</td>
+          <td>0.204 ± 0.009</td>
+          <td>2.268 ± 0.063</td>
         </tr>
         <tr>
           <th>0.5</th>
-          <td>0.258 ± 0.017</td>
-          <td>0.284 ± 0.006</td>
-          <td>0.204 ± 0.008</td>
-          <td>2.75 ± 0.08</td>
+          <td>0.262 ± 0.019</td>
+          <td>0.285 ± 0.005</td>
+          <td>0.208 ± 0.007</td>
+          <td>2.905 ± 0.067</td>
         </tr>
         <tr>
           <th>0.6</th>
-          <td>0.261 ± 0.018</td>
-          <td>0.282 ± 0.006</td>
-          <td>0.206 ± 0.005</td>
-          <td>3.297 ± 0.084</td>
+          <td>0.262 ± 0.018</td>
+          <td>0.284 ± 0.006</td>
+          <td>0.208 ± 0.006</td>
+          <td>3.503 ± 0.112</td>
         </tr>
         <tr>
           <th>0.7</th>
-          <td>0.252 ± 0.016</td>
+          <td>0.255 ± 0.018</td>
           <td>0.282 ± 0.005</td>
-          <td>0.206 ± 0.006</td>
-          <td>3.942 ± 0.111</td>
+          <td>0.208 ± 0.006</td>
+          <td>4.14 ± 0.106</td>
         </tr>
         <tr>
           <th>0.8</th>
-          <td>0.257 ± 0.019</td>
-          <td>0.28 ± 0.005</td>
-          <td>0.208 ± 0.006</td>
-          <td>4.461 ± 0.115</td>
+          <td>0.262 ± 0.016</td>
+          <td>0.283 ± 0.005</td>
+          <td>0.209 ± 0.005</td>
+          <td>4.741 ± 0.15</td>
         </tr>
       </tbody>
     </table>
@@ -1221,7 +1223,7 @@ COVID
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 453-475
+.. GENERATED FROM PYTHON SOURCE LINES 455-477
 
 .. code-block:: default
 
@@ -1262,7 +1264,7 @@ COVID
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 73 minutes  59.652 seconds)
+   **Total running time of the script:** ( 78 minutes  12.373 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_upperLower.py:
