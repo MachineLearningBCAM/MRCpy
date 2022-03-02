@@ -48,10 +48,10 @@ feature of the MRCs. The results are for a
     import time
 
     import matplotlib.pyplot as plt
-    from imblearn.over_sampling import SMOTE
     import numpy as np
     import pandas as pd
     import seaborn as sns
+    from imblearn.over_sampling import SMOTE
     from sklearn import preprocessing
     from sklearn.model_selection import RepeatedStratifiedKFold
 
@@ -267,29 +267,106 @@ Mammographic
 
 
 
-.. rst-class:: sphx-glr-script-out
-
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 205, in <module>
-        table = getUpperLowerdf(train, X, y, cv, paramsMRC)
-      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 148, in getUpperLowerdf
-        auxtable["Lower"] = MRC_model.get_lower_bound()
-      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\mrc.py", line 497, in get_lower_bound
-        self.try_solvers(objective, None, low_mu)
-      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\base_mrc.py", line 393, in try_solvers
-        prob.solve(solver=self.solver, verbose=False)
-      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 472, in solve
-        return solve_func(self, *args, **kwargs)
-      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 978, in _solve
-        self.unpack_results(solution, solving_chain, inverse_data)
-      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 1300, in unpack_results
-        raise error.SolverError(
-    cvxpy.error.SolverError: Solver 'MOSEK' failed. Try another solver, or solve with verbose=True for more information.
 
 
 
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>Error</th>
+          <th>Upper</th>
+          <th>Lower</th>
+          <th>Time</th>
+        </tr>
+        <tr>
+          <th>train_size</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0.1</th>
+          <td>0.215 ± 0.029</td>
+          <td>0.234 ± 0.027</td>
+          <td>0.149 ± 0.028</td>
+          <td>0.216 ± 0.028</td>
+        </tr>
+        <tr>
+          <th>0.2</th>
+          <td>0.211 ± 0.032</td>
+          <td>0.223 ± 0.028</td>
+          <td>0.146 ± 0.027</td>
+          <td>0.358 ± 0.036</td>
+        </tr>
+        <tr>
+          <th>0.3</th>
+          <td>0.205 ± 0.032</td>
+          <td>0.222 ± 0.018</td>
+          <td>0.153 ± 0.018</td>
+          <td>0.534 ± 0.039</td>
+        </tr>
+        <tr>
+          <th>0.4</th>
+          <td>0.195 ± 0.032</td>
+          <td>0.215 ± 0.018</td>
+          <td>0.152 ± 0.02</td>
+          <td>0.624 ± 0.038</td>
+        </tr>
+        <tr>
+          <th>0.5</th>
+          <td>0.199 ± 0.025</td>
+          <td>0.217 ± 0.013</td>
+          <td>0.156 ± 0.015</td>
+          <td>0.727 ± 0.034</td>
+        </tr>
+        <tr>
+          <th>0.6</th>
+          <td>0.2 ± 0.026</td>
+          <td>0.216 ± 0.013</td>
+          <td>0.16 ± 0.014</td>
+          <td>0.851 ± 0.05</td>
+        </tr>
+        <tr>
+          <th>0.7</th>
+          <td>0.198 ± 0.03</td>
+          <td>0.214 ± 0.01</td>
+          <td>0.162 ± 0.012</td>
+          <td>0.949 ± 0.055</td>
+        </tr>
+        <tr>
+          <th>0.8</th>
+          <td>0.196 ± 0.024</td>
+          <td>0.214 ± 0.009</td>
+          <td>0.164 ± 0.01</td>
+          <td>1.08 ± 0.174</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    <br />
+    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 220-243
 
@@ -319,6 +396,17 @@ Mammographic
     plt.show()
 
 
+
+
+.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_001.png
+   :alt: Mammographic
+   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 244-246
 
 Haberman
@@ -342,6 +430,108 @@ Haberman
         )
     means[["Error", "Upper", "Lower", "Time"]]
 
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>Error</th>
+          <th>Upper</th>
+          <th>Lower</th>
+          <th>Time</th>
+        </tr>
+        <tr>
+          <th>train_size</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>0.1</th>
+          <td>0.439 ± 0.052</td>
+          <td>0.405 ± 0.041</td>
+          <td>0.296 ± 0.052</td>
+          <td>0.126 ± 0.03</td>
+        </tr>
+        <tr>
+          <th>0.2</th>
+          <td>0.426 ± 0.053</td>
+          <td>0.405 ± 0.023</td>
+          <td>0.303 ± 0.033</td>
+          <td>0.201 ± 0.029</td>
+        </tr>
+        <tr>
+          <th>0.3</th>
+          <td>0.383 ± 0.042</td>
+          <td>0.397 ± 0.02</td>
+          <td>0.299 ± 0.028</td>
+          <td>0.3 ± 0.033</td>
+        </tr>
+        <tr>
+          <th>0.4</th>
+          <td>0.393 ± 0.05</td>
+          <td>0.391 ± 0.021</td>
+          <td>0.296 ± 0.028</td>
+          <td>0.376 ± 0.093</td>
+        </tr>
+        <tr>
+          <th>0.5</th>
+          <td>0.379 ± 0.051</td>
+          <td>0.392 ± 0.013</td>
+          <td>0.297 ± 0.018</td>
+          <td>0.439 ± 0.035</td>
+        </tr>
+        <tr>
+          <th>0.6</th>
+          <td>0.377 ± 0.042</td>
+          <td>0.387 ± 0.01</td>
+          <td>0.291 ± 0.016</td>
+          <td>0.513 ± 0.039</td>
+        </tr>
+        <tr>
+          <th>0.7</th>
+          <td>0.374 ± 0.048</td>
+          <td>0.381 ± 0.01</td>
+          <td>0.288 ± 0.014</td>
+          <td>0.576 ± 0.032</td>
+        </tr>
+        <tr>
+          <th>0.8</th>
+          <td>0.37 ± 0.05</td>
+          <td>0.38 ± 0.008</td>
+          <td>0.288 ± 0.011</td>
+          <td>0.66 ± 0.061</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    <br />
+    <br />
 
 .. GENERATED FROM PYTHON SOURCE LINES 261-284
 
@@ -371,6 +561,17 @@ Haberman
     plt.show()
 
 
+
+
+.. image-sg:: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_002.png
+   :alt: Haberman
+   :srcset: /auto_examples/further_examples/images/sphx_glr_plot_upperLower_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 .. GENERATED FROM PYTHON SOURCE LINES 285-287
 
 Indian liver
@@ -393,6 +594,31 @@ Indian liver
             std[column].round(3).astype(str)
         )
     means[["Error", "Upper", "Lower", "Time"]]
+
+
+.. rst-class:: sphx-glr-script-out
+
+.. code-block:: pytb
+
+    Traceback (most recent call last):
+      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 289, in <module>
+        table = getUpperLowerdf(train, X, y, cv, paramsMRC)
+      File "C:\Users\X001103\Desktop\BCAM_work\COVID PROGNOSIS\MRCpy\examples\further_examples\plot_upperLower.py", line 148, in getUpperLowerdf
+        auxtable["Lower"] = MRC_model.get_lower_bound()
+      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\mrc.py", line 497, in get_lower_bound
+        self.try_solvers(objective, None, low_mu)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\mrcpy-0.1.1-py3.9.egg\MRCpy\base_mrc.py", line 393, in try_solvers
+        prob.solve(solver=self.solver, verbose=False)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 472, in solve
+        return solve_func(self, *args, **kwargs)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 978, in _solve
+        self.unpack_results(solution, solving_chain, inverse_data)
+      File "C:\Users\X001103\anaconda3\lib\site-packages\cvxpy\problems\problem.py", line 1300, in unpack_results
+        raise error.SolverError(
+    cvxpy.error.SolverError: Solver 'MOSEK' failed. Try another solver, or solve with verbose=True for more information.
+
+
+
 
 .. GENERATED FROM PYTHON SOURCE LINES 301-323
 
@@ -577,7 +803,7 @@ COVID
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  10.798 seconds)
+   **Total running time of the script:** ( 15 minutes  27.029 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_upperLower.py:

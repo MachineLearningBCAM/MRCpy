@@ -44,10 +44,10 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 # Import needed modules
 import matplotlib.pyplot as plt
-from imblearn.over_sampling import SMOTENC
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from imblearn.over_sampling import SMOTENC
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (

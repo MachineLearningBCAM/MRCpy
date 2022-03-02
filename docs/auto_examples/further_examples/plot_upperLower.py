@@ -26,10 +26,10 @@ feature of the MRCs. The results are for a
 import time
 
 import matplotlib.pyplot as plt
-from imblearn.over_sampling import SMOTE
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from imblearn.over_sampling import SMOTE
 from sklearn import preprocessing
 from sklearn.model_selection import RepeatedStratifiedKFold
 
