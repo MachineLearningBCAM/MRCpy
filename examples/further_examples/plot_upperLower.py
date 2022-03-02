@@ -148,7 +148,6 @@ def getUpperLowerdf(train_size, X, y, cv, paramsMRC, smote=True):
             auxtable["Lower"] = MRC_model.get_lower_bound()
 
             table = table.append(auxtable, ignore_index=True)
-            table.to_csv('COVIDtablaupperlower.csv', index = False)
     return table
 
 
