@@ -28,8 +28,8 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import SMOTE
 import seaborn as sns
+from imblearn.over_sampling import SMOTE
 from sklearn import preprocessing
 from sklearn.model_selection import RepeatedStratifiedKFold
 
@@ -148,6 +148,7 @@ def getUpperLowerdf(train_size, X, y, cv, paramsMRC, smote=True):
             auxtable["Lower"] = MRC_model.get_lower_bound()
 
             table = table.append(auxtable, ignore_index=True)
+            table.to_csv('COVIDtablaupperlower.csv', index = False)
     return table
 
 

@@ -46,8 +46,8 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from imblearn.over_sampling import SMOTENC
 import seaborn as sns
+from imblearn.over_sampling import SMOTENC
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
