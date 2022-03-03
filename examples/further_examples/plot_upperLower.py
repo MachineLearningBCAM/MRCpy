@@ -179,7 +179,7 @@ train = np.arange(0.1, 0.81, 0.1)
 
 #############################################
 # Cross test validation
-# ~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------
 # 5 fold repeated Stratified Cross validation is performed where each of the
 # fold is trained with 80% of the data and then tested with the remaining 20%
 
@@ -190,7 +190,7 @@ cv = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats,
 
 ############################
 # Results
-# ====================
+# ------------------------------
 # We will present the results for the 6 datasets. For more information
 # about the dataset refer to the
 # `MRCpy documentation <https://machinelearningbcam.github.io/MRCpy>`_ of the
@@ -200,7 +200,7 @@ cv = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats,
 
 #######################
 # Mammographic
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 X, y = load_mammographic()
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
 # dataframes.append(table)
@@ -242,7 +242,7 @@ plt.show()
 
 #######################
 # Haberman
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 X, y = load_haberman()
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
@@ -283,7 +283,7 @@ plt.show()
 
 #######################
 # Indian liver
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 X, y = load_indian_liver()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
@@ -322,7 +322,7 @@ plt.suptitle("Indian Liver")
 plt.show()
 #######################
 # diabetes
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 X, y = load_diabetes()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
@@ -362,7 +362,7 @@ plt.suptitle("Diabetes")
 plt.show()
 #######################
 # credit
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 X, y = load_credit()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)
@@ -402,7 +402,7 @@ plt.suptitle("Credit")
 plt.show()
 #######################
 # COVID
-# ~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 X, y = load_covid()
 
 table = getUpperLowerdf(train, X, y, cv, paramsMRC)

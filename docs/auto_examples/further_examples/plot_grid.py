@@ -92,8 +92,8 @@ def run_RandomGridCV(X_train, Y_train, X_test, Y_test, sigma_ini, sigma_fin,
     X_train = std_scale.transform(X_train)
     X_test = std_scale.transform(X_test)
 
-    sigma_values = np.linspace(sigma_ini, sigma_fin, num=50000)
-    s_values = np.linspace(s_ini, s_fin, num=50000)
+    sigma_values = np.linspace(sigma_ini, sigma_fin, num=5000)
+    s_values = np.linspace(s_ini, s_fin, num=5000)
     param = {'sigma': sigma_values, 's': s_values}
 
     mrc = MRC(phi='fourier', random_state=0, deterministic=False, use_cvx=True,

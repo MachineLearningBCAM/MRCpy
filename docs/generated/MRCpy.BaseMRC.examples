@@ -5,14 +5,14 @@ Examples using ``MRCpy.BaseMRC``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_grid_thumb.png
-     :alt: Hyperparameter Tuning: Upper Bound vs Cross-Validation
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_COVID_thumb.png
+     :alt: Example: Predicting COVID-19 patients outcome using MRCs
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_grid.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`
 
 .. raw:: html
 
@@ -20,4 +20,4 @@ Examples using ``MRCpy.BaseMRC``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_further_examples_plot_grid.py`
+ * :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`

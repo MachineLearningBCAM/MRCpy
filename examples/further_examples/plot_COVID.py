@@ -4,8 +4,7 @@
 .. _ex_covid:
 
 
-Example: Predicting COVID-19 patients outcome using MRCs in highly class
-imbalanced dataset.
+Example: Predicting COVID-19 patients outcome using MRCs
 ==================================================================
 
 In this example we will use `MRCpy.MRC` and `MRCpy.CMRC` to predict the outcome
@@ -143,9 +142,9 @@ pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 # .. seealso::    For more information about the SMOTE package refer to:
 #
 #                [2] Chawla, N. V., Bowyer, K. W., Hall, L. O., & Kegelmeyer,
-#                    W. P. (2002). SMOTE: synthetic minority over-sampling
-#                    technique. Journal of artificial intelligence
-#                    research, 16, 321-357.
+#                W. P. (2002). SMOTE: synthetic minority over-sampling 
+#                technique. Journal of artificial intelligence research,
+#                16, 321-357.
 
 # We fit the data to the oversampler
 smotefit = SMOTENC(sampling_strategy=0.75, categorical_features=[3])
@@ -177,7 +176,7 @@ pd.DataFrame(y_resampled.value_counts().rename(
 
 #############################################
 # Load classification function:
-# ~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # These function classify each of the cases in their correspondent
 # confusion matrix's category. It also allows to set the desired cut-off
 # for the predictions.
@@ -222,7 +221,7 @@ def defDataFrame(model, x_test, y_test, threshold=0.5):
 
 #############################################
 # Train models:
-# ~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # We will train the models with 80% of the data and then test with the other
 # 20% selected randomly.
 
@@ -270,7 +269,7 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 
 #############################################
 # Comparison of models:
-# ~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # We will compare now the histograms of the conditional probability for the
 # two posible outcomes. Overlapping in the histograms means that the
 # classification is erroneous. Condisering a cutoff of 0.5 pink cases below
@@ -452,7 +451,7 @@ pd.DataFrame(
 
 #############################################
 # Settind the cut-off point for binary classification:
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # In this section we will use beeswarm-boxplot to select the cut-off point
 # to optimise the tradeoff between false positives and false negatives. The
 # beeswarm-boxplot is a great tool to determine the performance of the model
