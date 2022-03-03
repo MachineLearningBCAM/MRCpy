@@ -94,6 +94,48 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_COVID_thumb.png
+     :alt: Example: Predicting COVID-19 patients outcome using MRCs
+
+     :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/further_examples/plot_COVID
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the lo...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_upperLower_thumb.png
+     :alt: Example: Use of Upper and Lower bound as error estimation
+
+     :ref:`sphx_glr_auto_examples_further_examples_plot_upperLower.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /auto_examples/further_examples/plot_upperLower
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
 
 .. only:: html
