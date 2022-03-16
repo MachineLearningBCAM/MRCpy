@@ -72,7 +72,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         standard deviation of :math:`\\phi(X,Y)` in the supervised
         dataset (X,Y).
 
-    sigma : `str` or `float`, default = `None`
+    sigma : `str` or `float`, default = `scale`
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` used in some feature
         mappings such as Random Fourier or ReLU features.

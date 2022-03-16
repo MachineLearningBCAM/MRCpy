@@ -17,6 +17,10 @@ feature mapping using a random grid. We will used the usual method
 :ref:`RandomizedSearchCV<https://scikit-learn.org/stable/modules/
 generated/sklearn.model_selection.RandomizedSearchCV.html>`
 from `scikit-learn`.
+
+Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization.
 """
 
 # Import needed modules
@@ -59,7 +63,7 @@ def run_RandomGridUpper(X_train, Y_train, X_test, Y_test, sigma_ini, sigma_fin,
 
     for i in range(n_iter):
         clf = MRC(phi='fourier', sigma=sigma_id[i], s=s_id[i], random_state=0,
-                  deterministic=False, use_cvx=True, solver='MOSEK')
+                  deterministic=False, use_cvx=False)
         clf.fit(X_train, Y_train)
         upps[i] = clf.get_upper_bound()
 
@@ -67,7 +71,7 @@ def run_RandomGridUpper(X_train, Y_train, X_test, Y_test, sigma_ini, sigma_fin,
     best_sigma = sigma_id[np.argmin(upps)]
     best_s = s_id[np.argmin(upps)]
     clf = MRC(phi='fourier', sigma=best_sigma, s=best_s, random_state=0,
-              deterministic=False, use_cvx=True, solver='MOSEK')
+              deterministic=False, use_cvx=False)
     clf.fit(X_train, Y_train)
     Y_pred = clf.predict(X_test)
     best_err = np.average(Y_pred != Y_test)
@@ -96,8 +100,8 @@ def run_RandomGridCV(X_train, Y_train, X_test, Y_test, sigma_ini, sigma_fin,
     s_values = np.linspace(s_ini, s_fin, num=5000)
     param = {'sigma': sigma_values, 's': s_values}
 
-    mrc = MRC(phi='fourier', random_state=0, deterministic=False, use_cvx=True,
-              solver='MOSEK')
+    mrc = MRC(phi='fourier', random_state=0, deterministic=False,
+              use_cvx=False)
     clf = RandomizedSearchCV(mrc, param, random_state=0, n_iter=n_iter)
     clf.fit(X_train, Y_train)
     Y_pred = clf.predict(X_test)

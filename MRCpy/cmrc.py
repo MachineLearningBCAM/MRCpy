@@ -11,6 +11,9 @@ from sklearn.utils.validation import check_is_fitted
 
 # Import the MRC super class
 from MRCpy import BaseMRC
+from MRCpy.phi import \
+    RandomReLUPhi, \
+    ThresholdPhi
 
 
 class CMRC(BaseMRC):
@@ -69,7 +72,7 @@ class CMRC(BaseMRC):
         standard deviation of :math:`\\phi(X,Y)` in the supervised
         dataset (X,Y).
 
-    sigma : `str` or `float`, default = `None`
+    sigma : `str` or `float`, default = `sigma`
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` used in some feature
         mappings such as Random Fourier or ReLU featuress.
@@ -106,7 +109,7 @@ class CMRC(BaseMRC):
 
     use_cvx : `bool`, default = `False`
         If True, use CVXpy library for the optimization
-        instead of the subgradient methods.
+        instead of the subgradient or SGD methods.
 
     solver : `str`, default = 'MOSEK'
         The type of CVX solver to use for solving the problem.
@@ -125,10 +128,13 @@ class CMRC(BaseMRC):
             `here <https://www.mosek.com/products/academic-licenses/>`_.
 
 
-    max_iters : `int`, default = `2000`
+    max_iters : `int`, default = `2000` or `30000`
         The maximum number of iterations to use
-        for finding the solution of optimization when
-        using the subgradient approach.
+        for finding the solution of optimization when use_cvx=False.
+        When None is given, default value is 30000 for Linear and RandomFourier
+        feature mappings (optimization performed using SGD) and 2000 when
+        using other feature mappings (optimization performed using nesterov
+        subgradient approach).
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         The type of feature mapping function to use for mapping the input data.
@@ -240,7 +246,14 @@ class CMRC(BaseMRC):
     def __init__(self, loss='0-1', s=0.3,
                  deterministic=True, random_state=None,
                  fit_intercept=True, use_cvx=False,
-                 solver='SCS', max_iters=2000, phi='linear', **phi_kwargs):
+                 solver='SCS', max_iters=None, phi='linear',
+                 stepsize='decay', **phi_kwargs):
+        if max_iters is None:
+            if phi == 'linear' or phi == 'fourier':
+                max_iters = 30000
+            else:
+                max_iters = 2000
+        self.stepsize = stepsize
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
@@ -251,11 +264,60 @@ class CMRC(BaseMRC):
                          max_iters=max_iters,
                          phi=phi, **phi_kwargs)
 
+    def fit(self, X, Y, X_=None):
+        '''
+        Fit the MRC model.
+
+        Computes the parameters required for the minimax risk optimization
+        and then calls the `minimax_risk` function to solve the optimization.
+
+        Parameters
+        ----------
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Training instances used in
+
+            - Calculating the expectation estimates
+              that constrain the uncertainty set
+              for the minimax risk classification
+            - Solving the minimax risk optimization problem.
+
+            `n_samples` is the number of training samples and
+            `n_features` is the number of features.
+
+        Y : `array`-like of shape (`n_samples`, 1), default = `None`
+            Labels corresponding to the training instances
+            used only to compute the expectation estimates.
+
+        X_ : array-like of shape (`n_samples2`, `n_dimensions`), default = None
+            These instances are optional and
+            when given, will be used in the minimax risk optimization.
+            These extra instances are generally a smaller set and
+            give an advantage in training time.
+
+        Returns
+        -------
+        self :
+            Fitted estimator
+
+        '''
+
+        if X_ is None:
+            if self.phi == 'linear' or self.phi == 'fourier':
+                super().fit(X, Y, X)
+            else:
+                super().fit(X, Y)
+        else:
+            super().fit(X, Y, X_)
+        return self
+
     def minimax_risk(self, X, tau_, lambda_, n_classes):
         '''
         Solves the marginally constrained minimax risk
         optimization problem for
         different types of loss (0-1 and log loss).
+        When use_cvx=False, it uses SGD optimization for linear and random
+        fourier feature mappings and nesterov subgradient approach for
+        the rest.
 
         Parameters
         ----------
@@ -352,12 +414,10 @@ class CMRC(BaseMRC):
                 self.try_solvers(objective, None, mu)
 
         elif not self.use_cvx:
-            # Use the subgradient approach for the convex optimization of MRC
 
             if self.loss == '0-1':
                 # Define the objective function and
                 # the gradient for the 0-1 loss function.
-
                 M = F / (cardS[:, np.newaxis])
                 h = 1 - (1 / cardS)
 
@@ -373,15 +433,25 @@ class CMRC(BaseMRC):
                         # Get psi for each data point
                         # and return the max value over all subset
                         # and its corresponding index
-
                         xi_subsetInd = np.arange(i, psi.shape[0], n)
                         idx.append(xi_subsetInd[np.argmax(psi[xi_subsetInd])])
-
                     return (1 / n) * np.sum(psi[idx]), idx
 
-                # Subgradient of the subobjective
-                def g_(mu, idx):
-                    return (1 / n) * np.sum(M.transpose()[:, idx], axis=1)
+                if isinstance(self.phi, RandomReLUPhi) or \
+                   isinstance(self.phi, ThresholdPhi):
+                    # Use the subgradient approach for the convex optimization
+                    # The subgradient of the psi subobjective
+                    # for all the datapoints
+                    def g_(mu, idx):
+                        return (1 / n) * np.sum(M.transpose()[:, idx], axis=1)
+                else:
+                    # Use SGD for the convex optimization
+                    # Subgradient of the subobjective for one point
+                    def g_(mu, sample_id):
+                        xi_subsetInd = np.arange(sample_id, M.shape[0], n)
+                        psi = M[xi_subsetInd] @ mu + h[xi_subsetInd]
+                        idx = xi_subsetInd[np.argmax(psi)]
+                        return M.transpose()[:, idx].flatten()
 
             elif self.loss == 'log':
                 # Define the objective function and
@@ -393,19 +463,38 @@ class CMRC(BaseMRC):
                             np.sum(scs.logsumexp((phi @ mu), axis=1)),
                             None)
 
-                # The subgradient of the psi subobjective
-                # for all the datapoints
-                def g_(mu, idx):
-                    expPhi = np.exp(phi @ mu)[:, np.newaxis, :]
-                    return (1 / n) *\
-                        (np.sum(((expPhi @ phi)[:, 0, :] /
-                                 np.sum(expPhi, axis=2)).transpose(), axis=1))
+                if isinstance(self.phi, RandomReLUPhi) or \
+                   isinstance(self.phi, ThresholdPhi):
+                    # Use the subgradient approach for the convex optimization
+                    # The subgradient of the psi subobjective
+                    # for all the datapoints
+                    def g_(mu, idx):
+                        expPhi = np.exp(phi @ mu)[:, np.newaxis, :]
+                        return (1 / n) *\
+                            (np.sum(((expPhi @ phi)[:, 0, :] /
+                                     np.sum(expPhi, axis=2)).transpose(),
+                                    axis=1))
 
-            self.params_ = \
-                self.nesterov_optimization(m, None, f_, g_)
+                else:
+                    # Use SGD for the convex optimization
+                    # Subgradient of the subobjective for one point
+                    def g_(mu, sample_id):
+                        expPhi = np.exp(phi[sample_id, :, :] @ mu
+                                        )[np.newaxis, np.newaxis, :]
+                        return (np.sum(((expPhi @ phi[sample_id, :, :])
+                                        [:, 0, :] /
+                                        np.sum(expPhi, axis=2)).transpose(),
+                                       axis=1))
+
+            if isinstance(self.phi, RandomReLUPhi) or \
+               isinstance(self.phi, ThresholdPhi):
+                self.params_ = \
+                    self.nesterov_optimization(m, None, f_, g_)
+            else:
+                self.params_ = \
+                    self.SGD_optimization(m, n, None, f_, g_)
 
             self.mu_ = self.params_['mu']
-
         self.is_fitted_ = True
 
         return self
@@ -448,81 +537,21 @@ class CMRC(BaseMRC):
 
         Return
         ------
-        mu : `array`-like, shape (`m`,)
-            The parameters corresponding to the optimized function value
-        f_best_value : `float`
-            The optimized value of the function in consideration.
+        new_params_ : `dict`
+            Dictionary containing optimized values: mu (`array`-like,
+            shape (`m`,)) - parameters corresponding to the optimized
+            function value, f_best_value (`float` - optimized value of the
+            function in consideration, w_k and w_k_prev (`array`-like,
+            shape (`m`,)) - parameters corresponding to the last iteration.
         '''
 
         # Initial values for the parameters
         theta_k = 1
         theta_k_prev = 1
 
-        # Initial values for points
-        if params_ is not None:
-            y_k = params_['mu']
-            w_k = params_['w_k']
-            w_k_prev = params_['w_k_prev']
-
-            # Length of the points array might change
-            # depending on the new dataset
-            # as the length of feature mapping might change
-            # with the new dataset.
-            old_m = y_k.shape[0]
-            if old_m != m:
-
-                # Length of each class in the feature mapping
-                # depending on old dataset
-                old_len = int(old_m / self.n_classes)
-
-                # Length of each class in the feature mapping
-                # depending on new dataset
-                new_len = int(m / self.n_classes)
-
-                # New points array with increased/decreased size
-                # while restoring the old values of points.
-                new_y_k = np.zeros(m, dtype=np.float)
-                new_w_k = np.zeros(m, dtype=np.float)
-                new_w_k_prev = np.zeros(m, dtype=np.float)
-
-                # Restoring the old values of the points obtained
-                # from previous call to fit.
-                for i in range(self.n_classes):
-                    new_start = new_len * i
-                    old_start = old_len * i
-
-                    if old_m < m:
-                        # Increase the size
-                        # by appending zeros at the end of each class segment.
-                        new_y_k[new_start:new_start + old_len] = \
-                            y_k[old_start:old_start + old_len]
-
-                        new_w_k[new_start:new_start + old_len] = \
-                            w_k[old_start:old_start + old_len]
-
-                        new_w_k_prev[new_start:new_start + old_len] = \
-                            w_k_prev[old_start:old_start + old_len]
-                    else:
-                        # Decrease the size
-                        # by taking the starting values of each class segment.
-                        new_y_k[new_start:new_start + new_len] = \
-                            y_k[old_start:old_start + new_len]
-
-                        new_w_k[new_start:new_start + new_len] = \
-                            w_k[old_start:old_start + new_len]
-
-                        new_w_k_prev[new_start:new_start + new_len] = \
-                            w_k_prev[old_start:old_start + new_len]
-
-                # Updating values.
-                y_k = new_y_k
-                w_k = new_w_k
-                w_k_prev = new_w_k_prev
-
-        else:
-            y_k = np.zeros(m, dtype=np.float)
-            w_k = np.zeros(m, dtype=np.float)
-            w_k_prev = np.zeros(m, dtype=np.float)
+        y_k = np.zeros(m, dtype=np.float)
+        w_k = np.zeros(m, dtype=np.float)
+        w_k_prev = np.zeros(m, dtype=np.float)
 
         # Setting initial values for the objective function and other results
         psi, idx = f_(y_k)
@@ -568,6 +597,81 @@ class CMRC(BaseMRC):
                        'w_k_prev': w_k_prev,
                        'mu': mu,
                        'best_value': f_best_value,
+                       }
+
+        return new_params_
+
+    def SGD_optimization(self, m, n, params_, f_, g_):
+        '''
+        Solution of the CMRC convex optimization(minimization)
+        using SGD approach.
+
+        Parameters
+        ----------
+        m : `int`
+            Length of the feature mapping vector
+        n : `int`
+            Number of samples used for optimization
+        params_ : `dict`
+            A dictionary of parameters values
+            obtained from the previous call to fit
+            used as the initial values for the current optimization
+            when warm_start is True.
+        f_ : a lambda function/ function of the form - `f_(mu)`
+            It is expected to be a lambda function or a function
+            calculating a part of the objective function
+            depending on the type of loss function chosen
+            by taking the parameters(mu) of the optimization as input.
+        g_ : a lambda function of the form - `g_(mu, idx)`
+            It is expected to be a lambda function
+            calculating the part of the subgradient of the objective function
+            depending on the type of the loss function chosen.
+            It takes the as input -
+            parameters (mu) of the optimization and
+            the indices corresponding to the maximum value of subobjective
+            for a given subset of Y (set of labels).
+
+        Return
+        ------
+        new_params_ : `dict`
+            Dictionary containing optimized values: mu and w_k (`array`-like,
+            shape (`m`,)) - parameters corresponding to the last iteration,
+            best_value (`float` - optimized value of the
+            function in consideration.
+        '''
+
+        # Initial values for points
+        w_k = np.zeros(m, dtype=np.float)
+
+        # Setting initial values for the objective function and other results
+
+        sample_id = 0
+        epoch_id = 0
+        for k in range(1, (self.max_iters + 1)):
+
+            g_0 = self.lambda_ * np.sign(w_k) - self.tau_ + g_(w_k, sample_id)
+
+            if self.stepsize == 'decay':
+                stepsize = 0.01 * (1 / 1 + 0.01 * epoch_id)
+            elif type(self.stepsize) == float:
+                stepsize = self.stepsize
+            else:
+                raise ValueError('Unexpected stepsize ... ')
+
+            w_k = w_k - stepsize * g_0
+
+            sample_id += 1
+            epoch_id += sample_id // n
+            sample_id = sample_id % n
+
+        psi, idx = f_(w_k)
+        f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + psi
+        mu = w_k
+
+        # Return the optimized values in a dictionary
+        new_params_ = {'w_k': w_k,
+                       'mu': mu,
+                       'best_value': f_value,  # actually last value
                        }
 
         return new_params_

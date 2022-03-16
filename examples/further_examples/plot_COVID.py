@@ -142,7 +142,7 @@ pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 # .. seealso::    For more information about the SMOTE package refer to:
 #
 #                [2] Chawla, N. V., Bowyer, K. W., Hall, L. O., & Kegelmeyer,
-#                W. P. (2002). SMOTE: synthetic minority over-sampling 
+#                W. P. (2002). SMOTE: synthetic minority over-sampling
 #                technique. Journal of artificial intelligence research,
 #                16, 321-357.
 

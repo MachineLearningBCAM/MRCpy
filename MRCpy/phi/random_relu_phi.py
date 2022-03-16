@@ -76,7 +76,7 @@ class RandomReLUPhi(BasePhi):
         classes. If set to true, one-hot-encoding will be used. If set to
         false a more efficient shorcut will be performed.
 
-    sigma : `str` or `float`, default = 'avg_ann_50'
+    sigma : `str` or `float`, default = 'scale'
         When given a string, it defines the type of heuristic to be used
         to calculate the scaling parameter `sigma` using the data.
         For comparison its relation with parameter `gamma` used in
@@ -117,7 +117,7 @@ class RandomReLUPhi(BasePhi):
         Length of the feature mapping vector.
     '''
 
-    def __init__(self, n_classes, fit_intercept=True, sigma='avg_ann_50',
+    def __init__(self, n_classes, fit_intercept=True, sigma='scale',
                  n_components=600, random_state=None, one_hot=False):
 
         # Call the base class init function.

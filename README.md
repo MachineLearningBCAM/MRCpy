@@ -3,16 +3,21 @@
 [![Build Status](https://app.travis-ci.com/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.com/github/MachineLearningBCAM/MRCpy)
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
-Variants of Minimax Risk Classifiers (MRC) using different loss functions and uncertainity set of distributions.
 
-The variants available here are - 
+MRCpy library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries for supervised classification using techniques based on empirical risk minimization and surrogate losses.
 
-1) MRC with 0-1 loss (MRC)
-2) MRC with log loss (MRC)
-3) MRC with 0-1 loss and fixed instances' marginals (CMRC)
-4) MRC with log loss and fixed instances' marginals (CMRC)
+Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
 
-# Installation
+In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features. The library is designed with an object-oriented approach that facilitates collaborators and users. The source code is available under the MIT license at <https://github.com/MachineLearningBCAM/MRCpy>.
+
+## Algorithms
+
+- MRC with 0-1 loss (MRC)
+- MRC with log loss (MRC)
+- MRC with 0-1 loss and fixed instances' marginals (CMRC)
+- MRC with log loss and fixed instances' marginals (CMRC)
+
+## Installation
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 <br/>
 
@@ -26,90 +31,47 @@ python3 setup.py install
 
 __NOTE:__ CVXpy optimization uses MOSEK optimizer(by default) which requires a license. You can get a free academic license from [here](https://www.mosek.com/products/academic-licenses/).
 
-# Getting started
-To use the classification models (MRC and CMRC) of the MRCpy package, you have to define the instance of that object (as we do for any other classification model in scikit-learn) for which you can define the following parameters - 
+### Dependencies
 
-``loss`` : The type of loss function to use
+- `Python` >= 3.6
+- `numpy` >= 1.18.1, `scipy`>= 1.4.1, `scikit-learn` >= 0.21.0, `cvxpy`, `mosek`, `pandas`
 
-``phi`` : Feature mapping type string or object (in case of the custom feature mapping)
+## Usage
 
+See the [MRCpy documentation page](https://machinelearningbcam.github.io/MRCpy/) for full documentation about installation, API, usage, and examples.
 
-## Fitting the models
+## Citations
+This repository is the official implementation of Minimax Risk Classifiers proposed in the following papers. If you use MRCpy in a scientific publication, we would appreciate citations to:
 
-MRC with 0-1 loss
-```
-clf = MRC(loss='0-1').fit(X, Y)
-```
+- [1] [Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312.] (<https://arxiv.org/abs/2010.07964>)
 
-MRC with log loss
-```
-clf = MRC(loss='log').fit(X, Y)
-```
+		@article{mazuelas2020minimax,
+		title={Minimax Classification with 0-1 Loss and Performance Guarantees},
+		author={Mazuelas, Santiago and Zanoni, Andrea and P{\'e}rez, Aritz},
+		journal={Advances in Neural Information Processing Systems},
+		volume={33},
+		pages={302--312},
+		year={2020}
+		}
+               
+- [2] [Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.](<https://arxiv.org/abs/2007.05447>)
+		
+		@article{mazuelas2020generalized,
+		title={Generalized Maximum Entropy for Supervised Classification},
+		author={Mazuelas, Santiago and Shen, Yuan and P{\'e}rez, Aritz},
+		journal={arXiv preprint arXiv:2007.05447},
+		year={2020}
+		}
+               
+- [3] [Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.](<https://arxiv.org/abs/2108.01952>)
 
-MRC with 0-1 loss and fixed instances' marginals
-```
-clf = CMRC(loss='0-1').fit(X, Y)
-```
+		@article{bondugula2021mrcpy,
+		title={MRCpy: A Library for Minimax Risk Classifiers},
+		author={Bondugula, Kartheek and Mazuelas, Santiago and P{\'e}rez, Aritz},
+		journal={arXiv preprint arXiv:2108.01952},
+		year={2021}
+		}
 
-MRC with log loss and fixed instances' marginals
-```
-clf = CMRC(loss='log').fit(X, Y)
-```
+## Updates and Discussion
 
-## A small training example of MRC
-```
-from MRCpy import MRC
-from sklearn.datasets import load_iris
-
-X, Y = load_iris(return_X_y=True)
-r = len(np.unique(Y))
-clf = MRC().fit(X, Y)
-y_pred = clf.predict(X[:2,:])
-```
-
-## Bounds on the error for MRC
-
-```
-clf = MRC().fit(X, Y)
-upper_bound = clf.get_upper_bound()
-lower_bound = clf.get_lower_bound()
-```
-
-Only available for the MRC class
-
-
-## Customizing the MRCs learning process using your own interval estimates for optimization
-
-By passing the values for ``tau`` and ``lambda`` (interval estimates), you set the constraint for the uncertainty sets. For this purpose, you can use the ``minimax_risk`` function for fitting the classifier instead of ``fit``.
-```
-clf = MRC().minimax_risk(X, tau_=[0.5, 0.5, ..., 0.1] , lambda_=[0.1, 0.02, ..., 0.04], n_classes=2)
-```
-
-## Building your custom feature mappings
-
-For building your own customized feature mappings, you can follow this [example(customPhi.py)](https://github.com/MachineLearningBCAM/MRCpy/blob/main/examples/customPhi.py) in the examples folder.
-
-## Using CVXpy for optimization
-
-By default, the classifier uses the subgradient methods for optimization. To use the CVXpy for optimization, set the ``use_cvx=True``.
-```
-clf = MRC(use_cvx=True).fit(X, Y)
-```
-
-## Reusing previous solution of fit as initialization to the next call to fit (warm_start)
-
-Reuse the solution of the previous call to fit as initialization in the next fit by setting ``warm_start=True``. This option is useful for faster convergence when you have to fit your classifier to an increasing dataset again and again.
-```
-clf = MRC(warm_start=True).fit(X, Y)
-```
-
-See the [documentation](https://MachineLearningBCAM.github.io/MRCpy/) for more details about the API and its usage.
-
-# Updates and Discussion
-
-You can subscribe to the MRCpy's mailing [list](https://mail.python.org/mailman3/lists/mrcpy.python.org/) for updates and discussion.
-
-
-******
-###### Acknowledgments
-Research carried out under the project PID2019-105058GA-I00 funded by MCIN/ AEI /10.13039/501100011033
+You can subscribe to the [MRCpy's mailing list](https://mail.python.org/mailman3/lists/mrcpy.python.org/) for updates and discussion

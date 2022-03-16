@@ -10,8 +10,11 @@ different losses and feature mappings settings. We load the different datasets
 and use 10-Fold Cross-Validation to generate the partitions for train and test.
 We separate 1 partition each time for testing and use the others for training.
 On each iteration we calculate the classification error as well as the upper
-and lower bounds for the error. We also
-calculate the mean training time.
+and lower bounds for the error. We also calculate the mean training time.
+
+Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization.
 
 You can check a more elaborated example in :ref:`ex_comp`.
 
@@ -20,6 +23,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 import time
 
 import numpy as np
+import pandas as pd
 from sklearn import preprocessing
 from sklearn.model_selection import StratifiedKFold
 
@@ -36,9 +40,7 @@ dataName = ["mammographic", "haberman", "indian_liver",
 
 def runMRC(phi, loss):
 
-    res_mean = np.zeros(len(dataName))
-    res_std = np.zeros(len(dataName))
-
+    results = pd.DataFrame()
     # We fix the random seed to that the stratified kfold performed
     # is the same through the different executions
     random_seed = 0
@@ -51,12 +53,8 @@ def runMRC(phi, loss):
         r = len(np.unique(Y))
         n, d = X.shape
 
-        # Print the dataset name
-        print(" ############## \n " + dataName[j] + " n= " + str(n) +
-              " , d= " + str(d) + ", cardY= " + str(r))
-
-        clf = MRC(phi=phi, loss=loss, solver='MOSEK',
-                  use_cvx=True, max_iters=10000, s=0.3)
+        clf = MRC(phi=phi, loss=loss,
+                  use_cvx=False, max_iters=10000, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -95,27 +93,32 @@ def runMRC(phi, loss):
             # Calculate the error made by MRC classificator
             cvError.append(np.average(y_pred != y_test))
 
-        res_mean[j] = np.average(cvError)
-        res_std[j] = np.std(cvError)
+        res_mean = np.average(cvError)
+        res_std = np.std(cvError)
 
         # Calculating the mean upper and lower bound and training time
         upper = upper / 10
         lower = lower / 10
         auxTime = auxTime / 10
 
-        print(" error= " + ": " + str(res_mean[j]) + " +/- " +
-              str(res_std[j]))
-        print(" upper= " + str(upper) + "\n lower= " + str(lower) +
-              "\n avg_train_time= " + ": " + str(auxTime) + ' secs' +
-              "\n ############## \n")
+        results = results.append({'dataset': dataName[j],
+                                  'n_samples': '%1.3g' % n,
+                                  'n_attributes': '%1.3g' % d,
+                                  'n_classes': '%1.3g' % r,
+                                  'error': '%1.3g' % res_mean + " +/- " +
+                                  '%1.3g' % res_std,
+                                  'upper': '%1.3g' % upper,
+                                  'lower': '%1.3g' % lower,
+                                  'avg_train_time': '%1.3g' % auxTime},
+                                 ignore_index=True)
+    return results
 
+####################################################################
 
-if __name__ == '__main__':
+r1 = runMRC(phi='fourier', loss='0-1')
+r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
 
-    print('*** Example (MRC with default constraints) *** \n\n')
+####################################################################
 
-    print('1. Using 0-1 loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='0-1')
-
-    print('2. Using log loss and relu feature mapping \n\n')
-    runMRC(phi='relu', loss='log')
+r2 = runMRC(phi='fourier', loss='log')
+r2.style.set_caption('Using log loss and fourier feature mapping')

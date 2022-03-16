@@ -5,14 +5,14 @@ Examples using ``MRCpy.MRC.predict``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
+    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_COVID_thumb.png
-     :alt: Example: Predicting COVID-19 patients outcome using MRCs
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
+     :alt: MRCs with Deep Neural Networks: Part II
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
 
 .. raw:: html
 
@@ -20,4 +20,4 @@ Examples using ``MRCpy.MRC.predict``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`
+ * :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
