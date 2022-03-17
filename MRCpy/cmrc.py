@@ -249,7 +249,7 @@ class CMRC(BaseMRC):
                  solver='SCS', max_iters=None, phi='linear',
                  stepsize='decay', **phi_kwargs):
         if max_iters is None:
-            if phi == 'linear' or phi == 'fourier':
+            if not use_cvx and (phi == 'linear' or phi == 'fourier'):
                 max_iters = 30000
             else:
                 max_iters = 2000
