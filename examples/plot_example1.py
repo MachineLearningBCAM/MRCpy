@@ -113,6 +113,7 @@ def runMRC(phi, loss):
                                  ignore_index=True)
     return results
 
+
 ####################################################################
 
 r1 = runMRC(phi='fourier', loss='0-1')
