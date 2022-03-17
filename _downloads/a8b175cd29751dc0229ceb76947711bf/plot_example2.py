@@ -12,12 +12,17 @@ We separate 1 partition each time for testing and use the others for training.
 On each iteration we calculate
 the classification error. We also calculate the mean training time.
 
+Note that we set the parameter use_cvx=False. In the case of CMRC classifiers
+and random fourier feature mapping this means that we will use Stochastic
+Gradient Descent (SGD) approach to perform the optimization.
+
 You can check a more elaborated example in :ref:`ex_comp`.
 """
 
 import time
 
 import numpy as np
+import pandas as pd
 from sklearn import preprocessing
 from sklearn.model_selection import StratifiedKFold
 
@@ -33,7 +38,7 @@ dataName = ["mammographic", "haberman", "indian_liver",
 
 
 def runCMRC(phi, loss):
-
+    results = pd.DataFrame()
     res_mean = np.zeros(len(dataName))
     res_std = np.zeros(len(dataName))
 
@@ -49,13 +54,8 @@ def runCMRC(phi, loss):
         r = len(np.unique(Y))
         n, d = X.shape
 
-        # Print the dataset name
-        print(" ############## \n " + dataName[j] + " n= " + str(n) +
-              " , d= " + str(d) + ", cardY= " + str(r))
-
         # Create the CMRC object initilized with the corresponding parameters
-        clf = CMRC(phi=phi, loss=loss, use_cvx=True,
-                   solver='MOSEK', max_iters=10000, s=0.3)
+        clf = CMRC(phi=phi, loss=loss, use_cvx=False, s=0.3)
 
         # Generate the partitions of the stratified cross-validation
         cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -90,24 +90,29 @@ def runCMRC(phi, loss):
             # Calculate the error made by CMRC classificator
             cvError.append(np.average(y_pred != y_test))
 
-        res_mean[j] = np.average(cvError)
-        res_std[j] = np.std(cvError)
+        res_mean = np.average(cvError)
+        res_std = np.std(cvError)
 
         # Calculating the mean training time
         auxTime = auxTime / 10
 
-        print(" error= " + ": " + str(res_mean[j]) + " +/- " +
-              str(res_std[j]) + "\n avg_train_time= " + ": " +
-              str(auxTime) + ' secs' + "\n ############## \n\n")
+        results = results.append({'dataset': dataName[j],
+                                  'n_samples': '%1.3g' % n,
+                                  'n_attributes': '%1.3g' % d,
+                                  'n_classes': '%1.3g' % r,
+                                  'error': '%1.3g' % res_mean + " +/- " +
+                                  '%1.3g' % res_std,
+                                  'avg_train_time': '%1.3g' % auxTime},
+                                 ignore_index=True)
+    return results
 
 
-if __name__ == '__main__':
+####################################################################
 
-    print('*** Example (CMRC with the additional\
-     marginal constraints) *** \n\n')
+r1 = runCMRC(phi='fourier', loss='0-1')
+r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
 
-    print('1. Using 0-1 loss and relu feature mapping \n\n')
-    runCMRC(phi='relu', loss='0-1')
+####################################################################
 
-    print('2. Using log loss and relu feature mapping \n\n')
-    runCMRC(phi='relu', loss='log')
+r2 = runCMRC(phi='fourier', loss='log')
+r2.style.set_caption('Using log loss and fourier feature mapping')

@@ -153,7 +153,7 @@
 <span class="sd">        classes. If set to true, one-hot-encoding will be used. If set to</span>
 <span class="sd">        false a more efficient shorcut will be performed.</span>
 
-<span class="sd">    sigma : `str` or `float`, default = &#39;avg_ann_50&#39;</span>
+<span class="sd">    sigma : `str` or `float`, default = &#39;scale&#39;</span>
 <span class="sd">        When given a string, it defines the type of heuristic to be used</span>
 <span class="sd">        to calculate the scaling parameter `sigma` using the data.</span>
 <span class="sd">        For comparison its relation with parameter `gamma` used in</span>
@@ -195,7 +195,7 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="RandomFourierPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;avg_ann_50&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="RandomFourierPhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span>
                  <span class="n">n_components</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="c1"># Call the base class init function.</span>

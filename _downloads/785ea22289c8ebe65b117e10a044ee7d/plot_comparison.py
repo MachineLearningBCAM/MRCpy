@@ -26,6 +26,13 @@ upper and lower bound provided by the MRC method.
 Note that in the case where loss = `0-1` these are upper and
 lower bounds of the classification error while, in the case of `loss=log`
 these bounds correspond to the log-likelihood.
+
+Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization. In the case of CMRC classifiers it will use the fast
+Stochastic Gradient Descent (SGD) approach for linear and random fourier
+feature mappings and nesterov subgradient approach for the rest of feature
+mappings.
 """
 
 # Import needed modules
@@ -91,8 +98,8 @@ def runMRC(X, Y):
                 # Deterministic case
                 startTime = time.time()
                 clf = MRC(loss=loss, phi=phi, random_state=0, sigma='scale',
-                          deterministic=True, use_cvx=True,
-                          solver='MOSEK').fit(X_train, Y_train)
+                          deterministic=True, use_cvx=False
+                          ).fit(X_train, Y_train)
                 Y_pred = clf.predict(X_test)
                 error = np.average(Y_pred != Y_test)
                 totalTime = time.time() - startTime
@@ -102,8 +109,8 @@ def runMRC(X, Y):
 
                 startTime = time.time()
                 clf = CMRC(loss=loss, phi=phi, random_state=0, sigma='scale',
-                           deterministic=True, use_cvx=True,
-                           solver='MOSEK').fit(X_train, Y_train)
+                           deterministic=True, use_cvx=False,
+                           ).fit(X_train, Y_train)
                 Y_pred = clf.predict(X_test)
                 error = np.average(Y_pred != Y_test)
                 totalTime = time.time() - startTime
@@ -116,8 +123,8 @@ def runMRC(X, Y):
                     startTime = time.time()
                     clf = MRC(loss=loss, phi=phi, random_state=0,
                               sigma='scale',
-                              deterministic=False, use_cvx=True,
-                              solver='MOSEK').fit(X_train, Y_train)
+                              deterministic=False, use_cvx=False,
+                              ).fit(X_train, Y_train)
                     Y_pred = clf.predict(X_test)
                     error = np.average(Y_pred != Y_test)
                     totalTime = time.time() - startTime

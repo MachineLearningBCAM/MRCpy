@@ -28,118 +28,15 @@ different losses and feature mappings settings. We load the different datasets
 and use 10-Fold Cross-Validation to generate the partitions for train and test.
 We separate 1 partition each time for testing and use the others for training.
 On each iteration we calculate the classification error as well as the upper
-and lower bounds for the error. We also
-calculate the mean training time.
+and lower bounds for the error. We also calculate the mean training time.
+
+Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization.
 
 You can check a more elaborated example in :ref:`ex_comp`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-122
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    *** Example (MRC with default constraints) *** 
-
-
-    1. Using 0-1 loss and relu feature mapping 
-
-
-     ############## 
-     mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.17686855670103094 +/- 0.03404213009635484
-     upper= 0.21416004633095884
-     lower= 0.16557589425238312
-     avg_train_time= : 1.993485426902771 secs
-     ############## 
-
-     ############## 
-     haberman n= 306 , d= 3, cardY= 2
-     error= : 0.27172043010752683 +/- 0.042051260087757225
-     upper= 0.25535885719913576
-     lower= 0.20958190336325444
-     avg_train_time= : 0.9947523832321167 secs
-     ############## 
-
-     ############## 
-     indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.28302162478082993 +/- 0.011388036279538709
-     upper= 0.2885205216322503
-     lower= 0.27136437450488493
-     avg_train_time= : 1.4437336444854736 secs
-     ############## 
-
-     ############## 
-     diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.2526144907723855 +/- 0.04132583902154278
-     upper= 0.27035312467294664
-     lower= 0.21706150351251874
-     avg_train_time= : 2.2149924516677855 secs
-     ############## 
-
-     ############## 
-     credit n= 690 , d= 15, cardY= 2
-     error= : 0.1463768115942029 +/- 0.04122163087921128
-     upper= 0.17783198833262276
-     lower= 0.1089678559135383
-     avg_train_time= : 1.717576503753662 secs
-     ############## 
-
-    2. Using log loss and relu feature mapping 
-
-
-     ############## 
-     mammographic n= 961 , d= 5, cardY= 2
-     error= : 0.18209836769759452 +/- 0.022903742708359254
-     upper= 0.5190333954671233
-     lower= 0.3746509295483668
-     avg_train_time= : 6.573118686676025 secs
-     ############## 
-
-     ############## 
-     haberman n= 306 , d= 3, cardY= 2
-     error= : 0.26526881720430107 +/- 0.040995954499815065
-     upper= 0.5677953625480997
-     lower= 0.45509876858067766
-     avg_train_time= : 3.720004606246948 secs
-     ############## 
-
-     ############## 
-     indian_liver n= 583 , d= 10, cardY= 2
-     error= : 0.28468731735827 +/- 0.028469786996262708
-     upper= 0.6001270538248882
-     lower= 0.5357824452851391
-     avg_train_time= : 5.274538779258728 secs
-     ############## 
-
-     ############## 
-     diabetes n= 768 , d= 8, cardY= 2
-     error= : 0.24084073820915924 +/- 0.04301716498399907
-     upper= 0.5832217359007436
-     lower= 0.46180613901161854
-     avg_train_time= : 7.90848126411438 secs
-     ############## 
-
-     ############## 
-     credit n= 690 , d= 15, cardY= 2
-     error= : 0.14492753623188406 +/- 0.04150093061819233
-     upper= 0.4672274445461337
-     lower= 0.29721227999709665
-     avg_train_time= : 6.290561175346374 secs
-     ############## 
-
-
-
-
-
-
-
-|
+.. GENERATED FROM PYTHON SOURCE LINES 22-116
 
 .. code-block:: default
 
@@ -147,6 +44,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     import time
 
     import numpy as np
+    import pandas as pd
     from sklearn import preprocessing
     from sklearn.model_selection import StratifiedKFold
 
@@ -163,9 +61,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
     def runMRC(phi, loss):
 
-        res_mean = np.zeros(len(dataName))
-        res_std = np.zeros(len(dataName))
-
+        results = pd.DataFrame()
         # We fix the random seed to that the stratified kfold performed
         # is the same through the different executions
         random_seed = 0
@@ -178,12 +74,8 @@ You can check a more elaborated example in :ref:`ex_comp`.
             r = len(np.unique(Y))
             n, d = X.shape
 
-            # Print the dataset name
-            print(" ############## \n " + dataName[j] + " n= " + str(n) +
-                  " , d= " + str(d) + ", cardY= " + str(r))
-
-            clf = MRC(phi=phi, loss=loss, solver='MOSEK',
-                      use_cvx=True, max_iters=10000, s=0.3)
+            clf = MRC(phi=phi, loss=loss,
+                      use_cvx=False, max_iters=10000, s=0.3)
 
             # Generate the partitions of the stratified cross-validation
             cv = StratifiedKFold(n_splits=10, random_state=random_seed,
@@ -222,35 +114,228 @@ You can check a more elaborated example in :ref:`ex_comp`.
                 # Calculate the error made by MRC classificator
                 cvError.append(np.average(y_pred != y_test))
 
-            res_mean[j] = np.average(cvError)
-            res_std[j] = np.std(cvError)
+            res_mean = np.average(cvError)
+            res_std = np.std(cvError)
 
             # Calculating the mean upper and lower bound and training time
             upper = upper / 10
             lower = lower / 10
             auxTime = auxTime / 10
 
-            print(" error= " + ": " + str(res_mean[j]) + " +/- " +
-                  str(res_std[j]))
-            print(" upper= " + str(upper) + "\n lower= " + str(lower) +
-                  "\n avg_train_time= " + ": " + str(auxTime) + ' secs' +
-                  "\n ############## \n")
+            results = results.append({'dataset': dataName[j],
+                                      'n_samples': '%1.3g' % n,
+                                      'n_attributes': '%1.3g' % d,
+                                      'n_classes': '%1.3g' % r,
+                                      'error': '%1.3g' % res_mean + " +/- " +
+                                      '%1.3g' % res_std,
+                                      'upper': '%1.3g' % upper,
+                                      'lower': '%1.3g' % lower,
+                                      'avg_train_time': '%1.3g' % auxTime},
+                                     ignore_index=True)
+        return results
 
 
-    if __name__ == '__main__':
 
-        print('*** Example (MRC with default constraints) *** \n\n')
 
-        print('1. Using 0-1 loss and relu feature mapping \n\n')
-        runMRC(phi='relu', loss='0-1')
 
-        print('2. Using log loss and relu feature mapping \n\n')
-        runMRC(phi='relu', loss='log')
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
+
+.. code-block:: default
+
+
+    r1 = runMRC(phi='fourier', loss='0-1')
+    r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
+
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style type="text/css">
+    </style>
+    <table id="T_dbe15_">
+      <caption>Using 0-1 loss and fourier feature mapping</caption>
+      <thead>
+        <tr>
+          <th class="blank level0" >&nbsp;</th>
+          <th class="col_heading level0 col0" >dataset</th>
+          <th class="col_heading level0 col1" >n_samples</th>
+          <th class="col_heading level0 col2" >n_attributes</th>
+          <th class="col_heading level0 col3" >n_classes</th>
+          <th class="col_heading level0 col4" >error</th>
+          <th class="col_heading level0 col5" >upper</th>
+          <th class="col_heading level0 col6" >lower</th>
+          <th class="col_heading level0 col7" >avg_train_time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th id="T_dbe15_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_dbe15_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_dbe15_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_dbe15_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_dbe15_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_dbe15_row0_col4" class="data row0 col4" >0.192 +/- 0.0383</td>
+          <td id="T_dbe15_row0_col5" class="data row0 col5" >0.225</td>
+          <td id="T_dbe15_row0_col6" class="data row0 col6" >0.207</td>
+          <td id="T_dbe15_row0_col7" class="data row0 col7" >2.64</td>
+        </tr>
+        <tr>
+          <th id="T_dbe15_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_dbe15_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_dbe15_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_dbe15_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_dbe15_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_dbe15_row1_col4" class="data row1 col4" >0.265 +/- 0.0176</td>
+          <td id="T_dbe15_row1_col5" class="data row1 col5" >0.263</td>
+          <td id="T_dbe15_row1_col6" class="data row1 col6" >0.237</td>
+          <td id="T_dbe15_row1_col7" class="data row1 col7" >1.26</td>
+        </tr>
+        <tr>
+          <th id="T_dbe15_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_dbe15_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_dbe15_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_dbe15_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_dbe15_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_dbe15_row2_col4" class="data row2 col4" >0.286 +/- 0.00722</td>
+          <td id="T_dbe15_row2_col5" class="data row2 col5" >0.292</td>
+          <td id="T_dbe15_row2_col6" class="data row2 col6" >0.28</td>
+          <td id="T_dbe15_row2_col7" class="data row2 col7" >2.3</td>
+        </tr>
+        <tr>
+          <th id="T_dbe15_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_dbe15_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_dbe15_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_dbe15_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_dbe15_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_dbe15_row3_col4" class="data row3 col4" >0.233 +/- 0.0384</td>
+          <td id="T_dbe15_row3_col5" class="data row3 col5" >0.283</td>
+          <td id="T_dbe15_row3_col6" class="data row3 col6" >0.252</td>
+          <td id="T_dbe15_row3_col7" class="data row3 col7" >3.1</td>
+        </tr>
+        <tr>
+          <th id="T_dbe15_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_dbe15_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_dbe15_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_dbe15_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_dbe15_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_dbe15_row4_col4" class="data row4 col4" >0.139 +/- 0.0441</td>
+          <td id="T_dbe15_row4_col5" class="data row4 col5" >0.193</td>
+          <td id="T_dbe15_row4_col6" class="data row4 col6" >0.149</td>
+          <td id="T_dbe15_row4_col7" class="data row4 col7" >2.64</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </div>
+    <br />
+    <br />
+
+.. GENERATED FROM PYTHON SOURCE LINES 122-125
+
+.. code-block:: default
+
+
+    r2 = runMRC(phi='fourier', loss='log')
+    r2.style.set_caption('Using log loss and fourier feature mapping')
+
+
+
+
+
+.. raw:: html
+
+    <div class="output_subarea output_html rendered_html output_result">
+    <style type="text/css">
+    </style>
+    <table id="T_bc099_">
+      <caption>Using log loss and fourier feature mapping</caption>
+      <thead>
+        <tr>
+          <th class="blank level0" >&nbsp;</th>
+          <th class="col_heading level0 col0" >dataset</th>
+          <th class="col_heading level0 col1" >n_samples</th>
+          <th class="col_heading level0 col2" >n_attributes</th>
+          <th class="col_heading level0 col3" >n_classes</th>
+          <th class="col_heading level0 col4" >error</th>
+          <th class="col_heading level0 col5" >upper</th>
+          <th class="col_heading level0 col6" >lower</th>
+          <th class="col_heading level0 col7" >avg_train_time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th id="T_bc099_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_bc099_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_bc099_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_bc099_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_bc099_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_bc099_row0_col4" class="data row0 col4" >0.187 +/- 0.0347</td>
+          <td id="T_bc099_row0_col5" class="data row0 col5" >0.537</td>
+          <td id="T_bc099_row0_col6" class="data row0 col6" >0.432</td>
+          <td id="T_bc099_row0_col7" class="data row0 col7" >5.41</td>
+        </tr>
+        <tr>
+          <th id="T_bc099_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_bc099_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_bc099_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_bc099_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_bc099_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_bc099_row1_col4" class="data row1 col4" >0.271 +/- 0.0171</td>
+          <td id="T_bc099_row1_col5" class="data row1 col5" >0.577</td>
+          <td id="T_bc099_row1_col6" class="data row1 col6" >0.497</td>
+          <td id="T_bc099_row1_col7" class="data row1 col7" >2.6</td>
+        </tr>
+        <tr>
+          <th id="T_bc099_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_bc099_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_bc099_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_bc099_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_bc099_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_bc099_row2_col4" class="data row2 col4" >0.286 +/- 0.00722</td>
+          <td id="T_bc099_row2_col5" class="data row2 col5" >0.604</td>
+          <td id="T_bc099_row2_col6" class="data row2 col6" >0.594</td>
+          <td id="T_bc099_row2_col7" class="data row2 col7" >5.26</td>
+        </tr>
+        <tr>
+          <th id="T_bc099_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_bc099_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_bc099_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_bc099_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_bc099_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_bc099_row3_col4" class="data row3 col4" >0.243 +/- 0.0377</td>
+          <td id="T_bc099_row3_col5" class="data row3 col5" >0.596</td>
+          <td id="T_bc099_row3_col6" class="data row3 col6" >0.514</td>
+          <td id="T_bc099_row3_col7" class="data row3 col7" >6.63</td>
+        </tr>
+        <tr>
+          <th id="T_bc099_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_bc099_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_bc099_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_bc099_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_bc099_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_bc099_row4_col4" class="data row4 col4" >0.141 +/- 0.0361</td>
+          <td id="T_bc099_row4_col5" class="data row4 col5" >0.498</td>
+          <td id="T_bc099_row4_col6" class="data row4 col6" >0.374</td>
+          <td id="T_bc099_row4_col7" class="data row4 col7" >5.36</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </div>
+    <br />
+    <br />
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 6 minutes  21.606 seconds)
+   **Total running time of the script:** ( 6 minutes  12.507 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example1.py:
