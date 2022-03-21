@@ -53,11 +53,11 @@ def runMRC(phi, loss):
         r = len(np.unique(Y))
         n, d = X.shape
 
-        clf = MRC(phi=phi, loss=loss,
-                  use_cvx=False, max_iters=10000, s=0.3)
+        clf = MRC(phi=phi, loss=loss, use_cvx=False)
 
         # Generate the partitions of the stratified cross-validation
-        cv = StratifiedKFold(n_splits=10, random_state=random_seed,
+        n_splits = 5
+        cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
                              shuffle=True)
 
         cvError = list()
@@ -97,21 +97,22 @@ def runMRC(phi, loss):
         res_std = np.std(cvError)
 
         # Calculating the mean upper and lower bound and training time
-        upper = upper / 10
-        lower = lower / 10
-        auxTime = auxTime / 10
+        upper = upper / n_splits
+        lower = lower / n_splits
+        auxTime = auxTime / n_splits
 
         results = results.append({'dataset': dataName[j],
-                                  'n_samples': '%1.3g' % n,
-                                  'n_attributes': '%1.3g' % d,
-                                  'n_classes': '%1.3g' % r,
-                                  'error': '%1.3g' % res_mean + " +/- " +
-                                  '%1.3g' % res_std,
-                                  'upper': '%1.3g' % upper,
-                                  'lower': '%1.3g' % lower,
-                                  'avg_train_time': '%1.3g' % auxTime},
+                                  'n_samples': '%d' % n,
+                                  'n_attributes': '%d' % d,
+                                  'n_classes': '%d' % r,
+                                  'error': '%1.2g' % res_mean + " +/- " +
+                                  '%1.2g' % res_std,
+                                  'upper': '%1.2g' % upper,
+                                  'lower': '%1.2g' % lower,
+                                  'avg_train_time (s)': '%1.2g' % auxTime},
                                  ignore_index=True)
     return results
+
 
 ####################################################################
 
