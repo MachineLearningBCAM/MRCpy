@@ -85,6 +85,7 @@ sphinx_gallery_conf = {
     # section: (see https://sphinx-gallery.github.io/configuration.html
     # #references-to-examples)
     'doc_module': 'MRCpy',
+    'examples_dirs': ['../examples'],
     'backreferences_dir': os.path.join('generated'),
     'within_subsection_order': ExampleTitleSortKey,
 }

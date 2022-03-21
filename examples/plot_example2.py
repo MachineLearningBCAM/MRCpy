@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+
 .. _ex2:
 
 Example: Use of CMRC with different settings
@@ -17,6 +18,7 @@ and random fourier feature mapping this means that we will use Stochastic
 Gradient Descent (SGD) approach to perform the optimization.
 
 You can check a more elaborated example in :ref:`ex_comp`.
+
 """
 
 import time
