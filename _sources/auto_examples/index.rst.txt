@@ -98,10 +98,10 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_COVID_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_COVID_thumb.png
      :alt: Example: Predicting COVID-19 patients outcome using MRCs
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_COVID.py`
+     :ref:`sphx_glr_auto_examples_further_examples_COVID.py`
 
 .. raw:: html
 
@@ -111,7 +111,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 .. toctree::
    :hidden:
 
-   /auto_examples/further_examples/plot_COVID
+   /auto_examples/further_examples/COVID
 
 .. raw:: html
 
@@ -119,10 +119,10 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_upperLower_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_upperLower_thumb.png
      :alt: Example: Use of Upper and Lower bound as error estimation
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_upperLower.py`
+     :ref:`sphx_glr_auto_examples_further_examples_upperLower.py`
 
 .. raw:: html
 
@@ -132,7 +132,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 .. toctree::
    :hidden:
 
-   /auto_examples/further_examples/plot_upperLower
+   /auto_examples/further_examples/upperLower
 
 .. raw:: html
 

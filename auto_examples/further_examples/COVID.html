@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Predicting COVID-19 patients outcome using MRCs &mdash; MRCpy 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example: Use of Upper and Lower bound as error estimation" href="upperLower.html" />
+    <link rel="prev" title="Example: Comparison to other methods" href="plot_comparison.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> MRCpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plot_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Predicting COVID-19 patients outcome using MRCs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#covid-dataset-loader">COVID dataset Loader:</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#addressing-dataset-imbalance-with-smote">Addressing dataset imbalance with SMOTE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#probability-estimation">Probability estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#results">Results:</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MRCpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
+      <li>Example: Predicting COVID-19 patients outcome using MRCs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/auto_examples/further_examples/COVID.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-covid-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-predicting-covid-19-patients-outcome-using-mrcs">
+<span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this headline"></a></h1>
+<p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
+of a COVID-19 positive patient at the moment of hospital triage. This example
+uses a dataset that comprises different demographic variables and biomarkers of
+the patients and a binary outcome <code class="xref py py-attr docutils literal notranslate"><span class="pre">Status</span></code> where <code class="xref py py-attr docutils literal notranslate"><span class="pre">Status</span> <span class="pre">=</span> <span class="pre">0</span></code>
+define the group of survivors and <code class="xref py py-attr docutils literal notranslate"><span class="pre">Status</span> <span class="pre">=</span> <span class="pre">1</span></code> determines a decease.</p>
+<p>The data is provided by the <a class="reference external" href="https://www.hmhospitales.com/coronavirus/covid-data-save-lives/">Covid Data Saves Lives</a> initiative
+carried out by HM Hospitales with information of the first wave of the COVID
+outbreak in Spanish hospitals. The data is available upon request through HM
+Hospitales
+<a class="reference external" href="https://www.hmhospitales.com/coronavirus/covid-data-save-lives/">here</a> .</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>For more information about the dataset and the creation of a
+risk indicator using Logistic regression refer to:</p>
+<p class="last">[1] Ruben Armañanzas et al. “Derivation of a Cost-Sensitive
+COVID-19 Mortality Risk Indicator Using a Multistart Framework”
+, in <em>2021 IEEE International Conference on Bioinformatics and
+Biomedicine (BIBM)</em>, 2021, pp. 2179–2186.</p>
+</div>
+<p>First we will see how to deal with class imbalance when training a model using
+syntethic minority over-sampling (SMOTE) techniques. Furthermore, we will
+comparetwo MRC with two state of the art machine learning models probability
+estimation . The selected models are <code class="xref py py-mod docutils literal notranslate"><span class="pre">CMRC(phi</span> <span class="pre">=</span> <span class="pre">'threshold'</span> <span class="pre">,</span>
+<span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> &amp; <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> for  the group of
+MRCs and Logistic Regression (LR) &amp; C-Support Vector Classifier(SVC) with the
+implementation from <code class="xref any docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTENC</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">,</span>
+    <span class="n">confusion_matrix</span><span class="p">,</span>
+    <span class="n">ConfusionMatrixDisplay</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
+</pre></div>
+</div>
+<div class="section" id="covid-dataset-loader">
+<h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Permalink to this headline"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/data_consensus.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="c1"># rename variables</span>
+    <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;CD0000AGE&quot;</span><span class="p">:</span> <span class="s2">&quot;Age&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CORE&quot;</span><span class="p">:</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000000U&quot;</span><span class="p">:</span> <span class="s2">&quot;Urea&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000BT&quot;</span><span class="p">:</span> <span class="s2">&quot;Bilirubin&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000NA&quot;</span><span class="p">:</span> <span class="s2">&quot;Sodium&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT00000TP&quot;</span><span class="p">:</span> <span class="s2">&quot;Proth_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000COM&quot;</span><span class="p">:</span> <span class="s2">&quot;Com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000LDH&quot;</span><span class="p">:</span> <span class="s2">&quot;LDH&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000NEU&quot;</span><span class="p">:</span> <span class="s2">&quot;Neutrophils&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000PCR&quot;</span><span class="p">:</span> <span class="s2">&quot;Pro_C_Rea&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT0000VCM&quot;</span><span class="p">:</span> <span class="s2">&quot;Med_corp_vol&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000APTT&quot;</span><span class="p">:</span> <span class="s2">&quot;Ceph_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000CHCM&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean_corp_Hgb&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000EOSP&quot;</span><span class="p">:</span> <span class="s2">&quot;Eosinophils%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000LEUC&quot;</span><span class="p">:</span> <span class="s2">&quot;Leukocytes&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000LINP&quot;</span><span class="p">:</span> <span class="s2">&quot;Lymphocytes%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000NEUP&quot;</span><span class="p">:</span> <span class="s2">&quot;Neutrophils%&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CT000PLAQ&quot;</span><span class="p">:</span> <span class="s2">&quot;Platelet_count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CTHSDXXRATE&quot;</span><span class="p">:</span> <span class="s2">&quot;Rate&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CTHSDXXSAT&quot;</span><span class="p">:</span> <span class="s2">&quot;Sat&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ED0DISWHY&quot;</span><span class="p">:</span> <span class="s2">&quot;Status&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;F_INGRESO/ADMISSION_D_ING/INPAT&quot;</span><span class="p">:</span> <span class="s2">&quot;Fecha_admision&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;SEXO/SEX&quot;</span><span class="p">:</span> <span class="s2">&quot;Sexo&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">variable_dict</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">norm</span><span class="p">:</span>  <span class="c1"># if we want the data standardised</span>
+        <span class="n">x_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span>
+            <span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])</span>
+        <span class="p">][:]</span>
+        <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_consensus</span><span class="p">)</span>
+        <span class="n">x_consensus_std</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_consensus</span><span class="p">)</span>
+        <span class="n">dataframex_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">x_consensus_std</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">x_consensus</span><span class="o">.</span><span class="n">columns</span>
+        <span class="p">)</span>
+        <span class="n">data_consensus</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">dataframex_consensus</span><span class="p">,</span> <span class="n">data_consensus</span><span class="p">[[</span><span class="s2">&quot;Status&quot;</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">array</span><span class="p">:</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addressing-dataset-imbalance-with-smote">
+<h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Permalink to this headline"></a></h2>
+<p>The COVID dataset has a significant problem of class imbalance where the
+positive outcome has a prevalence of 85% (1522) whilst the negative outcome
+has only 276. In this example oversampling will be used to add syintetic
+records to get an almost balanced dataset. <code class="xref py py-mod docutils literal notranslate"><span class="pre">SMOTE</span></code> (Synthetic minority
+over sampling) is a package that implements such oversampling.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_covid</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">described</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+    <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">]]</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="mf">0.0</span><span class="p">:</span> <span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;Decease&quot;</span><span class="p">}))</span>
+</pre></div>
+</div>
+<p>So we create a set of cases syntehtically using 5 nearest neighbors until
+the class imbalance is almost removed. For more information about
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">SMOTE</span></code> refer to it’s <a class="reference external" href="https://imbalanced-learn.org/stable/">documentation</a> .
+We will use the method <code class="xref any docutils literal notranslate"><span class="pre">SMOTE-NC</span></code> for numerical and categorical variables.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>For more information about the SMOTE package refer to:</p>
+<p class="last">[2] Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer,
+W. P. (2002). SMOTE: synthetic minority over-sampling
+technique. Journal of artificial intelligence research,
+16, 321-357.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We fit the data to the oversampler</span>
+<span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTENC</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">described_resample</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">X_resampled</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">transpose</span><span class="p">()[[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">]]</span>
+<span class="p">)</span>
+<span class="n">described_resample</span> <span class="o">=</span> <span class="n">described_resample</span><span class="o">.</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;_SMT&quot;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">described</span><span class="p">,</span> <span class="n">described_resample</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We see how the distribution of the real data and the resampled data is
+different. However the distribution between classes is kept similar due to
+the creation of the synthetic cases through 5 nearest neighbors.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">y_resampled</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="p">{</span><span class="mf">0.0</span><span class="p">:</span> <span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;Decease&quot;</span><span class="p">}))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="probability-estimation">
+<h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this headline"></a></h2>
+<p>In this section we will estimate the conditional probabilities and analyse
+the distribution of the probabilities depending on the real outcome . The
+probability estimation is better when using <code class="xref py py-mod docutils literal notranslate"><span class="pre">loss</span> <span class="pre">=</span> <span class="pre">log</span></code>. We use
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">CMRC(phi</span> <span class="pre">=</span> <span class="pre">'threshold',</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> and
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log'</span></code>. We will then compare these MRCs
+with SVC and LR with default parameters.</p>
+<div class="section" id="load-classification-function">
+<h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Permalink to this headline"></a></h3>
+<p>These function classify each of the cases in their correspondent
+confusion matrix’s category. It also allows to set the desired cut-off
+for the predictions.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes x,y test and train and a fitted model and</span>
+<span class="sd">    computes the probabilities to then classify in TP,TN , FP , FN.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;predict_proba&quot;</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x_test</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">probabilities</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;Real&quot;</span><span class="p">:</span> <span class="n">y_test</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="s2">&quot;Prediction&quot;</span><span class="p">:</span> <span class="n">predictions</span><span class="p">,</span>
+                <span class="s2">&quot;Probabilities&quot;</span><span class="p">:</span> <span class="n">probabilities</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;Real&quot;</span><span class="p">:</span> <span class="n">y_test</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="s2">&quot;Prediction&quot;</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)}</span>
+        <span class="p">)</span>
+    <span class="n">conditions</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Prediction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Prediction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Prediction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Prediction&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;True Positive&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;False Negative&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;True Negative&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;False Positive&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Category&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">select</span></a><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;No&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="train-models">
+<h3>Train models:<a class="headerlink" href="#train-models" title="Permalink to this headline"></a></h3>
+<p>We will train the models with 80% of the data and then test with the other
+20% selected randomly.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="n">clf_MRC</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;fourier&quot;</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">df_MRC</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">clf_MRC</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">MRC_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_MRC</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">clf_MRC</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">MRC_values</span><span class="p">[</span><span class="s2">&quot;Freq_MRC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MRC_values</span><span class="p">[</span><span class="s2">&quot;MRC&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">MRC_values</span><span class="p">[</span><span class="s2">&quot;MRC&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">clf_CMRC</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;threshold&quot;</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">df_CMRC</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">clf_CMRC</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">CMRC_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_CMRC</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">clf_CMRC</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">CMRC_values</span><span class="p">[</span><span class="s2">&quot;Freq_CMRC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CMRC_values</span><span class="p">[</span><span class="s2">&quot;CMRC&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">CMRC_values</span><span class="p">[</span><span class="s2">&quot;CMRC&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">clf_SVC</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">probability</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">df_SVC</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">clf_SVC</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">SVC_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_SVC</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">clf_SVC</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">SVC_values</span><span class="p">[</span><span class="s2">&quot;Freq_SVC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">SVC_values</span><span class="p">[</span><span class="s2">&quot;SVC&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">SVC_values</span><span class="p">[</span><span class="s2">&quot;SVC&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="n">clf_LR</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">df_LR</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">clf_LR</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">LR_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_LR</span><span class="o">.</span><span class="n">Category</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="n">clf_LR</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">LR_values</span><span class="p">[</span><span class="s2">&quot;Freq_LR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">LR_values</span><span class="p">[</span><span class="s2">&quot;LogisticRegression&quot;</span><span class="p">]</span> <span class="o">/</span>
+    <span class="nb">sum</span><span class="p">(</span><span class="n">LR_values</span><span class="p">[</span><span class="s2">&quot;LogisticRegression&quot;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="p">)</span>
+
+
+<span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">MRC_values</span><span class="p">,</span> <span class="n">CMRC_values</span><span class="p">,</span> <span class="n">SVC_values</span><span class="p">,</span>
+           <span class="n">LR_values</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span>
+    <span class="s2">&quot;Classification results by model&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comparison-of-models">
+<h3>Comparison of models:<a class="headerlink" href="#comparison-of-models" title="Permalink to this headline"></a></h3>
+<p>We will compare now the histograms of the conditional probability for the
+two posible outcomes. Overlapping in the histograms means that the
+classification is erroneous. Condisering a cutoff of 0.5 pink cases below
+this point are false negatives (FN) and blue cases above the threhsold false
+positives (FP). It is important to consider that in this classification
+problem the missclassification of a patient with fatal outcome (FN) is
+considered a much more serious error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes DF created with defDataFrame and creates a boxplot of</span>
+<span class="sd">    different classification by mortal probability.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Probabilities&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+        <span class="n">palette</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;tab10&quot;</span><span class="p">),</span>
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">dodge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;True Negative&quot;</span><span class="p">,</span> <span class="s2">&quot;False Negative&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;True Positive&quot;</span><span class="p">,</span> <span class="s2">&quot;False Positive&quot;</span><span class="p">,</span> <span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Probabilities&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;White&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;True Negative&quot;</span><span class="p">,</span> <span class="s2">&quot;False Negative&quot;</span><span class="p">,</span>
+               <span class="s2">&quot;True Positive&quot;</span><span class="p">,</span> <span class="s2">&quot;False Positive&quot;</span><span class="p">,</span> <span class="p">],</span>
+        <span class="n">saturation</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Probability of mortality&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plotHisto</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes DF created with defDataFrame and plots histograms based on the</span>
+<span class="sd">    probability of mortality by real Status at a selected @threshold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+        <span class="n">norm_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;stat&quot;</span><span class="p">:</span> <span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="s2">&quot;common_norm&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm_params</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Probabilities&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;deeppink&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Deceased&quot;</span><span class="p">,</span>
+        <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">binrange</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">element</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">norm_params</span>
+    <span class="p">)</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Real&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Probabilities&quot;</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;dodgerblue&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Survived&quot;</span><span class="p">,</span>
+        <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">binrange</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+        <span class="n">element</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">norm_params</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># visualize results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">sharey</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wspace&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;hspace&quot;</span><span class="p">:</span> <span class="mf">0.35</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">plotHisto</span><span class="p">(</span><span class="n">df_CMRC</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CMRC&quot;</span><span class="p">)</span>
+<span class="n">plotHisto</span><span class="p">(</span><span class="n">df_MRC</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MRC&quot;</span><span class="p">)</span>
+<span class="n">plotHisto</span><span class="p">(</span><span class="n">df_LR</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;LR&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plotHisto</span><span class="p">(</span><span class="n">df_SVC</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;SVC&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We see a clear different behaviour with the CMRC and MRC. MRC tends to
+estimate conditional probabilities in a more conservative way, rangin from
+0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
+model shows a distribution where most of the cases are grouped around 0 and 1
+for survive and decease respectively. This results are similar to the
+Logistic Regression’s but with less overlapping. SVC is the model with the
+worst performance of all having a lot of patients that survived with high
+decease probabilities.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cm_cmrc</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_CMRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># CMRC</span>
+<span class="n">cm_mrc</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_MRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># MRC</span>
+<span class="n">cm_lr</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_LR</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># Logistic Regression</span>
+<span class="n">cm_svc</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_SVC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span>
+    <span class="n">X_test</span><span class="p">))</span>  <span class="c1"># C-Support Vector Machine</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">sharey</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wspace&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;hspace&quot;</span><span class="p">:</span> <span class="mf">0.35</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">cm_cmrc</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CMRC&quot;</span><span class="p">)</span>
+<span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">cm_mrc</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MRC&quot;</span><span class="p">)</span>
+<span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">cm_lr</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;LR&quot;</span><span class="p">)</span>
+<span class="n">ConfusionMatrixDisplay</span><span class="p">(</span><span class="n">cm_svc</span><span class="p">,</span> <span class="n">display_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;SVC&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">y_test</span><span class="p">,</span>
+        <span class="n">clf_CMRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report CMRC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">y_test</span><span class="p">,</span>
+        <span class="n">clf_MRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report MRC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">y_test</span><span class="p">,</span>
+        <span class="n">clf_LR</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report LR&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">y_test</span><span class="p">,</span>
+        <span class="n">clf_SVC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">),</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report SVC&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see in the classification reports and the confusion matrices the
+outperformance of CMRC.</p>
+</div>
+<div class="section" id="settind-the-cut-off-point-for-binary-classification">
+<h3>Settind the cut-off point for binary classification:<a class="headerlink" href="#settind-the-cut-off-point-for-binary-classification" title="Permalink to this headline"></a></h3>
+<p>In this section we will use beeswarm-boxplot to select the cut-off point
+to optimise the tradeoff between false positives and false negatives. The
+beeswarm-boxplot is a great tool to determine the performance of the model
+in each of the cases of the confusion matrix. On an ideal scenario the errors
+are located near the cut-off point and the true guesses are located near the
+0 and 1 values.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+    <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">sharey</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;wspace&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s2">&quot;hspace&quot;</span><span class="p">:</span> <span class="mf">0.20</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">scatterPlot</span><span class="p">(</span><span class="n">df_CMRC</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;CMRC&quot;</span><span class="p">)</span>
+<span class="n">scatterPlot</span><span class="p">(</span><span class="n">df_MRC</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;MRC&quot;</span><span class="p">)</span>
+<span class="n">scatterPlot</span><span class="p">(</span><span class="n">df_LR</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;LR&quot;</span><span class="p">)</span>
+<span class="n">scatterPlot</span><span class="p">(</span><span class="n">df_SVC</span><span class="p">,</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;SVC&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We see in the CMRC that the correct cases have a very good
+conditional probability estimation with around 75% of the cases very close to
+the extreme values. The most problematic cases are those with a low mortality
+probability estimation that had a fatal outcome (FN). In the CMRC
+model adjusting the threshold to 0.35 reduces the false negatives by 25%
+adding just some cases to the FP. In the MRC model adjusting the cutoff to
+0.4 reduces half of the false negatives by trading of 25% of the TP.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.35</span>
+<span class="n">df_CMRC</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">clf_CMRC</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span>
+<span class="p">)</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">df_MRC</span> <span class="o">=</span> <span class="n">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">clf_MRC</span><span class="p">,</span> <span class="n">x_test</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span>
+                      <span class="n">y_test</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">df_CMRC</span><span class="o">.</span><span class="n">Real</span><span class="p">,</span>
+        <span class="n">df_CMRC</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report CMRC </span><span class="se">\n</span><span class="s2"> adjusted threshold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">classification_report</span><span class="p">(</span>
+        <span class="n">df_MRC</span><span class="o">.</span><span class="n">Real</span><span class="p">,</span>
+        <span class="n">df_MRC</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span>
+        <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="s2">&quot;Decease&quot;</span><span class="p">],</span>
+        <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s2">&quot;Classification report MRC </span><span class="se">\n</span><span class="s2"> adjusted threshold&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="results">
+<h2>Results:<a class="headerlink" href="#results" title="Permalink to this headline"></a></h2>
+<p>Comparing the outputs of this example we can determine that MRCs work
+significantly well for estimating the outcome of COVID-19 patients at
+hospital triage.</p>
+<p>Furthermore, the CMRC model with threhsold feature mapping has shown a great
+performance both for classifying and for estimating conditional probabilities
+Finally we have seen how to select the cut-off values based on data
+visualization with beeswarm-boxplots to increase the recall in the desired
+class.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-covid-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../../_downloads/b19105604c683a54de5ae1b2de1a4dab/COVID.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">COVID.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../../_downloads/281ff23d78fabac198856c2866ca1ced/COVID.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">COVID.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plot_comparison.html" class="btn btn-neutral float-left" title="Example: Comparison to other methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="upperLower.html" class="btn btn-neutral float-right" title="Example: Use of Upper and Lower bound as error estimation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+
 .. _ex2:
 
 Example: Use of CMRC with different settings
@@ -17,6 +18,7 @@ and random fourier feature mapping this means that we will use Stochastic
 Gradient Descent (SGD) approach to perform the optimization.
 
 You can check a more elaborated example in :ref:`ex_comp`.
+
 """
 
 import time
@@ -39,8 +41,6 @@ dataName = ["mammographic", "haberman", "indian_liver",
 
 def runCMRC(phi, loss):
     results = pd.DataFrame()
-    res_mean = np.zeros(len(dataName))
-    res_std = np.zeros(len(dataName))
 
     # We fix the random seed to that the stratified kfold performed
     # is the same through the different executions
@@ -55,10 +55,11 @@ def runCMRC(phi, loss):
         n, d = X.shape
 
         # Create the CMRC object initilized with the corresponding parameters
-        clf = CMRC(phi=phi, loss=loss, use_cvx=False, s=0.3)
+        clf = CMRC(phi=phi, loss=loss, use_cvx=False)
 
         # Generate the partitions of the stratified cross-validation
-        cv = StratifiedKFold(n_splits=10, random_state=random_seed,
+        n_splits = 5
+        cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
                              shuffle=True)
 
         cvError = list()
@@ -89,20 +90,19 @@ def runCMRC(phi, loss):
 
             # Calculate the error made by CMRC classificator
             cvError.append(np.average(y_pred != y_test))
-
         res_mean = np.average(cvError)
         res_std = np.std(cvError)
 
         # Calculating the mean training time
-        auxTime = auxTime / 10
+        auxTime = auxTime / n_splits
 
         results = results.append({'dataset': dataName[j],
-                                  'n_samples': '%1.3g' % n,
-                                  'n_attributes': '%1.3g' % d,
-                                  'n_classes': '%1.3g' % r,
-                                  'error': '%1.3g' % res_mean + " +/- " +
-                                  '%1.3g' % res_std,
-                                  'avg_train_time': '%1.3g' % auxTime},
+                                  'n_samples': '%d' % n,
+                                  'n_attributes': '%d' % d,
+                                  'n_classes': '%d' % r,
+                                  'error': '%1.2g' % res_mean + " +/- " +
+                                  '%1.2g' % res_std,
+                                  'avg_train_time (s)': '%1.2g' % auxTime},
                                  ignore_index=True)
     return results
 

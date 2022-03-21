@@ -280,7 +280,7 @@ training with "source" images (2000 first ones), 76.9±2.1 when training with
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 1 minutes  25.996 seconds)
+   **Total running time of the script:** ( 1 minutes  10.013 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_image_classification.py:
