@@ -133,6 +133,48 @@ pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
 ##############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <div>
+#     <style scoped>
+#         .dataframe tbody tr th:only-of-type {
+#             vertical-align: middle;
+#         }
+# 
+#         .dataframe tbody tr th {
+#             vertical-align: top;
+#         }
+# 
+#         .dataframe thead th {
+#             text-align: right;
+#         }
+#     </style>
+#     <table border="1" class="dataframe">
+#       <thead>
+#         <tr style="text-align: right;">
+#           <th></th>
+#           <th>Status</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th>Survive</th>
+#           <td>1522</td>
+#         </tr>
+#         <tr>
+#           <th>Decease</th>
+#           <td>276</td>
+#         </tr>
+#       </tbody>
+#     </table>
+#     </div>
+#     </div>
+#     <br />
+#     <br />
+##############################################
+
+##############################################
 # So we create a set of cases syntehtically using 5 nearest neighbors until
 # the class imbalance is almost removed. For more information about
 # :mod:`SMOTE` refer to it's `documentation
@@ -156,6 +198,216 @@ described_resample = (
 )
 described_resample = described_resample.add_suffix("_SMT")
 pd.concat([described, described_resample], axis=1)
+
+##############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <div>
+#     <style scoped>
+#         .dataframe tbody tr th:only-of-type {
+#             vertical-align: middle;
+#         }
+# 
+#         .dataframe tbody tr th {
+#             vertical-align: top;
+#         }
+# 
+#         .dataframe thead th {
+#             text-align: right;
+#         }
+#     </style>
+#     <table border="1" class="dataframe">
+#       <thead>
+#         <tr style="text-align: right;">
+#           <th></th>
+#           <th>count</th>
+#           <th>mean</th>
+#           <th>std</th>
+#           <th>count_SMT</th>
+#           <th>mean_SMT</th>
+#           <th>std_SMT</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th>Age</th>
+#           <td>1798.0</td>
+#           <td>67.79</td>
+#           <td>15.67</td>
+#           <td>2663.0</td>
+#           <td>71.71</td>
+#           <td>14.78</td>
+#         </tr>
+#         <tr>
+#           <th>Bilirubin</th>
+#           <td>1798.0</td>
+#           <td>0.57</td>
+#           <td>0.45</td>
+#           <td>2663.0</td>
+#           <td>0.60</td>
+#           <td>0.49</td>
+#         </tr>
+#         <tr>
+#           <th>Ceph_time</th>
+#           <td>1798.0</td>
+#           <td>32.94</td>
+#           <td>7.03</td>
+#           <td>2663.0</td>
+#           <td>33.32</td>
+#           <td>7.50</td>
+#         </tr>
+#         <tr>
+#           <th>Com</th>
+#           <td>1798.0</td>
+#           <td>0.50</td>
+#           <td>0.78</td>
+#           <td>2663.0</td>
+#           <td>0.49</td>
+#           <td>0.78</td>
+#         </tr>
+#         <tr>
+#           <th>Eosinophils%</th>
+#           <td>1798.0</td>
+#           <td>0.70</td>
+#           <td>1.57</td>
+#           <td>2663.0</td>
+#           <td>0.55</td>
+#           <td>1.33</td>
+#         </tr>
+#         <tr>
+#           <th>LDH</th>
+#           <td>1798.0</td>
+#           <td>601.10</td>
+#           <td>367.24</td>
+#           <td>2663.0</td>
+#           <td>675.02</td>
+#           <td>471.53</td>
+#         </tr>
+#         <tr>
+#           <th>Leukocytes</th>
+#           <td>1798.0</td>
+#           <td>7.62</td>
+#           <td>4.54</td>
+#           <td>2663.0</td>
+#           <td>8.23</td>
+#           <td>4.86</td>
+#         </tr>
+#         <tr>
+#           <th>Lymphocytes%</th>
+#           <td>1798.0</td>
+#           <td>18.19</td>
+#           <td>10.44</td>
+#           <td>2663.0</td>
+#           <td>16.24</td>
+#           <td>9.92</td>
+#         </tr>
+#         <tr>
+#           <th>Mean_corp_Hgb</th>
+#           <td>1798.0</td>
+#           <td>33.62</td>
+#           <td>1.42</td>
+#           <td>2663.0</td>
+#           <td>33.52</td>
+#           <td>1.35</td>
+#         </tr>
+#         <tr>
+#           <th>Med_corp_vol</th>
+#           <td>1798.0</td>
+#           <td>88.23</td>
+#           <td>5.77</td>
+#           <td>2663.0</td>
+#           <td>88.63</td>
+#           <td>5.88</td>
+#         </tr>
+#         <tr>
+#           <th>Neutrophils</th>
+#           <td>1798.0</td>
+#           <td>5.75</td>
+#           <td>3.77</td>
+#           <td>2663.0</td>
+#           <td>6.44</td>
+#           <td>4.09</td>
+#         </tr>
+#         <tr>
+#           <th>Neutrophils%</th>
+#           <td>1798.0</td>
+#           <td>73.01</td>
+#           <td>12.99</td>
+#           <td>2663.0</td>
+#           <td>75.54</td>
+#           <td>12.56</td>
+#         </tr>
+#         <tr>
+#           <th>Platelet_count</th>
+#           <td>1798.0</td>
+#           <td>225.32</td>
+#           <td>96.93</td>
+#           <td>2663.0</td>
+#           <td>219.27</td>
+#           <td>93.65</td>
+#         </tr>
+#         <tr>
+#           <th>Pro_C_Rea</th>
+#           <td>1798.0</td>
+#           <td>101.00</td>
+#           <td>100.87</td>
+#           <td>2663.0</td>
+#           <td>121.41</td>
+#           <td>110.35</td>
+#         </tr>
+#         <tr>
+#           <th>Proth_time</th>
+#           <td>1798.0</td>
+#           <td>15.39</td>
+#           <td>13.89</td>
+#           <td>2663.0</td>
+#           <td>16.17</td>
+#           <td>15.14</td>
+#         </tr>
+#         <tr>
+#           <th>Rate</th>
+#           <td>1798.0</td>
+#           <td>79.29</td>
+#           <td>14.75</td>
+#           <td>2663.0</td>
+#           <td>80.69</td>
+#           <td>14.81</td>
+#         </tr>
+#         <tr>
+#           <th>Sat</th>
+#           <td>1798.0</td>
+#           <td>94.67</td>
+#           <td>4.81</td>
+#           <td>2663.0</td>
+#           <td>93.60</td>
+#           <td>5.96</td>
+#         </tr>
+#         <tr>
+#           <th>Sodium</th>
+#           <td>1798.0</td>
+#           <td>136.92</td>
+#           <td>4.50</td>
+#           <td>2663.0</td>
+#           <td>137.21</td>
+#           <td>4.93</td>
+#         </tr>
+#         <tr>
+#           <th>Urea</th>
+#           <td>1798.0</td>
+#           <td>43.17</td>
+#           <td>30.72</td>
+#           <td>2663.0</td>
+#           <td>49.75</td>
+#           <td>32.74</td>
+#         </tr>
+#       </tbody>
+#     </table>
+#     </div>
+#     </div>
+#     <br />
+#     <br />
+##############################################
 ##############################################
 # We see how the distribution of the real data and the resampled data is
 # different. However the distribution between classes is kept similar due to
@@ -163,6 +415,51 @@ pd.concat([described, described_resample], axis=1)
 
 pd.DataFrame(y_resampled.value_counts().rename(
     {0.0: "Survive", 1.0: "Decease"}))
+
+
+##############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <div>
+#     <style scoped>
+#         .dataframe tbody tr th:only-of-type {
+#             vertical-align: middle;
+#         }
+# 
+#         .dataframe tbody tr th {
+#             vertical-align: top;
+#         }
+# 
+#         .dataframe thead th {
+#             text-align: right;
+#         }
+#     </style>
+#     <table border="1" class="dataframe">
+#       <thead>
+#         <tr style="text-align: right;">
+#           <th></th>
+#           <th>Status</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th>Survive</th>
+#           <td>1522</td>
+#         </tr>
+#         <tr>
+#           <th>Decease</th>
+#           <td>1141</td>
+#         </tr>
+#       </tbody>
+#     </table>
+#     </div>
+#     </div>
+#     <br />
+#     <br />
+
+##############################################
+
 
 #############################################
 # Probability estimation
@@ -266,7 +563,80 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
            LR_values], axis=1).style.set_caption(
     "Classification results by model"
 ).format(precision=2)
-
+               
+################################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_2cf59_">
+#       <caption>Classification results by model</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >MRC</th>
+#           <th class="col_heading level0 col1" >Freq_MRC</th>
+#           <th class="col_heading level0 col2" >CMRC</th>
+#           <th class="col_heading level0 col3" >Freq_CMRC</th>
+#           <th class="col_heading level0 col4" >SVC</th>
+#           <th class="col_heading level0 col5" >Freq_SVC</th>
+#           <th class="col_heading level0 col6" >LogisticRegression</th>
+#           <th class="col_heading level0 col7" >Freq_LR</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_2cf59_level0_row0" class="row_heading level0 row0" >True Negative</th>
+#           <td id="T_2cf59_row0_col0" class="data row0 col0" >278</td>
+#           <td id="T_2cf59_row0_col1" class="data row0 col1" >52.16</td>
+#           <td id="T_2cf59_row0_col2" class="data row0 col2" >279</td>
+#           <td id="T_2cf59_row0_col3" class="data row0 col3" >52.35</td>
+#           <td id="T_2cf59_row0_col4" class="data row0 col4" >249</td>
+#           <td id="T_2cf59_row0_col5" class="data row0 col5" >46.72</td>
+#           <td id="T_2cf59_row0_col6" class="data row0 col6" >267</td>
+#           <td id="T_2cf59_row0_col7" class="data row0 col7" >50.09</td>
+#         </tr>
+#         <tr>
+#           <th id="T_2cf59_level0_row1" class="row_heading level0 row1" >False Negative</th>
+#           <td id="T_2cf59_row1_col0" class="data row1 col0" >140</td>
+#           <td id="T_2cf59_row1_col1" class="data row1 col1" >26.27</td>
+#           <td id="T_2cf59_row1_col2" class="data row1 col2" >35</td>
+#           <td id="T_2cf59_row1_col3" class="data row1 col3" >6.57</td>
+#           <td id="T_2cf59_row1_col4" class="data row1 col4" >76</td>
+#           <td id="T_2cf59_row1_col5" class="data row1 col5" >14.26</td>
+#           <td id="T_2cf59_row1_col6" class="data row1 col6" >46</td>
+#           <td id="T_2cf59_row1_col7" class="data row1 col7" >8.63</td>
+#         </tr>
+#         <tr>
+#           <th id="T_2cf59_level0_row2" class="row_heading level0 row2" >True Positive</th>
+#           <td id="T_2cf59_row2_col0" class="data row2 col0" >83</td>
+#           <td id="T_2cf59_row2_col1" class="data row2 col1" >15.57</td>
+#           <td id="T_2cf59_row2_col2" class="data row2 col2" >188</td>
+#           <td id="T_2cf59_row2_col3" class="data row2 col3" >35.27</td>
+#           <td id="T_2cf59_row2_col4" class="data row2 col4" >147</td>
+#           <td id="T_2cf59_row2_col5" class="data row2 col5" >27.58</td>
+#           <td id="T_2cf59_row2_col6" class="data row2 col6" >177</td>
+#           <td id="T_2cf59_row2_col7" class="data row2 col7" >33.21</td>
+#         </tr>
+#         <tr>
+#           <th id="T_2cf59_level0_row3" class="row_heading level0 row3" >False Positive</th>
+#           <td id="T_2cf59_row3_col0" class="data row3 col0" >32</td>
+#           <td id="T_2cf59_row3_col1" class="data row3 col1" >6.00</td>
+#           <td id="T_2cf59_row3_col2" class="data row3 col2" >31</td>
+#           <td id="T_2cf59_row3_col3" class="data row3 col3" >5.82</td>
+#           <td id="T_2cf59_row3_col4" class="data row3 col4" >61</td>
+#           <td id="T_2cf59_row3_col5" class="data row3 col5" >11.44</td>
+#           <td id="T_2cf59_row3_col6" class="data row3 col6" >43</td>
+#           <td id="T_2cf59_row3_col7" class="data row3 col7" >8.07</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
+##########################################################
 #############################################
 # Comparison of models:
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -366,6 +736,14 @@ ax[0, 1].legend()
 plotHisto(df_SVC, ax=ax[1, 1], normalize=False)
 ax[1, 1].set_title("SVC")
 fig.tight_layout()
+
+##############################################
+# .. image:: images/images_COVID/COVID_001.png
+#   :width: 600
+#   :align: center
+#   :alt: Imagen de prueba
+
+##############################################
 #############################################
 # We see a clear different behaviour with the CMRC and MRC. MRC tends to
 # estimate conditional probabilities in a more conservative way, rangin from
@@ -407,6 +785,14 @@ ConfusionMatrixDisplay(cm_svc, display_labels=["Survive", "Decease"]).plot(
 )
 ax[1, 1].set_title("SVC")
 fig.tight_layout()
+
+##############################################
+# .. image:: images/images_COVID/COVID_002.png
+#   :width: 600
+#   :align: center
+#   :alt: Confusion Matrices
+
+##############################################
 #############################################
 pd.DataFrame(
     classification_report(
@@ -416,6 +802,64 @@ pd.DataFrame(
         output_dict=True,
     )
 ).style.set_caption("Classification report CMRC").format(precision=3)
+
+############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_c03b8_">
+#       <caption>Classification report CMRC</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_c03b8_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_c03b8_row0_col0" class="data row0 col0" >0.889</td>
+#           <td id="T_c03b8_row0_col1" class="data row0 col1" >0.858</td>
+#           <td id="T_c03b8_row0_col2" class="data row0 col2" >0.876</td>
+#           <td id="T_c03b8_row0_col3" class="data row0 col3" >0.873</td>
+#           <td id="T_c03b8_row0_col4" class="data row0 col4" >0.876</td>
+#         </tr>
+#         <tr>
+#           <th id="T_c03b8_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_c03b8_row1_col0" class="data row1 col0" >0.900</td>
+#           <td id="T_c03b8_row1_col1" class="data row1 col1" >0.843</td>
+#           <td id="T_c03b8_row1_col2" class="data row1 col2" >0.876</td>
+#           <td id="T_c03b8_row1_col3" class="data row1 col3" >0.872</td>
+#           <td id="T_c03b8_row1_col4" class="data row1 col4" >0.876</td>
+#         </tr>
+#         <tr>
+#           <th id="T_c03b8_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_c03b8_row2_col0" class="data row2 col0" >0.894</td>
+#           <td id="T_c03b8_row2_col1" class="data row2 col1" >0.851</td>
+#           <td id="T_c03b8_row2_col2" class="data row2 col2" >0.876</td>
+#           <td id="T_c03b8_row2_col3" class="data row2 col3" >0.872</td>
+#           <td id="T_c03b8_row2_col4" class="data row2 col4" >0.876</td>
+#         </tr>
+#         <tr>
+#           <th id="T_c03b8_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_c03b8_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_c03b8_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_c03b8_row3_col2" class="data row3 col2" >0.876</td>
+#           <td id="T_c03b8_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_c03b8_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
 #############################################
 pd.DataFrame(
     classification_report(
@@ -426,6 +870,63 @@ pd.DataFrame(
     )
 ).style.set_caption("Classification report MRC").format(precision=3)
 #############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_31da6_">
+#       <caption>Classification report MRC</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_31da6_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_31da6_row0_col0" class="data row0 col0" >0.665</td>
+#           <td id="T_31da6_row0_col1" class="data row0 col1" >0.722</td>
+#           <td id="T_31da6_row0_col2" class="data row0 col2" >0.677</td>
+#           <td id="T_31da6_row0_col3" class="data row0 col3" >0.693</td>
+#           <td id="T_31da6_row0_col4" class="data row0 col4" >0.689</td>
+#         </tr>
+#         <tr>
+#           <th id="T_31da6_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_31da6_row1_col0" class="data row1 col0" >0.897</td>
+#           <td id="T_31da6_row1_col1" class="data row1 col1" >0.372</td>
+#           <td id="T_31da6_row1_col2" class="data row1 col2" >0.677</td>
+#           <td id="T_31da6_row1_col3" class="data row1 col3" >0.634</td>
+#           <td id="T_31da6_row1_col4" class="data row1 col4" >0.677</td>
+#         </tr>
+#         <tr>
+#           <th id="T_31da6_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_31da6_row2_col0" class="data row2 col0" >0.764</td>
+#           <td id="T_31da6_row2_col1" class="data row2 col1" >0.491</td>
+#           <td id="T_31da6_row2_col2" class="data row2 col2" >0.677</td>
+#           <td id="T_31da6_row2_col3" class="data row2 col3" >0.627</td>
+#           <td id="T_31da6_row2_col4" class="data row2 col4" >0.650</td>
+#         </tr>
+#         <tr>
+#           <th id="T_31da6_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_31da6_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_31da6_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_31da6_row3_col2" class="data row3 col2" >0.677</td>
+#           <td id="T_31da6_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_31da6_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
+#############################################
 pd.DataFrame(
     classification_report(
         y_test,
@@ -435,6 +936,63 @@ pd.DataFrame(
     )
 ).style.set_caption("Classification report LR").format(precision=3)
 #############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_ecacf_">
+#       <caption>Classification report LR</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_ecacf_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_ecacf_row0_col0" class="data row0 col0" >0.853</td>
+#           <td id="T_ecacf_row0_col1" class="data row0 col1" >0.805</td>
+#           <td id="T_ecacf_row0_col2" class="data row0 col2" >0.833</td>
+#           <td id="T_ecacf_row0_col3" class="data row0 col3" >0.829</td>
+#           <td id="T_ecacf_row0_col4" class="data row0 col4" >0.833</td>
+#         </tr>
+#         <tr>
+#           <th id="T_ecacf_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_ecacf_row1_col0" class="data row1 col0" >0.861</td>
+#           <td id="T_ecacf_row1_col1" class="data row1 col1" >0.794</td>
+#           <td id="T_ecacf_row1_col2" class="data row1 col2" >0.833</td>
+#           <td id="T_ecacf_row1_col3" class="data row1 col3" >0.828</td>
+#           <td id="T_ecacf_row1_col4" class="data row1 col4" >0.833</td>
+#         </tr>
+#         <tr>
+#           <th id="T_ecacf_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_ecacf_row2_col0" class="data row2 col0" >0.857</td>
+#           <td id="T_ecacf_row2_col1" class="data row2 col1" >0.799</td>
+#           <td id="T_ecacf_row2_col2" class="data row2 col2" >0.833</td>
+#           <td id="T_ecacf_row2_col3" class="data row2 col3" >0.828</td>
+#           <td id="T_ecacf_row2_col4" class="data row2 col4" >0.833</td>
+#         </tr>
+#         <tr>
+#           <th id="T_ecacf_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_ecacf_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_ecacf_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_ecacf_row3_col2" class="data row3 col2" >0.833</td>
+#           <td id="T_ecacf_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_ecacf_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
+#############################################
 pd.DataFrame(
     classification_report(
         y_test,
@@ -443,14 +1001,71 @@ pd.DataFrame(
         output_dict=True,
     )
 ).style.set_caption("Classification report SVC").format(precision=3)
-
+#############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_0ab9f_">
+#       <caption>Classification report SVC</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_0ab9f_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_0ab9f_row0_col0" class="data row0 col0" >0.743</td>
+#           <td id="T_0ab9f_row0_col1" class="data row0 col1" >0.717</td>
+#           <td id="T_0ab9f_row0_col2" class="data row0 col2" >0.734</td>
+#           <td id="T_0ab9f_row0_col3" class="data row0 col3" >0.730</td>
+#           <td id="T_0ab9f_row0_col4" class="data row0 col4" >0.732</td>
+#         </tr>
+#         <tr>
+#           <th id="T_0ab9f_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_0ab9f_row1_col0" class="data row1 col0" >0.829</td>
+#           <td id="T_0ab9f_row1_col1" class="data row1 col1" >0.601</td>
+#           <td id="T_0ab9f_row1_col2" class="data row1 col2" >0.734</td>
+#           <td id="T_0ab9f_row1_col3" class="data row1 col3" >0.715</td>
+#           <td id="T_0ab9f_row1_col4" class="data row1 col4" >0.734</td>
+#         </tr>
+#         <tr>
+#           <th id="T_0ab9f_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_0ab9f_row2_col0" class="data row2 col0" >0.784</td>
+#           <td id="T_0ab9f_row2_col1" class="data row2 col1" >0.654</td>
+#           <td id="T_0ab9f_row2_col2" class="data row2 col2" >0.734</td>
+#           <td id="T_0ab9f_row2_col3" class="data row2 col3" >0.719</td>
+#           <td id="T_0ab9f_row2_col4" class="data row2 col4" >0.729</td>
+#         </tr>
+#         <tr>
+#           <th id="T_0ab9f_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_0ab9f_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_0ab9f_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_0ab9f_row3_col2" class="data row3 col2" >0.734</td>
+#           <td id="T_0ab9f_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_0ab9f_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
+#############################################
 ############################################
 # We can see in the classification reports and the confusion matrices the
 # outperformance of CMRC.
 
 
 #############################################
-# Settind the cut-off point for binary classification:
+# Setting the cut-off point for binary classification:
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 # In this section we will use beeswarm-boxplot to select the cut-off point
 # to optimise the tradeoff between false positives and false negatives. The
@@ -475,6 +1090,15 @@ ax[0, 1].set_title("LR")
 scatterPlot(df_SVC, ax[1, 1])
 ax[1, 1].set_title("SVC")
 plt.tight_layout()
+
+##############################################
+# .. image:: images/images_COVID/COVID_003.png
+#   :width: 600
+#   :align: center
+#   :alt: Imagen de prueba
+
+##############################################
+
 #############################################
 # We see in the CMRC that the correct cases have a very good
 # conditional probability estimation with around 75% of the cases very close to
@@ -501,6 +1125,65 @@ pd.DataFrame(
 ).style.set_caption("Classification report CMRC \n adjusted threshold").format(
     precision=3
 )
+    
+#############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_a0276_">
+#       <caption>Classification report CMRC 
+#      adjusted threshold</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_a0276_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_a0276_row0_col0" class="data row0 col0" >0.919</td>
+#           <td id="T_a0276_row0_col1" class="data row0 col1" >0.800</td>
+#           <td id="T_a0276_row0_col2" class="data row0 col2" >0.863</td>
+#           <td id="T_a0276_row0_col3" class="data row0 col3" >0.859</td>
+#           <td id="T_a0276_row0_col4" class="data row0 col4" >0.869</td>
+#         </tr>
+#         <tr>
+#           <th id="T_a0276_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_a0276_row1_col0" class="data row1 col0" >0.839</td>
+#           <td id="T_a0276_row1_col1" class="data row1 col1" >0.897</td>
+#           <td id="T_a0276_row1_col2" class="data row1 col2" >0.863</td>
+#           <td id="T_a0276_row1_col3" class="data row1 col3" >0.868</td>
+#           <td id="T_a0276_row1_col4" class="data row1 col4" >0.863</td>
+#         </tr>
+#         <tr>
+#           <th id="T_a0276_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_a0276_row2_col0" class="data row2 col0" >0.877</td>
+#           <td id="T_a0276_row2_col1" class="data row2 col1" >0.846</td>
+#           <td id="T_a0276_row2_col2" class="data row2 col2" >0.863</td>
+#           <td id="T_a0276_row2_col3" class="data row2 col3" >0.861</td>
+#           <td id="T_a0276_row2_col4" class="data row2 col4" >0.864</td>
+#         </tr>
+#         <tr>
+#           <th id="T_a0276_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_a0276_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_a0276_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_a0276_row3_col2" class="data row3 col2" >0.863</td>
+#           <td id="T_a0276_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_a0276_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
 #############################################
 pd.DataFrame(
     classification_report(
@@ -512,6 +1195,64 @@ pd.DataFrame(
 ).style.set_caption("Classification report MRC \n adjusted threshold").format(
     precision=3
 )
+#############################################
+# .. raw:: html
+# 
+#     <div class="output_subarea output_html rendered_html output_result">
+#     <style type="text/css">
+#     </style>
+#     <table id="T_bb0a1_">
+#       <caption>Classification report MRC 
+#      adjusted threshold</caption>
+#       <thead>
+#         <tr>
+#           <th class="blank level0" >&nbsp;</th>
+#           <th class="col_heading level0 col0" >Survive</th>
+#           <th class="col_heading level0 col1" >Decease</th>
+#           <th class="col_heading level0 col2" >accuracy</th>
+#           <th class="col_heading level0 col3" >macro avg</th>
+#           <th class="col_heading level0 col4" >weighted avg</th>
+#         </tr>
+#       </thead>
+#       <tbody>
+#         <tr>
+#           <th id="T_bb0a1_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <td id="T_bb0a1_row0_col0" class="data row0 col0" >0.811</td>
+#           <td id="T_bb0a1_row0_col1" class="data row0 col1" >0.627</td>
+#           <td id="T_bb0a1_row0_col2" class="data row0 col2" >0.715</td>
+#           <td id="T_bb0a1_row0_col3" class="data row0 col3" >0.719</td>
+#           <td id="T_bb0a1_row0_col4" class="data row0 col4" >0.734</td>
+#         </tr>
+#         <tr>
+#           <th id="T_bb0a1_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <td id="T_bb0a1_row1_col0" class="data row1 col0" >0.665</td>
+#           <td id="T_bb0a1_row1_col1" class="data row1 col1" >0.785</td>
+#           <td id="T_bb0a1_row1_col2" class="data row1 col2" >0.715</td>
+#           <td id="T_bb0a1_row1_col3" class="data row1 col3" >0.725</td>
+#           <td id="T_bb0a1_row1_col4" class="data row1 col4" >0.715</td>
+#         </tr>
+#         <tr>
+#           <th id="T_bb0a1_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <td id="T_bb0a1_row2_col0" class="data row2 col0" >0.730</td>
+#           <td id="T_bb0a1_row2_col1" class="data row2 col1" >0.697</td>
+#           <td id="T_bb0a1_row2_col2" class="data row2 col2" >0.715</td>
+#           <td id="T_bb0a1_row2_col3" class="data row2 col3" >0.714</td>
+#           <td id="T_bb0a1_row2_col4" class="data row2 col4" >0.717</td>
+#         </tr>
+#         <tr>
+#           <th id="T_bb0a1_level0_row3" class="row_heading level0 row3" >support</th>
+#           <td id="T_bb0a1_row3_col0" class="data row3 col0" >310.000</td>
+#           <td id="T_bb0a1_row3_col1" class="data row3 col1" >223.000</td>
+#           <td id="T_bb0a1_row3_col2" class="data row3 col2" >0.715</td>
+#           <td id="T_bb0a1_row3_col3" class="data row3 col3" >533.000</td>
+#           <td id="T_bb0a1_row3_col4" class="data row3 col4" >533.000</td>
+#         </tr>
+#       </tbody>
+#     </table>
+# 
+#     </div>
+#     <br />
+#     <br />
 #############################################
 # Results:
 # -----------------
