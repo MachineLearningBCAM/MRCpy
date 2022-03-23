@@ -113,11 +113,10 @@ feature of the MRCs. The results are for a
 patients that is available upon requesting to HM Hospitales
 <a class="reference external" href="www.hmhospitales.com/coronavirus/covid-data-save-lives/">here</a>.
 More information about this dataset can be found in the
-<a class="reference internal" href="COVID.html#ex-covid"><span class="std std-ref">COVID example</span></a></p>
+<a class="reference internal" href="plot_COVID.html#ex-covid"><span class="std std-ref">COVID example</span></a></p>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -133,7 +132,6 @@ More information about this dataset can be found in the
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/warnings.html#warnings.filterwarnings" title="warnings.filterwarnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -345,59 +343,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.211 ± 0.029</td>
-      <td>0.21 ± 0.035</td>
-      <td>0.102 ± 0.033</td>
-      <td>0.18 ± 0.01</td>
+      <td>0.213 ± 0.033</td>
+      <td>0.228 ± 0.032</td>
+      <td>0.115 ± 0.035</td>
+      <td>0.223 ± 0.03</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.207 ± 0.028</td>
-      <td>0.222 ± 0.028</td>
-      <td>0.141 ± 0.03</td>
-      <td>0.34 ± 0.025</td>
+      <td>0.204 ± 0.031</td>
+      <td>0.216 ± 0.025</td>
+      <td>0.136 ± 0.028</td>
+      <td>0.326 ± 0.025</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.195 ± 0.028</td>
-      <td>0.221 ± 0.023</td>
-      <td>0.152 ± 0.027</td>
-      <td>0.496 ± 0.025</td>
+      <td>0.207 ± 0.032</td>
+      <td>0.223 ± 0.019</td>
+      <td>0.153 ± 0.021</td>
+      <td>0.512 ± 0.043</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.199 ± 0.03</td>
-      <td>0.221 ± 0.019</td>
-      <td>0.159 ± 0.023</td>
-      <td>0.588 ± 0.033</td>
+      <td>0.21 ± 0.028</td>
+      <td>0.225 ± 0.019</td>
+      <td>0.163 ± 0.022</td>
+      <td>0.588 ± 0.038</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.206 ± 0.035</td>
-      <td>0.218 ± 0.016</td>
-      <td>0.164 ± 0.02</td>
-      <td>0.694 ± 0.053</td>
+      <td>0.205 ± 0.029</td>
+      <td>0.227 ± 0.013</td>
+      <td>0.171 ± 0.016</td>
+      <td>0.729 ± 0.06</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.2 ± 0.033</td>
-      <td>0.219 ± 0.013</td>
-      <td>0.168 ± 0.018</td>
-      <td>0.807 ± 0.033</td>
+      <td>0.201 ± 0.031</td>
+      <td>0.224 ± 0.014</td>
+      <td>0.17 ± 0.016</td>
+      <td>0.808 ± 0.087</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.213 ± 0.031</td>
-      <td>0.225 ± 0.013</td>
-      <td>0.178 ± 0.015</td>
-      <td>0.932 ± 0.056</td>
+      <td>0.201 ± 0.031</td>
+      <td>0.221 ± 0.013</td>
+      <td>0.174 ± 0.017</td>
+      <td>0.892 ± 0.054</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.204 ± 0.028</td>
+      <td>0.205 ± 0.028</td>
       <td>0.224 ± 0.01</td>
-      <td>0.18 ± 0.012</td>
-      <td>1.012 ± 0.04</td>
+      <td>0.179 ± 0.011</td>
+      <td>0.962 ± 0.033</td>
     </tr>
   </tbody>
 </table>
@@ -480,59 +478,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.421 ± 0.056</td>
-      <td>0.356 ± 0.037</td>
-      <td>0.138 ± 0.06</td>
-      <td>0.091 ± 0.008</td>
+      <td>0.435 ± 0.061</td>
+      <td>0.355 ± 0.035</td>
+      <td>0.15 ± 0.052</td>
+      <td>0.087 ± 0.003</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.385 ± 0.049</td>
-      <td>0.361 ± 0.031</td>
-      <td>0.208 ± 0.038</td>
-      <td>0.176 ± 0.022</td>
+      <td>0.393 ± 0.054</td>
+      <td>0.372 ± 0.024</td>
+      <td>0.202 ± 0.037</td>
+      <td>0.157 ± 0.008</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.391 ± 0.052</td>
-      <td>0.381 ± 0.022</td>
-      <td>0.253 ± 0.033</td>
-      <td>0.25 ± 0.014</td>
+      <td>0.379 ± 0.051</td>
+      <td>0.378 ± 0.022</td>
+      <td>0.239 ± 0.031</td>
+      <td>0.238 ± 0.007</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.372 ± 0.059</td>
-      <td>0.377 ± 0.021</td>
-      <td>0.265 ± 0.028</td>
-      <td>0.321 ± 0.018</td>
+      <td>0.379 ± 0.042</td>
+      <td>0.384 ± 0.019</td>
+      <td>0.264 ± 0.028</td>
+      <td>0.299 ± 0.009</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.368 ± 0.046</td>
-      <td>0.379 ± 0.013</td>
-      <td>0.276 ± 0.021</td>
-      <td>0.418 ± 0.031</td>
+      <td>0.375 ± 0.049</td>
+      <td>0.387 ± 0.013</td>
+      <td>0.273 ± 0.018</td>
+      <td>0.394 ± 0.018</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.368 ± 0.052</td>
-      <td>0.382 ± 0.012</td>
-      <td>0.288 ± 0.018</td>
-      <td>0.513 ± 0.031</td>
+      <td>0.366 ± 0.059</td>
+      <td>0.383 ± 0.012</td>
+      <td>0.277 ± 0.016</td>
+      <td>0.503 ± 0.024</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.363 ± 0.049</td>
-      <td>0.379 ± 0.009</td>
-      <td>0.29 ± 0.014</td>
-      <td>0.535 ± 0.023</td>
+      <td>0.37 ± 0.051</td>
+      <td>0.383 ± 0.009</td>
+      <td>0.283 ± 0.013</td>
+      <td>0.567 ± 0.031</td>
     </tr>
     <tr>
       <th>0.8</th>
       <td>0.36 ± 0.053</td>
-      <td>0.378 ± 0.007</td>
-      <td>0.294 ± 0.012</td>
-      <td>0.598 ± 0.027</td>
+      <td>0.383 ± 0.007</td>
+      <td>0.289 ± 0.009</td>
+      <td>0.603 ± 0.029</td>
     </tr>
   </tbody>
 </table>
@@ -616,59 +614,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.391 ± 0.042</td>
-      <td>0.347 ± 0.027</td>
-      <td>0.16 ± 0.04</td>
-      <td>0.148 ± 0.012</td>
+      <td>0.389 ± 0.039</td>
+      <td>0.343 ± 0.028</td>
+      <td>0.157 ± 0.034</td>
+      <td>0.149 ± 0.008</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.373 ± 0.037</td>
-      <td>0.366 ± 0.016</td>
-      <td>0.236 ± 0.024</td>
-      <td>0.296 ± 0.017</td>
+      <td>0.369 ± 0.038</td>
+      <td>0.359 ± 0.021</td>
+      <td>0.227 ± 0.025</td>
+      <td>0.388 ± 0.07</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.368 ± 0.038</td>
-      <td>0.367 ± 0.015</td>
-      <td>0.256 ± 0.018</td>
-      <td>0.477 ± 0.039</td>
+      <td>0.366 ± 0.033</td>
+      <td>0.368 ± 0.013</td>
+      <td>0.258 ± 0.019</td>
+      <td>0.608 ± 0.06</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.365 ± 0.033</td>
-      <td>0.367 ± 0.014</td>
-      <td>0.272 ± 0.016</td>
-      <td>0.565 ± 0.023</td>
+      <td>0.354 ± 0.037</td>
+      <td>0.367 ± 0.013</td>
+      <td>0.273 ± 0.016</td>
+      <td>0.779 ± 0.095</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.361 ± 0.037</td>
-      <td>0.367 ± 0.009</td>
-      <td>0.282 ± 0.014</td>
-      <td>0.703 ± 0.033</td>
+      <td>0.358 ± 0.029</td>
+      <td>0.366 ± 0.011</td>
+      <td>0.283 ± 0.012</td>
+      <td>0.94 ± 0.045</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.357 ± 0.03</td>
-      <td>0.369 ± 0.008</td>
-      <td>0.288 ± 0.012</td>
-      <td>0.849 ± 0.033</td>
+      <td>0.354 ± 0.03</td>
+      <td>0.369 ± 0.01</td>
+      <td>0.291 ± 0.011</td>
+      <td>1.125 ± 0.08</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.351 ± 0.035</td>
-      <td>0.368 ± 0.007</td>
-      <td>0.291 ± 0.01</td>
-      <td>0.997 ± 0.037</td>
+      <td>0.357 ± 0.034</td>
+      <td>0.368 ± 0.008</td>
+      <td>0.294 ± 0.01</td>
+      <td>1.304 ± 0.071</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.35 ± 0.034</td>
-      <td>0.368 ± 0.005</td>
-      <td>0.296 ± 0.006</td>
-      <td>1.151 ± 0.087</td>
+      <td>0.348 ± 0.031</td>
+      <td>0.366 ± 0.005</td>
+      <td>0.295 ± 0.008</td>
+      <td>1.078 ± 0.079</td>
     </tr>
   </tbody>
 </table>
@@ -752,59 +750,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.323 ± 0.029</td>
-      <td>0.294 ± 0.024</td>
-      <td>0.101 ± 0.031</td>
-      <td>0.18 ± 0.011</td>
+      <td>0.33 ± 0.034</td>
+      <td>0.294 ± 0.022</td>
+      <td>0.101 ± 0.026</td>
+      <td>0.178 ± 0.011</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.303 ± 0.038</td>
-      <td>0.305 ± 0.016</td>
-      <td>0.165 ± 0.025</td>
-      <td>0.357 ± 0.023</td>
+      <td>0.295 ± 0.038</td>
+      <td>0.301 ± 0.017</td>
+      <td>0.163 ± 0.019</td>
+      <td>0.337 ± 0.008</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.313 ± 0.033</td>
-      <td>0.311 ± 0.013</td>
-      <td>0.194 ± 0.018</td>
-      <td>0.588 ± 0.045</td>
+      <td>0.297 ± 0.032</td>
+      <td>0.3 ± 0.012</td>
+      <td>0.191 ± 0.016</td>
+      <td>0.576 ± 0.062</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.301 ± 0.031</td>
-      <td>0.308 ± 0.009</td>
-      <td>0.21 ± 0.016</td>
-      <td>0.704 ± 0.057</td>
+      <td>0.286 ± 0.035</td>
+      <td>0.303 ± 0.009</td>
+      <td>0.208 ± 0.014</td>
+      <td>0.672 ± 0.042</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.298 ± 0.03</td>
-      <td>0.307 ± 0.007</td>
-      <td>0.222 ± 0.013</td>
-      <td>0.891 ± 0.064</td>
+      <td>0.289 ± 0.032</td>
+      <td>0.303 ± 0.008</td>
+      <td>0.218 ± 0.011</td>
+      <td>0.895 ± 0.067</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.293 ± 0.03</td>
-      <td>0.309 ± 0.007</td>
-      <td>0.228 ± 0.01</td>
-      <td>1.087 ± 0.089</td>
+      <td>0.278 ± 0.031</td>
+      <td>0.302 ± 0.008</td>
+      <td>0.226 ± 0.01</td>
+      <td>1.047 ± 0.049</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.296 ± 0.031</td>
-      <td>0.307 ± 0.007</td>
-      <td>0.232 ± 0.009</td>
-      <td>1.217 ± 0.049</td>
+      <td>0.282 ± 0.027</td>
+      <td>0.303 ± 0.007</td>
+      <td>0.228 ± 0.009</td>
+      <td>1.203 ± 0.043</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.289 ± 0.03</td>
-      <td>0.308 ± 0.005</td>
-      <td>0.234 ± 0.007</td>
-      <td>1.416 ± 0.069</td>
+      <td>0.282 ± 0.037</td>
+      <td>0.302 ± 0.005</td>
+      <td>0.231 ± 0.008</td>
+      <td>1.388 ± 0.075</td>
     </tr>
   </tbody>
 </table>
@@ -888,59 +886,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.235 ± 0.034</td>
-      <td>0.21 ± 0.024</td>
+      <td>0.23 ± 0.04</td>
+      <td>0.212 ± 0.022</td>
       <td>0.019 ± 0.014</td>
-      <td>0.139 ± 0.014</td>
+      <td>0.134 ± 0.004</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.195 ± 0.036</td>
-      <td>0.212 ± 0.021</td>
+      <td>0.197 ± 0.028</td>
+      <td>0.208 ± 0.022</td>
       <td>0.048 ± 0.016</td>
-      <td>0.277 ± 0.012</td>
+      <td>0.276 ± 0.009</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.183 ± 0.029</td>
-      <td>0.203 ± 0.014</td>
-      <td>0.065 ± 0.014</td>
-      <td>0.421 ± 0.011</td>
+      <td>0.19 ± 0.031</td>
+      <td>0.212 ± 0.021</td>
+      <td>0.077 ± 0.019</td>
+      <td>0.427 ± 0.019</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.181 ± 0.031</td>
-      <td>0.207 ± 0.015</td>
-      <td>0.084 ± 0.017</td>
-      <td>0.546 ± 0.026</td>
+      <td>0.189 ± 0.03</td>
+      <td>0.21 ± 0.013</td>
+      <td>0.086 ± 0.015</td>
+      <td>0.625 ± 0.122</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.176 ± 0.028</td>
-      <td>0.204 ± 0.011</td>
-      <td>0.092 ± 0.013</td>
-      <td>0.688 ± 0.03</td>
+      <td>0.181 ± 0.027</td>
+      <td>0.209 ± 0.012</td>
+      <td>0.094 ± 0.012</td>
+      <td>0.746 ± 0.101</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.18 ± 0.031</td>
-      <td>0.205 ± 0.008</td>
-      <td>0.102 ± 0.01</td>
-      <td>0.822 ± 0.081</td>
+      <td>0.182 ± 0.028</td>
+      <td>0.207 ± 0.009</td>
+      <td>0.101 ± 0.011</td>
+      <td>0.877 ± 0.068</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.17 ± 0.026</td>
-      <td>0.202 ± 0.008</td>
-      <td>0.105 ± 0.01</td>
-      <td>0.961 ± 0.075</td>
+      <td>0.172 ± 0.03</td>
+      <td>0.205 ± 0.01</td>
+      <td>0.107 ± 0.011</td>
+      <td>1.048 ± 0.044</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.174 ± 0.026</td>
-      <td>0.2 ± 0.007</td>
-      <td>0.106 ± 0.008</td>
-      <td>1.072 ± 0.043</td>
+      <td>0.175 ± 0.035</td>
+      <td>0.203 ± 0.008</td>
+      <td>0.112 ± 0.008</td>
+      <td>1.198 ± 0.064</td>
     </tr>
   </tbody>
 </table>
@@ -1105,7 +1103,7 @@ both bounds is reduced significantly.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 40 minutes  18.727 seconds)</p>
+<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 42 minutes  41.789 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-plot-upperlower-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/9aad477d42f80a103f8fc4eea1115903/plot_upperLower.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_upperLower.py</span></code></a></div>
