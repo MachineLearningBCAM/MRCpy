@@ -24,6 +24,7 @@ feature of the MRCs. The results are for a
 
 # Import needed modules
 import time
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,6 +40,7 @@ from MRCpy.datasets import *
 
 sns.set_style("whitegrid")
 sns.set_context("paper")
+warnings.filterwarnings("ignore")
 
 
 def load_covid(norm=False, array=True):
