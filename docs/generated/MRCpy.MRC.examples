@@ -5,25 +5,6 @@ Examples using ``MRCpy.MRC``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
-     :alt: Example: Comparison to other methods
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
 
 .. only:: html
@@ -40,60 +21,3 @@ Examples using ``MRCpy.MRC``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_further_examples_COVID.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the lo...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_upperLower_thumb.png
-     :alt: Example: Use of Upper and Lower bound as error estimation
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_upperLower.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_further_examples_plot_upperLower.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_grid_thumb.png
-     :alt: Hyperparameter Tuning: Upper Bound vs Cross-Validation
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_grid.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_further_examples_plot_grid.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part II
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
