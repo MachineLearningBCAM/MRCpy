@@ -119,10 +119,10 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_upperLower_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_upperLower_thumb.png
      :alt: Example: Use of Upper and Lower bound as error estimation
 
-     :ref:`sphx_glr_auto_examples_further_examples_upperLower.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_upperLower.py`
 
 .. raw:: html
 
@@ -132,7 +132,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 .. toctree::
    :hidden:
 
-   /auto_examples/further_examples/upperLower
+   /auto_examples/further_examples/plot_upperLower
 
 .. raw:: html
 
