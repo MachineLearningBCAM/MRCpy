@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Comparison to other methods &mdash; MRCpy 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example: Predicting COVID-19 patients outcome using MRCs" href="COVID.html" />
+    <link rel="prev" title="Example: Use of MRC with different settings" href="../plot_example1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> MRCpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Comparison to other methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mrc-and-cmrc-methods">MRC and CMRC methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#svm-neural-networks-mlp-classifier-random-forest-classifier">SVM, Neural Networks: MLP Classifier, Random Forest Classifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#comparison-of-mrcs-to-other-methods">Comparison of MRCs to other methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#upper-and-lower-bounds-provided-by-mrcs">Upper and Lower bounds provided by MRCs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MRCpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
+      <li>Example: Comparison to other methods</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/auto_examples/further_examples/plot_comparison.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-plot-comparison-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-comparison-to-other-methods">
+<span id="ex-comp"></span><span id="sphx-glr-auto-examples-further-examples-plot-comparison-py"></span><h1>Example: Comparison to other methods<a class="headerlink" href="#example-comparison-to-other-methods" title="Permalink to this headline"></a></h1>
+<p>We are training and testing both MRC and CMRC methods with
+a variety of different settings and comparing their performance both
+error-wise and time-wise to other usual classification methods.</p>
+<p>We will see that the performance of the MRC methods with the appropiate
+settings is similar to the one of other methods like SVC (SVM Classification)
+or MLPClassifier (neural network).
+Furthermore, with non-determinitic approach and loss 0-1,
+MRC method provides a theoretical upper and lower bound for the error
+that can be an useful non-biased indicator of the performance of the
+algorithm on a given dataset.
+It also can be used to perform hyperparameter tuning in a much faster way than
+cross-validation, you can check an example about that <a class="reference internal" href="plot_grid.html#grid"><span class="std std-ref">here</span></a>.</p>
+<p>We show the numerical results in three tables; the two firsts ones for all
+the MRC and CMRC variants and the next one for all the comparison methods
+in the deterministic and non-deterministic case respectively.
+In these firsts tables the columns named ‘upper’ and ‘lower’ show the
+upper and lower bound provided by the MRC method.
+Note that in the case where loss = <code class="xref any docutils literal notranslate"><span class="pre">0-1</span></code> these are upper and
+lower bounds of the classification error while, in the case of <code class="xref any docutils literal notranslate"><span class="pre">loss=log</span></code>
+these bounds correspond to the log-likelihood.</p>
+<p>Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization. In the case of CMRC classifiers it will use the fast
+Stochastic Gradient Descent (SGD) approach for linear and random fourier
+feature mappings and nesterov subgradient approach for the rest of feature
+mappings.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
+<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_credit</span><span class="p">,</span> <span class="n">load_haberman</span>
+
+
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="mrc-and-cmrc-methods">
+<h2>MRC and CMRC methods<a class="headerlink" href="#mrc-and-cmrc-methods" title="Permalink to this headline"></a></h2>
+<p>We are training and testing both MRC and CMRC methods with
+a variety of different settings; using 0-1 loss and logarithmic loss, using
+all the default feature mappings available (Linear, Random Fourier, ReLU,
+Threshold) and using both the non-deterministic and deterministic
+approach which uses or not,
+respectively probability estimates in the prediction stage.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runMRC</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
+    <span class="n">df_mrc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">,</span> <span class="s1">&#39;MRC time&#39;</span><span class="p">,</span> <span class="s1">&#39;CMRC&#39;</span><span class="p">,</span> <span class="s1">&#39;CMRC time&#39;</span><span class="p">],</span>
+                          <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss 0-1, phi linear&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss 0-1, phi fourier&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss 0-1, phi relu&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss 0-1, phi threshold&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss log, phi linear&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss log, phi fourier&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss log, phi relu&#39;</span><span class="p">,</span>
+                                 <span class="s1">&#39;loss log, phi threshold&#39;</span><span class="p">])</span>
+
+    <span class="n">df_mrc_nd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+                             <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">,</span> <span class="s1">&#39;MRC time&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">],</span>
+                             <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss 0-1, phi linear&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;loss 0-1, phi fourier&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;loss 0-1, phi relu&#39;</span><span class="p">,</span>
+                                    <span class="s1">&#39;loss 0-1, phi threshold&#39;</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">):</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">loss</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">phi</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;fourier&#39;</span><span class="p">,</span> <span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="s1">&#39;threshold&#39;</span><span class="p">]:</span>
+                <span class="n">row_name</span> <span class="o">=</span> <span class="s1">&#39;loss &#39;</span> <span class="o">+</span> <span class="n">loss</span> <span class="o">+</span> <span class="s1">&#39;, phi &#39;</span> <span class="o">+</span> <span class="n">phi</span>
+
+                <span class="c1"># Deterministic case</span>
+                <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+                <span class="n">clf</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span>
+                          <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span>
+                          <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+                <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+                <span class="n">error</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+                <span class="n">totalTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+                <span class="n">df_mrc</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">totalTime</span>
+                <span class="n">df_mrc</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span>
+
+                <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+                <span class="n">clf</span> <span class="o">=</span> <span class="n">CMRC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span>
+                           <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                           <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+                <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+                <span class="n">error</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+                <span class="n">totalTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+                <span class="n">df_mrc</span><span class="p">[</span><span class="s1">&#39;CMRC time&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">totalTime</span>
+                <span class="n">df_mrc</span><span class="p">[</span><span class="s1">&#39;CMRC&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span>
+
+                <span class="k">if</span> <span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
+                    <span class="c1"># Non-deterministic case (with upper-lower bounds)</span>
+                    <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+                    <span class="n">clf</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                              <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span>
+                              <span class="n">deterministic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                              <span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+                    <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+                    <span class="n">error</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+                    <span class="n">totalTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+                    <span class="n">df_mrc_nd</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">totalTime</span>
+                    <span class="n">df_mrc_nd</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">error</span>
+                    <span class="n">df_mrc_nd</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_upper_bound</span><span class="p">()</span>
+                    <span class="n">df_mrc_nd</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">][</span><span class="n">row_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">()</span>
+
+    <span class="n">df_mrc</span> <span class="o">=</span> <span class="n">df_mrc</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a><span class="p">)</span>
+    <span class="n">df_mrc_nd</span> <span class="o">=</span> <span class="n">df_mrc_nd</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_mrc</span><span class="p">,</span> <span class="n">df_mrc_nd</span>
+</pre></div>
+</div>
+<p>Note that the non deterministic linear case is expected to perform poorly
+for datasets with small initial dimensions
+like the ones in the example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Credit dataset</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
+<span class="n">df_mrc_credit</span><span class="p">,</span> <span class="n">df_mrc_nd_credit</span> <span class="o">=</span> <span class="n">runMRC</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">)</span>
+<span class="n">df_mrc_credit</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Credit Dataset: Deterministic </span><span class="se">\</span>
+<span class="s1">                                MRC and CMRC error and runtime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_db3df_">
+  <caption>Credit Dataset: Deterministic                                 MRC and CMRC error and runtime</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >MRC</th>
+      <th class="col_heading level0 col1" >MRC time</th>
+      <th class="col_heading level0 col2" >CMRC</th>
+      <th class="col_heading level0 col3" >CMRC time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_db3df_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+      <td id="T_db3df_row0_col0" class="data row0 col0" >0.146377</td>
+      <td id="T_db3df_row0_col1" class="data row0 col1" >0.651243</td>
+      <td id="T_db3df_row0_col2" class="data row0 col2" >0.169565</td>
+      <td id="T_db3df_row0_col3" class="data row0 col3" >0.414692</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+      <td id="T_db3df_row1_col0" class="data row1 col0" >0.155072</td>
+      <td id="T_db3df_row1_col1" class="data row1 col1" >0.791616</td>
+      <td id="T_db3df_row1_col2" class="data row1 col2" >0.179710</td>
+      <td id="T_db3df_row1_col3" class="data row1 col3" >0.625534</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+      <td id="T_db3df_row2_col0" class="data row2 col0" >0.146377</td>
+      <td id="T_db3df_row2_col1" class="data row2 col1" >1.062368</td>
+      <td id="T_db3df_row2_col2" class="data row2 col2" >0.160870</td>
+      <td id="T_db3df_row2_col3" class="data row2 col3" >7.392658</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+      <td id="T_db3df_row3_col0" class="data row3 col0" >0.147826</td>
+      <td id="T_db3df_row3_col1" class="data row3 col1" >1.099461</td>
+      <td id="T_db3df_row3_col2" class="data row3 col2" >0.176812</td>
+      <td id="T_db3df_row3_col3" class="data row3 col3" >7.823593</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+      <td id="T_db3df_row4_col0" class="data row4 col0" >0.146377</td>
+      <td id="T_db3df_row4_col1" class="data row4 col1" >1.459728</td>
+      <td id="T_db3df_row4_col2" class="data row4 col2" >0.159420</td>
+      <td id="T_db3df_row4_col3" class="data row4 col3" >0.551713</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+      <td id="T_db3df_row5_col0" class="data row5 col0" >0.157971</td>
+      <td id="T_db3df_row5_col1" class="data row5 col1" >3.009879</td>
+      <td id="T_db3df_row5_col2" class="data row5 col2" >0.184058</td>
+      <td id="T_db3df_row5_col3" class="data row5 col3" >0.780061</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+      <td id="T_db3df_row6_col0" class="data row6 col0" >0.450725</td>
+      <td id="T_db3df_row6_col1" class="data row6 col1" >3.411029</td>
+      <td id="T_db3df_row6_col2" class="data row6 col2" >0.268116</td>
+      <td id="T_db3df_row6_col3" class="data row6 col3" >5.808624</td>
+    </tr>
+    <tr>
+      <th id="T_db3df_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+      <td id="T_db3df_row7_col0" class="data row7 col0" >0.146377</td>
+      <td id="T_db3df_row7_col1" class="data row7 col1" >22.758688</td>
+      <td id="T_db3df_row7_col2" class="data row7 col2" >0.159420</td>
+      <td id="T_db3df_row7_col3" class="data row7 col3" >17.521269</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_mrc_nd_credit</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Credit Dataset: Non-Deterministic </span><span class="se">\</span>
+<span class="s1">                                   MRC error and runtime</span><span class="se">\n</span><span class="s1">with Upper and</span><span class="se">\</span>
+<span class="s1">                                       Lower bounds&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_a50dc_">
+  <caption>Credit Dataset: Non-Deterministic                                    MRC error and runtime
+with Upper and                                       Lower bounds</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >MRC</th>
+      <th class="col_heading level0 col1" >MRC time</th>
+      <th class="col_heading level0 col2" >upper</th>
+      <th class="col_heading level0 col3" >lower</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_a50dc_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+      <td id="T_a50dc_row0_col0" class="data row0 col0" >0.146377</td>
+      <td id="T_a50dc_row0_col1" class="data row0 col1" >0.660834</td>
+      <td id="T_a50dc_row0_col2" class="data row0 col2" >0.150177</td>
+      <td id="T_a50dc_row0_col3" class="data row0 col3" >0.136525</td>
+    </tr>
+    <tr>
+      <th id="T_a50dc_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+      <td id="T_a50dc_row1_col0" class="data row1 col0" >0.217391</td>
+      <td id="T_a50dc_row1_col1" class="data row1 col1" >0.793280</td>
+      <td id="T_a50dc_row1_col2" class="data row1 col2" >0.185676</td>
+      <td id="T_a50dc_row1_col3" class="data row1 col3" >0.137438</td>
+    </tr>
+    <tr>
+      <th id="T_a50dc_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+      <td id="T_a50dc_row2_col0" class="data row2 col0" >0.172464</td>
+      <td id="T_a50dc_row2_col1" class="data row2 col1" >1.083504</td>
+      <td id="T_a50dc_row2_col2" class="data row2 col2" >0.188265</td>
+      <td id="T_a50dc_row2_col3" class="data row2 col3" >0.098250</td>
+    </tr>
+    <tr>
+      <th id="T_a50dc_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+      <td id="T_a50dc_row3_col0" class="data row3 col0" >0.150725</td>
+      <td id="T_a50dc_row3_col1" class="data row3 col1" >1.155415</td>
+      <td id="T_a50dc_row3_col2" class="data row3 col2" >0.163806</td>
+      <td id="T_a50dc_row3_col3" class="data row3 col3" >0.119446</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Haberman Dataset</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
+<span class="n">df_mrc_haberman</span><span class="p">,</span> <span class="n">df_mrc_nd_haberman</span> <span class="o">=</span> <span class="n">runMRC</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">)</span>
+<span class="n">df_mrc_haberman</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Haberman Dataset: Deterministic </span><span class="se">\</span>
+<span class="s1">                                  MRC and CMRC error and runtime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_99180_">
+  <caption>Haberman Dataset: Deterministic                                   MRC and CMRC error and runtime</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >MRC</th>
+      <th class="col_heading level0 col1" >MRC time</th>
+      <th class="col_heading level0 col2" >CMRC</th>
+      <th class="col_heading level0 col3" >CMRC time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_99180_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+      <td id="T_99180_row0_col0" class="data row0 col0" >0.268324</td>
+      <td id="T_99180_row0_col1" class="data row0 col1" >0.459698</td>
+      <td id="T_99180_row0_col2" class="data row0 col2" >0.268059</td>
+      <td id="T_99180_row0_col3" class="data row0 col3" >0.400214</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+      <td id="T_99180_row1_col0" class="data row1 col0" >0.261766</td>
+      <td id="T_99180_row1_col1" class="data row1 col1" >0.621715</td>
+      <td id="T_99180_row1_col2" class="data row1 col2" >0.300529</td>
+      <td id="T_99180_row1_col3" class="data row1 col3" >0.596207</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+      <td id="T_99180_row2_col0" class="data row2 col0" >0.274722</td>
+      <td id="T_99180_row2_col1" class="data row2 col1" >0.664209</td>
+      <td id="T_99180_row2_col2" class="data row2 col2" >0.284400</td>
+      <td id="T_99180_row2_col3" class="data row2 col3" >3.048355</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+      <td id="T_99180_row3_col0" class="data row3 col0" >0.294289</td>
+      <td id="T_99180_row3_col1" class="data row3 col1" >0.487497</td>
+      <td id="T_99180_row3_col2" class="data row3 col2" >0.277895</td>
+      <td id="T_99180_row3_col3" class="data row3 col3" >2.118139</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+      <td id="T_99180_row4_col0" class="data row4 col0" >0.268324</td>
+      <td id="T_99180_row4_col1" class="data row4 col1" >0.940299</td>
+      <td id="T_99180_row4_col2" class="data row4 col2" >0.261766</td>
+      <td id="T_99180_row4_col3" class="data row4 col3" >0.563512</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+      <td id="T_99180_row5_col0" class="data row5 col0" >0.265045</td>
+      <td id="T_99180_row5_col1" class="data row5 col1" >1.474647</td>
+      <td id="T_99180_row5_col2" class="data row5 col2" >0.287573</td>
+      <td id="T_99180_row5_col3" class="data row5 col3" >0.764138</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+      <td id="T_99180_row6_col0" class="data row6 col0" >0.274722</td>
+      <td id="T_99180_row6_col1" class="data row6 col1" >1.467005</td>
+      <td id="T_99180_row6_col2" class="data row6 col2" >0.313591</td>
+      <td id="T_99180_row6_col3" class="data row6 col3" >2.372362</td>
+    </tr>
+    <tr>
+      <th id="T_99180_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+      <td id="T_99180_row7_col0" class="data row7 col0" >0.284453</td>
+      <td id="T_99180_row7_col1" class="data row7 col1" >1.252155</td>
+      <td id="T_99180_row7_col2" class="data row7 col2" >0.274511</td>
+      <td id="T_99180_row7_col3" class="data row7 col3" >0.523810</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_mrc_nd_haberman</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Haberman Dataset: Non-Deterministic MRC </span><span class="se">\</span>
+<span class="s1">                                     error and runtime</span><span class="se">\n</span><span class="s1">with Upper and </span><span class="se">\</span>
+<span class="s1">                                         Lower bounds&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_87548_">
+  <caption>Haberman Dataset: Non-Deterministic MRC                                      error and runtime
+with Upper and                                          Lower bounds</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >MRC</th>
+      <th class="col_heading level0 col1" >MRC time</th>
+      <th class="col_heading level0 col2" >upper</th>
+      <th class="col_heading level0 col3" >lower</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_87548_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+      <td id="T_87548_row0_col0" class="data row0 col0" >0.268324</td>
+      <td id="T_87548_row0_col1" class="data row0 col1" >0.448800</td>
+      <td id="T_87548_row0_col2" class="data row0 col2" >0.271850</td>
+      <td id="T_87548_row0_col3" class="data row0 col3" >0.254457</td>
+    </tr>
+    <tr>
+      <th id="T_87548_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+      <td id="T_87548_row1_col0" class="data row1 col0" >0.264939</td>
+      <td id="T_87548_row1_col1" class="data row1 col1" >0.613959</td>
+      <td id="T_87548_row1_col2" class="data row1 col2" >0.262187</td>
+      <td id="T_87548_row1_col3" class="data row1 col3" >0.235597</td>
+    </tr>
+    <tr>
+      <th id="T_87548_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+      <td id="T_87548_row2_col0" class="data row2 col0" >0.284347</td>
+      <td id="T_87548_row2_col1" class="data row2 col1" >0.679219</td>
+      <td id="T_87548_row2_col2" class="data row2 col2" >0.264509</td>
+      <td id="T_87548_row2_col3" class="data row2 col3" >0.219872</td>
+    </tr>
+    <tr>
+      <th id="T_87548_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+      <td id="T_87548_row3_col0" class="data row3 col0" >0.290957</td>
+      <td id="T_87548_row3_col1" class="data row3 col1" >0.486500</td>
+      <td id="T_87548_row3_col2" class="data row3 col2" >0.258158</td>
+      <td id="T_87548_row3_col3" class="data row3 col3" >0.235543</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /></div>
+<div class="section" id="svm-neural-networks-mlp-classifier-random-forest-classifier">
+<h2>SVM, Neural Networks: MLP Classifier, Random Forest Classifier<a class="headerlink" href="#svm-neural-networks-mlp-classifier-random-forest-classifier" title="Permalink to this headline"></a></h2>
+<p>Now, let’s try other usual supervised classification algorithms and compare
+the results.
+For comparison purposes. We try the same experiment using the Support Vector
+Machine method using C-Support Vector Classification implemented in the
+<span class="xref std std-ref">SVC</span>
+function, the Neural Network
+method <span class="xref std std-ref">Multi-layer Perceptron classifier</span>
+and a <span class="xref std std-ref">Random Forest
+Classifier</span>.
+All of them from the library <code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runComparisonMethods</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">])</span>
+
+    <span class="n">error_svm</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">totalTime_svm</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error_mlp</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">totalTime_mlp</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error_rf</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">totalTime_rf</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="n">kf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">):</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+        <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+        <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">error_svm</span> <span class="o">+=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+        <span class="n">totalTime_svm</span> <span class="o">+=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+        <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">error_mlp</span> <span class="o">+=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+        <span class="n">totalTime_mlp</span> <span class="o">+=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+        <span class="n">startTime</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">clf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span>
+            <span class="n">max_depth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+        <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+        <span class="n">error_rf</span> <span class="o">+=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><span class="n">Y_pred</span> <span class="o">!=</span> <span class="n">Y_test</span><span class="p">)</span>
+        <span class="n">totalTime_rf</span> <span class="o">+=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">startTime</span>
+
+    <span class="n">error_svm</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+    <span class="n">totalTime_svm</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+    <span class="n">error_mlp</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+    <span class="n">totalTime_mlp</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+    <span class="n">error_rf</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+    <span class="n">totalTime_rf</span> <span class="o">/=</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Method&#39;</span><span class="p">:</span> <span class="s1">&#39;SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">:</span> <span class="n">error_svm</span><span class="p">,</span>
+                    <span class="s1">&#39;Time&#39;</span><span class="p">:</span> <span class="n">totalTime_svm</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Method&#39;</span><span class="p">:</span> <span class="s1">&#39;NN-MLP&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">:</span> <span class="n">error_mlp</span><span class="p">,</span>
+                    <span class="s1">&#39;Time&#39;</span><span class="p">:</span> <span class="n">totalTime_mlp</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;Method&#39;</span><span class="p">:</span> <span class="s1">&#39;Random Forest&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">:</span> <span class="n">error_rf</span><span class="p">,</span>
+                    <span class="s1">&#39;Time&#39;</span><span class="p">:</span> <span class="n">totalTime_rf</span><span class="p">},</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;Method&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Credit Dataset</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
+<span class="n">df_credit</span> <span class="o">=</span> <span class="n">runComparisonMethods</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">)</span>
+<span class="n">df_credit</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Credit Dataset: Different </span><span class="se">\</span>
+<span class="s1">                            methods error and runtime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_919c0_">
+  <caption>Credit Dataset: Different                             methods error and runtime</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >Error</th>
+      <th class="col_heading level0 col1" >Time</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Method</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_919c0_level0_row0" class="row_heading level0 row0" >SVM</th>
+      <td id="T_919c0_row0_col0" class="data row0 col0" >0.166667</td>
+      <td id="T_919c0_row0_col1" class="data row0 col1" >0.011568</td>
+    </tr>
+    <tr>
+      <th id="T_919c0_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+      <td id="T_919c0_row1_col0" class="data row1 col0" >0.150725</td>
+      <td id="T_919c0_row1_col1" class="data row1 col1" >0.376189</td>
+    </tr>
+    <tr>
+      <th id="T_919c0_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+      <td id="T_919c0_row2_col0" class="data row2 col0" >0.165217</td>
+      <td id="T_919c0_row2_col1" class="data row2 col1" >0.107712</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Haberman Dataset</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
+<span class="n">df_haberman</span> <span class="o">=</span> <span class="n">runComparisonMethods</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">)</span>
+<span class="n">df_haberman</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Haberman Dataset: Different </span><span class="se">\</span>
+<span class="s1">                              methods error and runtime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_31423_">
+  <caption>Haberman Dataset: Different                               methods error and runtime</caption>
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th class="col_heading level0 col0" >Error</th>
+      <th class="col_heading level0 col1" >Time</th>
+    </tr>
+    <tr>
+      <th class="index_name level0" >Method</th>
+      <th class="blank col0" >&nbsp;</th>
+      <th class="blank col1" >&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_31423_level0_row0" class="row_heading level0 row0" >SVM</th>
+      <td id="T_31423_row0_col0" class="data row0 col0" >0.258488</td>
+      <td id="T_31423_row0_col1" class="data row0 col1" >0.003591</td>
+    </tr>
+    <tr>
+      <th id="T_31423_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+      <td id="T_31423_row1_col0" class="data row1 col0" >0.284294</td>
+      <td id="T_31423_row1_col1" class="data row1 col1" >0.196076</td>
+    </tr>
+    <tr>
+      <th id="T_31423_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+      <td id="T_31423_row2_col0" class="data row2 col0" >0.274828</td>
+      <td id="T_31423_row2_col1" class="data row2 col1" >0.099933</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /></div>
+<div class="section" id="comparison-of-mrcs-to-other-methods">
+<h2>Comparison of MRCs to other methods<a class="headerlink" href="#comparison-of-mrcs-to-other-methods" title="Permalink to this headline"></a></h2>
+<p>In the deterministic case we can see that the performance of MRC and CMRC
+methods in the
+appropiate settings is similar to usual methods such as SVM and
+Neural Networks implemented by the MLPClassifier. Best performances for MRC
+method are usually reached using loss = <code class="xref any docutils literal notranslate"><span class="pre">0-1</span></code> and phi = <code class="xref any docutils literal notranslate"><span class="pre">fourier</span></code> or
+phi = <code class="xref any docutils literal notranslate"><span class="pre">relu</span></code>. Even though these
+settings make the execution time of MRC a little bit higher than others it
+is still  similar to the time it would take to use the MLPClassifier.</p>
+<p>Now we are plotting some figures for the <strong>deterministic</strong> case.</p>
+<p>Note that
+the options of MRC with loss = <code class="xref any docutils literal notranslate"><span class="pre">0-1</span></code> use an optimized version of Nesterov
+optimization algorithm, improving the runtime of these options.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Graph plotting</span>
+<span class="k">def</span> <span class="nf">major_formatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">label</span>
+
+
+<span class="k">def</span> <span class="nf">major_formatter1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.16</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">label</span>
+
+
+<span class="k">def</span> <span class="nf">major_formatter2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.2g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
+    <span class="k">return</span> <span class="n">label</span>
+
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CMRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">linear&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">relu&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">threshold&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">log</span><span class="se">\n</span><span class="s1">threshold&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;NN-MLP&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Random</span><span class="se">\n</span><span class="s1">forest&#39;</span><span class="p">]</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;CMRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi linear&#39;</span><span class="p">],</span>
+          <span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi relu&#39;</span><span class="p">],</span>
+          <span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi threshold&#39;</span><span class="p">],</span>
+          <span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss log, phi threshold&#39;</span><span class="p">],</span>
+          <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;SVM&#39;</span><span class="p">],</span>
+          <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;NN-MLP&#39;</span><span class="p">],</span>
+          <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightskyblue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Credit Dataset Errors&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">major_formatter1</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">*</span> <span class="mf">3.5</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">)</span> <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_comparison_001.png" srcset="../../_images/sphx_glr_plot_comparison_001.png" alt="Credit Dataset Errors" class = "sphx-glr-single-img"/><p>Above: MRCs errors for different parameter settings
+compared to other techniques for the dataset Credit. The ordinate
+axis represents the error (proportion of incorrectly predicted labels).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">relu&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">threshold&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;NN-MLP&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Random</span><span class="se">\n</span><span class="s1">forest&#39;</span><span class="p">]</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi relu&#39;</span><span class="p">],</span>
+         <span class="n">df_mrc_credit</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi threshold&#39;</span><span class="p">],</span>
+         <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;SVM&#39;</span><span class="p">],</span>
+         <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;NN-MLP&#39;</span><span class="p">],</span>
+         <span class="n">df_credit</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightskyblue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Credit Dataset Runtime&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">major_formatter2</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">*</span> <span class="mf">3.5</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">)</span> <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_comparison_002.png" srcset="../../_images/sphx_glr_plot_comparison_002.png" alt="Credit Dataset Runtime" class = "sphx-glr-single-img"/><p>Above: MRCs runtime for different parameter settings
+compared to other techniques for the dataset Credit. The ordinate
+represents the runtime measured in seconds.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">fourier&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;CMRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">fourier&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;SVM&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;NN-MLP&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Random</span><span class="se">\n</span><span class="s1">forest&#39;</span><span class="p">]</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">df_mrc_haberman</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi fourier&#39;</span><span class="p">],</span>
+          <span class="n">df_mrc_haberman</span><span class="p">[</span><span class="s1">&#39;CMRC&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi fourier&#39;</span><span class="p">],</span>
+          <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;SVM&#39;</span><span class="p">],</span>
+          <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;NN-MLP&#39;</span><span class="p">],</span>
+          <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightskyblue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Haberman Dataset Errors&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">major_formatter</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">*</span> <span class="mf">3.5</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">errors</span></a><span class="p">)</span> <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_comparison_003.png" srcset="../../_images/sphx_glr_plot_comparison_003.png" alt="Haberman Dataset Errors" class = "sphx-glr-single-img"/><p>Above: MRCs errors for different parameter settings
+compared to other techniques for the dataset Haberman. The ordinate
+axis represents the error (proportion of incorrectly predicted labels).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">fourier&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;MRC</span><span class="se">\n</span><span class="s1">0-1</span><span class="se">\n</span><span class="s1">relu&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;SVM&#39;</span><span class="p">,</span> <span class="s1">&#39;NN-MLP&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Random</span><span class="se">\n</span><span class="s1">forest&#39;</span><span class="p">]</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">df_mrc_haberman</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi fourier&#39;</span><span class="p">],</span>
+         <span class="n">df_mrc_haberman</span><span class="p">[</span><span class="s1">&#39;MRC time&#39;</span><span class="p">][</span><span class="s1">&#39;loss 0-1, phi relu&#39;</span><span class="p">],</span>
+         <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;SVM&#39;</span><span class="p">],</span>
+         <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;NN-MLP&#39;</span><span class="p">],</span>
+         <span class="n">df_haberman</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">][</span><span class="s1">&#39;Random Forest&#39;</span><span class="p">]]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">labels</span></a><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;lightskyblue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Haberman Dataset Runtime&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;in&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s2">&quot;out&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=-</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">major_formatter2</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a> <span class="o">*</span> <span class="mf">3.5</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">times</span></a><span class="p">)</span> <span class="o">+</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">margin</span></a><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../_images/sphx_glr_plot_comparison_004.png" srcset="../../_images/sphx_glr_plot_comparison_004.png" alt="Haberman Dataset Runtime" class = "sphx-glr-single-img"/><p>Above: MRCs runtime for different parameter settings
+compared to other techniques for the dataset Haberman. The ordinate
+represents the runtime measured in seconds.</p>
+</div>
+<div class="section" id="upper-and-lower-bounds-provided-by-mrcs">
+<h2>Upper and Lower bounds provided by MRCs<a class="headerlink" href="#upper-and-lower-bounds-provided-by-mrcs" title="Permalink to this headline"></a></h2>
+<p>Furthermore, when using a non-deterministic approach and <code class="xref any docutils literal notranslate"><span class="pre">loss</span> <span class="pre">=</span> <span class="pre">0-1</span></code>, the
+MRC method provides us with Upper and Lower theoretical bounds for the
+error which can be of great use to make sure you are not overfitting your
+model or for hyperparameter tuning. You can check our
+<a class="reference internal" href="plot_grid.html#grid"><span class="std std-ref">example on parameter tuning</span></a>.
+In the logistic case these Upper and Lower values are the theoretical bounds
+for the log-likelihood.</p>
+<p>The only difference between the deterministic and  non-deterministic approach
+is in the prediction stage so, as we can see, the runtime of both versions
+is pretty similar.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 10 minutes  23.795 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-plot-comparison-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../../_downloads/785ea22289c8ebe65b117e10a044ee7d/plot_comparison.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_comparison.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../../_downloads/750531c8bf45b6620f1fa8bc4ab27d0f/plot_comparison.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_comparison.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../plot_example1.html" class="btn btn-neutral float-left" title="Example: Use of MRC with different settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="COVID.html" class="btn btn-neutral float-right" title="Example: Predicting COVID-19 patients outcome using MRCs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

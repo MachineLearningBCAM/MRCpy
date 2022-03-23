@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRCs with Deep Neural Networks: Part I &mdash; MRCpy 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/js/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MRCs with Deep Neural Networks: Part II" href="plot_image_classification.html" />
+    <link rel="prev" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" href="plot_grid.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> MRCpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plot_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part I</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction">Introduction to Pretrained models, Transfer Learning and Feature Extraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-pretrained-model-and-preprocess-images">Load pretrained model and preprocess images</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-tensorflow-datasets-mnist-cats-vs-dogs">Using tensorflow datasets: MNIST &amp; Cats vs Dogs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-a-local-dataset-yearbook-dataset">Using a local dataset: Yearbook Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plot_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MRCpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
+      <li>MRCs with Deep Neural Networks: Part I</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/auto_examples/further_examples/feature_extraction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-i">
+<span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this headline"></a></h1>
+<p>In this example we will use a pretrained neural network to extract features
+of images in a dataset to train and test MRCs with these features in
+<a class="reference internal" href="plot_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.</p>
+<p>We are using <a class="reference external" href="https://pytorch.org/hub/pytorch_vision_resnet/">ResNet18</a>
+pretrained model implementation in Pytorch library. Resnet models were proposed
+in “Deep Residual Learning for Image Recognition”. Here we are using the
+version ResNet18 which contains 18 layers and it is pretrained over
+<code class="xref any docutils literal notranslate"><span class="pre">ImageNet</span> <span class="pre">dataset</span></code> which has 1000
+different classes.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>For more information about ResNet models refer to</p>
+<p class="last">[1] He, K., Zhang, X., Ren, S., &amp; Sun, J. (2016).
+Deep residual learning for image recognition.
+In Proceedings of the IEEE conference on computer
+vision and pattern recognition (pp. 770-778).</p>
+</div>
+<div class="section" id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
+<h2>Introduction to Pretrained models, Transfer Learning and Feature Extraction<a class="headerlink" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction" title="Permalink to this headline"></a></h2>
+<p>Deep convolutional neural network models may take days or even weeks
+to train on very large datasets. A way to short-cut this process is
+to re-use the model weights from <em>pre-trained models</em> that were developed
+for standard computer vision benchmark datasets, such as the
+ImageNet image recognition tasks.
+Top performing models can be downloaded and used directly, or integrated
+into a new model for your own computer vision problems.
+<em>Transfer learning</em> generally refers to a process where a model trained
+on one problem is used in some way on a second related problem.
+Alternately, the pretrained models may be used as feature extraction models.
+Here, the output of the model from a layer prior to the output layer
+of the model is used as input to a new classifier model.</p>
+</div>
+<div class="section" id="load-pretrained-model-and-preprocess-images">
+<h2>Load pretrained model and preprocess images<a class="headerlink" href="#load-pretrained-model-and-preprocess-images" title="Permalink to this headline"></a></h2>
+<p>Firstly, we load the pretrained model <code class="xref any docutils literal notranslate"><span class="pre">torchvision.models.ResNet18</span></code> and
+we take out the last layer in order to obtain the features. We call this
+feature extraction model <code class="xref any docutils literal notranslate"><span class="pre">resnet18_features</span></code>.</p>
+<p>In the next lines we use <code class="xref any docutils literal notranslate"><span class="pre">torchvision.transforms.Compose</span></code> to compose several
+transforms together. In line [2] the input is resized to match its smaller
+edge to the given size, 256. That is, the image is resized mantaining
+the aspect ratio and <code class="xref any docutils literal notranslate"><span class="pre">min(height,width)=256</span></code>.
+In line [3] we use the function <code class="xref any docutils literal notranslate"><span class="pre">CenterCrop</span></code> to crop the given image
+at the center to <code class="xref any docutils literal notranslate"><span class="pre">(224,224)</span></code>.  If image size is smaller than output
+size along any edge, image is padded with 0 and then center cropped.</p>
+<p>If you use smaller images, the kernels might not be able to extract the
+features with the usual size, since they are smaller (ore larger),
+which may result in a difference in performance.</p>
+<p>Function in line [4] converts a PIL Image
+or numpy.ndarray to tensor. Finally <code class="xref any docutils literal notranslate"><span class="pre">Normalize</span></code> function (lines [5,6])
+normalizes a tensor image with mean and standard deviation required by
+ResNet18 method (check more in
+<code class="xref any docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">ResNet18</span> <span class="pre">doc</span></code>).
+Given mean:
+<code class="xref any docutils literal notranslate"><span class="pre">(mean[1],...,mean[n])</span></code> and std: <code class="xref any docutils literal notranslate"><span class="pre">(std[1],..,std[n])</span></code> for <code class="xref any docutils literal notranslate"><span class="pre">n</span></code> channels,
+this transform will normalize each channel i.e.,
+<code class="xref any docutils literal notranslate"><span class="pre">output[channel]</span> <span class="pre">=</span> <span class="pre">(input[channel]</span> <span class="pre">-</span> <span class="pre">mean[channel])</span> <span class="pre">/</span> <span class="pre">std[channel]</span></code>
+You can check more about <code class="xref any docutils literal notranslate"><span class="pre">torchvision.transforms</span></code> in
+<code class="xref any docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">docummentation</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow_datasets</span> <span class="k">as</span> <span class="nn">tfds</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_yearbook_path</span>
+
+<span class="n">resnet18</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">features_resnet18</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">resnet18</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">features_resnet18</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>                              <span class="c1"># [1]</span>
+    <span class="p">[</span><span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>                                 <span class="c1"># [2]</span>
+     <span class="n">transforms</span><span class="o">.</span><span class="n">CenterCrop</span><span class="p">(</span><span class="mi">224</span><span class="p">),</span>                             <span class="c1"># [3]</span>
+     <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>                                  <span class="c1"># [4]</span>
+     <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">[</span><span class="mf">0.485</span><span class="p">,</span> <span class="mf">0.456</span><span class="p">,</span> <span class="mf">0.406</span><span class="p">],</span>        <span class="c1"># [5]</span>
+                          <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>       <span class="c1"># [6]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-tensorflow-datasets-mnist-cats-vs-dogs">
+<h2>Using tensorflow datasets: MNIST &amp; Cats vs Dogs<a class="headerlink" href="#using-tensorflow-datasets-mnist-cats-vs-dogs" title="Permalink to this headline"></a></h2>
+<div class="section" id="mnist">
+<h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this headline"></a></h3>
+<p>The MNIST database of handwritten digits, available from
+<code class="xref any docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
+has a training set of 60000 examples, and a test set of 10000 examples. All
+images have dimension (28,28,1) and they are greyscale. Tensorflow provides
+with a convenient function to directly load this dataset into the scope
+without the need of downloading and storing the dataset locally, you can
+check more in <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/mnist">tensorflow documentation</a>.
+It already provides with the train and test partitions. We load the dataset
+with the function <code class="xref any docutils literal notranslate"><span class="pre">tensorflow_datasets.load</span></code> and we specify
+<code class="xref any docutils literal notranslate"><span class="pre">as_supervised=True</span></code> to indicate that we want to load the labels together
+with the images and <code class="xref any docutils literal notranslate"><span class="pre">with_info=True</span></code> will return the tuple
+<code class="xref any docutils literal notranslate"><span class="pre">(tf.data.Dataset,</span> <span class="pre">tfds.core.DatasetInfo)</span></code>,
+the latter containing the info associated with the builder.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_test</span><span class="p">],</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span>
+                                           <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">)</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">ds_test</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">)</span>
+
+<span class="n">images_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">images_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">Y_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">for</span> <span class="n">img_array</span> <span class="ow">in</span> <span class="n">images_train</span><span class="p">:</span>
+    <span class="c1"># We convert the gray scale into RGB because it is what the model expect</span>
+    <span class="n">img_array</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html#numpy.repeat" title="numpy.repeat" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">repeat</span></a><span class="p">(</span><span class="n">img_array</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img_array</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+    <span class="n">img_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">batch_t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">img_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">X_train</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features_resnet18</span><span class="p">(</span><span class="n">batch_t</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">img_array</span> <span class="ow">in</span> <span class="n">images_test</span><span class="p">:</span>
+    <span class="c1"># We convert the gray scale into RGB because it is what the model expect</span>
+    <span class="n">img_array</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html#numpy.repeat" title="numpy.repeat" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">repeat</span></a><span class="p">(</span><span class="n">img_array</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img_array</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+    <span class="n">img_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">batch_t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">img_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">X_test</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features_resnet18</span><span class="p">(</span><span class="n">batch_t</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">mnist_features_resnet18_train</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">(</span>
+    <span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">Y_train</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">mnist_features_resnet18_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">(</span>
+    <span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">Y_test</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.savetxt.html#numpy.savetxt" title="numpy.savetxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span></a><span class="p">(</span><span class="s1">&#39;mnist_features_resnet18_train.csv&#39;</span><span class="p">,</span> <span class="n">mnist_features_resnet18_train</span><span class="p">,</span>
+           <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.savetxt.html#numpy.savetxt" title="numpy.savetxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span></a><span class="p">(</span><span class="s1">&#39;mnist_features_resnet18_test.csv&#39;</span><span class="p">,</span> <span class="n">mnist_features_resnet18_test</span><span class="p">,</span>
+           <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="cats-vs-dogs">
+<h3>Cats vs Dogs<a class="headerlink" href="#cats-vs-dogs" title="Permalink to this headline"></a></h3>
+<p>Cats vs dogs dataset is a database of 23262 RGB cats
+and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
+Cats are labeled by 0 and dogs by 1 and there are 11658 and 11604 images
+of each class, respectively.
+It is available in tensorflow datasets, you can check the details <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/cats_vs_dogs">here</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ds</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;cats_vs_dogs&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
+                          <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">)</span>
+<span class="n">images</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+
+<span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">img_array</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img_array</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+    <span class="n">img_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">batch_t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">img_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features_resnet18</span><span class="p">(</span><span class="n">batch_t</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">catsvsdogs_features_resnet18</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><span class="n">X_features</span><span class="p">,</span>
+                                               <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+                                              <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.savetxt.html#numpy.savetxt" title="numpy.savetxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span></a><span class="p">(</span><span class="s1">&#39;catsvsdogs_features_resnet18.csv&#39;</span><span class="p">,</span> <span class="n">catsvsdogs_features_resnet18</span><span class="p">,</span>
+           <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-a-local-dataset-yearbook-dataset">
+<h2>Using a local dataset: Yearbook Dataset<a class="headerlink" href="#using-a-local-dataset-yearbook-dataset" title="Permalink to this headline"></a></h2>
+<p>In this example, we are going to extract the features from a local dataset.
+We will be using the Yearbook dataset which is a publicly-available dataset
+of 37,921 frontal-facing American high school yearbook portraits taken from
+1905 to 2013 labeled by gender.
+We will consider binary classification labels identifying
+whether the person on the image is a man or a woman.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>More information about Yearbook dataset can be found in</p>
+<p>[1] Ginosar, S., Rakelly, K., Sachs, S., Yin, B., &amp; Efros,
+A. A. (2015). A century of portraits: A visual historical
+record of american high school yearbooks. In Proceedings of
+the IEEE International Conference on Computer Vision Workshops
+(pp. 1-7).</p>
+<p class="last">[2] Kumar, A., Ma, T., &amp; Liang, P. (2020, November).
+Understanding self-training for gradual domain adaptation.
+In International Conference on Machine Learning
+(pp. 5468-5479). PMLR.</p>
+</div>
+<p>We take paths and names from images from F (female) and M (male)
+folder and merge them in a dataset ordered by date
+(as images name start by the year of the photo). We convert the labels into
+0 for F and 1 for M.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">load_yearbook_path</span><span class="p">()</span>
+<span class="n">F_path</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
+<span class="n">F</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.html#os.listdir" title="os.listdir" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">listdir</span></a><span class="p">(</span><span class="n">F_path</span><span class="p">)</span>
+<span class="n">F</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span>
+                    <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">([</span><span class="n">F_path</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">F</span><span class="p">],</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">M_path</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.html#os.listdir" title="os.listdir" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">listdir</span></a><span class="p">(</span><span class="n">M_path</span><span class="p">)</span>
+<span class="n">M</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="numpy.ones" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span>
+                    <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">([</span><span class="n">M_path</span> <span class="o">+</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">M</span><span class="p">],</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><span class="n">F</span><span class="p">,</span> <span class="n">M</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html#numpy.argsort" title="numpy.argsort" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">argsort</span></a><span class="p">(</span><span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])]</span>
+
+<span class="n">paths</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Next, we load the images, transform them using the function <a class="reference internal" href="../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform" title="MRCpy.phi.BasePhi.transform"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">transform</span></code></a> we
+defined above to make the image compatible with ResNet18. Lastly, we extract
+the image features using <code class="xref any docutils literal notranslate"><span class="pre">features_resnet18()</span></code> and we transform the output
+features to a flat array that will be a new instance of our feature dataset.
+We store this feature dataset extracted with resnet18 in a csv file that
+is available in the <code class="xref any docutils literal notranslate"><span class="pre">dataset</span></code> folder of the MRCpy library.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    <span class="n">img_t</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">batch_t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">img_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">X_features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">features_resnet18</span><span class="p">(</span><span class="n">batch_t</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+
+<span class="n">yearbook_features_resnet18</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><span class="n">X_features</span><span class="p">,</span>
+                                             <a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.savetxt.html#numpy.savetxt" title="numpy.savetxt" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span></a><span class="p">(</span><span class="s1">&#39;yearbook_features_resnet18.csv&#39;</span><span class="p">,</span>
+           <span class="n">yearbook_features_resnet18</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-feature-extraction-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../../_downloads/9ad2b43fea12de5c5321c4ab54c3f506/feature_extraction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">feature_extraction.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../../_downloads/0c5ab177a019d9eb71a5f760ed0b28ec/feature_extraction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">feature_extraction.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plot_grid.html" class="btn btn-neutral float-left" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_image_classification.html" class="btn btn-neutral float-right" title="MRCs with Deep Neural Networks: Part II" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

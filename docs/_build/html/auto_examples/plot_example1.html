@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Use of MRC with different settings &mdash; MRCpy 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Example: Comparison to other methods" href="further_examples/plot_comparison.html" />
+    <link rel="prev" title="Example: Use of CMRC with different settings" href="plot_example2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Gallery of examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#basic-examples">Basic Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="plot_example2.html">Example: Use of CMRC with different settings</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Use of MRC with different settings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#further-applications">Further applications</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Gallery of examples</a> &raquo;</li>
+      <li>Example: Use of MRC with different settings</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/auto_examples/plot_example1.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-example1-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="example-use-of-mrc-with-different-settings">
+<span id="ex1"></span><span id="sphx-glr-auto-examples-plot-example1-py"></span><h1>Example: Use of MRC with different settings<a class="headerlink" href="#example-use-of-mrc-with-different-settings" title="Permalink to this headline"></a></h1>
+<p>Example of using MRC with some of the common classification datasets with
+different losses and feature mappings settings. We load the different datasets
+and use 10-Fold Cross-Validation to generate the partitions for train and test.
+We separate 1 partition each time for testing and use the others for training.
+On each iteration we calculate the classification error as well as the upper
+and lower bounds for the error. We also calculate the mean training time.</p>
+<p>Note that we set the parameter use_cvx=False. In the case of MRC classifiers
+this means that we will use nesterov subgradient optimized approach to
+perform the optimization.</p>
+<p>You can check a more elaborated example in <a class="reference internal" href="further_examples/plot_comparison.html#ex-comp"><span class="std std-ref">Example: Comparison to other methods</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+
+<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span>
+<span class="c1"># Import the datasets</span>
+<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Data sets</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">load_mammographic</span><span class="p">,</span> <span class="n">load_haberman</span><span class="p">,</span> <span class="n">load_indian_liver</span><span class="p">,</span>
+           <span class="n">load_diabetes</span><span class="p">,</span> <span class="n">load_credit</span><span class="p">]</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mammographic&quot;</span><span class="p">,</span> <span class="s2">&quot;haberman&quot;</span><span class="p">,</span> <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="c1">#    # We fix the random seed to that the stratified kfold performed</span>
+<span class="c1">#    # is the same through the different executions</span>
+<span class="c1">#    random_seed = 0</span>
+<span class="c1">#</span>
+<span class="c1">#    # Iterate through each of the dataset and fit the MRC classfier.</span>
+<span class="c1">#    for j, load in enumerate(loaders):</span>
+<span class="c1">#</span>
+<span class="c1">#        # Loading the dataset</span>
+<span class="c1">#        X, Y = load()</span>
+<span class="c1">#        r = len(np.unique(Y))</span>
+<span class="c1">#        n, d = X.shape</span>
+<span class="c1">#</span>
+<span class="c1">#        clf = MRC(phi=phi, loss=loss, use_cvx=False)</span>
+<span class="c1">#</span>
+<span class="c1">#        # Generate the partitions of the stratified cross-validation</span>
+<span class="c1">#        n_splits = 5</span>
+<span class="c1">#        cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,</span>
+<span class="c1">#                             shuffle=True)</span>
+<span class="c1">#</span>
+<span class="c1">#        cvError = list()</span>
+<span class="c1">#        auxTime = 0</span>
+<span class="c1">#        upper = 0</span>
+<span class="c1">#        lower = 0</span>
+<span class="c1">#</span>
+<span class="c1">#        # Paired and stratified cross-validation</span>
+<span class="c1">#        for train_index, test_index in cv.split(X, Y):</span>
+<span class="c1">#</span>
+<span class="c1">#            X_train, X_test = X[train_index], X[test_index]</span>
+<span class="c1">#            y_train, y_test = Y[train_index], Y[test_index]</span>
+<span class="c1">#</span>
+<span class="c1">#            # Normalizing the data</span>
+<span class="c1">#            std_scale = preprocessing.StandardScaler().fit(X_train, y_train)</span>
+<span class="c1">#            X_train = std_scale.transform(X_train)</span>
+<span class="c1">#            X_test = std_scale.transform(X_test)</span>
+<span class="c1">#</span>
+<span class="c1">#            # Save start time for computing training time</span>
+<span class="c1">#            startTime = time.time()</span>
+<span class="c1">#</span>
+<span class="c1">#            # Train the model and save the upper and lower bounds</span>
+<span class="c1">#            clf.fit(X_train, y_train)</span>
+<span class="c1">#            upper += clf.get_upper_bound()</span>
+<span class="c1">#            lower += clf.get_lower_bound()</span>
+<span class="c1">#</span>
+<span class="c1">#            # Save the training time</span>
+<span class="c1">#            auxTime += time.time() - startTime</span>
+<span class="c1">#</span>
+<span class="c1">#            # Predict the class for test instances</span>
+<span class="c1">#            y_pred = clf.predict(X_test)</span>
+<span class="c1">#</span>
+<span class="c1">#            # Calculate the error made by MRC classificator</span>
+<span class="c1">#            cvError.append(np.average(y_pred != y_test))</span>
+<span class="c1">#</span>
+<span class="c1">#        res_mean = np.average(cvError)</span>
+<span class="c1">#        res_std = np.std(cvError)</span>
+<span class="c1">#</span>
+<span class="c1">#        # Calculating the mean upper and lower bound and training time</span>
+<span class="c1">#        upper = upper / n_splits</span>
+<span class="c1">#        lower = lower / n_splits</span>
+<span class="c1">#        auxTime = auxTime / n_splits</span>
+<span class="c1">#</span>
+<span class="c1">#        results = results.append({&#39;dataset&#39;: dataName[j],</span>
+<span class="c1">#                                  &#39;n_samples&#39;: &#39;%d&#39; % n,</span>
+<span class="c1">#                                  &#39;n_attributes&#39;: &#39;%d&#39; % d,</span>
+<span class="c1">#                                  &#39;n_classes&#39;: &#39;%d&#39; % r,</span>
+<span class="c1">#                                  &#39;error&#39;: &#39;%1.2g&#39; % res_mean + &quot; +/- &quot; +</span>
+<span class="c1">#                                  &#39;%1.2g&#39; % res_std,</span>
+<span class="c1">#                                  &#39;upper&#39;: &#39;%1.2g&#39; % upper,</span>
+<span class="c1">#                                  &#39;lower&#39;: &#39;%1.2g&#39; % lower,</span>
+<span class="c1">#                                  &#39;avg_train_time (s)&#39;: &#39;%1.2g&#39; % auxTime},</span>
+<span class="c1">#                                 ignore_index=True)</span>
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r1</span> <span class="o">=</span> <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;fourier&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Using 0-1 loss and fourier feature mapping&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_1998a_">
+  <caption>Using 0-1 loss and fourier feature mapping</caption>
+  <thead>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r2</span> <span class="o">=</span> <span class="n">runMRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s1">&#39;fourier&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">r2</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;Using log loss and fourier feature mapping&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+<style type="text/css">
+</style>
+<table id="T_62d6b_">
+  <caption>Using log loss and fourier feature mapping</caption>
+  <thead>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+
+</div>
+<br />
+<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.003 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-example1-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<a class="reference download internal" download="" href="../_downloads/ce615eeeaf183d728a05b647cb915a04/plot_example1.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_example1.py</span></code></a></div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<a class="reference download internal" download="" href="../_downloads/2421e198bfdefccbcbfa5427d1acaa31/plot_example1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_example1.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="plot_example2.html" class="btn btn-neutral float-left" title="Example: Use of CMRC with different settings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="further_examples/plot_comparison.html" class="btn btn-neutral float-right" title="Example: Comparison to other methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
