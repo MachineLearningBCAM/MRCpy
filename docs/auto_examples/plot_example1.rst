@@ -160,7 +160,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_1998a_">
+    <table id="T_674dc_">
       <caption>Using 0-1 loss and fourier feature mapping</caption>
       <thead>
       </thead>
@@ -189,7 +189,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_62d6b_">
+    <table id="T_9271d_">
       <caption>Using log loss and fourier feature mapping</caption>
       <thead>
       </thead>
