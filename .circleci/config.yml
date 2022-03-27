@@ -73,7 +73,7 @@ workflows:
       - docs-build
       - docs-deploy:
           requires:
-            - test
+            - style-test
             - docs-build
           filters:
             branches:
