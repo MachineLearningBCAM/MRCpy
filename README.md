@@ -1,6 +1,6 @@
 # MRCpy: A Library for Minimax Risk Classifiers
 
-[![Build Status](https://app.travis-ci.com/MachineLearningBCAM/MRCpy.svg?branch=main)](https://travis-ci.com/github/MachineLearningBCAM/MRCpy)
+[![Build Status](https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield)](https://circleci.com/gh/MachineLearningBCAM/MRCpy)
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 
