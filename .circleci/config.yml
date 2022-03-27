@@ -1,20 +1,20 @@
-version: 2.1
+version: 2
+
 jobs:
-  build:
+  style-test:
     docker:
-      - image: circleci/python:3.6 # the primary container, where your job's commands are run
+      - image: python:3.6
     steps:
-      - checkout # check out the code in the project directory
-      
+      - checkout
       - run:
-          name: install requirements
+          name: Install dependencies
           command: >-
             pip install -r requirements.txt &&
             pip install -r dev-requirements.txt &&
             pip install -r ci-requirements.txt
       
       - run:
-          name: check code styling and run tests
+          name: Check code styling and run tests
           command: >-
             flake8 --ignore=D,W503,W504,F403,F405 examples/ &&
             flake8 MRCpy/ tests/ &&
@@ -27,4 +27,54 @@ jobs:
           when: on_success
 
 
-        
+  docs-build:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: pip install sphinx==1.8.1
+      - run:
+          name: Build docs
+          command: cd docs/ && make html
+      - persist_to_workspace:
+          root: docs/_build
+          paths: html
+
+  docs-deploy:
+    docker:
+      - image: node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: docs/_build
+      - run:
+          name: Disable jekyll builds
+          command: touch docs/_build/html/.nojekyll
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "bkartheekreddy@gmail.com"
+            git config user.name "KARTHEEKCIC"
+      - add_ssh_keys:
+          fingerprints:
+            - "a3:e7:02:87:d7:04:79:d0:2c:76:08:ba:09:c0:bd:d0"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - style-test
+      - docs-build
+      - docs-deploy:
+          requires:
+            - test
+            - docs-build
+          filters:
+            branches:
+              only: master
