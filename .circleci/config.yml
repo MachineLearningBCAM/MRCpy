@@ -1,0 +1,30 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.9.6 # the primary container, where your job's commands are run
+    steps:
+      - checkout # check out the code in the project directory
+      
+      - run:
+          name: install requirements
+          command: >-
+            pip install -r requirements.txt &&
+            pip install -r dev-requirements.txt &&
+            pip install -r ci-requirements.txt
+      
+      - run:
+          name: check code styling and run tests
+          command: >-
+            flake8 --ignore=D,W503,W504,F403,F405 examples/ &&
+            flake8 MRCpy/ tests/ &&
+            coverage run --source=MRCpy/ -m unittest discover -s tests
+
+      - run:
+          name: upload CodeCov.io data
+          command: bash <(curl -s https://codecov.io/bash)
+          # Uploads code coverage results, on successful run of previous commands
+          when: on_success
+
+
+        
