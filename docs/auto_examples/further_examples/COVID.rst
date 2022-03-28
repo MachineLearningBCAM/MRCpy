@@ -85,7 +85,7 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 COVID dataset Loader:
 --------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-121
+.. GENERATED FROM PYTHON SOURCE LINES 66-123
 
 .. code-block:: default
 
@@ -133,10 +133,12 @@ COVID dataset Loader:
             data_consensus = pd.concat(
                 [dataframex_consensus, data_consensus[["Status"]]], axis=1
             )
-        data_consensus = data_consensus[data_consensus.columns.difference(
-            ["PATIENT_ID"])]
-        X = data_consensus[data_consensus.columns.difference(
-            ["Status", "PATIENT_ID"])]
+        data_consensus = data_consensus[
+            data_consensus.columns.difference(["PATIENT_ID"])
+        ]
+        X = data_consensus[
+            data_consensus.columns.difference(["Status", "PATIENT_ID"])
+        ]
         y = data_consensus["Status"]
         if array:
             X = X.to_numpy()
@@ -145,7 +147,7 @@ COVID dataset Loader:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-129
+.. GENERATED FROM PYTHON SOURCE LINES 124-131
 
 Addressing dataset imbalance with SMOTE
 --------------------------------
@@ -155,18 +157,21 @@ has only 276. In this example oversampling will be used to add syintetic
 records to get an almost balanced dataset. :mod:`SMOTE` (Synthetic minority
 over sampling) is a package that implements such oversampling.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-135
+.. GENERATED FROM PYTHON SOURCE LINES 131-140
 
 .. code-block:: default
 
     X, y = load_covid(array=False)
-    described = X.describe(percentiles=[0.5]).round(
-        2).transpose()[["count", "mean", "std"]]
+    described = (
+        X.describe(percentiles=[0.5])
+        .round(2)
+        .transpose()[["count", "mean", "std"]]
+    )
     pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-176
+.. GENERATED FROM PYTHON SOURCE LINES 141-181
 
 .. raw:: html
 
@@ -209,7 +214,7 @@ over sampling) is a package that implements such oversampling.
      <br />
 #############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-190
+.. GENERATED FROM PYTHON SOURCE LINES 183-195
 
 So we create a set of cases syntehtically using 5 nearest neighbors until
 the class imbalance is almost removed. For more information about
@@ -224,7 +229,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
                technique. Journal of artificial intelligence research,
                16, 321-357.
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-202
+.. GENERATED FROM PYTHON SOURCE LINES 195-207
 
 .. code-block:: default
 
@@ -241,7 +246,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
     pd.concat([described, described_resample], axis=1)
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-415
+.. GENERATED FROM PYTHON SOURCE LINES 208-420
 
 .. raw:: html
 
@@ -456,17 +461,18 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
  different. However the distribution between classes is kept similar due to
  the creation of the synthetic cases through 5 nearest neighbors.
 
-.. GENERATED FROM PYTHON SOURCE LINES 415-420
+.. GENERATED FROM PYTHON SOURCE LINES 420-426
 
 .. code-block:: default
 
 
-    pd.DataFrame(y_resampled.value_counts().rename(
-        {0.0: "Survive", 1.0: "Decease"}))
+    pd.DataFrame(
+        y_resampled.value_counts().rename({0.0: "Survive", 1.0: "Decease"})
+    )
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 421-460
+.. GENERATED FROM PYTHON SOURCE LINES 427-466
 
 .. raw:: html
 
@@ -508,7 +514,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 465-473
+.. GENERATED FROM PYTHON SOURCE LINES 471-479
 
 Probability estimation
 ----------------------------------
@@ -519,7 +525,7 @@ probability estimation is better when using :mod:`loss = log`. We use
 :mod:`MRC(phi = 'fourier' , loss = 'log'`. We will then compare these MRCs
 with SVC and LR with default parameters.
 
-.. GENERATED FROM PYTHON SOURCE LINES 475-480
+.. GENERATED FROM PYTHON SOURCE LINES 481-486
 
 Load classification function:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -527,7 +533,7 @@ These function classify each of the cases in their correspondent
 confusion matrix's category. It also allows to set the desired cut-off
 for the predictions.
 
-.. GENERATED FROM PYTHON SOURCE LINES 480-519
+.. GENERATED FROM PYTHON SOURCE LINES 486-525
 
 .. code-block:: default
 
@@ -571,14 +577,14 @@ for the predictions.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 520-524
+.. GENERATED FROM PYTHON SOURCE LINES 526-530
 
 Train models:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 We will train the models with 80% of the data and then test with the other
 20% selected randomly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 524-567
+.. GENERATED FROM PYTHON SOURCE LINES 530-574
 
 .. code-block:: default
 
@@ -594,8 +600,9 @@ We will train the models with 80% of the data and then test with the other
     )
     MRC_values["Freq_MRC"] = MRC_values["MRC"] / sum(MRC_values["MRC"]) * 100
 
-    clf_CMRC = CMRC(phi="threshold", use_cvx=True,
-                    loss="log").fit(X_train, y_train)
+    clf_CMRC = CMRC(phi="threshold", use_cvx=True, loss="log").fit(
+        X_train, y_train
+    )
     df_CMRC = defDataFrame(model=clf_CMRC, x_test=X_test, y_test=y_test)
     CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(
         columns={"Category": type(clf_CMRC).__name__}
@@ -615,18 +622,18 @@ We will train the models with 80% of the data and then test with the other
         columns={"Category": type(clf_LR).__name__}
     )
     LR_values["Freq_LR"] = (
-        LR_values["LogisticRegression"] /
-        sum(LR_values["LogisticRegression"]) * 100
+        LR_values["LogisticRegression"]
+        / sum(LR_values["LogisticRegression"])
+        * 100
     )
 
 
-    pd.concat([MRC_values, CMRC_values, SVC_values,
-               LR_values], axis=1).style.set_caption(
-        "Classification results by model"
-    ).format(precision=2)
-               
+    pd.concat(
+        [MRC_values, CMRC_values, SVC_values, LR_values], axis=1
+    ).style.set_caption("Classification results by model").format(precision=2)
 
-.. GENERATED FROM PYTHON SOURCE LINES 568-654
+
+.. GENERATED FROM PYTHON SOURCE LINES 575-661
 
 .. raw:: html
 
@@ -686,7 +693,7 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_2cf59_row2_col7" class="data row2 col7" >33.21</td>
          </tr>
          <tr>
-           <th id="T_2cf59_level0_row3" class="row_heading 
+           <th id="T_2cf59_level0_row3" class="row_heading
            level0 row3" >False Positive</th>
            <td id="T_2cf59_row3_col0" class="data row3 col0" >32</td>
            <td id="T_2cf59_row3_col1" class="data row3 col1" >6.00</td>
@@ -715,7 +722,7 @@ We will train the models with 80% of the data and then test with the other
  problem the missclassification of a patient with fatal outcome (FN) is
  considered a much more serious error.
 
-.. GENERATED FROM PYTHON SOURCE LINES 654-744
+.. GENERATED FROM PYTHON SOURCE LINES 661-760
 
 .. code-block:: default
 
@@ -736,8 +743,12 @@ We will train the models with 80% of the data and then test with the other
             linewidth=0,
             dodge=False,
             alpha=0.6,
-            order=["True Negative", "False Negative",
-                   "True Positive", "False Positive", ],
+            order=[
+                "True Negative",
+                "False Negative",
+                "True Positive",
+                "False Positive",
+            ],
         )
         sns.boxplot(
             ax=ax,
@@ -745,8 +756,12 @@ We will train the models with 80% of the data and then test with the other
             y="Category",
             color="White",
             data=df,
-            order=["True Negative", "False Negative",
-                   "True Positive", "False Positive", ],
+            order=[
+                "True Negative",
+                "False Negative",
+                "True Positive",
+                "False Positive",
+            ],
             saturation=15,
         )
         ax.set_xlabel("Probability of mortality")
@@ -786,8 +801,9 @@ We will train the models with 80% of the data and then test with the other
             element="step",
             **norm_params
         )
-        ax.axvline(threshold, 0, 1, linestyle=(
-            0, (1, 10)), linewidth=0.7, color="black")
+        ax.axvline(
+            threshold, 0, 1, linestyle=(0, (1, 10)), linewidth=0.7, color="black"
+        )
 
 
     # visualize results
@@ -810,14 +826,14 @@ We will train the models with 80% of the data and then test with the other
     fig.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 745-749
+.. GENERATED FROM PYTHON SOURCE LINES 761-765
 
 .. image:: images/images_COVID/COVID_001.png
   :width: 600
   :align: center
   :alt: Imagen de prueba
 
-.. GENERATED FROM PYTHON SOURCE LINES 751-760
+.. GENERATED FROM PYTHON SOURCE LINES 767-776
 
 ############################################
  We see a clear different behaviour with the CMRC and MRC. MRC tends to
@@ -829,7 +845,7 @@ We will train the models with 80% of the data and then test with the other
  worst performance of all having a lot of patients that survived with high
  decease probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 760-793
+.. GENERATED FROM PYTHON SOURCE LINES 776-810
 
 .. code-block:: default
 
@@ -838,8 +854,9 @@ We will train the models with 80% of the data and then test with the other
     cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test))  # CMRC
     cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test))  # MRC
     cm_lr = confusion_matrix(y_test, clf_LR.predict(X_test))  # Logistic Regression
-    cm_svc = confusion_matrix(y_test, clf_SVC.predict(
-        X_test))  # C-Support Vector Machine
+    cm_svc = confusion_matrix(
+        y_test, clf_SVC.predict(X_test)
+    )  # C-Support Vector Machine
 
     fig, ax = plt.subplots(
         nrows=2,
@@ -867,18 +884,18 @@ We will train the models with 80% of the data and then test with the other
     fig.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 794-798
+.. GENERATED FROM PYTHON SOURCE LINES 811-815
 
 .. image:: images/images_COVID/COVID_002.png
   :width: 600
   :align: center
   :alt: Confusion Matrices
 
-.. GENERATED FROM PYTHON SOURCE LINES 800-801
+.. GENERATED FROM PYTHON SOURCE LINES 817-818
 
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 801-810
+.. GENERATED FROM PYTHON SOURCE LINES 818-827
 
 .. code-block:: default
 
@@ -892,7 +909,7 @@ We will train the models with 80% of the data and then test with the other
     ).style.set_caption("Classification report CMRC").format(precision=3)
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 811-872
+.. GENERATED FROM PYTHON SOURCE LINES 828-889
 
 .. raw:: html
 
@@ -956,7 +973,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 872-880
+.. GENERATED FROM PYTHON SOURCE LINES 889-897
 
 .. code-block:: default
 
@@ -969,7 +986,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report MRC").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 881-942
+.. GENERATED FROM PYTHON SOURCE LINES 898-959
 
 .. raw:: html
 
@@ -1033,7 +1050,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 942-950
+.. GENERATED FROM PYTHON SOURCE LINES 959-967
 
 .. code-block:: default
 
@@ -1046,7 +1063,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report LR").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 951-1012
+.. GENERATED FROM PYTHON SOURCE LINES 968-1029
 
 .. raw:: html
 
@@ -1110,7 +1127,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 1012-1020
+.. GENERATED FROM PYTHON SOURCE LINES 1029-1037
 
 .. code-block:: default
 
@@ -1123,7 +1140,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report SVC").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 1021-1085
+.. GENERATED FROM PYTHON SOURCE LINES 1038-1102
 
 .. raw:: html
 
@@ -1190,7 +1207,7 @@ We will train the models with 80% of the data and then test with the other
  We can see in the classification reports and the confusion matrices the
  outperformance of CMRC.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1088-1096
+.. GENERATED FROM PYTHON SOURCE LINES 1105-1113
 
 Setting the cut-off point for binary classification:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1201,7 +1218,7 @@ in each of the cases of the confusion matrix. On an ideal scenario the errors
 are located near the cut-off point and the true guesses are located near the
 0 and 1 values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1096-1114
+.. GENERATED FROM PYTHON SOURCE LINES 1113-1131
 
 .. code-block:: default
 
@@ -1224,14 +1241,14 @@ are located near the cut-off point and the true guesses are located near the
     plt.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 1115-1119
+.. GENERATED FROM PYTHON SOURCE LINES 1132-1136
 
 .. image:: images/images_COVID/COVID_003.png
   :width: 600
   :align: center
   :alt: Imagen de prueba
 
-.. GENERATED FROM PYTHON SOURCE LINES 1123-1130
+.. GENERATED FROM PYTHON SOURCE LINES 1140-1147
 
 We see in the CMRC that the correct cases have a very good
 conditional probability estimation with around 75% of the cases very close to
@@ -1241,7 +1258,7 @@ model adjusting the threshold to 0.35 reduces the false negatives by 25%
 adding just some cases to the FP. In the MRC model adjusting the cutoff to
 0.4 reduces half of the false negatives by trading of 25% of the TP.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1130-1149
+.. GENERATED FROM PYTHON SOURCE LINES 1147-1167
 
 .. code-block:: default
 
@@ -1251,8 +1268,9 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
         model=clf_CMRC, x_test=X_test, y_test=y_test, threshold=threshold
     )
     threshold = 0.4
-    df_MRC = defDataFrame(model=clf_MRC, x_test=X_test,
-                          y_test=y_test, threshold=threshold)
+    df_MRC = defDataFrame(
+        model=clf_MRC, x_test=X_test, y_test=y_test, threshold=threshold
+    )
     pd.DataFrame(
         classification_report(
             df_CMRC.Real,
@@ -1263,9 +1281,9 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     ).style.set_caption("Classification report CMRC \n adjusted threshold").format(
         precision=3
     )
-    
 
-.. GENERATED FROM PYTHON SOURCE LINES 1150-1212
+
+.. GENERATED FROM PYTHON SOURCE LINES 1168-1230
 
 .. raw:: html
 
@@ -1273,7 +1291,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
      <style type="text/css">
      </style>
      <table id="T_a0276_">
-       <caption>Classification report CMRC 
+       <caption>Classification report CMRC
       adjusted threshold</caption>
        <thead>
          <tr>
@@ -1330,7 +1348,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 1212-1222
+.. GENERATED FROM PYTHON SOURCE LINES 1230-1240
 
 .. code-block:: default
 
@@ -1345,7 +1363,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
         precision=3
     )
 
-.. GENERATED FROM PYTHON SOURCE LINES 1223-1296
+.. GENERATED FROM PYTHON SOURCE LINES 1241-1314
 
 .. raw:: html
 
@@ -1353,7 +1371,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
      <style type="text/css">
      </style>
      <table id="T_bb0a1_">
-       <caption>Classification report MRC 
+       <caption>Classification report MRC
       adjusted threshold</caption>
        <thead>
          <tr>

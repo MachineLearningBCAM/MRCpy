@@ -107,10 +107,12 @@ def load_covid(norm=False, array=True):
         data_consensus = pd.concat(
             [dataframex_consensus, data_consensus[["Status"]]], axis=1
         )
-    data_consensus = data_consensus[data_consensus.columns.difference(
-        ["PATIENT_ID"])]
-    X = data_consensus[data_consensus.columns.difference(
-        ["Status", "PATIENT_ID"])]
+    data_consensus = data_consensus[
+        data_consensus.columns.difference(["PATIENT_ID"])
+    ]
+    X = data_consensus[
+        data_consensus.columns.difference(["Status", "PATIENT_ID"])
+    ]
     y = data_consensus["Status"]
     if array:
         X = X.to_numpy()
@@ -127,25 +129,28 @@ def load_covid(norm=False, array=True):
 # records to get an almost balanced dataset. :mod:`SMOTE` (Synthetic minority
 # over sampling) is a package that implements such oversampling.
 X, y = load_covid(array=False)
-described = X.describe(percentiles=[0.5]).round(
-    2).transpose()[["count", "mean", "std"]]
+described = (
+    X.describe(percentiles=[0.5])
+    .round(2)
+    .transpose()[["count", "mean", "std"]]
+)
 pd.DataFrame(y.value_counts().rename({0.0: "Survive", 1.0: "Decease"}))
 
 
 ##############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <div>
 #     <style scoped>
 #         .dataframe tbody tr th:only-of-type {
 #             vertical-align: middle;
 #         }
-# 
+#
 #         .dataframe tbody tr th {
 #             vertical-align: top;
 #         }
-# 
+#
 #         .dataframe thead th {
 #             text-align: right;
 #         }
@@ -201,18 +206,18 @@ pd.concat([described, described_resample], axis=1)
 
 ##############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <div>
 #     <style scoped>
 #         .dataframe tbody tr th:only-of-type {
 #             vertical-align: middle;
 #         }
-# 
+#
 #         .dataframe tbody tr th {
 #             vertical-align: top;
 #         }
-# 
+#
 #         .dataframe thead th {
 #             text-align: right;
 #         }
@@ -413,24 +418,25 @@ pd.concat([described, described_resample], axis=1)
 # different. However the distribution between classes is kept similar due to
 # the creation of the synthetic cases through 5 nearest neighbors.
 
-pd.DataFrame(y_resampled.value_counts().rename(
-    {0.0: "Survive", 1.0: "Decease"}))
+pd.DataFrame(
+    y_resampled.value_counts().rename({0.0: "Survive", 1.0: "Decease"})
+)
 
 
 ##############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <div>
 #     <style scoped>
 #         .dataframe tbody tr th:only-of-type {
 #             vertical-align: middle;
 #         }
-# 
+#
 #         .dataframe tbody tr th {
 #             vertical-align: top;
 #         }
-# 
+#
 #         .dataframe thead th {
 #             text-align: right;
 #         }
@@ -533,8 +539,9 @@ MRC_values = pd.DataFrame(df_MRC.Category.value_counts()).rename(
 )
 MRC_values["Freq_MRC"] = MRC_values["MRC"] / sum(MRC_values["MRC"]) * 100
 
-clf_CMRC = CMRC(phi="threshold", use_cvx=True,
-                loss="log").fit(X_train, y_train)
+clf_CMRC = CMRC(phi="threshold", use_cvx=True, loss="log").fit(
+    X_train, y_train
+)
 df_CMRC = defDataFrame(model=clf_CMRC, x_test=X_test, y_test=y_test)
 CMRC_values = pd.DataFrame(df_CMRC.Category.value_counts()).rename(
     columns={"Category": type(clf_CMRC).__name__}
@@ -554,19 +561,19 @@ LR_values = pd.DataFrame(df_LR.Category.value_counts()).rename(
     columns={"Category": type(clf_LR).__name__}
 )
 LR_values["Freq_LR"] = (
-    LR_values["LogisticRegression"] /
-    sum(LR_values["LogisticRegression"]) * 100
+    LR_values["LogisticRegression"]
+    / sum(LR_values["LogisticRegression"])
+    * 100
 )
 
 
-pd.concat([MRC_values, CMRC_values, SVC_values,
-           LR_values], axis=1).style.set_caption(
-    "Classification results by model"
-).format(precision=2)
-               
+pd.concat(
+    [MRC_values, CMRC_values, SVC_values, LR_values], axis=1
+).style.set_caption("Classification results by model").format(precision=2)
+
 ################################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
@@ -623,7 +630,7 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #           <td id="T_2cf59_row2_col7" class="data row2 col7" >33.21</td>
 #         </tr>
 #         <tr>
-#           <th id="T_2cf59_level0_row3" class="row_heading 
+#           <th id="T_2cf59_level0_row3" class="row_heading
 #           level0 row3" >False Positive</th>
 #           <td id="T_2cf59_row3_col0" class="data row3 col0" >32</td>
 #           <td id="T_2cf59_row3_col1" class="data row3 col1" >6.00</td>
@@ -636,7 +643,7 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -668,8 +675,12 @@ def scatterPlot(df, ax):
         linewidth=0,
         dodge=False,
         alpha=0.6,
-        order=["True Negative", "False Negative",
-               "True Positive", "False Positive", ],
+        order=[
+            "True Negative",
+            "False Negative",
+            "True Positive",
+            "False Positive",
+        ],
     )
     sns.boxplot(
         ax=ax,
@@ -677,8 +688,12 @@ def scatterPlot(df, ax):
         y="Category",
         color="White",
         data=df,
-        order=["True Negative", "False Negative",
-               "True Positive", "False Positive", ],
+        order=[
+            "True Negative",
+            "False Negative",
+            "True Positive",
+            "False Positive",
+        ],
         saturation=15,
     )
     ax.set_xlabel("Probability of mortality")
@@ -718,8 +733,9 @@ def plotHisto(df, ax, threshold=0.5, normalize=True):
         element="step",
         **norm_params
     )
-    ax.axvline(threshold, 0, 1, linestyle=(
-        0, (1, 10)), linewidth=0.7, color="black")
+    ax.axvline(
+        threshold, 0, 1, linestyle=(0, (1, 10)), linewidth=0.7, color="black"
+    )
 
 
 # visualize results
@@ -762,8 +778,9 @@ fig.tight_layout()
 cm_cmrc = confusion_matrix(y_test, clf_CMRC.predict(X_test))  # CMRC
 cm_mrc = confusion_matrix(y_test, clf_MRC.predict(X_test))  # MRC
 cm_lr = confusion_matrix(y_test, clf_LR.predict(X_test))  # Logistic Regression
-cm_svc = confusion_matrix(y_test, clf_SVC.predict(
-    X_test))  # C-Support Vector Machine
+cm_svc = confusion_matrix(
+    y_test, clf_SVC.predict(X_test)
+)  # C-Support Vector Machine
 
 fig, ax = plt.subplots(
     nrows=2,
@@ -809,7 +826,7 @@ pd.DataFrame(
 
 ############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
@@ -864,7 +881,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -879,7 +896,7 @@ pd.DataFrame(
 ).style.set_caption("Classification report MRC").format(precision=3)
 #############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
@@ -934,7 +951,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -949,7 +966,7 @@ pd.DataFrame(
 ).style.set_caption("Classification report LR").format(precision=3)
 #############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
@@ -1004,7 +1021,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -1019,7 +1036,7 @@ pd.DataFrame(
 ).style.set_caption("Classification report SVC").format(precision=3)
 #############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
@@ -1074,7 +1091,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -1133,8 +1150,9 @@ df_CMRC = defDataFrame(
     model=clf_CMRC, x_test=X_test, y_test=y_test, threshold=threshold
 )
 threshold = 0.4
-df_MRC = defDataFrame(model=clf_MRC, x_test=X_test,
-                      y_test=y_test, threshold=threshold)
+df_MRC = defDataFrame(
+    model=clf_MRC, x_test=X_test, y_test=y_test, threshold=threshold
+)
 pd.DataFrame(
     classification_report(
         df_CMRC.Real,
@@ -1145,15 +1163,15 @@ pd.DataFrame(
 ).style.set_caption("Classification report CMRC \n adjusted threshold").format(
     precision=3
 )
-    
+
 #############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
 #     <table id="T_a0276_">
-#       <caption>Classification report CMRC 
+#       <caption>Classification report CMRC
 #      adjusted threshold</caption>
 #       <thead>
 #         <tr>
@@ -1204,7 +1222,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
@@ -1221,12 +1239,12 @@ pd.DataFrame(
 )
 #############################################
 # .. raw:: html
-# 
+#
 #     <div class="output_subarea output_html rendered_html output_result">
 #     <style type="text/css">
 #     </style>
 #     <table id="T_bb0a1_">
-#       <caption>Classification report MRC 
+#       <caption>Classification report MRC
 #      adjusted threshold</caption>
 #       <thead>
 #         <tr>
@@ -1277,7 +1295,7 @@ pd.DataFrame(
 #         </tr>
 #       </tbody>
 #     </table>
-# 
+#
 #     </div>
 #     <br />
 #     <br />
