@@ -626,7 +626,7 @@ We will train the models with 80% of the data and then test with the other
     ).format(precision=2)
                
 
-.. GENERATED FROM PYTHON SOURCE LINES 568-650
+.. GENERATED FROM PYTHON SOURCE LINES 568-654
 
 .. raw:: html
 
@@ -650,7 +650,8 @@ We will train the models with 80% of the data and then test with the other
        </thead>
        <tbody>
          <tr>
-           <th id="T_2cf59_level0_row0" class="row_heading level0 row0" >True Negative</th>
+           <th id="T_2cf59_level0_row0" class="row_heading
+           level0 row0" >True Negative</th>
            <td id="T_2cf59_row0_col0" class="data row0 col0" >278</td>
            <td id="T_2cf59_row0_col1" class="data row0 col1" >52.16</td>
            <td id="T_2cf59_row0_col2" class="data row0 col2" >279</td>
@@ -661,7 +662,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_2cf59_row0_col7" class="data row0 col7" >50.09</td>
          </tr>
          <tr>
-           <th id="T_2cf59_level0_row1" class="row_heading level0 row1" >False Negative</th>
+           <th id="T_2cf59_level0_row1" class="row_heading
+           level0 row1" >False Negative</th>
            <td id="T_2cf59_row1_col0" class="data row1 col0" >140</td>
            <td id="T_2cf59_row1_col1" class="data row1 col1" >26.27</td>
            <td id="T_2cf59_row1_col2" class="data row1 col2" >35</td>
@@ -672,7 +674,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_2cf59_row1_col7" class="data row1 col7" >8.63</td>
          </tr>
          <tr>
-           <th id="T_2cf59_level0_row2" class="row_heading level0 row2" >True Positive</th>
+           <th id="T_2cf59_level0_row2" class="row_heading
+           level0 row2" >True Positive</th>
            <td id="T_2cf59_row2_col0" class="data row2 col0" >83</td>
            <td id="T_2cf59_row2_col1" class="data row2 col1" >15.57</td>
            <td id="T_2cf59_row2_col2" class="data row2 col2" >188</td>
@@ -683,7 +686,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_2cf59_row2_col7" class="data row2 col7" >33.21</td>
          </tr>
          <tr>
-           <th id="T_2cf59_level0_row3" class="row_heading level0 row3" >False Positive</th>
+           <th id="T_2cf59_level0_row3" class="row_heading 
+           level0 row3" >False Positive</th>
            <td id="T_2cf59_row3_col0" class="data row3 col0" >32</td>
            <td id="T_2cf59_row3_col1" class="data row3 col1" >6.00</td>
            <td id="T_2cf59_row3_col2" class="data row3 col2" >31</td>
@@ -711,7 +715,7 @@ We will train the models with 80% of the data and then test with the other
  problem the missclassification of a patient with fatal outcome (FN) is
  considered a much more serious error.
 
-.. GENERATED FROM PYTHON SOURCE LINES 650-740
+.. GENERATED FROM PYTHON SOURCE LINES 654-744
 
 .. code-block:: default
 
@@ -806,14 +810,14 @@ We will train the models with 80% of the data and then test with the other
     fig.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 741-745
+.. GENERATED FROM PYTHON SOURCE LINES 745-749
 
 .. image:: images/images_COVID/COVID_001.png
   :width: 600
   :align: center
   :alt: Imagen de prueba
 
-.. GENERATED FROM PYTHON SOURCE LINES 747-756
+.. GENERATED FROM PYTHON SOURCE LINES 751-760
 
 ############################################
  We see a clear different behaviour with the CMRC and MRC. MRC tends to
@@ -825,7 +829,7 @@ We will train the models with 80% of the data and then test with the other
  worst performance of all having a lot of patients that survived with high
  decease probabilities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 756-789
+.. GENERATED FROM PYTHON SOURCE LINES 760-793
 
 .. code-block:: default
 
@@ -863,18 +867,18 @@ We will train the models with 80% of the data and then test with the other
     fig.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 790-794
+.. GENERATED FROM PYTHON SOURCE LINES 794-798
 
 .. image:: images/images_COVID/COVID_002.png
   :width: 600
   :align: center
   :alt: Confusion Matrices
 
-.. GENERATED FROM PYTHON SOURCE LINES 796-797
+.. GENERATED FROM PYTHON SOURCE LINES 800-801
 
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 797-806
+.. GENERATED FROM PYTHON SOURCE LINES 801-810
 
 .. code-block:: default
 
@@ -888,7 +892,7 @@ We will train the models with 80% of the data and then test with the other
     ).style.set_caption("Classification report CMRC").format(precision=3)
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 807-864
+.. GENERATED FROM PYTHON SOURCE LINES 811-872
 
 .. raw:: html
 
@@ -909,7 +913,8 @@ We will train the models with 80% of the data and then test with the other
        </thead>
        <tbody>
          <tr>
-           <th id="T_c03b8_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_c03b8_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_c03b8_row0_col0" class="data row0 col0" >0.889</td>
            <td id="T_c03b8_row0_col1" class="data row0 col1" >0.858</td>
            <td id="T_c03b8_row0_col2" class="data row0 col2" >0.876</td>
@@ -917,7 +922,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_c03b8_row0_col4" class="data row0 col4" >0.876</td>
          </tr>
          <tr>
-           <th id="T_c03b8_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_c03b8_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_c03b8_row1_col0" class="data row1 col0" >0.900</td>
            <td id="T_c03b8_row1_col1" class="data row1 col1" >0.843</td>
            <td id="T_c03b8_row1_col2" class="data row1 col2" >0.876</td>
@@ -925,7 +931,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_c03b8_row1_col4" class="data row1 col4" >0.876</td>
          </tr>
          <tr>
-           <th id="T_c03b8_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_c03b8_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_c03b8_row2_col0" class="data row2 col0" >0.894</td>
            <td id="T_c03b8_row2_col1" class="data row2 col1" >0.851</td>
            <td id="T_c03b8_row2_col2" class="data row2 col2" >0.876</td>
@@ -933,7 +940,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_c03b8_row2_col4" class="data row2 col4" >0.876</td>
          </tr>
          <tr>
-           <th id="T_c03b8_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_c03b8_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_c03b8_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_c03b8_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_c03b8_row3_col2" class="data row3 col2" >0.876</td>
@@ -948,7 +956,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 864-872
+.. GENERATED FROM PYTHON SOURCE LINES 872-880
 
 .. code-block:: default
 
@@ -961,7 +969,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report MRC").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 873-930
+.. GENERATED FROM PYTHON SOURCE LINES 881-942
 
 .. raw:: html
 
@@ -982,7 +990,8 @@ We will train the models with 80% of the data and then test with the other
        </thead>
        <tbody>
          <tr>
-           <th id="T_31da6_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_31da6_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_31da6_row0_col0" class="data row0 col0" >0.665</td>
            <td id="T_31da6_row0_col1" class="data row0 col1" >0.722</td>
            <td id="T_31da6_row0_col2" class="data row0 col2" >0.677</td>
@@ -990,7 +999,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_31da6_row0_col4" class="data row0 col4" >0.689</td>
          </tr>
          <tr>
-           <th id="T_31da6_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_31da6_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_31da6_row1_col0" class="data row1 col0" >0.897</td>
            <td id="T_31da6_row1_col1" class="data row1 col1" >0.372</td>
            <td id="T_31da6_row1_col2" class="data row1 col2" >0.677</td>
@@ -998,7 +1008,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_31da6_row1_col4" class="data row1 col4" >0.677</td>
          </tr>
          <tr>
-           <th id="T_31da6_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_31da6_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_31da6_row2_col0" class="data row2 col0" >0.764</td>
            <td id="T_31da6_row2_col1" class="data row2 col1" >0.491</td>
            <td id="T_31da6_row2_col2" class="data row2 col2" >0.677</td>
@@ -1006,7 +1017,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_31da6_row2_col4" class="data row2 col4" >0.650</td>
          </tr>
          <tr>
-           <th id="T_31da6_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_31da6_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_31da6_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_31da6_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_31da6_row3_col2" class="data row3 col2" >0.677</td>
@@ -1021,7 +1033,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 930-938
+.. GENERATED FROM PYTHON SOURCE LINES 942-950
 
 .. code-block:: default
 
@@ -1034,7 +1046,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report LR").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 939-996
+.. GENERATED FROM PYTHON SOURCE LINES 951-1012
 
 .. raw:: html
 
@@ -1055,7 +1067,8 @@ We will train the models with 80% of the data and then test with the other
        </thead>
        <tbody>
          <tr>
-           <th id="T_ecacf_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_ecacf_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_ecacf_row0_col0" class="data row0 col0" >0.853</td>
            <td id="T_ecacf_row0_col1" class="data row0 col1" >0.805</td>
            <td id="T_ecacf_row0_col2" class="data row0 col2" >0.833</td>
@@ -1063,7 +1076,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_ecacf_row0_col4" class="data row0 col4" >0.833</td>
          </tr>
          <tr>
-           <th id="T_ecacf_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_ecacf_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_ecacf_row1_col0" class="data row1 col0" >0.861</td>
            <td id="T_ecacf_row1_col1" class="data row1 col1" >0.794</td>
            <td id="T_ecacf_row1_col2" class="data row1 col2" >0.833</td>
@@ -1071,7 +1085,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_ecacf_row1_col4" class="data row1 col4" >0.833</td>
          </tr>
          <tr>
-           <th id="T_ecacf_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_ecacf_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_ecacf_row2_col0" class="data row2 col0" >0.857</td>
            <td id="T_ecacf_row2_col1" class="data row2 col1" >0.799</td>
            <td id="T_ecacf_row2_col2" class="data row2 col2" >0.833</td>
@@ -1079,7 +1094,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_ecacf_row2_col4" class="data row2 col4" >0.833</td>
          </tr>
          <tr>
-           <th id="T_ecacf_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_ecacf_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_ecacf_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_ecacf_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_ecacf_row3_col2" class="data row3 col2" >0.833</td>
@@ -1094,7 +1110,7 @@ We will train the models with 80% of the data and then test with the other
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 996-1004
+.. GENERATED FROM PYTHON SOURCE LINES 1012-1020
 
 .. code-block:: default
 
@@ -1107,7 +1123,7 @@ We will train the models with 80% of the data and then test with the other
         )
     ).style.set_caption("Classification report SVC").format(precision=3)
 
-.. GENERATED FROM PYTHON SOURCE LINES 1005-1065
+.. GENERATED FROM PYTHON SOURCE LINES 1021-1085
 
 .. raw:: html
 
@@ -1128,7 +1144,8 @@ We will train the models with 80% of the data and then test with the other
        </thead>
        <tbody>
          <tr>
-           <th id="T_0ab9f_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_0ab9f_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_0ab9f_row0_col0" class="data row0 col0" >0.743</td>
            <td id="T_0ab9f_row0_col1" class="data row0 col1" >0.717</td>
            <td id="T_0ab9f_row0_col2" class="data row0 col2" >0.734</td>
@@ -1136,7 +1153,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_0ab9f_row0_col4" class="data row0 col4" >0.732</td>
          </tr>
          <tr>
-           <th id="T_0ab9f_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_0ab9f_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_0ab9f_row1_col0" class="data row1 col0" >0.829</td>
            <td id="T_0ab9f_row1_col1" class="data row1 col1" >0.601</td>
            <td id="T_0ab9f_row1_col2" class="data row1 col2" >0.734</td>
@@ -1144,7 +1162,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_0ab9f_row1_col4" class="data row1 col4" >0.734</td>
          </tr>
          <tr>
-           <th id="T_0ab9f_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_0ab9f_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_0ab9f_row2_col0" class="data row2 col0" >0.784</td>
            <td id="T_0ab9f_row2_col1" class="data row2 col1" >0.654</td>
            <td id="T_0ab9f_row2_col2" class="data row2 col2" >0.734</td>
@@ -1152,7 +1171,8 @@ We will train the models with 80% of the data and then test with the other
            <td id="T_0ab9f_row2_col4" class="data row2 col4" >0.729</td>
          </tr>
          <tr>
-           <th id="T_0ab9f_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_0ab9f_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_0ab9f_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_0ab9f_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_0ab9f_row3_col2" class="data row3 col2" >0.734</td>
@@ -1170,7 +1190,7 @@ We will train the models with 80% of the data and then test with the other
  We can see in the classification reports and the confusion matrices the
  outperformance of CMRC.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1068-1076
+.. GENERATED FROM PYTHON SOURCE LINES 1088-1096
 
 Setting the cut-off point for binary classification:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1181,7 +1201,7 @@ in each of the cases of the confusion matrix. On an ideal scenario the errors
 are located near the cut-off point and the true guesses are located near the
 0 and 1 values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1076-1094
+.. GENERATED FROM PYTHON SOURCE LINES 1096-1114
 
 .. code-block:: default
 
@@ -1204,14 +1224,14 @@ are located near the cut-off point and the true guesses are located near the
     plt.tight_layout()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 1095-1099
+.. GENERATED FROM PYTHON SOURCE LINES 1115-1119
 
 .. image:: images/images_COVID/COVID_003.png
   :width: 600
   :align: center
   :alt: Imagen de prueba
 
-.. GENERATED FROM PYTHON SOURCE LINES 1103-1110
+.. GENERATED FROM PYTHON SOURCE LINES 1123-1130
 
 We see in the CMRC that the correct cases have a very good
 conditional probability estimation with around 75% of the cases very close to
@@ -1221,7 +1241,7 @@ model adjusting the threshold to 0.35 reduces the false negatives by 25%
 adding just some cases to the FP. In the MRC model adjusting the cutoff to
 0.4 reduces half of the false negatives by trading of 25% of the TP.
 
-.. GENERATED FROM PYTHON SOURCE LINES 1110-1129
+.. GENERATED FROM PYTHON SOURCE LINES 1130-1149
 
 .. code-block:: default
 
@@ -1245,7 +1265,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
     )
     
 
-.. GENERATED FROM PYTHON SOURCE LINES 1130-1188
+.. GENERATED FROM PYTHON SOURCE LINES 1150-1212
 
 .. raw:: html
 
@@ -1267,7 +1287,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
        </thead>
        <tbody>
          <tr>
-           <th id="T_a0276_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_a0276_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_a0276_row0_col0" class="data row0 col0" >0.919</td>
            <td id="T_a0276_row0_col1" class="data row0 col1" >0.800</td>
            <td id="T_a0276_row0_col2" class="data row0 col2" >0.863</td>
@@ -1275,7 +1296,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_a0276_row0_col4" class="data row0 col4" >0.869</td>
          </tr>
          <tr>
-           <th id="T_a0276_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_a0276_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_a0276_row1_col0" class="data row1 col0" >0.839</td>
            <td id="T_a0276_row1_col1" class="data row1 col1" >0.897</td>
            <td id="T_a0276_row1_col2" class="data row1 col2" >0.863</td>
@@ -1283,7 +1305,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_a0276_row1_col4" class="data row1 col4" >0.863</td>
          </tr>
          <tr>
-           <th id="T_a0276_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_a0276_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_a0276_row2_col0" class="data row2 col0" >0.877</td>
            <td id="T_a0276_row2_col1" class="data row2 col1" >0.846</td>
            <td id="T_a0276_row2_col2" class="data row2 col2" >0.863</td>
@@ -1291,7 +1314,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_a0276_row2_col4" class="data row2 col4" >0.864</td>
          </tr>
          <tr>
-           <th id="T_a0276_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_a0276_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_a0276_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_a0276_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_a0276_row3_col2" class="data row3 col2" >0.863</td>
@@ -1306,7 +1330,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
      <br />
 ############################################
 
-.. GENERATED FROM PYTHON SOURCE LINES 1188-1198
+.. GENERATED FROM PYTHON SOURCE LINES 1212-1222
 
 .. code-block:: default
 
@@ -1321,7 +1345,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
         precision=3
     )
 
-.. GENERATED FROM PYTHON SOURCE LINES 1199-1268
+.. GENERATED FROM PYTHON SOURCE LINES 1223-1296
 
 .. raw:: html
 
@@ -1343,7 +1367,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
        </thead>
        <tbody>
          <tr>
-           <th id="T_bb0a1_level0_row0" class="row_heading level0 row0" >precision</th>
+           <th id="T_bb0a1_level0_row0" class="row_heading
+ level0 row0" >precision</th>
            <td id="T_bb0a1_row0_col0" class="data row0 col0" >0.811</td>
            <td id="T_bb0a1_row0_col1" class="data row0 col1" >0.627</td>
            <td id="T_bb0a1_row0_col2" class="data row0 col2" >0.715</td>
@@ -1351,7 +1376,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_bb0a1_row0_col4" class="data row0 col4" >0.734</td>
          </tr>
          <tr>
-           <th id="T_bb0a1_level0_row1" class="row_heading level0 row1" >recall</th>
+           <th id="T_bb0a1_level0_row1" class="row_heading
+ level0 row1" >recall</th>
            <td id="T_bb0a1_row1_col0" class="data row1 col0" >0.665</td>
            <td id="T_bb0a1_row1_col1" class="data row1 col1" >0.785</td>
            <td id="T_bb0a1_row1_col2" class="data row1 col2" >0.715</td>
@@ -1359,7 +1385,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_bb0a1_row1_col4" class="data row1 col4" >0.715</td>
          </tr>
          <tr>
-           <th id="T_bb0a1_level0_row2" class="row_heading level0 row2" >f1-score</th>
+           <th id="T_bb0a1_level0_row2" class="row_heading
+ level0 row2" >f1-score</th>
            <td id="T_bb0a1_row2_col0" class="data row2 col0" >0.730</td>
            <td id="T_bb0a1_row2_col1" class="data row2 col1" >0.697</td>
            <td id="T_bb0a1_row2_col2" class="data row2 col2" >0.715</td>
@@ -1367,7 +1394,8 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
            <td id="T_bb0a1_row2_col4" class="data row2 col4" >0.717</td>
          </tr>
          <tr>
-           <th id="T_bb0a1_level0_row3" class="row_heading level0 row3" >support</th>
+           <th id="T_bb0a1_level0_row3" class="row_heading
+ level0 row3" >support</th>
            <td id="T_bb0a1_row3_col0" class="data row3 col0" >310.000</td>
            <td id="T_bb0a1_row3_col1" class="data row3 col1" >223.000</td>
            <td id="T_bb0a1_row3_col2" class="data row3 col2" >0.715</td>

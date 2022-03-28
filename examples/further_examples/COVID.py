@@ -587,7 +587,8 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_2cf59_level0_row0" class="row_heading level0 row0" >True Negative</th>
+#           <th id="T_2cf59_level0_row0" class="row_heading
+#           level0 row0" >True Negative</th>
 #           <td id="T_2cf59_row0_col0" class="data row0 col0" >278</td>
 #           <td id="T_2cf59_row0_col1" class="data row0 col1" >52.16</td>
 #           <td id="T_2cf59_row0_col2" class="data row0 col2" >279</td>
@@ -598,7 +599,8 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #           <td id="T_2cf59_row0_col7" class="data row0 col7" >50.09</td>
 #         </tr>
 #         <tr>
-#           <th id="T_2cf59_level0_row1" class="row_heading level0 row1" >False Negative</th>
+#           <th id="T_2cf59_level0_row1" class="row_heading
+#           level0 row1" >False Negative</th>
 #           <td id="T_2cf59_row1_col0" class="data row1 col0" >140</td>
 #           <td id="T_2cf59_row1_col1" class="data row1 col1" >26.27</td>
 #           <td id="T_2cf59_row1_col2" class="data row1 col2" >35</td>
@@ -609,7 +611,8 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #           <td id="T_2cf59_row1_col7" class="data row1 col7" >8.63</td>
 #         </tr>
 #         <tr>
-#           <th id="T_2cf59_level0_row2" class="row_heading level0 row2" >True Positive</th>
+#           <th id="T_2cf59_level0_row2" class="row_heading
+#           level0 row2" >True Positive</th>
 #           <td id="T_2cf59_row2_col0" class="data row2 col0" >83</td>
 #           <td id="T_2cf59_row2_col1" class="data row2 col1" >15.57</td>
 #           <td id="T_2cf59_row2_col2" class="data row2 col2" >188</td>
@@ -620,7 +623,8 @@ pd.concat([MRC_values, CMRC_values, SVC_values,
 #           <td id="T_2cf59_row2_col7" class="data row2 col7" >33.21</td>
 #         </tr>
 #         <tr>
-#           <th id="T_2cf59_level0_row3" class="row_heading level0 row3" >False Positive</th>
+#           <th id="T_2cf59_level0_row3" class="row_heading 
+#           level0 row3" >False Positive</th>
 #           <td id="T_2cf59_row3_col0" class="data row3 col0" >32</td>
 #           <td id="T_2cf59_row3_col1" class="data row3 col1" >6.00</td>
 #           <td id="T_2cf59_row3_col2" class="data row3 col2" >31</td>
@@ -823,7 +827,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_c03b8_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_c03b8_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_c03b8_row0_col0" class="data row0 col0" >0.889</td>
 #           <td id="T_c03b8_row0_col1" class="data row0 col1" >0.858</td>
 #           <td id="T_c03b8_row0_col2" class="data row0 col2" >0.876</td>
@@ -831,7 +836,8 @@ pd.DataFrame(
 #           <td id="T_c03b8_row0_col4" class="data row0 col4" >0.876</td>
 #         </tr>
 #         <tr>
-#           <th id="T_c03b8_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_c03b8_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_c03b8_row1_col0" class="data row1 col0" >0.900</td>
 #           <td id="T_c03b8_row1_col1" class="data row1 col1" >0.843</td>
 #           <td id="T_c03b8_row1_col2" class="data row1 col2" >0.876</td>
@@ -839,7 +845,8 @@ pd.DataFrame(
 #           <td id="T_c03b8_row1_col4" class="data row1 col4" >0.876</td>
 #         </tr>
 #         <tr>
-#           <th id="T_c03b8_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_c03b8_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_c03b8_row2_col0" class="data row2 col0" >0.894</td>
 #           <td id="T_c03b8_row2_col1" class="data row2 col1" >0.851</td>
 #           <td id="T_c03b8_row2_col2" class="data row2 col2" >0.876</td>
@@ -847,7 +854,8 @@ pd.DataFrame(
 #           <td id="T_c03b8_row2_col4" class="data row2 col4" >0.876</td>
 #         </tr>
 #         <tr>
-#           <th id="T_c03b8_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_c03b8_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_c03b8_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_c03b8_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_c03b8_row3_col2" class="data row3 col2" >0.876</td>
@@ -889,7 +897,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_31da6_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_31da6_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_31da6_row0_col0" class="data row0 col0" >0.665</td>
 #           <td id="T_31da6_row0_col1" class="data row0 col1" >0.722</td>
 #           <td id="T_31da6_row0_col2" class="data row0 col2" >0.677</td>
@@ -897,7 +906,8 @@ pd.DataFrame(
 #           <td id="T_31da6_row0_col4" class="data row0 col4" >0.689</td>
 #         </tr>
 #         <tr>
-#           <th id="T_31da6_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_31da6_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_31da6_row1_col0" class="data row1 col0" >0.897</td>
 #           <td id="T_31da6_row1_col1" class="data row1 col1" >0.372</td>
 #           <td id="T_31da6_row1_col2" class="data row1 col2" >0.677</td>
@@ -905,7 +915,8 @@ pd.DataFrame(
 #           <td id="T_31da6_row1_col4" class="data row1 col4" >0.677</td>
 #         </tr>
 #         <tr>
-#           <th id="T_31da6_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_31da6_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_31da6_row2_col0" class="data row2 col0" >0.764</td>
 #           <td id="T_31da6_row2_col1" class="data row2 col1" >0.491</td>
 #           <td id="T_31da6_row2_col2" class="data row2 col2" >0.677</td>
@@ -913,7 +924,8 @@ pd.DataFrame(
 #           <td id="T_31da6_row2_col4" class="data row2 col4" >0.650</td>
 #         </tr>
 #         <tr>
-#           <th id="T_31da6_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_31da6_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_31da6_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_31da6_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_31da6_row3_col2" class="data row3 col2" >0.677</td>
@@ -955,7 +967,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_ecacf_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_ecacf_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_ecacf_row0_col0" class="data row0 col0" >0.853</td>
 #           <td id="T_ecacf_row0_col1" class="data row0 col1" >0.805</td>
 #           <td id="T_ecacf_row0_col2" class="data row0 col2" >0.833</td>
@@ -963,7 +976,8 @@ pd.DataFrame(
 #           <td id="T_ecacf_row0_col4" class="data row0 col4" >0.833</td>
 #         </tr>
 #         <tr>
-#           <th id="T_ecacf_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_ecacf_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_ecacf_row1_col0" class="data row1 col0" >0.861</td>
 #           <td id="T_ecacf_row1_col1" class="data row1 col1" >0.794</td>
 #           <td id="T_ecacf_row1_col2" class="data row1 col2" >0.833</td>
@@ -971,7 +985,8 @@ pd.DataFrame(
 #           <td id="T_ecacf_row1_col4" class="data row1 col4" >0.833</td>
 #         </tr>
 #         <tr>
-#           <th id="T_ecacf_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_ecacf_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_ecacf_row2_col0" class="data row2 col0" >0.857</td>
 #           <td id="T_ecacf_row2_col1" class="data row2 col1" >0.799</td>
 #           <td id="T_ecacf_row2_col2" class="data row2 col2" >0.833</td>
@@ -979,7 +994,8 @@ pd.DataFrame(
 #           <td id="T_ecacf_row2_col4" class="data row2 col4" >0.833</td>
 #         </tr>
 #         <tr>
-#           <th id="T_ecacf_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_ecacf_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_ecacf_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_ecacf_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_ecacf_row3_col2" class="data row3 col2" >0.833</td>
@@ -1021,7 +1037,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_0ab9f_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_0ab9f_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_0ab9f_row0_col0" class="data row0 col0" >0.743</td>
 #           <td id="T_0ab9f_row0_col1" class="data row0 col1" >0.717</td>
 #           <td id="T_0ab9f_row0_col2" class="data row0 col2" >0.734</td>
@@ -1029,7 +1046,8 @@ pd.DataFrame(
 #           <td id="T_0ab9f_row0_col4" class="data row0 col4" >0.732</td>
 #         </tr>
 #         <tr>
-#           <th id="T_0ab9f_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_0ab9f_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_0ab9f_row1_col0" class="data row1 col0" >0.829</td>
 #           <td id="T_0ab9f_row1_col1" class="data row1 col1" >0.601</td>
 #           <td id="T_0ab9f_row1_col2" class="data row1 col2" >0.734</td>
@@ -1037,7 +1055,8 @@ pd.DataFrame(
 #           <td id="T_0ab9f_row1_col4" class="data row1 col4" >0.734</td>
 #         </tr>
 #         <tr>
-#           <th id="T_0ab9f_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_0ab9f_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_0ab9f_row2_col0" class="data row2 col0" >0.784</td>
 #           <td id="T_0ab9f_row2_col1" class="data row2 col1" >0.654</td>
 #           <td id="T_0ab9f_row2_col2" class="data row2 col2" >0.734</td>
@@ -1045,7 +1064,8 @@ pd.DataFrame(
 #           <td id="T_0ab9f_row2_col4" class="data row2 col4" >0.729</td>
 #         </tr>
 #         <tr>
-#           <th id="T_0ab9f_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_0ab9f_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_0ab9f_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_0ab9f_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_0ab9f_row3_col2" class="data row3 col2" >0.734</td>
@@ -1147,7 +1167,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_a0276_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_a0276_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_a0276_row0_col0" class="data row0 col0" >0.919</td>
 #           <td id="T_a0276_row0_col1" class="data row0 col1" >0.800</td>
 #           <td id="T_a0276_row0_col2" class="data row0 col2" >0.863</td>
@@ -1155,7 +1176,8 @@ pd.DataFrame(
 #           <td id="T_a0276_row0_col4" class="data row0 col4" >0.869</td>
 #         </tr>
 #         <tr>
-#           <th id="T_a0276_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_a0276_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_a0276_row1_col0" class="data row1 col0" >0.839</td>
 #           <td id="T_a0276_row1_col1" class="data row1 col1" >0.897</td>
 #           <td id="T_a0276_row1_col2" class="data row1 col2" >0.863</td>
@@ -1163,7 +1185,8 @@ pd.DataFrame(
 #           <td id="T_a0276_row1_col4" class="data row1 col4" >0.863</td>
 #         </tr>
 #         <tr>
-#           <th id="T_a0276_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_a0276_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_a0276_row2_col0" class="data row2 col0" >0.877</td>
 #           <td id="T_a0276_row2_col1" class="data row2 col1" >0.846</td>
 #           <td id="T_a0276_row2_col2" class="data row2 col2" >0.863</td>
@@ -1171,7 +1194,8 @@ pd.DataFrame(
 #           <td id="T_a0276_row2_col4" class="data row2 col4" >0.864</td>
 #         </tr>
 #         <tr>
-#           <th id="T_a0276_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_a0276_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_a0276_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_a0276_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_a0276_row3_col2" class="data row3 col2" >0.863</td>
@@ -1216,7 +1240,8 @@ pd.DataFrame(
 #       </thead>
 #       <tbody>
 #         <tr>
-#           <th id="T_bb0a1_level0_row0" class="row_heading level0 row0" >precision</th>
+#           <th id="T_bb0a1_level0_row0" class="row_heading
+# level0 row0" >precision</th>
 #           <td id="T_bb0a1_row0_col0" class="data row0 col0" >0.811</td>
 #           <td id="T_bb0a1_row0_col1" class="data row0 col1" >0.627</td>
 #           <td id="T_bb0a1_row0_col2" class="data row0 col2" >0.715</td>
@@ -1224,7 +1249,8 @@ pd.DataFrame(
 #           <td id="T_bb0a1_row0_col4" class="data row0 col4" >0.734</td>
 #         </tr>
 #         <tr>
-#           <th id="T_bb0a1_level0_row1" class="row_heading level0 row1" >recall</th>
+#           <th id="T_bb0a1_level0_row1" class="row_heading
+# level0 row1" >recall</th>
 #           <td id="T_bb0a1_row1_col0" class="data row1 col0" >0.665</td>
 #           <td id="T_bb0a1_row1_col1" class="data row1 col1" >0.785</td>
 #           <td id="T_bb0a1_row1_col2" class="data row1 col2" >0.715</td>
@@ -1232,7 +1258,8 @@ pd.DataFrame(
 #           <td id="T_bb0a1_row1_col4" class="data row1 col4" >0.715</td>
 #         </tr>
 #         <tr>
-#           <th id="T_bb0a1_level0_row2" class="row_heading level0 row2" >f1-score</th>
+#           <th id="T_bb0a1_level0_row2" class="row_heading
+# level0 row2" >f1-score</th>
 #           <td id="T_bb0a1_row2_col0" class="data row2 col0" >0.730</td>
 #           <td id="T_bb0a1_row2_col1" class="data row2 col1" >0.697</td>
 #           <td id="T_bb0a1_row2_col2" class="data row2 col2" >0.715</td>
@@ -1240,7 +1267,8 @@ pd.DataFrame(
 #           <td id="T_bb0a1_row2_col4" class="data row2 col4" >0.717</td>
 #         </tr>
 #         <tr>
-#           <th id="T_bb0a1_level0_row3" class="row_heading level0 row3" >support</th>
+#           <th id="T_bb0a1_level0_row3" class="row_heading
+# level0 row3" >support</th>
 #           <td id="T_bb0a1_row3_col0" class="data row3 col0" >310.000</td>
 #           <td id="T_bb0a1_row3_col1" class="data row3 col1" >223.000</td>
 #           <td id="T_bb0a1_row3_col2" class="data row3 col2" >0.715</td>
