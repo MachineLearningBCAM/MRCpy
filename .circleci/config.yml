@@ -35,8 +35,9 @@ jobs:
       - run:
           name: Install dependencies
           command: >-
-            pip install sphinx==1.8.1
-            pip install sphinx sphinx_rtd_theme
+            pip install sphinx==1.8.1 &&
+            pip install sphinx sphinx_rtd_theme &&
+            pip install sphinx-gallery
       - run:
           name: Build docs
           command: cd docs/ && make html
