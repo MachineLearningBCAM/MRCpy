@@ -304,11 +304,11 @@ rely heavily on the train_test_split selected.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
-    #T_2b8c4_row0_col1, #T_2b8c4_row0_col5, #T_2b8c4_row1_col1, #T_2b8c4_row1_col5, #T_2b8c4_row2_col1, #T_2b8c4_row2_col5, #T_2b8c4_row3_col1, #T_2b8c4_row3_col5, #T_2b8c4_row4_col1, #T_2b8c4_row4_col5 {
+    #T_555ce_row0_col1, #T_555ce_row0_col5, #T_555ce_row1_col1, #T_555ce_row1_col5, #T_555ce_row2_col1, #T_555ce_row2_col5, #T_555ce_row3_col1, #T_555ce_row3_col5, #T_555ce_row4_col1, #T_555ce_row4_col5 {
       background-color: lightskyblue;
     }
     </style>
-    <table id="T_2b8c4_">
+    <table id="T_555ce_">
       <caption>RandomGridCV Results</caption>
       <thead>
         <tr>
@@ -323,49 +323,49 @@ rely heavily on the train_test_split selected.
       </thead>
       <tbody>
         <tr>
-          <th id="T_2b8c4_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_2b8c4_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_2b8c4_row0_col1" class="data row0 col1" >0.225 ± 0.0417</td>
-          <td id="T_2b8c4_row0_col2" class="data row0 col2" >1.58 ± 2e-15</td>
-          <td id="T_2b8c4_row0_col3" class="data row0 col3" >0.465 ± 0.0905</td>
-          <td id="T_2b8c4_row0_col4" class="data row0 col4" >0.228 ± 0.0143</td>
-          <td id="T_2b8c4_row0_col5" class="data row0 col5" >40.7 ± 1.32</td>
+          <th id="T_555ce_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_555ce_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_555ce_row0_col1" class="data row0 col1" >0.212 ± 0.0365</td>
+          <td id="T_555ce_row0_col2" class="data row0 col2" >1.58 ± 2e-15</td>
+          <td id="T_555ce_row0_col3" class="data row0 col3" >0.445 ± 0.0926</td>
+          <td id="T_555ce_row0_col4" class="data row0 col4" >0.228 ± 0.0129</td>
+          <td id="T_555ce_row0_col5" class="data row0 col5" >38.2 ± 0.208</td>
         </tr>
         <tr>
-          <th id="T_2b8c4_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_2b8c4_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_2b8c4_row1_col1" class="data row1 col1" >0.281 ± 0.0599</td>
-          <td id="T_2b8c4_row1_col2" class="data row1 col2" >1.22 ± 4.97e-16</td>
-          <td id="T_2b8c4_row1_col3" class="data row1 col3" >0.464 ± 0.0985</td>
-          <td id="T_2b8c4_row1_col4" class="data row1 col4" >0.267 ± 0.0165</td>
-          <td id="T_2b8c4_row1_col5" class="data row1 col5" >32.1 ± 0.84</td>
+          <th id="T_555ce_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_555ce_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_555ce_row1_col1" class="data row1 col1" >0.278 ± 0.0552</td>
+          <td id="T_555ce_row1_col2" class="data row1 col2" >1.22 ± 4.97e-16</td>
+          <td id="T_555ce_row1_col3" class="data row1 col3" >0.4 ± 0.0567</td>
+          <td id="T_555ce_row1_col4" class="data row1 col4" >0.265 ± 0.0159</td>
+          <td id="T_555ce_row1_col5" class="data row1 col5" >30.1 ± 0.235</td>
         </tr>
         <tr>
-          <th id="T_2b8c4_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_2b8c4_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_2b8c4_row2_col1" class="data row2 col1" >0.288 ± 0.0179</td>
-          <td id="T_2b8c4_row2_col2" class="data row2 col2" >2.24 ± 5.06e-16</td>
-          <td id="T_2b8c4_row2_col3" class="data row2 col3" >0.411 ± 0.0668</td>
-          <td id="T_2b8c4_row2_col4" class="data row2 col4" >0.295 ± 0.00638</td>
-          <td id="T_2b8c4_row2_col5" class="data row2 col5" >41.2 ± 1.62</td>
+          <th id="T_555ce_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_555ce_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_555ce_row2_col1" class="data row2 col1" >0.288 ± 0.0179</td>
+          <td id="T_555ce_row2_col2" class="data row2 col2" >2.24 ± 5.06e-16</td>
+          <td id="T_555ce_row2_col3" class="data row2 col3" >0.377 ± 0.0335</td>
+          <td id="T_555ce_row2_col4" class="data row2 col4" >0.294 ± 0.00604</td>
+          <td id="T_555ce_row2_col5" class="data row2 col5" >38.1 ± 1.6</td>
         </tr>
         <tr>
-          <th id="T_2b8c4_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_2b8c4_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_2b8c4_row3_col1" class="data row3 col1" >0.281 ± 0.0419</td>
-          <td id="T_2b8c4_row3_col2" class="data row3 col2" >2 ± 8.25e-16</td>
-          <td id="T_2b8c4_row3_col3" class="data row3 col3" >0.409 ± 0.0928</td>
-          <td id="T_2b8c4_row3_col4" class="data row3 col4" >0.285 ± 0.00814</td>
-          <td id="T_2b8c4_row3_col5" class="data row3 col5" >40 ± 0.865</td>
+          <th id="T_555ce_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_555ce_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_555ce_row3_col1" class="data row3 col1" >0.294 ± 0.0322</td>
+          <td id="T_555ce_row3_col2" class="data row3 col2" >2 ± 8.25e-16</td>
+          <td id="T_555ce_row3_col3" class="data row3 col3" >0.416 ± 0.0775</td>
+          <td id="T_555ce_row3_col4" class="data row3 col4" >0.285 ± 0.00884</td>
+          <td id="T_555ce_row3_col5" class="data row3 col5" >39 ± 1.16</td>
         </tr>
         <tr>
-          <th id="T_2b8c4_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_2b8c4_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_2b8c4_row4_col1" class="data row4 col1" >0.182 ± 0.018</td>
-          <td id="T_2b8c4_row4_col2" class="data row4 col2" >2.74 ± 1.76e-15</td>
-          <td id="T_2b8c4_row4_col3" class="data row4 col3" >0.387 ± 0.0954</td>
-          <td id="T_2b8c4_row4_col4" class="data row4 col4" >0.192 ± 0.00687</td>
-          <td id="T_2b8c4_row4_col5" class="data row4 col5" >36.5 ± 0.718</td>
+          <th id="T_555ce_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_555ce_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_555ce_row4_col1" class="data row4 col1" >0.193 ± 0.0303</td>
+          <td id="T_555ce_row4_col2" class="data row4 col2" >2.74 ± 1.76e-15</td>
+          <td id="T_555ce_row4_col3" class="data row4 col3" >0.384 ± 0.0682</td>
+          <td id="T_555ce_row4_col4" class="data row4 col4" >0.192 ± 0.0102</td>
+          <td id="T_555ce_row4_col5" class="data row4 col5" >36.2 ± 1.51</td>
         </tr>
       </tbody>
     </table>
@@ -391,11 +391,11 @@ rely heavily on the train_test_split selected.
 
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
-    #T_a995e_row0_col1, #T_a995e_row0_col5, #T_a995e_row1_col1, #T_a995e_row1_col5, #T_a995e_row2_col1, #T_a995e_row2_col5, #T_a995e_row3_col1, #T_a995e_row3_col5, #T_a995e_row4_col1, #T_a995e_row4_col5 {
+    #T_cdea3_row0_col1, #T_cdea3_row0_col5, #T_cdea3_row1_col1, #T_cdea3_row1_col5, #T_cdea3_row2_col1, #T_cdea3_row2_col5, #T_cdea3_row3_col1, #T_cdea3_row3_col5, #T_cdea3_row4_col1, #T_cdea3_row4_col5 {
       background-color: lightskyblue;
     }
     </style>
-    <table id="T_a995e_">
+    <table id="T_cdea3_">
       <caption>RandomGridUpper Results</caption>
       <thead>
         <tr>
@@ -410,49 +410,49 @@ rely heavily on the train_test_split selected.
       </thead>
       <tbody>
         <tr>
-          <th id="T_a995e_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_a995e_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_a995e_row0_col1" class="data row0 col1" >0.22 ± 0.0281</td>
-          <td id="T_a995e_row0_col2" class="data row0 col2" >1.35 ± 0.295</td>
-          <td id="T_a995e_row0_col3" class="data row0 col3" >0.334 ± 0.0332</td>
-          <td id="T_a995e_row0_col4" class="data row0 col4" >0.224 ± 0.0123</td>
-          <td id="T_a995e_row0_col5" class="data row0 col5" >9.42 ± 0.288</td>
+          <th id="T_cdea3_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_cdea3_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_cdea3_row0_col1" class="data row0 col1" >0.217 ± 0.0258</td>
+          <td id="T_cdea3_row0_col2" class="data row0 col2" >1.44 ± 0.31</td>
+          <td id="T_cdea3_row0_col3" class="data row0 col3" >0.325 ± 0.0238</td>
+          <td id="T_cdea3_row0_col4" class="data row0 col4" >0.224 ± 0.0121</td>
+          <td id="T_cdea3_row0_col5" class="data row0 col5" >8.8 ± 0.0531</td>
         </tr>
         <tr>
-          <th id="T_a995e_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_a995e_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_a995e_row1_col1" class="data row1 col1" >0.268 ± 0.0581</td>
-          <td id="T_a995e_row1_col2" class="data row1 col2" >1.2 ± 0.13</td>
-          <td id="T_a995e_row1_col3" class="data row1 col3" >0.328 ± 0.02</td>
-          <td id="T_a995e_row1_col4" class="data row1 col4" >0.261 ± 0.0159</td>
-          <td id="T_a995e_row1_col5" class="data row1 col5" >7.45 ± 0.227</td>
+          <th id="T_cdea3_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_cdea3_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_cdea3_row1_col1" class="data row1 col1" >0.278 ± 0.0601</td>
+          <td id="T_cdea3_row1_col2" class="data row1 col2" >1.18 ± 0.16</td>
+          <td id="T_cdea3_row1_col3" class="data row1 col3" >0.326 ± 0.0336</td>
+          <td id="T_cdea3_row1_col4" class="data row1 col4" >0.261 ± 0.0151</td>
+          <td id="T_cdea3_row1_col5" class="data row1 col5" >6.98 ± 0.0708</td>
         </tr>
         <tr>
-          <th id="T_a995e_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_a995e_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_a995e_row2_col1" class="data row2 col1" >0.288 ± 0.0185</td>
-          <td id="T_a995e_row2_col2" class="data row2 col2" >2.26 ± 0.206</td>
-          <td id="T_a995e_row2_col3" class="data row2 col3" >0.307 ± 0.00748</td>
-          <td id="T_a995e_row2_col4" class="data row2 col4" >0.293 ± 0.00601</td>
-          <td id="T_a995e_row2_col5" class="data row2 col5" >9.81 ± 0.596</td>
+          <th id="T_cdea3_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_cdea3_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_cdea3_row2_col1" class="data row2 col1" >0.288 ± 0.0179</td>
+          <td id="T_cdea3_row2_col2" class="data row2 col2" >2.31 ± 0.278</td>
+          <td id="T_cdea3_row2_col3" class="data row2 col3" >0.325 ± 0.0395</td>
+          <td id="T_cdea3_row2_col4" class="data row2 col4" >0.293 ± 0.00675</td>
+          <td id="T_cdea3_row2_col5" class="data row2 col5" >8.86 ± 0.309</td>
         </tr>
         <tr>
-          <th id="T_a995e_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_a995e_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_a995e_row3_col1" class="data row3 col1" >0.289 ± 0.0247</td>
-          <td id="T_a995e_row3_col2" class="data row3 col2" >2.67 ± 0.221</td>
-          <td id="T_a995e_row3_col3" class="data row3 col3" >0.333 ± 0.0205</td>
-          <td id="T_a995e_row3_col4" class="data row3 col4" >0.281 ± 0.00708</td>
-          <td id="T_a995e_row3_col5" class="data row3 col5" >9.72 ± 0.237</td>
+          <th id="T_cdea3_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_cdea3_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_cdea3_row3_col1" class="data row3 col1" >0.277 ± 0.0276</td>
+          <td id="T_cdea3_row3_col2" class="data row3 col2" >2.65 ± 0.274</td>
+          <td id="T_cdea3_row3_col3" class="data row3 col3" >0.322 ± 0.0102</td>
+          <td id="T_cdea3_row3_col4" class="data row3 col4" >0.28 ± 0.00642</td>
+          <td id="T_cdea3_row3_col5" class="data row3 col5" >9.23 ± 0.386</td>
         </tr>
         <tr>
-          <th id="T_a995e_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_a995e_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_a995e_row4_col1" class="data row4 col1" >0.195 ± 0.0286</td>
-          <td id="T_a995e_row4_col2" class="data row4 col2" >3.92 ± 0.224</td>
-          <td id="T_a995e_row4_col3" class="data row4 col3" >0.315 ± 0.0133</td>
-          <td id="T_a995e_row4_col4" class="data row4 col4" >0.187 ± 0.00682</td>
-          <td id="T_a995e_row4_col5" class="data row4 col5" >8.73 ± 0.231</td>
+          <th id="T_cdea3_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_cdea3_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_cdea3_row4_col1" class="data row4 col1" >0.203 ± 0.0344</td>
+          <td id="T_cdea3_row4_col2" class="data row4 col2" >4.04 ± 0.274</td>
+          <td id="T_cdea3_row4_col3" class="data row4 col3" >0.317 ± 0.017</td>
+          <td id="T_cdea3_row4_col4" class="data row4 col4" >0.187 ± 0.00759</td>
+          <td id="T_cdea3_row4_col5" class="data row4 col5" >8.43 ± 0.163</td>
         </tr>
       </tbody>
     </table>
@@ -481,7 +481,7 @@ the default value for the library.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 39 minutes  18.395 seconds)
+   **Total running time of the script:** ( 37 minutes  20.014 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_grid.py:

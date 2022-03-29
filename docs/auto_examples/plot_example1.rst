@@ -62,76 +62,76 @@ You can check a more elaborated example in :ref:`ex_comp`.
     def runMRC(phi, loss):
 
         results = pd.DataFrame()
-    #    # We fix the random seed to that the stratified kfold performed
-    #    # is the same through the different executions
-    #    random_seed = 0
-    #
-    #    # Iterate through each of the dataset and fit the MRC classfier.
-    #    for j, load in enumerate(loaders):
-    #
-    #        # Loading the dataset
-    #        X, Y = load()
-    #        r = len(np.unique(Y))
-    #        n, d = X.shape
-    #
-    #        clf = MRC(phi=phi, loss=loss, use_cvx=False)
-    #
-    #        # Generate the partitions of the stratified cross-validation
-    #        n_splits = 5
-    #        cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
-    #                             shuffle=True)
-    #
-    #        cvError = list()
-    #        auxTime = 0
-    #        upper = 0
-    #        lower = 0
-    #
-    #        # Paired and stratified cross-validation
-    #        for train_index, test_index in cv.split(X, Y):
-    #
-    #            X_train, X_test = X[train_index], X[test_index]
-    #            y_train, y_test = Y[train_index], Y[test_index]
-    #
-    #            # Normalizing the data
-    #            std_scale = preprocessing.StandardScaler().fit(X_train, y_train)
-    #            X_train = std_scale.transform(X_train)
-    #            X_test = std_scale.transform(X_test)
-    #
-    #            # Save start time for computing training time
-    #            startTime = time.time()
-    #
-    #            # Train the model and save the upper and lower bounds
-    #            clf.fit(X_train, y_train)
-    #            upper += clf.get_upper_bound()
-    #            lower += clf.get_lower_bound()
-    #
-    #            # Save the training time
-    #            auxTime += time.time() - startTime
-    #
-    #            # Predict the class for test instances
-    #            y_pred = clf.predict(X_test)
-    #
-    #            # Calculate the error made by MRC classificator
-    #            cvError.append(np.average(y_pred != y_test))
-    #
-    #        res_mean = np.average(cvError)
-    #        res_std = np.std(cvError)
-    #
-    #        # Calculating the mean upper and lower bound and training time
-    #        upper = upper / n_splits
-    #        lower = lower / n_splits
-    #        auxTime = auxTime / n_splits
-    #
-    #        results = results.append({'dataset': dataName[j],
-    #                                  'n_samples': '%d' % n,
-    #                                  'n_attributes': '%d' % d,
-    #                                  'n_classes': '%d' % r,
-    #                                  'error': '%1.2g' % res_mean + " +/- " +
-    #                                  '%1.2g' % res_std,
-    #                                  'upper': '%1.2g' % upper,
-    #                                  'lower': '%1.2g' % lower,
-    #                                  'avg_train_time (s)': '%1.2g' % auxTime},
-    #                                 ignore_index=True)
+        # We fix the random seed to that the stratified kfold performed
+        # is the same through the different executions
+        random_seed = 0
+
+        # Iterate through each of the dataset and fit the MRC classfier.
+        for j, load in enumerate(loaders):
+
+            # Loading the dataset
+            X, Y = load()
+            r = len(np.unique(Y))
+            n, d = X.shape
+
+            clf = MRC(phi=phi, loss=loss, use_cvx=False)
+
+            # Generate the partitions of the stratified cross-validation
+            n_splits = 5
+            cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
+                                shuffle=True)
+
+            cvError = list()
+            auxTime = 0
+            upper = 0
+            lower = 0
+
+            # Paired and stratified cross-validation
+            for train_index, test_index in cv.split(X, Y):
+
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = Y[train_index], Y[test_index]
+
+                # Normalizing the data
+                std_scale = preprocessing.StandardScaler().fit(X_train, y_train)
+                X_train = std_scale.transform(X_train)
+                X_test = std_scale.transform(X_test)
+
+                # Save start time for computing training time
+                startTime = time.time()
+
+                # Train the model and save the upper and lower bounds
+                clf.fit(X_train, y_train)
+                upper += clf.get_upper_bound()
+                lower += clf.get_lower_bound()
+
+                # Save the training time
+                auxTime += time.time() - startTime
+
+                # Predict the class for test instances
+                y_pred = clf.predict(X_test)
+
+                # Calculate the error made by MRC classificator
+                cvError.append(np.average(y_pred != y_test))
+
+            res_mean = np.average(cvError)
+            res_std = np.std(cvError)
+
+            # Calculating the mean upper and lower bound and training time
+            upper = upper / n_splits
+            lower = lower / n_splits
+            auxTime = auxTime / n_splits
+
+            results = results.append({'dataset': dataName[j],
+                                      'n_samples': '%d' % n,
+                                      'n_attributes': '%d' % d,
+                                      'n_classes': '%d' % r,
+                                      'error': '%1.2g' % res_mean + " +/- " +
+                                      '%1.2g' % res_std,
+                                      'upper': '%1.2g' % upper,
+                                      'lower': '%1.2g' % lower,
+                                      'avg_train_time (s)': '%1.2g' % auxTime},
+                                    ignore_index=True)
         return results
 
 
@@ -160,11 +160,77 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_674dc_">
+    <table id="T_72c6b_">
       <caption>Using 0-1 loss and fourier feature mapping</caption>
       <thead>
+        <tr>
+          <th class="blank level0" >&nbsp;</th>
+          <th class="col_heading level0 col0" >dataset</th>
+          <th class="col_heading level0 col1" >n_samples</th>
+          <th class="col_heading level0 col2" >n_attributes</th>
+          <th class="col_heading level0 col3" >n_classes</th>
+          <th class="col_heading level0 col4" >error</th>
+          <th class="col_heading level0 col5" >upper</th>
+          <th class="col_heading level0 col6" >lower</th>
+          <th class="col_heading level0 col7" >avg_train_time (s)</th>
+        </tr>
       </thead>
       <tbody>
+        <tr>
+          <th id="T_72c6b_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_72c6b_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_72c6b_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_72c6b_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_72c6b_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_72c6b_row0_col4" class="data row0 col4" >0.18 +/- 0.01</td>
+          <td id="T_72c6b_row0_col5" class="data row0 col5" >0.22</td>
+          <td id="T_72c6b_row0_col6" class="data row0 col6" >0.2</td>
+          <td id="T_72c6b_row0_col7" class="data row0 col7" >1.4</td>
+        </tr>
+        <tr>
+          <th id="T_72c6b_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_72c6b_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_72c6b_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_72c6b_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_72c6b_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_72c6b_row1_col4" class="data row1 col4" >0.26 +/- 0.0072</td>
+          <td id="T_72c6b_row1_col5" class="data row1 col5" >0.26</td>
+          <td id="T_72c6b_row1_col6" class="data row1 col6" >0.23</td>
+          <td id="T_72c6b_row1_col7" class="data row1 col7" >0.97</td>
+        </tr>
+        <tr>
+          <th id="T_72c6b_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_72c6b_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_72c6b_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_72c6b_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_72c6b_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_72c6b_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
+          <td id="T_72c6b_row2_col5" class="data row2 col5" >0.29</td>
+          <td id="T_72c6b_row2_col6" class="data row2 col6" >0.28</td>
+          <td id="T_72c6b_row2_col7" class="data row2 col7" >1.4</td>
+        </tr>
+        <tr>
+          <th id="T_72c6b_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_72c6b_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_72c6b_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_72c6b_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_72c6b_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_72c6b_row3_col4" class="data row3 col4" >0.24 +/- 0.034</td>
+          <td id="T_72c6b_row3_col5" class="data row3 col5" >0.28</td>
+          <td id="T_72c6b_row3_col6" class="data row3 col6" >0.25</td>
+          <td id="T_72c6b_row3_col7" class="data row3 col7" >1.5</td>
+        </tr>
+        <tr>
+          <th id="T_72c6b_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_72c6b_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_72c6b_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_72c6b_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_72c6b_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_72c6b_row4_col4" class="data row4 col4" >0.14 +/- 0.035</td>
+          <td id="T_72c6b_row4_col5" class="data row4 col5" >0.19</td>
+          <td id="T_72c6b_row4_col6" class="data row4 col6" >0.14</td>
+          <td id="T_72c6b_row4_col7" class="data row4 col7" >1.3</td>
+        </tr>
       </tbody>
     </table>
 
@@ -189,11 +255,77 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_9271d_">
+    <table id="T_fc74e_">
       <caption>Using log loss and fourier feature mapping</caption>
       <thead>
+        <tr>
+          <th class="blank level0" >&nbsp;</th>
+          <th class="col_heading level0 col0" >dataset</th>
+          <th class="col_heading level0 col1" >n_samples</th>
+          <th class="col_heading level0 col2" >n_attributes</th>
+          <th class="col_heading level0 col3" >n_classes</th>
+          <th class="col_heading level0 col4" >error</th>
+          <th class="col_heading level0 col5" >upper</th>
+          <th class="col_heading level0 col6" >lower</th>
+          <th class="col_heading level0 col7" >avg_train_time (s)</th>
+        </tr>
       </thead>
       <tbody>
+        <tr>
+          <th id="T_fc74e_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_fc74e_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_fc74e_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_fc74e_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_fc74e_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_fc74e_row0_col4" class="data row0 col4" >0.18 +/- 0.014</td>
+          <td id="T_fc74e_row0_col5" class="data row0 col5" >0.53</td>
+          <td id="T_fc74e_row0_col6" class="data row0 col6" >0.43</td>
+          <td id="T_fc74e_row0_col7" class="data row0 col7" >3.3</td>
+        </tr>
+        <tr>
+          <th id="T_fc74e_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_fc74e_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_fc74e_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_fc74e_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_fc74e_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_fc74e_row1_col4" class="data row1 col4" >0.26 +/- 0.016</td>
+          <td id="T_fc74e_row1_col5" class="data row1 col5" >0.57</td>
+          <td id="T_fc74e_row1_col6" class="data row1 col6" >0.49</td>
+          <td id="T_fc74e_row1_col7" class="data row1 col7" >1.8</td>
+        </tr>
+        <tr>
+          <th id="T_fc74e_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_fc74e_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_fc74e_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_fc74e_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_fc74e_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_fc74e_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
+          <td id="T_fc74e_row2_col5" class="data row2 col5" >0.6</td>
+          <td id="T_fc74e_row2_col6" class="data row2 col6" >0.59</td>
+          <td id="T_fc74e_row2_col7" class="data row2 col7" >2.8</td>
+        </tr>
+        <tr>
+          <th id="T_fc74e_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_fc74e_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_fc74e_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_fc74e_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_fc74e_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_fc74e_row3_col4" class="data row3 col4" >0.25 +/- 0.025</td>
+          <td id="T_fc74e_row3_col5" class="data row3 col5" >0.59</td>
+          <td id="T_fc74e_row3_col6" class="data row3 col6" >0.51</td>
+          <td id="T_fc74e_row3_col7" class="data row3 col7" >3.8</td>
+        </tr>
+        <tr>
+          <th id="T_fc74e_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_fc74e_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_fc74e_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_fc74e_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_fc74e_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_fc74e_row4_col4" class="data row4 col4" >0.15 +/- 0.038</td>
+          <td id="T_fc74e_row4_col5" class="data row4 col5" >0.5</td>
+          <td id="T_fc74e_row4_col6" class="data row4 col6" >0.38</td>
+          <td id="T_fc74e_row4_col7" class="data row4 col7" >3.5</td>
+        </tr>
       </tbody>
     </table>
 
@@ -204,7 +336,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.003 seconds)
+   **Total running time of the script:** ( 1 minutes  48.772 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example1.py:
