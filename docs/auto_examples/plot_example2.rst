@@ -152,7 +152,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_7ebf8_">
+    <table id="T_d45d0_">
       <caption>Using 0-1 loss and fourier feature mapping</caption>
       <thead>
         <tr>
@@ -167,49 +167,49 @@ You can check a more elaborated example in :ref:`ex_comp`.
       </thead>
       <tbody>
         <tr>
-          <th id="T_7ebf8_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_7ebf8_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_7ebf8_row0_col1" class="data row0 col1" >961</td>
-          <td id="T_7ebf8_row0_col2" class="data row0 col2" >5</td>
-          <td id="T_7ebf8_row0_col3" class="data row0 col3" >2</td>
-          <td id="T_7ebf8_row0_col4" class="data row0 col4" >0.18 +/- 0.0041</td>
-          <td id="T_7ebf8_row0_col5" class="data row0 col5" >0.65</td>
+          <th id="T_d45d0_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_d45d0_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_d45d0_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_d45d0_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_d45d0_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_d45d0_row0_col4" class="data row0 col4" >0.18 +/- 0.00037</td>
+          <td id="T_d45d0_row0_col5" class="data row0 col5" >0.64</td>
         </tr>
         <tr>
-          <th id="T_7ebf8_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_7ebf8_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_7ebf8_row1_col1" class="data row1 col1" >306</td>
-          <td id="T_7ebf8_row1_col2" class="data row1 col2" >3</td>
-          <td id="T_7ebf8_row1_col3" class="data row1 col3" >2</td>
-          <td id="T_7ebf8_row1_col4" class="data row1 col4" >0.25 +/- 0.028</td>
-          <td id="T_7ebf8_row1_col5" class="data row1 col5" >0.57</td>
+          <th id="T_d45d0_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_d45d0_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_d45d0_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_d45d0_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_d45d0_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_d45d0_row1_col4" class="data row1 col4" >0.25 +/- 0.03</td>
+          <td id="T_d45d0_row1_col5" class="data row1 col5" >0.57</td>
         </tr>
         <tr>
-          <th id="T_7ebf8_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_7ebf8_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_7ebf8_row2_col1" class="data row2 col1" >583</td>
-          <td id="T_7ebf8_row2_col2" class="data row2 col2" >10</td>
-          <td id="T_7ebf8_row2_col3" class="data row2 col3" >2</td>
-          <td id="T_7ebf8_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
-          <td id="T_7ebf8_row2_col5" class="data row2 col5" >0.6</td>
+          <th id="T_d45d0_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_d45d0_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_d45d0_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_d45d0_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_d45d0_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_d45d0_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
+          <td id="T_d45d0_row2_col5" class="data row2 col5" >0.6</td>
         </tr>
         <tr>
-          <th id="T_7ebf8_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_7ebf8_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_7ebf8_row3_col1" class="data row3 col1" >768</td>
-          <td id="T_7ebf8_row3_col2" class="data row3 col2" >8</td>
-          <td id="T_7ebf8_row3_col3" class="data row3 col3" >2</td>
-          <td id="T_7ebf8_row3_col4" class="data row3 col4" >0.24 +/- 0.035</td>
-          <td id="T_7ebf8_row3_col5" class="data row3 col5" >0.62</td>
+          <th id="T_d45d0_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_d45d0_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_d45d0_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_d45d0_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_d45d0_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_d45d0_row3_col4" class="data row3 col4" >0.23 +/- 0.024</td>
+          <td id="T_d45d0_row3_col5" class="data row3 col5" >0.62</td>
         </tr>
         <tr>
-          <th id="T_7ebf8_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_7ebf8_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_7ebf8_row4_col1" class="data row4 col1" >690</td>
-          <td id="T_7ebf8_row4_col2" class="data row4 col2" >15</td>
-          <td id="T_7ebf8_row4_col3" class="data row4 col3" >2</td>
-          <td id="T_7ebf8_row4_col4" class="data row4 col4" >0.28 +/- 0.043</td>
-          <td id="T_7ebf8_row4_col5" class="data row4 col5" >0.68</td>
+          <th id="T_d45d0_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_d45d0_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_d45d0_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_d45d0_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_d45d0_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_d45d0_row4_col4" class="data row4 col4" >0.26 +/- 0.035</td>
+          <td id="T_d45d0_row4_col5" class="data row4 col5" >0.61</td>
         </tr>
       </tbody>
     </table>
@@ -235,7 +235,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_bf5e8_">
+    <table id="T_efed4_">
       <caption>Using log loss and fourier feature mapping</caption>
       <thead>
         <tr>
@@ -250,49 +250,49 @@ You can check a more elaborated example in :ref:`ex_comp`.
       </thead>
       <tbody>
         <tr>
-          <th id="T_bf5e8_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_bf5e8_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_bf5e8_row0_col1" class="data row0 col1" >961</td>
-          <td id="T_bf5e8_row0_col2" class="data row0 col2" >5</td>
-          <td id="T_bf5e8_row0_col3" class="data row0 col3" >2</td>
-          <td id="T_bf5e8_row0_col4" class="data row0 col4" >0.17 +/- 0.008</td>
-          <td id="T_bf5e8_row0_col5" class="data row0 col5" >0.88</td>
+          <th id="T_efed4_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_efed4_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_efed4_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_efed4_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_efed4_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_efed4_row0_col4" class="data row0 col4" >0.18 +/- 0.004</td>
+          <td id="T_efed4_row0_col5" class="data row0 col5" >0.78</td>
         </tr>
         <tr>
-          <th id="T_bf5e8_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_bf5e8_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_bf5e8_row1_col1" class="data row1 col1" >306</td>
-          <td id="T_bf5e8_row1_col2" class="data row1 col2" >3</td>
-          <td id="T_bf5e8_row1_col3" class="data row1 col3" >2</td>
-          <td id="T_bf5e8_row1_col4" class="data row1 col4" >0.26 +/- 0.04</td>
-          <td id="T_bf5e8_row1_col5" class="data row1 col5" >0.8</td>
+          <th id="T_efed4_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_efed4_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_efed4_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_efed4_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_efed4_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_efed4_row1_col4" class="data row1 col4" >0.25 +/- 0.05</td>
+          <td id="T_efed4_row1_col5" class="data row1 col5" >0.75</td>
         </tr>
         <tr>
-          <th id="T_bf5e8_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_bf5e8_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_bf5e8_row2_col1" class="data row2 col1" >583</td>
-          <td id="T_bf5e8_row2_col2" class="data row2 col2" >10</td>
-          <td id="T_bf5e8_row2_col3" class="data row2 col3" >2</td>
-          <td id="T_bf5e8_row2_col4" class="data row2 col4" >0.28 +/- 0.022</td>
-          <td id="T_bf5e8_row2_col5" class="data row2 col5" >0.81</td>
+          <th id="T_efed4_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_efed4_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_efed4_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_efed4_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_efed4_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_efed4_row2_col4" class="data row2 col4" >0.28 +/- 0.032</td>
+          <td id="T_efed4_row2_col5" class="data row2 col5" >0.77</td>
         </tr>
         <tr>
-          <th id="T_bf5e8_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_bf5e8_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_bf5e8_row3_col1" class="data row3 col1" >768</td>
-          <td id="T_bf5e8_row3_col2" class="data row3 col2" >8</td>
-          <td id="T_bf5e8_row3_col3" class="data row3 col3" >2</td>
-          <td id="T_bf5e8_row3_col4" class="data row3 col4" >0.26 +/- 0.031</td>
-          <td id="T_bf5e8_row3_col5" class="data row3 col5" >0.81</td>
+          <th id="T_efed4_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_efed4_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_efed4_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_efed4_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_efed4_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_efed4_row3_col4" class="data row3 col4" >0.24 +/- 0.03</td>
+          <td id="T_efed4_row3_col5" class="data row3 col5" >0.78</td>
         </tr>
         <tr>
-          <th id="T_bf5e8_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_bf5e8_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_bf5e8_row4_col1" class="data row4 col1" >690</td>
-          <td id="T_bf5e8_row4_col2" class="data row4 col2" >15</td>
-          <td id="T_bf5e8_row4_col3" class="data row4 col3" >2</td>
-          <td id="T_bf5e8_row4_col4" class="data row4 col4" >0.24 +/- 0.03</td>
-          <td id="T_bf5e8_row4_col5" class="data row4 col5" >0.78</td>
+          <th id="T_efed4_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_efed4_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_efed4_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_efed4_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_efed4_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_efed4_row4_col4" class="data row4 col4" >0.23 +/- 0.042</td>
+          <td id="T_efed4_row4_col5" class="data row4 col5" >0.8</td>
         </tr>
       </tbody>
     </table>
@@ -304,7 +304,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  38.726 seconds)
+   **Total running time of the script:** ( 0 minutes  35.487 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_example2.py:

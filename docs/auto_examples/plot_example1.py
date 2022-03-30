@@ -59,7 +59,7 @@ def runMRC(phi, loss):
         # Generate the partitions of the stratified cross-validation
         n_splits = 5
         cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
-                            shuffle=True)
+                             shuffle=True)
 
         cvError = list()
         auxTime = 0
@@ -111,7 +111,7 @@ def runMRC(phi, loss):
                                   'upper': '%1.2g' % upper,
                                   'lower': '%1.2g' % lower,
                                   'avg_train_time (s)': '%1.2g' % auxTime},
-                                ignore_index=True)
+                                 ignore_index=True)
     return results
 
 

@@ -208,7 +208,7 @@ like the ones in the example.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_f470a_">
+    <table id="T_da672_">
       <caption>Credit Dataset: Deterministic                                 MRC and CMRC error and runtime</caption>
       <thead>
         <tr>
@@ -221,60 +221,60 @@ like the ones in the example.
       </thead>
       <tbody>
         <tr>
-          <th id="T_f470a_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-          <td id="T_f470a_row0_col0" class="data row0 col0" >0.146377</td>
-          <td id="T_f470a_row0_col1" class="data row0 col1" >0.644465</td>
-          <td id="T_f470a_row0_col2" class="data row0 col2" >0.169565</td>
-          <td id="T_f470a_row0_col3" class="data row0 col3" >0.408707</td>
+          <th id="T_da672_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+          <td id="T_da672_row0_col0" class="data row0 col0" >0.146377</td>
+          <td id="T_da672_row0_col1" class="data row0 col1" >0.681173</td>
+          <td id="T_da672_row0_col2" class="data row0 col2" >0.169565</td>
+          <td id="T_da672_row0_col3" class="data row0 col3" >0.462566</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-          <td id="T_f470a_row1_col0" class="data row1 col0" >0.155072</td>
-          <td id="T_f470a_row1_col1" class="data row1 col1" >0.785293</td>
-          <td id="T_f470a_row1_col2" class="data row1 col2" >0.179710</td>
-          <td id="T_f470a_row1_col3" class="data row1 col3" >0.609371</td>
+          <th id="T_da672_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+          <td id="T_da672_row1_col0" class="data row1 col0" >0.155072</td>
+          <td id="T_da672_row1_col1" class="data row1 col1" >0.825013</td>
+          <td id="T_da672_row1_col2" class="data row1 col2" >0.179710</td>
+          <td id="T_da672_row1_col3" class="data row1 col3" >0.663825</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-          <td id="T_f470a_row2_col0" class="data row2 col0" >0.146377</td>
-          <td id="T_f470a_row2_col1" class="data row2 col1" >1.063954</td>
-          <td id="T_f470a_row2_col2" class="data row2 col2" >0.160870</td>
-          <td id="T_f470a_row2_col3" class="data row2 col3" >7.427740</td>
+          <th id="T_da672_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+          <td id="T_da672_row2_col0" class="data row2 col0" >0.146377</td>
+          <td id="T_da672_row2_col1" class="data row2 col1" >1.073838</td>
+          <td id="T_da672_row2_col2" class="data row2 col2" >0.160870</td>
+          <td id="T_da672_row2_col3" class="data row2 col3" >8.213944</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-          <td id="T_f470a_row3_col0" class="data row3 col0" >0.147826</td>
-          <td id="T_f470a_row3_col1" class="data row3 col1" >1.109234</td>
-          <td id="T_f470a_row3_col2" class="data row3 col2" >0.176812</td>
-          <td id="T_f470a_row3_col3" class="data row3 col3" >7.862777</td>
+          <th id="T_da672_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+          <td id="T_da672_row3_col0" class="data row3 col0" >0.147826</td>
+          <td id="T_da672_row3_col1" class="data row3 col1" >1.114220</td>
+          <td id="T_da672_row3_col2" class="data row3 col2" >0.176812</td>
+          <td id="T_da672_row3_col3" class="data row3 col3" >8.377999</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
-          <td id="T_f470a_row4_col0" class="data row4 col0" >0.146377</td>
-          <td id="T_f470a_row4_col1" class="data row4 col1" >1.476258</td>
-          <td id="T_f470a_row4_col2" class="data row4 col2" >0.159420</td>
-          <td id="T_f470a_row4_col3" class="data row4 col3" >0.545154</td>
+          <th id="T_da672_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+          <td id="T_da672_row4_col0" class="data row4 col0" >0.146377</td>
+          <td id="T_da672_row4_col1" class="data row4 col1" >1.488884</td>
+          <td id="T_da672_row4_col2" class="data row4 col2" >0.159420</td>
+          <td id="T_da672_row4_col3" class="data row4 col3" >0.551907</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
-          <td id="T_f470a_row5_col0" class="data row5 col0" >0.157971</td>
-          <td id="T_f470a_row5_col1" class="data row5 col1" >3.178891</td>
-          <td id="T_f470a_row5_col2" class="data row5 col2" >0.184058</td>
-          <td id="T_f470a_row5_col3" class="data row5 col3" >0.773332</td>
+          <th id="T_da672_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+          <td id="T_da672_row5_col0" class="data row5 col0" >0.157971</td>
+          <td id="T_da672_row5_col1" class="data row5 col1" >2.889108</td>
+          <td id="T_da672_row5_col2" class="data row5 col2" >0.184058</td>
+          <td id="T_da672_row5_col3" class="data row5 col3" >0.778519</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
-          <td id="T_f470a_row6_col0" class="data row6 col0" >0.450725</td>
-          <td id="T_f470a_row6_col1" class="data row6 col1" >3.474709</td>
-          <td id="T_f470a_row6_col2" class="data row6 col2" >0.268116</td>
-          <td id="T_f470a_row6_col3" class="data row6 col3" >5.969040</td>
+          <th id="T_da672_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+          <td id="T_da672_row6_col0" class="data row6 col0" >0.450725</td>
+          <td id="T_da672_row6_col1" class="data row6 col1" >3.159202</td>
+          <td id="T_da672_row6_col2" class="data row6 col2" >0.268116</td>
+          <td id="T_da672_row6_col3" class="data row6 col3" >5.582601</td>
         </tr>
         <tr>
-          <th id="T_f470a_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
-          <td id="T_f470a_row7_col0" class="data row7 col0" >0.146377</td>
-          <td id="T_f470a_row7_col1" class="data row7 col1" >23.898168</td>
-          <td id="T_f470a_row7_col2" class="data row7 col2" >0.159420</td>
-          <td id="T_f470a_row7_col3" class="data row7 col3" >17.744999</td>
+          <th id="T_da672_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+          <td id="T_da672_row7_col0" class="data row7 col0" >0.146377</td>
+          <td id="T_da672_row7_col1" class="data row7 col1" >24.078356</td>
+          <td id="T_da672_row7_col2" class="data row7 col2" >0.159420</td>
+          <td id="T_da672_row7_col3" class="data row7 col3" >17.503219</td>
         </tr>
       </tbody>
     </table>
@@ -302,7 +302,7 @@ like the ones in the example.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_4842c_">
+    <table id="T_155ba_">
       <caption>Credit Dataset: Non-Deterministic                                    MRC error and runtime
     with Upper and                                       Lower bounds</caption>
       <thead>
@@ -316,32 +316,32 @@ like the ones in the example.
       </thead>
       <tbody>
         <tr>
-          <th id="T_4842c_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-          <td id="T_4842c_row0_col0" class="data row0 col0" >0.146377</td>
-          <td id="T_4842c_row0_col1" class="data row0 col1" >0.656644</td>
-          <td id="T_4842c_row0_col2" class="data row0 col2" >0.150177</td>
-          <td id="T_4842c_row0_col3" class="data row0 col3" >0.136525</td>
+          <th id="T_155ba_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+          <td id="T_155ba_row0_col0" class="data row0 col0" >0.146377</td>
+          <td id="T_155ba_row0_col1" class="data row0 col1" >0.693945</td>
+          <td id="T_155ba_row0_col2" class="data row0 col2" >0.150177</td>
+          <td id="T_155ba_row0_col3" class="data row0 col3" >0.136525</td>
         </tr>
         <tr>
-          <th id="T_4842c_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-          <td id="T_4842c_row1_col0" class="data row1 col0" >0.223188</td>
-          <td id="T_4842c_row1_col1" class="data row1 col1" >0.788092</td>
-          <td id="T_4842c_row1_col2" class="data row1 col2" >0.185676</td>
-          <td id="T_4842c_row1_col3" class="data row1 col3" >0.137438</td>
+          <th id="T_155ba_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+          <td id="T_155ba_row1_col0" class="data row1 col0" >0.224638</td>
+          <td id="T_155ba_row1_col1" class="data row1 col1" >0.803452</td>
+          <td id="T_155ba_row1_col2" class="data row1 col2" >0.185676</td>
+          <td id="T_155ba_row1_col3" class="data row1 col3" >0.137438</td>
         </tr>
         <tr>
-          <th id="T_4842c_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-          <td id="T_4842c_row2_col0" class="data row2 col0" >0.166667</td>
-          <td id="T_4842c_row2_col1" class="data row2 col1" >1.083503</td>
-          <td id="T_4842c_row2_col2" class="data row2 col2" >0.188265</td>
-          <td id="T_4842c_row2_col3" class="data row2 col3" >0.098250</td>
+          <th id="T_155ba_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+          <td id="T_155ba_row2_col0" class="data row2 col0" >0.166667</td>
+          <td id="T_155ba_row2_col1" class="data row2 col1" >1.067546</td>
+          <td id="T_155ba_row2_col2" class="data row2 col2" >0.188265</td>
+          <td id="T_155ba_row2_col3" class="data row2 col3" >0.098250</td>
         </tr>
         <tr>
-          <th id="T_4842c_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-          <td id="T_4842c_row3_col0" class="data row3 col0" >0.150725</td>
-          <td id="T_4842c_row3_col1" class="data row3 col1" >1.128582</td>
-          <td id="T_4842c_row3_col2" class="data row3 col2" >0.163806</td>
-          <td id="T_4842c_row3_col3" class="data row3 col3" >0.119446</td>
+          <th id="T_155ba_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+          <td id="T_155ba_row3_col0" class="data row3 col0" >0.150725</td>
+          <td id="T_155ba_row3_col1" class="data row3 col1" >1.113622</td>
+          <td id="T_155ba_row3_col2" class="data row3 col2" >0.163806</td>
+          <td id="T_155ba_row3_col3" class="data row3 col3" >0.119446</td>
         </tr>
       </tbody>
     </table>
@@ -371,7 +371,7 @@ like the ones in the example.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_0066a_">
+    <table id="T_ba7a1_">
       <caption>Haberman Dataset: Deterministic                                   MRC and CMRC error and runtime</caption>
       <thead>
         <tr>
@@ -384,60 +384,60 @@ like the ones in the example.
       </thead>
       <tbody>
         <tr>
-          <th id="T_0066a_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-          <td id="T_0066a_row0_col0" class="data row0 col0" >0.268324</td>
-          <td id="T_0066a_row0_col1" class="data row0 col1" >0.437231</td>
-          <td id="T_0066a_row0_col2" class="data row0 col2" >0.268059</td>
-          <td id="T_0066a_row0_col3" class="data row0 col3" >0.396329</td>
+          <th id="T_ba7a1_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+          <td id="T_ba7a1_row0_col0" class="data row0 col0" >0.268324</td>
+          <td id="T_ba7a1_row0_col1" class="data row0 col1" >0.472321</td>
+          <td id="T_ba7a1_row0_col2" class="data row0 col2" >0.268059</td>
+          <td id="T_ba7a1_row0_col3" class="data row0 col3" >0.445613</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-          <td id="T_0066a_row1_col0" class="data row1 col0" >0.261766</td>
-          <td id="T_0066a_row1_col1" class="data row1 col1" >0.612943</td>
-          <td id="T_0066a_row1_col2" class="data row1 col2" >0.300529</td>
-          <td id="T_0066a_row1_col3" class="data row1 col3" >0.590421</td>
+          <th id="T_ba7a1_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+          <td id="T_ba7a1_row1_col0" class="data row1 col0" >0.261766</td>
+          <td id="T_ba7a1_row1_col1" class="data row1 col1" >0.633682</td>
+          <td id="T_ba7a1_row1_col2" class="data row1 col2" >0.300529</td>
+          <td id="T_ba7a1_row1_col3" class="data row1 col3" >0.638692</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-          <td id="T_0066a_row2_col0" class="data row2 col0" >0.274722</td>
-          <td id="T_0066a_row2_col1" class="data row2 col1" >0.672403</td>
-          <td id="T_0066a_row2_col2" class="data row2 col2" >0.284400</td>
-          <td id="T_0066a_row2_col3" class="data row2 col3" >3.165336</td>
+          <th id="T_ba7a1_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+          <td id="T_ba7a1_row2_col0" class="data row2 col0" >0.274722</td>
+          <td id="T_ba7a1_row2_col1" class="data row2 col1" >0.669211</td>
+          <td id="T_ba7a1_row2_col2" class="data row2 col2" >0.284400</td>
+          <td id="T_ba7a1_row2_col3" class="data row2 col3" >3.313442</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-          <td id="T_0066a_row3_col0" class="data row3 col0" >0.294289</td>
-          <td id="T_0066a_row3_col1" class="data row3 col1" >0.471140</td>
-          <td id="T_0066a_row3_col2" class="data row3 col2" >0.277895</td>
-          <td id="T_0066a_row3_col3" class="data row3 col3" >2.091209</td>
+          <th id="T_ba7a1_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+          <td id="T_ba7a1_row3_col0" class="data row3 col0" >0.294289</td>
+          <td id="T_ba7a1_row3_col1" class="data row3 col1" >0.502947</td>
+          <td id="T_ba7a1_row3_col2" class="data row3 col2" >0.277895</td>
+          <td id="T_ba7a1_row3_col3" class="data row3 col3" >2.370063</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
-          <td id="T_0066a_row4_col0" class="data row4 col0" >0.268324</td>
-          <td id="T_0066a_row4_col1" class="data row4 col1" >0.959453</td>
-          <td id="T_0066a_row4_col2" class="data row4 col2" >0.261766</td>
-          <td id="T_0066a_row4_col3" class="data row4 col3" >0.553714</td>
+          <th id="T_ba7a1_level0_row4" class="row_heading level0 row4" >loss log, phi linear</th>
+          <td id="T_ba7a1_row4_col0" class="data row4 col0" >0.268324</td>
+          <td id="T_ba7a1_row4_col1" class="data row4 col1" >0.970023</td>
+          <td id="T_ba7a1_row4_col2" class="data row4 col2" >0.261766</td>
+          <td id="T_ba7a1_row4_col3" class="data row4 col3" >0.568573</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
-          <td id="T_0066a_row5_col0" class="data row5 col0" >0.265045</td>
-          <td id="T_0066a_row5_col1" class="data row5 col1" >1.503368</td>
-          <td id="T_0066a_row5_col2" class="data row5 col2" >0.287573</td>
-          <td id="T_0066a_row5_col3" class="data row5 col3" >0.759170</td>
+          <th id="T_ba7a1_level0_row5" class="row_heading level0 row5" >loss log, phi fourier</th>
+          <td id="T_ba7a1_row5_col0" class="data row5 col0" >0.265045</td>
+          <td id="T_ba7a1_row5_col1" class="data row5 col1" >1.478521</td>
+          <td id="T_ba7a1_row5_col2" class="data row5 col2" >0.287573</td>
+          <td id="T_ba7a1_row5_col3" class="data row5 col3" >0.773532</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
-          <td id="T_0066a_row6_col0" class="data row6 col0" >0.274722</td>
-          <td id="T_0066a_row6_col1" class="data row6 col1" >1.509166</td>
-          <td id="T_0066a_row6_col2" class="data row6 col2" >0.313591</td>
-          <td id="T_0066a_row6_col3" class="data row6 col3" >2.417336</td>
+          <th id="T_ba7a1_level0_row6" class="row_heading level0 row6" >loss log, phi relu</th>
+          <td id="T_ba7a1_row6_col0" class="data row6 col0" >0.274722</td>
+          <td id="T_ba7a1_row6_col1" class="data row6 col1" >1.501982</td>
+          <td id="T_ba7a1_row6_col2" class="data row6 col2" >0.313591</td>
+          <td id="T_ba7a1_row6_col3" class="data row6 col3" >2.309026</td>
         </tr>
         <tr>
-          <th id="T_0066a_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
-          <td id="T_0066a_row7_col0" class="data row7 col0" >0.284453</td>
-          <td id="T_0066a_row7_col1" class="data row7 col1" >1.262834</td>
-          <td id="T_0066a_row7_col2" class="data row7 col2" >0.274511</td>
-          <td id="T_0066a_row7_col3" class="data row7 col3" >0.518427</td>
+          <th id="T_ba7a1_level0_row7" class="row_heading level0 row7" >loss log, phi threshold</th>
+          <td id="T_ba7a1_row7_col0" class="data row7 col0" >0.284453</td>
+          <td id="T_ba7a1_row7_col1" class="data row7 col1" >1.292629</td>
+          <td id="T_ba7a1_row7_col2" class="data row7 col2" >0.274511</td>
+          <td id="T_ba7a1_row7_col3" class="data row7 col3" >0.542974</td>
         </tr>
       </tbody>
     </table>
@@ -465,7 +465,7 @@ like the ones in the example.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_1b1fb_">
+    <table id="T_d090e_">
       <caption>Haberman Dataset: Non-Deterministic MRC                                      error and runtime
     with Upper and                                          Lower bounds</caption>
       <thead>
@@ -479,32 +479,32 @@ like the ones in the example.
       </thead>
       <tbody>
         <tr>
-          <th id="T_1b1fb_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
-          <td id="T_1b1fb_row0_col0" class="data row0 col0" >0.274775</td>
-          <td id="T_1b1fb_row0_col1" class="data row0 col1" >0.440222</td>
-          <td id="T_1b1fb_row0_col2" class="data row0 col2" >0.271850</td>
-          <td id="T_1b1fb_row0_col3" class="data row0 col3" >0.254457</td>
+          <th id="T_d090e_level0_row0" class="row_heading level0 row0" >loss 0-1, phi linear</th>
+          <td id="T_d090e_row0_col0" class="data row0 col0" >0.278001</td>
+          <td id="T_d090e_row0_col1" class="data row0 col1" >0.471345</td>
+          <td id="T_d090e_row0_col2" class="data row0 col2" >0.271850</td>
+          <td id="T_d090e_row0_col3" class="data row0 col3" >0.254457</td>
         </tr>
         <tr>
-          <th id="T_1b1fb_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
-          <td id="T_1b1fb_row1_col0" class="data row1 col0" >0.294183</td>
-          <td id="T_1b1fb_row1_col1" class="data row1 col1" >0.613559</td>
-          <td id="T_1b1fb_row1_col2" class="data row1 col2" >0.262187</td>
-          <td id="T_1b1fb_row1_col3" class="data row1 col3" >0.235597</td>
+          <th id="T_d090e_level0_row1" class="row_heading level0 row1" >loss 0-1, phi fourier</th>
+          <td id="T_d090e_row1_col0" class="data row1 col0" >0.274722</td>
+          <td id="T_d090e_row1_col1" class="data row1 col1" >0.627921</td>
+          <td id="T_d090e_row1_col2" class="data row1 col2" >0.262187</td>
+          <td id="T_d090e_row1_col3" class="data row1 col3" >0.235597</td>
         </tr>
         <tr>
-          <th id="T_1b1fb_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
-          <td id="T_1b1fb_row2_col0" class="data row2 col0" >0.281174</td>
-          <td id="T_1b1fb_row2_col1" class="data row2 col1" >0.659636</td>
-          <td id="T_1b1fb_row2_col2" class="data row2 col2" >0.264509</td>
-          <td id="T_1b1fb_row2_col3" class="data row2 col3" >0.219872</td>
+          <th id="T_d090e_level0_row2" class="row_heading level0 row2" >loss 0-1, phi relu</th>
+          <td id="T_d090e_row2_col0" class="data row2 col0" >0.281491</td>
+          <td id="T_d090e_row2_col1" class="data row2 col1" >0.666418</td>
+          <td id="T_d090e_row2_col2" class="data row2 col2" >0.264509</td>
+          <td id="T_d090e_row2_col3" class="data row2 col3" >0.219872</td>
         </tr>
         <tr>
-          <th id="T_1b1fb_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
-          <td id="T_1b1fb_row3_col0" class="data row3 col0" >0.277895</td>
-          <td id="T_1b1fb_row3_col1" class="data row3 col1" >0.477124</td>
-          <td id="T_1b1fb_row3_col2" class="data row3 col2" >0.258158</td>
-          <td id="T_1b1fb_row3_col3" class="data row3 col3" >0.235543</td>
+          <th id="T_d090e_level0_row3" class="row_heading level0 row3" >loss 0-1, phi threshold</th>
+          <td id="T_d090e_row3_col0" class="data row3 col0" >0.307245</td>
+          <td id="T_d090e_row3_col1" class="data row3 col1" >0.501459</td>
+          <td id="T_d090e_row3_col2" class="data row3 col2" >0.258158</td>
+          <td id="T_d090e_row3_col3" class="data row3 col3" >0.235543</td>
         </tr>
       </tbody>
     </table>
@@ -618,7 +618,7 @@ All of them from the library `scikit-learn`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_12aa0_">
+    <table id="T_02cfc_">
       <caption>Credit Dataset: Different                             methods error and runtime</caption>
       <thead>
         <tr>
@@ -634,19 +634,19 @@ All of them from the library `scikit-learn`.
       </thead>
       <tbody>
         <tr>
-          <th id="T_12aa0_level0_row0" class="row_heading level0 row0" >SVM</th>
-          <td id="T_12aa0_row0_col0" class="data row0 col0" >0.166667</td>
-          <td id="T_12aa0_row0_col1" class="data row0 col1" >0.011768</td>
+          <th id="T_02cfc_level0_row0" class="row_heading level0 row0" >SVM</th>
+          <td id="T_02cfc_row0_col0" class="data row0 col0" >0.166667</td>
+          <td id="T_02cfc_row0_col1" class="data row0 col1" >0.012765</td>
         </tr>
         <tr>
-          <th id="T_12aa0_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
-          <td id="T_12aa0_row1_col0" class="data row1 col0" >0.150725</td>
-          <td id="T_12aa0_row1_col1" class="data row1 col1" >0.389359</td>
+          <th id="T_02cfc_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+          <td id="T_02cfc_row1_col0" class="data row1 col0" >0.150725</td>
+          <td id="T_02cfc_row1_col1" class="data row1 col1" >0.427058</td>
         </tr>
         <tr>
-          <th id="T_12aa0_level0_row2" class="row_heading level0 row2" >Random Forest</th>
-          <td id="T_12aa0_row2_col0" class="data row2 col0" >0.165217</td>
-          <td id="T_12aa0_row2_col1" class="data row2 col1" >0.107911</td>
+          <th id="T_02cfc_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+          <td id="T_02cfc_row2_col0" class="data row2 col0" >0.165217</td>
+          <td id="T_02cfc_row2_col1" class="data row2 col1" >0.108709</td>
         </tr>
       </tbody>
     </table>
@@ -676,7 +676,7 @@ All of them from the library `scikit-learn`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_ab7f3_">
+    <table id="T_f0e72_">
       <caption>Haberman Dataset: Different                               methods error and runtime</caption>
       <thead>
         <tr>
@@ -692,19 +692,19 @@ All of them from the library `scikit-learn`.
       </thead>
       <tbody>
         <tr>
-          <th id="T_ab7f3_level0_row0" class="row_heading level0 row0" >SVM</th>
-          <td id="T_ab7f3_row0_col0" class="data row0 col0" >0.258488</td>
-          <td id="T_ab7f3_row0_col1" class="data row0 col1" >0.003391</td>
+          <th id="T_f0e72_level0_row0" class="row_heading level0 row0" >SVM</th>
+          <td id="T_f0e72_row0_col0" class="data row0 col0" >0.258488</td>
+          <td id="T_f0e72_row0_col1" class="data row0 col1" >0.003191</td>
         </tr>
         <tr>
-          <th id="T_ab7f3_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
-          <td id="T_ab7f3_row1_col0" class="data row1 col0" >0.284294</td>
-          <td id="T_ab7f3_row1_col1" class="data row1 col1" >0.199267</td>
+          <th id="T_f0e72_level0_row1" class="row_heading level0 row1" >NN-MLP</th>
+          <td id="T_f0e72_row1_col0" class="data row1 col0" >0.284294</td>
+          <td id="T_f0e72_row1_col1" class="data row1 col1" >0.202259</td>
         </tr>
         <tr>
-          <th id="T_ab7f3_level0_row2" class="row_heading level0 row2" >Random Forest</th>
-          <td id="T_ab7f3_row2_col0" class="data row2 col0" >0.274828</td>
-          <td id="T_ab7f3_row2_col1" class="data row2 col1" >0.099135</td>
+          <th id="T_f0e72_level0_row2" class="row_heading level0 row2" >Random Forest</th>
+          <td id="T_f0e72_row2_col0" class="data row2 col0" >0.274828</td>
+          <td id="T_f0e72_row2_col1" class="data row2 col1" >0.099334</td>
         </tr>
       </tbody>
     </table>
@@ -950,7 +950,7 @@ is pretty similar.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 10 minutes  34.453 seconds)
+   **Total running time of the script:** ( 10 minutes  36.393 seconds)
 
 
 .. _sphx_glr_download_auto_examples_further_examples_plot_comparison.py:
