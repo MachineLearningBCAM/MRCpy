@@ -29,7 +29,6 @@ from sklearn import preprocessing
 from sklearn.model_selection import StratifiedKFold
 
 from MRCpy import MRC
-
 # Import the datasets
 from MRCpy.datasets import *
 
