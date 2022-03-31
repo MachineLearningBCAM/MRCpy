@@ -108,8 +108,8 @@ Funding in direct support of this work has been provided through different resea
 
    Basque Government through the project **"Mathematical Modeling Applied to Health"**, and through the **"ELKARTEK Program"**.
 
-.. |Travis-CI Build Status| image:: https://travis-ci.org/MachineLearningBCAM/MRCpy.svg?branch=main
-   :target: https://travis-ci.org/github/MachineLearningBCAM/MRCpy
+.. |Travis-CI Build Status| image:: https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield
+   :target: https://circleci.com/gh/MachineLearningBCAM/MRCpy
 .. |Code coverage| image:: https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy
    :target: https://codecov.io/gh/MachineLearningBCAM/MRCpy
 
