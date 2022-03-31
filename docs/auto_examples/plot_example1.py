@@ -33,10 +33,14 @@ from MRCpy import MRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver,
-           load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver",
-            "diabetes", "credit"]
+loaders = [
+    load_mammographic,
+    load_haberman,
+    load_indian_liver,
+    load_diabetes,
+    load_credit,
+]
+dataName = ["mammographic", "haberman", "indian_liver", "diabetes", "credit"]
 
 
 def runMRC(phi, loss):
@@ -58,8 +62,9 @@ def runMRC(phi, loss):
 
         # Generate the partitions of the stratified cross-validation
         n_splits = 5
-        cv = StratifiedKFold(n_splits=n_splits, random_state=random_seed,
-                             shuffle=True)
+        cv = StratifiedKFold(
+            n_splits=n_splits, random_state=random_seed, shuffle=True
+        )
 
         cvError = list()
         auxTime = 0
@@ -102,25 +107,28 @@ def runMRC(phi, loss):
         lower = lower / n_splits
         auxTime = auxTime / n_splits
 
-        results = results.append({'dataset': dataName[j],
-                                  'n_samples': '%d' % n,
-                                  'n_attributes': '%d' % d,
-                                  'n_classes': '%d' % r,
-                                  'error': '%1.2g' % res_mean + " +/- " +
-                                  '%1.2g' % res_std,
-                                  'upper': '%1.2g' % upper,
-                                  'lower': '%1.2g' % lower,
-                                  'avg_train_time (s)': '%1.2g' % auxTime},
-                                 ignore_index=True)
+        results = results.append(
+            {
+                "dataset": dataName[j],
+                "n_samples": "%d" % n,
+                "n_attributes": "%d" % d,
+                "n_classes": "%d" % r,
+                "error": "%1.2g" % res_mean + " +/- " + "%1.2g" % res_std,
+                "upper": "%1.2g" % upper,
+                "lower": "%1.2g" % lower,
+                "avg_train_time (s)": "%1.2g" % auxTime,
+            },
+            ignore_index=True,
+        )
     return results
 
 
 ####################################################################
 
-r1 = runMRC(phi='fourier', loss='0-1')
-r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
+r1 = runMRC(phi="fourier", loss="0-1")
+r1.style.set_caption("Using 0-1 loss and fourier feature mapping")
 
 ####################################################################
 
-r2 = runMRC(phi='fourier', loss='log')
-r2.style.set_caption('Using log loss and fourier feature mapping')
+r2 = runMRC(phi="fourier", loss="log")
+r2.style.set_caption("Using log loss and fourier feature mapping")
