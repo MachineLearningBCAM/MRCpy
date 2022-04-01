@@ -133,7 +133,7 @@ More information about this dataset can be found in the
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_context</span><span class="p">(</span><span class="s2">&quot;paper&quot;</span><span class="p">)</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/warnings.html#warnings.filterwarnings" title="warnings.filterwarnings" class="sphx-glr-backref-module-warnings sphx-glr-backref-type-py-function"><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span></a><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -180,16 +180,16 @@ More information about this dataset can be found in the
         <span class="p">)</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
         <span class="p">[</span><span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="n">data_consensus</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
         <span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span> <span class="s2">&quot;PATIENT_ID&quot;</span><span class="p">])]</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">data_consensus</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">array</span><span class="p">:</span>
-        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span></a><span class="p">()</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span><span class="o">.</span><span class="n">to_numpy</span></a><span class="p">()</span>
+    <span class="k">return</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a>
 
 
-<span class="k">def</span> <span class="nf">getUpperLowerdf</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">,</span> <span class="n">smote</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">getUpperLowerdf</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">,</span> <span class="n">smote</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -210,15 +210,15 @@ More information about this dataset can be found in the
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">smote</span><span class="p">:</span>
         <span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
-        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
     <span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">train_set</span> <span class="ow">in</span> <span class="n">train_size</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)):</span>
-            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
-            <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cv</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)):</span>
+            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
+            <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[</span><span class="n">train_index</span><span class="p">],</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[</span><span class="n">test_index</span><span class="p">]</span>
 
-            <span class="n">random_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span>
-                <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">train_set</span><span class="p">),</span>
+            <span class="n">random_indices</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html#numpy.random.choice" title="numpy.random.choice" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span></a><span class="p">(</span>
+                <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span><span class="o">.</span><span class="n">shape</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">train_set</span><span class="p">),</span>
                 <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">random_indices</span><span class="p">,</span> <span class="p">:]</span>
@@ -226,10 +226,10 @@ More information about this dataset can be found in the
             <span class="n">std_scale</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
             <span class="n">X_train</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
             <span class="n">X_test</span> <span class="o">=</span> <span class="n">std_scale</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-            <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="n">start_time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
             <span class="n">MRC_model</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="s2">&quot;fourier&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span>
-                            <span class="n">paramsMRC</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-            <span class="n">train_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+                            <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+            <span class="n">train_time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
             <span class="n">auxtable</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;iteration&quot;</span><span class="p">,</span> <span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
                          <span class="s2">&quot;Time&quot;</span><span class="p">,</span> <span class="p">],</span>
@@ -247,7 +247,7 @@ More information about this dataset can be found in the
 
 
 <span class="c1"># Data sets</span>
-<span class="n">loaders</span> <span class="o">=</span> <span class="p">[</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="n">load_mammographic</span><span class="p">,</span>
     <span class="n">load_haberman</span><span class="p">,</span>
     <span class="n">load_indian_liver</span><span class="p">,</span>
@@ -256,7 +256,7 @@ More information about this dataset can be found in the
     <span class="n">load_covid</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">dataName</span> <span class="o">=</span> <span class="p">[</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">dataName</span></a> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;mammographic&quot;</span><span class="p">,</span>
     <span class="s2">&quot;haberman&quot;</span><span class="p">,</span>
     <span class="s2">&quot;indian_liver&quot;</span><span class="p">,</span>
@@ -264,22 +264,22 @@ More information about this dataset can be found in the
     <span class="s2">&quot;credit&quot;</span><span class="p">,</span>
     <span class="s2">&quot;COVID&quot;</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">paramsMRC</span> <span class="o">=</span> <span class="p">{</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;deterministic&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;fit_intercept&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s2">&quot;use_cvx&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span>
 <span class="p">}</span>
-<span class="n">train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.81</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.arange.html#numpy.arange" title="numpy.arange" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.81</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="cross-test-validation">
 <h2>Cross test validation<a class="headerlink" href="#cross-test-validation" title="Permalink to this headline"></a></h2>
 <p>5 fold repeated Stratified Cross validation is performed where each of the
 fold is trained with 80% of the data and then tested with the remaining 20%</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">n_splits</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">n_repeats</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">n_splits</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="n">n_repeats</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_splits</span></a> <span class="o">=</span> <span class="mi">5</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_repeats</span></a> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">RepeatedStratifiedKFold</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_splits</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_splits</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_repeats</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_repeats</span></a><span class="p">,</span>
                              <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -294,17 +294,17 @@ when the training size is increased. Furthermore, the standard deviation of
 both bounds is reduced significantly.</p>
 <div class="section" id="mammographic">
 <h3>Mammographic<a class="headerlink" href="#mammographic" title="Permalink to this headline"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">()</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="c1"># dataframes.append(table)</span>
 <span class="c1"># plotUpperLower(table)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
     <span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span>
     <span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
             <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
@@ -345,59 +345,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.212 ± 0.034</td>
-      <td>0.218 ± 0.032</td>
-      <td>0.113 ± 0.031</td>
-      <td>0.178 ± 0.016</td>
+      <td>0.214 ± 0.023</td>
+      <td>0.215 ± 0.032</td>
+      <td>0.101 ± 0.029</td>
+      <td>0.182 ± 0.012</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.202 ± 0.03</td>
-      <td>0.22 ± 0.022</td>
-      <td>0.14 ± 0.026</td>
-      <td>0.317 ± 0.014</td>
+      <td>0.203 ± 0.032</td>
+      <td>0.215 ± 0.022</td>
+      <td>0.133 ± 0.026</td>
+      <td>0.325 ± 0.008</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.204 ± 0.029</td>
-      <td>0.222 ± 0.023</td>
-      <td>0.154 ± 0.028</td>
-      <td>0.483 ± 0.028</td>
+      <td>0.209 ± 0.032</td>
+      <td>0.225 ± 0.018</td>
+      <td>0.156 ± 0.022</td>
+      <td>0.492 ± 0.02</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.207 ± 0.028</td>
-      <td>0.226 ± 0.022</td>
-      <td>0.163 ± 0.026</td>
-      <td>0.566 ± 0.023</td>
+      <td>0.206 ± 0.033</td>
+      <td>0.224 ± 0.017</td>
+      <td>0.163 ± 0.02</td>
+      <td>0.585 ± 0.028</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.208 ± 0.033</td>
-      <td>0.225 ± 0.015</td>
-      <td>0.171 ± 0.019</td>
-      <td>0.652 ± 0.019</td>
+      <td>0.204 ± 0.031</td>
+      <td>0.222 ± 0.016</td>
+      <td>0.167 ± 0.019</td>
+      <td>0.684 ± 0.044</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.213 ± 0.026</td>
-      <td>0.229 ± 0.01</td>
-      <td>0.18 ± 0.011</td>
-      <td>0.773 ± 0.034</td>
+      <td>0.205 ± 0.031</td>
+      <td>0.222 ± 0.013</td>
+      <td>0.172 ± 0.016</td>
+      <td>0.794 ± 0.021</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.211 ± 0.028</td>
-      <td>0.226 ± 0.011</td>
-      <td>0.178 ± 0.014</td>
-      <td>0.858 ± 0.027</td>
+      <td>0.209 ± 0.029</td>
+      <td>0.224 ± 0.013</td>
+      <td>0.176 ± 0.015</td>
+      <td>0.907 ± 0.037</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.216 ± 0.03</td>
-      <td>0.228 ± 0.008</td>
-      <td>0.183 ± 0.009</td>
-      <td>0.953 ± 0.025</td>
+      <td>0.21 ± 0.031</td>
+      <td>0.226 ± 0.011</td>
+      <td>0.18 ± 0.012</td>
+      <td>1.01 ± 0.043</td>
     </tr>
   </tbody>
 </table>
@@ -405,11 +405,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -418,7 +418,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -431,16 +431,16 @@ both bounds is reduced significantly.</p>
 <img src="../../_images/sphx_glr_plot_upperLower_001.png" srcset="../../_images/sphx_glr_plot_upperLower_001.png" alt="Mammographic" class = "sphx-glr-single-img"/></div>
 <div class="section" id="haberman">
 <h3>Haberman<a class="headerlink" href="#haberman" title="Permalink to this headline"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
-<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
-            <span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span> <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -480,59 +480,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.408 ± 0.056</td>
-      <td>0.349 ± 0.032</td>
-      <td>0.135 ± 0.051</td>
-      <td>0.086 ± 0.004</td>
+      <td>0.395 ± 0.058</td>
+      <td>0.349 ± 0.029</td>
+      <td>0.141 ± 0.045</td>
+      <td>0.087 ± 0.004</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.373 ± 0.048</td>
-      <td>0.368 ± 0.027</td>
-      <td>0.213 ± 0.042</td>
-      <td>0.154 ± 0.006</td>
+      <td>0.391 ± 0.051</td>
+      <td>0.371 ± 0.023</td>
+      <td>0.213 ± 0.032</td>
+      <td>0.155 ± 0.005</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.371 ± 0.041</td>
-      <td>0.369 ± 0.02</td>
-      <td>0.24 ± 0.029</td>
-      <td>0.238 ± 0.008</td>
+      <td>0.377 ± 0.049</td>
+      <td>0.373 ± 0.021</td>
+      <td>0.238 ± 0.028</td>
+      <td>0.26 ± 0.021</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.366 ± 0.047</td>
-      <td>0.369 ± 0.021</td>
-      <td>0.26 ± 0.027</td>
-      <td>0.302 ± 0.009</td>
+      <td>0.366 ± 0.054</td>
+      <td>0.376 ± 0.017</td>
+      <td>0.252 ± 0.021</td>
+      <td>0.307 ± 0.012</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.358 ± 0.045</td>
-      <td>0.369 ± 0.016</td>
-      <td>0.27 ± 0.023</td>
-      <td>0.387 ± 0.013</td>
+      <td>0.363 ± 0.061</td>
+      <td>0.373 ± 0.015</td>
+      <td>0.263 ± 0.019</td>
+      <td>0.408 ± 0.035</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.351 ± 0.047</td>
-      <td>0.369 ± 0.013</td>
-      <td>0.277 ± 0.017</td>
-      <td>0.477 ± 0.022</td>
+      <td>0.352 ± 0.054</td>
+      <td>0.374 ± 0.011</td>
+      <td>0.27 ± 0.014</td>
+      <td>0.513 ± 0.04</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.356 ± 0.041</td>
-      <td>0.369 ± 0.011</td>
-      <td>0.283 ± 0.014</td>
-      <td>0.51 ± 0.018</td>
+      <td>0.356 ± 0.05</td>
+      <td>0.374 ± 0.009</td>
+      <td>0.278 ± 0.013</td>
+      <td>0.53 ± 0.034</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.351 ± 0.047</td>
-      <td>0.368 ± 0.008</td>
-      <td>0.287 ± 0.011</td>
-      <td>0.558 ± 0.014</td>
+      <td>0.36 ± 0.046</td>
+      <td>0.372 ± 0.007</td>
+      <td>0.28 ± 0.01</td>
+      <td>0.586 ± 0.044</td>
     </tr>
   </tbody>
 </table>
@@ -540,11 +540,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -553,7 +553,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -566,17 +566,17 @@ both bounds is reduced significantly.</p>
 <img src="../../_images/sphx_glr_plot_upperLower_002.png" srcset="../../_images/sphx_glr_plot_upperLower_002.png" alt="Haberman" class = "sphx-glr-single-img"/></div>
 <div class="section" id="indian-liver">
 <h3>Indian liver<a class="headerlink" href="#indian-liver" title="Permalink to this headline"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_indian_liver</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_indian_liver</span><span class="p">()</span>
 
-<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
-        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -616,59 +616,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.388 ± 0.044</td>
-      <td>0.351 ± 0.03</td>
-      <td>0.167 ± 0.037</td>
-      <td>0.141 ± 0.005</td>
+      <td>0.383 ± 0.038</td>
+      <td>0.345 ± 0.028</td>
+      <td>0.158 ± 0.034</td>
+      <td>0.152 ± 0.017</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.374 ± 0.033</td>
-      <td>0.362 ± 0.022</td>
-      <td>0.23 ± 0.023</td>
-      <td>0.281 ± 0.014</td>
+      <td>0.358 ± 0.036</td>
+      <td>0.356 ± 0.02</td>
+      <td>0.225 ± 0.026</td>
+      <td>0.293 ± 0.018</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.36 ± 0.037</td>
-      <td>0.365 ± 0.017</td>
-      <td>0.258 ± 0.021</td>
-      <td>0.437 ± 0.018</td>
+      <td>0.349 ± 0.03</td>
+      <td>0.358 ± 0.015</td>
+      <td>0.245 ± 0.016</td>
+      <td>0.445 ± 0.016</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.353 ± 0.035</td>
-      <td>0.366 ± 0.015</td>
-      <td>0.27 ± 0.015</td>
-      <td>0.536 ± 0.019</td>
+      <td>0.35 ± 0.039</td>
+      <td>0.36 ± 0.012</td>
+      <td>0.261 ± 0.014</td>
+      <td>0.552 ± 0.015</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.352 ± 0.027</td>
-      <td>0.362 ± 0.011</td>
-      <td>0.277 ± 0.014</td>
-      <td>0.652 ± 0.018</td>
+      <td>0.338 ± 0.027</td>
+      <td>0.361 ± 0.011</td>
+      <td>0.271 ± 0.013</td>
+      <td>0.717 ± 0.049</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.352 ± 0.031</td>
-      <td>0.361 ± 0.009</td>
-      <td>0.282 ± 0.011</td>
-      <td>0.799 ± 0.022</td>
+      <td>0.343 ± 0.034</td>
+      <td>0.363 ± 0.009</td>
+      <td>0.28 ± 0.011</td>
+      <td>0.833 ± 0.045</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.35 ± 0.029</td>
-      <td>0.362 ± 0.008</td>
-      <td>0.287 ± 0.009</td>
-      <td>0.931 ± 0.025</td>
+      <td>0.347 ± 0.028</td>
+      <td>0.362 ± 0.007</td>
+      <td>0.283 ± 0.011</td>
+      <td>1.025 ± 0.084</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.35 ± 0.033</td>
-      <td>0.363 ± 0.005</td>
-      <td>0.292 ± 0.007</td>
-      <td>1.061 ± 0.023</td>
+      <td>0.346 ± 0.031</td>
+      <td>0.361 ± 0.005</td>
+      <td>0.285 ± 0.007</td>
+      <td>1.117 ± 0.059</td>
     </tr>
   </tbody>
 </table>
@@ -676,11 +676,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -689,7 +689,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -702,17 +702,17 @@ both bounds is reduced significantly.</p>
 <img src="../../_images/sphx_glr_plot_upperLower_003.png" srcset="../../_images/sphx_glr_plot_upperLower_003.png" alt="Indian Liver" class = "sphx-glr-single-img"/></div>
 <div class="section" id="diabetes">
 <h3>diabetes<a class="headerlink" href="#diabetes" title="Permalink to this headline"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
 
-<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
-        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -752,59 +752,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.325 ± 0.033</td>
-      <td>0.296 ± 0.022</td>
-      <td>0.1 ± 0.027</td>
-      <td>0.174 ± 0.01</td>
+      <td>0.314 ± 0.032</td>
+      <td>0.285 ± 0.024</td>
+      <td>0.104 ± 0.031</td>
+      <td>0.187 ± 0.023</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.32 ± 0.036</td>
-      <td>0.306 ± 0.017</td>
-      <td>0.171 ± 0.024</td>
-      <td>0.337 ± 0.009</td>
+      <td>0.298 ± 0.037</td>
+      <td>0.299 ± 0.016</td>
+      <td>0.167 ± 0.022</td>
+      <td>0.345 ± 0.015</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.309 ± 0.029</td>
-      <td>0.313 ± 0.013</td>
-      <td>0.203 ± 0.018</td>
-      <td>0.537 ± 0.012</td>
+      <td>0.301 ± 0.03</td>
+      <td>0.302 ± 0.012</td>
+      <td>0.193 ± 0.017</td>
+      <td>0.584 ± 0.056</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.305 ± 0.029</td>
-      <td>0.315 ± 0.011</td>
-      <td>0.224 ± 0.013</td>
-      <td>0.641 ± 0.017</td>
+      <td>0.292 ± 0.031</td>
+      <td>0.301 ± 0.01</td>
+      <td>0.207 ± 0.013</td>
+      <td>0.672 ± 0.029</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.301 ± 0.034</td>
-      <td>0.313 ± 0.008</td>
-      <td>0.229 ± 0.012</td>
-      <td>0.823 ± 0.025</td>
+      <td>0.291 ± 0.034</td>
+      <td>0.304 ± 0.008</td>
+      <td>0.222 ± 0.012</td>
+      <td>0.883 ± 0.056</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.304 ± 0.026</td>
-      <td>0.313 ± 0.008</td>
-      <td>0.236 ± 0.01</td>
-      <td>0.98 ± 0.024</td>
+      <td>0.29 ± 0.027</td>
+      <td>0.302 ± 0.008</td>
+      <td>0.223 ± 0.009</td>
+      <td>1.032 ± 0.052</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.299 ± 0.032</td>
-      <td>0.312 ± 0.006</td>
-      <td>0.24 ± 0.008</td>
-      <td>1.151 ± 0.033</td>
+      <td>0.292 ± 0.029</td>
+      <td>0.303 ± 0.006</td>
+      <td>0.231 ± 0.008</td>
+      <td>1.24 ± 0.072</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.297 ± 0.028</td>
-      <td>0.313 ± 0.005</td>
-      <td>0.245 ± 0.008</td>
-      <td>1.334 ± 0.03</td>
+      <td>0.286 ± 0.038</td>
+      <td>0.302 ± 0.005</td>
+      <td>0.231 ± 0.008</td>
+      <td>1.362 ± 0.038</td>
     </tr>
   </tbody>
 </table>
@@ -812,11 +812,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -825,7 +825,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -838,17 +838,17 @@ both bounds is reduced significantly.</p>
 <img src="../../_images/sphx_glr_plot_upperLower_004.png" srcset="../../_images/sphx_glr_plot_upperLower_004.png" alt="Diabetes" class = "sphx-glr-single-img"/></div>
 <div class="section" id="credit">
 <h3>credit<a class="headerlink" href="#credit" title="Permalink to this headline"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
 
-<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <span class="n">paramsMRC</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
-        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -888,59 +888,59 @@ both bounds is reduced significantly.</p>
   <tbody>
     <tr>
       <th>0.1</th>
-      <td>0.234 ± 0.039</td>
-      <td>0.205 ± 0.026</td>
-      <td>0.017 ± 0.014</td>
-      <td>0.13 ± 0.005</td>
+      <td>0.219 ± 0.034</td>
+      <td>0.205 ± 0.022</td>
+      <td>0.019 ± 0.016</td>
+      <td>0.131 ± 0.003</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>0.212 ± 0.035</td>
-      <td>0.211 ± 0.02</td>
-      <td>0.05 ± 0.016</td>
-      <td>0.267 ± 0.008</td>
+      <td>0.192 ± 0.033</td>
+      <td>0.211 ± 0.019</td>
+      <td>0.047 ± 0.017</td>
+      <td>0.27 ± 0.007</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>0.189 ± 0.03</td>
-      <td>0.208 ± 0.015</td>
-      <td>0.073 ± 0.014</td>
-      <td>0.408 ± 0.008</td>
+      <td>0.176 ± 0.025</td>
+      <td>0.21 ± 0.015</td>
+      <td>0.071 ± 0.018</td>
+      <td>0.417 ± 0.016</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>0.183 ± 0.035</td>
-      <td>0.213 ± 0.012</td>
-      <td>0.088 ± 0.012</td>
-      <td>0.515 ± 0.014</td>
+      <td>0.179 ± 0.027</td>
+      <td>0.204 ± 0.012</td>
+      <td>0.084 ± 0.014</td>
+      <td>0.522 ± 0.013</td>
     </tr>
     <tr>
       <th>0.5</th>
-      <td>0.183 ± 0.031</td>
-      <td>0.206 ± 0.013</td>
-      <td>0.096 ± 0.014</td>
-      <td>0.642 ± 0.017</td>
+      <td>0.179 ± 0.03</td>
+      <td>0.206 ± 0.011</td>
+      <td>0.097 ± 0.012</td>
+      <td>0.651 ± 0.025</td>
     </tr>
     <tr>
       <th>0.6</th>
-      <td>0.178 ± 0.024</td>
-      <td>0.206 ± 0.011</td>
-      <td>0.103 ± 0.011</td>
-      <td>0.763 ± 0.028</td>
+      <td>0.175 ± 0.029</td>
+      <td>0.204 ± 0.008</td>
+      <td>0.1 ± 0.008</td>
+      <td>0.764 ± 0.019</td>
     </tr>
     <tr>
       <th>0.7</th>
-      <td>0.18 ± 0.034</td>
-      <td>0.205 ± 0.009</td>
-      <td>0.108 ± 0.008</td>
-      <td>0.886 ± 0.017</td>
+      <td>0.169 ± 0.029</td>
+      <td>0.2 ± 0.009</td>
+      <td>0.104 ± 0.008</td>
+      <td>0.889 ± 0.026</td>
     </tr>
     <tr>
       <th>0.8</th>
-      <td>0.177 ± 0.028</td>
-      <td>0.202 ± 0.007</td>
-      <td>0.112 ± 0.008</td>
-      <td>1.028 ± 0.023</td>
+      <td>0.179 ± 0.034</td>
+      <td>0.2 ± 0.007</td>
+      <td>0.108 ± 0.008</td>
+      <td>1.023 ± 0.032</td>
     </tr>
   </tbody>
 </table>
@@ -948,11 +948,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -961,7 +961,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -979,10 +979,10 @@ both bounds is reduced significantly.</p>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">std</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">means</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
-        <span class="n">std</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a> <span class="ow">in</span> <span class="n">means</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">means</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; ± &quot;</span> <span class="o">+</span>
+        <span class="n">std</span><span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">column</span></a><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="n">means</span><span class="p">[[</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Upper&quot;</span><span class="p">,</span> <span class="s2">&quot;Lower&quot;</span><span class="p">,</span> <span class="s2">&quot;Time&quot;</span><span class="p">]]</span>
 </pre></div>
@@ -1082,11 +1082,11 @@ both bounds is reduced significantly.</p>
 </div>
 <br />
 <br /><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test Error&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Upper&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Upper bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -1095,7 +1095,7 @@ both bounds is reduced significantly.</p>
 <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span>
     <span class="n">data</span><span class="o">=</span><span class="n">table</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;train_size&quot;</span><span class="p">,</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="o">=</span><span class="s2">&quot;Lower&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Lower bound&quot;</span><span class="p">,</span>
     <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dotted&quot;</span><span class="p">,</span>
@@ -1105,7 +1105,7 @@ both bounds is reduced significantly.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 37 minutes  50.942 seconds)</p>
+<img src="../../_images/sphx_glr_plot_upperLower_006.png" srcset="../../_images/sphx_glr_plot_upperLower_006.png" alt="COVID" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 39 minutes  24.234 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-plot-upperlower-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/9aad477d42f80a103f8fc4eea1115903/plot_upperLower.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_upperLower.py</span></code></a></div>
