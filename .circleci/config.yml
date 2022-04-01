@@ -39,6 +39,7 @@ jobs:
             pip install sphinx sphinx_rtd_theme &&
             pip install sphinx-gallery &&
             pip install numpydoc
+            python setup.py install
       - run:
           name: Build docs
           command: cd docs/ && make html
