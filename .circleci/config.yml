@@ -39,6 +39,7 @@ jobs:
             pip install sphinx sphinx_rtd_theme &&
             pip install sphinx-gallery &&
             pip install numpydoc
+            sudo apt install python3 python3-dev --upgrade
             python3 setup.py install
       - run:
           name: Build docs
