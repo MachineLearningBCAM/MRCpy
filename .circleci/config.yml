@@ -40,6 +40,7 @@ jobs:
             pip install sphinx-gallery &&
             pip install numpydoc &&
             pip install -r requirements.txt
+            pip install -r doc-requirements.txt
       - run:
           name: Install the library
           command:
