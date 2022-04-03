@@ -80,11 +80,11 @@ workflows:
   build:
     jobs:
       - style-test
-      - docs-build
-      - docs-deploy:
-          requires:
-            - style-test
-            - docs-build
-          filters:
-            branches:
-              only: master
+      # - docs-build
+      # - docs-deploy:
+      #     requires:
+      #       - style-test
+      #       - docs-build
+      #     filters:
+      #       branches:
+      #         only: master
