@@ -715,13 +715,14 @@ class MRC(BaseMRC):
                         d_k_next = d_k_next - H[:, [i]]
                     elif delta_k[i] == 1 or delta_k[i] == -1:
                         d_k_next = d_k_next + (1 / 2)\
-                                  * np.sign(delta_k[i]) * H[:, [i]]
+                            * np.sign(delta_k[i]) * H[:, [i]]
 
                 c_k_next = (k + 1) ** (-3 / 2)
                 theta_k_next = 2 / (k + 1)
                 nu_k_next = theta_k_next * ((1 / theta_k) - 1)
                 f_k_next = a.transpose() @ mu_k_next +\
-                    lambda_.transpose() @ np.abs(mu_k_next) + v_k_next[i_k_next]
+                    lambda_.transpose() @ np.abs(mu_k_next) +\
+                    v_k_next[i_k_next]
                 if f_k_next < f_star:
                     f_star = f_k_next
                     mu_star = mu_k_next
@@ -761,7 +762,8 @@ class MRC(BaseMRC):
                 theta_k_next = 2 / (k + 1)
                 nu_k_next = theta_k_next * ((1 / theta_k) - 1)
                 f_k_next = a.transpose() @ mu_k_next +\
-                    lambda_.transpose() @ np.abs(mu_k_next) + v_k_next[i_k_next]
+                    lambda_.transpose() @ np.abs(mu_k_next) +\
+                    v_k_next[i_k_next]
                 if f_k_next < f_star:
                     f_star = f_k_next
                     mu_star = mu_k_next
