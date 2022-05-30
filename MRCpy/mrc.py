@@ -632,7 +632,7 @@ class MRC(BaseMRC):
 
         return new_params_
 
-    def nesterov_optimization_minimized(self, F, b):
+    def nesterov_optimization_minimized(self, M, h):
         '''
         Solution of the MRC convex optimization (minimization)
         using an optimized version of the Nesterov accelerated approach.
@@ -673,119 +673,147 @@ class MRC(BaseMRC):
             (`mu`: `array-like` shape (`m`,),
             `nu`: `float`).
         '''
-        b = np.reshape(b, (-1, 1))
-        n, m = F.shape
-        lambda_ = np.reshape(self.lambda_, (-1, 1))  # make it a column
-        a = np.reshape(-self.tau_, (-1, 1))  # make it a column
-        mu_k = np.zeros((m, 1))
-        c_k = 1
+        h = h.reshape((len(h), 1))
+        M_t = M.T
+        Mc = M @ - self.tau_
+        n, m = M.shape
+        lambda_col = self.lambda_.reshape((m, 1))
+        MD = np.multiply(M, self.lambda_)
+        MD_sum = np.zeros((n, 1))
+
+        if n * n > (1024) ** 3:
+            large_dimension = True
+            # print("LARGE DIMENSION")
+            MMtc = []
+            Mtc = np.zeros((m, n))
+        else:
+            large_dimension = False
+            # print("SMALL DIMENSION")
+            MMt = M @ M_t
+            MMtc = Mc.reshape((n, 1)) + MMt
+            Mtc = (-self.tau_).reshape((m, 1)) + M_t
+
+        # Initial values for points
+        y_k = np.zeros((m, 1))
+        w_k = np.zeros((m, 1))
+
         theta_k = 1
-        nu_k = 0
-        alpha = F @ a
-        G = F @ F.transpose()
-        H = 2 * F @ np.diag(self.lambda_)
-        y_k = mu_k
-        v_k = F @ mu_k + b
-        w_k = v_k
-        s_k = np.sign(mu_k)
-        d_k = (1 / 2) * H @ s_k
-        i_k = np.argmax(v_k)
-        mu_star = mu_k
-        v_star = -v_k[i_k]
-        f_star = a.transpose() @ mu_k +\
-            lambda_.transpose() @ np.abs(mu_k) + v_k[i_k]
+        mnu = np.max(M @ y_k + h)  # -h en matlab
+        f_value = float(-np.dot(self.tau_, y_k) +
+                        np.dot(self.lambda_, abs(y_k)) + mnu)
+        upper = f_value
+        mu = y_k
+        nu = -mnu
+        My = M @ y_k + h  # -h en matlab
+        Mw = M @ w_k + h  # -h en matlab
 
-        if n * n > (1024) ** 3:  # Large Dimension
+        alpha_k = 0
+        signos = np.sign(y_k)
+        signos_old = signos
+        delta = signos - signos_old
+        index1 = np.where(delta != 0)[0]
+        idx = 1
+        step_k = 0
+
+        if large_dimension:
+            index = (np.ones(n) * -1).astype(int)
+            idx = 0
+            MMtc = np.zeros((n, 1))
             for k in range(1, self.max_iters + 1):
-                g_k = a + lambda_ * s_k + F[[i_k], :].T
-                y_k_next = mu_k - c_k * g_k
-                mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
-                u_k = alpha + d_k + G[:, [i_k]]
-                w_k_next = v_k - c_k * u_k
-                v_k_next = (1 + nu_k) * w_k_next - nu_k * w_k
-                i_k_next = np.argmax(v_k_next)
-                s_k_next = np.sign(mu_k_next)
-                delta_k = s_k_next - s_k
+                # calculate My-h
+                MD_sum = MD_sum + MD[:, index1] @ delta[index1]
+                Mg0 = MD_sum + MMtc[:, [index[idx]]]
+                Mw_prev = Mw
+                Mw = My - alpha_k * Mg0
 
-                d_k_next = d_k
-                for i in range(m):
-                    if delta_k[i] == 2:
-                        d_k_next = d_k_next + H[:, [i]]
-                    elif delta_k[i] == -2:
-                        d_k_next = d_k_next - H[:, [i]]
-                    elif delta_k[i] == 1 or delta_k[i] == -1:
-                        d_k_next = d_k_next + (1 / 2)\
-                                  * np.sign(delta_k[i]) * H[:, [i]]
+                My = Mw + step_k * (Mw - Mw_prev)
 
-                c_k_next = (k + 1) ** (-3 / 2)
-                theta_k_next = 2 / (k + 1)
-                nu_k_next = theta_k_next * ((1 / theta_k) - 1)
-                f_k_next = a.transpose() @ mu_k_next +\
-                    lambda_.transpose() @ np.abs(mu_k_next) + v_k_next[i_k_next]
-                if f_k_next < f_star:
-                    f_star = f_k_next
-                    mu_star = mu_k_next
-                    v_star = v_k_next[i_k_next]
+                idx = np.argmax(My)
+                mnu = My[idx]
 
-                # Update variables
-                mu_k = mu_k_next
-                y_k = y_k_next
-                nu_k = nu_k_next
-                v_k = v_k_next
-                w_k = w_k_next
-                s_k = s_k_next
-                d_k = d_k_next
-                c_k = c_k_next
-                i_k = i_k_next
-                theta_k = theta_k_next
+                if index[idx] == -1:
+                    update_MMtc = Mc + M @ (M_t[:, idx])
+                    MMtc = np.concatenate([MMtc, update_MMtc.reshape(
+                        (len(update_MMtc), 1))], axis=1)
+                    Mtc[:, idx] = -self.tau_ + M_t[:, idx]
+                    index[idx] = np.shape(MMtc)[1] - 1
 
-        else:  # Small Dimension
+                signos_old = signos
+                signos = np.sign(y_k)
+                delta = signos - signos_old
+                index1 = np.where(delta != 0)[0]
 
-            MD = F @ np.diag(self.lambda_)
+                g0 = np.multiply(signos, lambda_col) + Mtc[:, [idx]]
+                f_value = float(-np.dot(self.tau_, np.asarray(y_k)) +
+                                np.dot(self.lambda_, np.asarray(abs(y_k)))
+                                + mnu)
 
+                if f_value < upper:
+                    upper = f_value
+                    mu = y_k
+                    nu = -mnu
+
+                theta_k_prev = theta_k
+                theta_k = 2 / (k + 1)
+                alpha_k = 1 / np.power((k + 1), (3 / 2))
+                w_k_prev = w_k
+                w_k = y_k - alpha_k * g0
+                step_k = theta_k * ((1 / theta_k_prev) - 1)
+                y_k = w_k + step_k * (w_k - w_k_prev)
+        else:
             for k in range(1, self.max_iters + 1):
-                g_k = a + lambda_ * s_k + F[[i_k], :].T
-                y_k_next = mu_k - c_k * g_k
-                mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
-                u_k = alpha + d_k + G[:, [i_k]]
-                w_k_next = v_k - c_k * u_k
-                v_k_next = (1 + nu_k) * w_k_next - nu_k * w_k
-                i_k_next = np.argmax(v_k_next)
-                s_k_next = np.sign(mu_k_next)
-                delta_k = s_k_next - s_k
+                # calculate My-h
+                MD_sum = MD_sum + MD[:, index1] @ delta[index1]
+                Mg0 = MD_sum + MMtc[:, [idx]]
+                Mw_prev = Mw
+                Mw = My - alpha_k * Mg0
+                My = Mw + step_k * (Mw - Mw_prev)
 
-                index = np.where(delta_k != 0)[0]
-                d_k_next = d_k + MD[:, index] @ delta_k[index]
+                idx = np.argmax(My)
+                mnu = float(My[idx])
 
-                c_k_next = (k + 1) ** (-3 / 2)
-                theta_k_next = 2 / (k + 1)
-                nu_k_next = theta_k_next * ((1 / theta_k) - 1)
-                f_k_next = a.transpose() @ mu_k_next +\
-                    lambda_.transpose() @ np.abs(mu_k_next) + v_k_next[i_k_next]
-                if f_k_next < f_star:
-                    f_star = f_k_next
-                    mu_star = mu_k_next
-                    v_star = v_k_next[i_k_next]
+                signos_old = signos
+                signos = np.sign(y_k)
+                delta = signos - signos_old
+                index1 = np.where(delta != 0)[0]  # where delta!=0
+                g0 = np.multiply(signos, lambda_col) + Mtc[:, [idx]]
+                f_value = float(-np.dot(self.tau_, np.asarray(y_k)) +
+                                np.dot(self.lambda_, np.asarray(abs(y_k)))
+                                + mnu)
 
-                # Update variables
-                mu_k = mu_k_next
-                y_k = y_k_next
-                nu_k = nu_k_next
-                v_k = v_k_next
-                w_k = w_k_next
-                s_k = s_k_next
-                d_k = d_k_next
-                c_k = c_k_next
-                i_k = i_k_next
-                theta_k = theta_k_next
+                if f_value < upper:
+                    upper = f_value
+                    mu = y_k
+                    nu = -mnu
 
-        new_params_ = {'w_k': w_k_next.flatten(),
-                       'w_k_prev': w_k.flatten(),
-                       'mu': mu_star.flatten(),
-                       'nu': v_star,
-                       'best_value': f_star,
+                theta_k_prev = theta_k
+                theta_k = 2 / (k + 1)
+                alpha_k = 1 / np.power((k + 1), (3 / 2))
+                w_k_prev = w_k
+                w_k = y_k - alpha_k * g0
+                step_k = theta_k * ((1 / theta_k_prev) - 1)
+                y_k = w_k + step_k * (w_k - w_k_prev)
+
+        # Check for possible improvement of the objective value
+        # for the last generated value of w_k
+        mnu = float(max(M @ w_k + h))
+        f_value = float(-np.dot(self.tau_, np.asarray(w_k)) +
+                        np.dot(self.lambda_, np.asarray(abs(w_k))) + mnu)
+
+        if f_value < upper:
+            upper = f_value
+            mu = w_k
+            nu = -mnu
+
+        mu = np.array(mu).flatten()
+
+        # Return the optimized values in a dictionary
+        new_params_ = {'w_k': w_k,
+                       'w_k_prev': w_k_prev,
+                       'mu': mu,
+                       'nu': nu,
+                       'best_value': upper,
                        }
-
         return new_params_
 
     def predict_proba(self, X):
