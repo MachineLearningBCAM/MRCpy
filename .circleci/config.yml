@@ -18,7 +18,7 @@ jobs:
           no_output_timeout: 240m
           command: >-
             flake8 --ignore=D,W503,W504,F403,F405 examples/ &&
-            flake8 MRCpy/ tests/ &&
+            flake8 MRCpy/ tests/ --ignore=MRCpy/__init__.py &&
             coverage run --source=MRCpy/ -m unittest discover -s tests
 
       - run:
