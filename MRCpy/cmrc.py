@@ -31,7 +31,7 @@ class CMRC(BaseMRC):
     its methods.
 
     .. seealso:: For more information about MRC, one can refer to the
-    following resources:
+        following resources:
 
                     [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
                     Minimax Classification with

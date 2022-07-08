@@ -200,7 +200,7 @@ class BasePhi():
 
         # Efficient configuration in case of binary classification.
         if self.n_classes == 2 and not self.one_hot:
-            X_feat[Y == 1, :] *= -1
+            X_feat[Y == 1, :] = X_feat[Y == 1, :] * -1
             phi = X_feat
 
         # One-hot encoding for multi-class classification.

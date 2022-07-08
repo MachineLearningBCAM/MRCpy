@@ -522,7 +522,7 @@ def load_vehicle(with_info=False):
     """
     module_path = dirname(__file__)
 
-    fdescr_name = join(module_path, 'descr', 'vehicle.doc')
+    fdescr_name = join(module_path, 'descr', 'vehicle.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
 
@@ -550,6 +550,56 @@ def load_vehicle(with_info=False):
     trans = SimpleImputer(strategy='median')
     data = trans.fit_transform(data)
 
+    if not with_info:
+        return data, normalizeLabels(target)
+    return Bunch(data=data,
+                 target=normalizeLabels(target),
+                 # last column is target value
+                 feature_names=feature_names[:-1],
+                 DESCR=descr_text,
+                 filename=data_file_name)
+
+
+def load_usenet2(with_info=False):
+    """Load and return the Vehicle Dataset (classification).
+
+    =================   =====================
+    Classes                                 2
+    Samples per class              [1000,500]
+    Samples total                        1500
+    Dimensionality                         99
+    Features                              int
+    =================   =====================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of the dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    fdescr_name = join(module_path, 'descr', 'usenet2.rst')
+    with open(fdescr_name) as f:
+        descr_text = f.read()
+
+    data_file_name = join(module_path, 'data', 'usenet2.csv')
+
+    dataset = np.genfromtxt(data_file_name, skip_header=1, delimiter=',')
+    data = dataset[:, :-1]
+    target = dataset[:, -1]
+    feature_names = []
     if not with_info:
         return data, normalizeLabels(target)
     return Bunch(data=data,
@@ -589,7 +639,7 @@ def load_segment(with_info=False):
     """
     module_path = dirname(__file__)
 
-    fdescr_name = join(module_path, 'descr', 'segment.doc')
+    fdescr_name = join(module_path, 'descr', 'segment.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
 
@@ -655,7 +705,7 @@ def load_satellite(with_info=False):
     """
     module_path = dirname(__file__)
 
-    fdescr_name = join(module_path, 'descr', 'satellite.doc')
+    fdescr_name = join(module_path, 'descr', 'satellite.rst')
     with open(fdescr_name) as f:
         descr_text = f.read()
 

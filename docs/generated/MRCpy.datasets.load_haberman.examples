@@ -9,10 +9,10 @@ Examples using ``MRCpy.datasets.load_haberman``
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_3_comparison_thumb.png
      :alt: Example: Comparison to other methods
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`
 
 .. raw:: html
 
@@ -20,4 +20,4 @@ Examples using ``MRCpy.datasets.load_haberman``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
+ * :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`

@@ -171,9 +171,9 @@ class RandomReLUPhi(BasePhi):
         # sphere of unit radius in dimension d.
         # Step 1 Generate samples distributed with unit variance
         #        in each dimension using the gaussian distribution.
-        self.random_state = check_random_state(self.random_state)
+        self.random_state_ = check_random_state(self.random_state)
         self.random_weights_ = \
-            self.random_state.normal(0, 1, size=(d + 1, self.n_components))
+            self.random_state_.normal(0, 1, size=(d + 1, self.n_components))
         # Step 2 Normalize the samples so that they are on a unit sphere.
         self.random_weights_ = self.random_weights_ / \
             np.linalg.norm(self.random_weights_, axis=0)

@@ -9,10 +9,10 @@ Examples using ``MRCpy.MRC.predict``
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_image_classification_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_1_image_classification_thumb.png
      :alt: MRCs with Deep Neural Networks: Part II
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
+     :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`
 
 .. raw:: html
 
@@ -20,4 +20,4 @@ Examples using ``MRCpy.MRC.predict``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_further_examples_plot_image_classification.py`
+ * :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`

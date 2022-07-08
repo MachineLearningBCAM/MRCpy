@@ -44,7 +44,7 @@ class MRC(BaseMRC):
 
     .. _ref1:
     .. seealso:: For more information about MRC, one can refer to the following
-    resources:
+        resources:
 
                     [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
                     Minimax Classification with
@@ -829,11 +829,6 @@ class MRC(BaseMRC):
             c = np.tile(c, (self.n_classes, 1)).transpose()
             hy_x = hy_x / c
 
-            # Set the approach for prediction to non-deterministic
-            # if not provided by user.
-            if self.deterministic is None:
-                self.deterministic = False
-
         elif self.loss == 'log':
             # Constraints in case of log loss function
 
@@ -844,10 +839,5 @@ class MRC(BaseMRC):
                              (self.n_classes, 1)).transpose()), axis=1)
                              for i in range(self.n_classes)).transpose()
             hy_x = np.reciprocal(hy_x)
-
-            # Set the approach for prediction to deterministic
-            # if not provided by user.
-            if self.deterministic is None:
-                self.deterministic = True
 
         return hy_x

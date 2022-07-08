@@ -5,52 +5,14 @@ Examples using ``MRCpy.CMRC``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_example2_thumb.png
-     :alt: Example: Use of CMRC with different settings
-
-     :ref:`sphx_glr_auto_examples_plot_example2.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_plot_example2.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_comparison_thumb.png
-     :alt: Example: Comparison to other methods
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
-
-.. raw:: html
-
-    </div>
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_further_examples_plot_comparison.py`
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_COVID_thumb.png
+ .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_z_COVID_thumb.png
      :alt: Example: Predicting COVID-19 patients outcome using MRCs
 
-     :ref:`sphx_glr_auto_examples_further_examples_COVID.py`
+     :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`
 
 .. raw:: html
 
@@ -58,4 +20,4 @@ Examples using ``MRCpy.CMRC``
 
 .. only:: not html
 
- * :ref:`sphx_glr_auto_examples_further_examples_COVID.py`
+ * :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`

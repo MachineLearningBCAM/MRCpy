@@ -14,13 +14,13 @@ import os
 import sys
 # sys.path.insert(0, os.path.abspath('../MRCpy/'))
 import sphinx_rtd_theme
-from sphinx_gallery.sorting import ExampleTitleSortKey
+from sphinx_gallery.sorting import FileNameSortKey
 
 # -- Project information -----------------------------------------------------
 
 project = u'MRCpy'
-copyright = (u'2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero')
-author = (u'Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero')
+copyright = (u'2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez')
+author = (u'Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez')
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
@@ -87,7 +87,7 @@ sphinx_gallery_conf = {
     'doc_module': 'MRCpy',
     'examples_dirs': ['../examples'],
     'backreferences_dir': os.path.join('generated'),
-    'within_subsection_order': ExampleTitleSortKey,
+    'within_subsection_order': FileNameSortKey, # You can also use ExplicitOrder if needed
 }
 
 # -- Options for HTML output -------------------------------------------------

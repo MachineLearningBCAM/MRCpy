@@ -17,6 +17,7 @@ from .load import \
     load_redwine, \
     load_satellite, \
     load_segment, \
+    load_usenet2, \
     load_vehicle, \
     load_yearbook_features_resnet18, \
     load_yearbook_path
@@ -39,6 +40,7 @@ __all__ = ['load_adult',
            'load_redwine',
            'load_satellite',
            'load_segment',
+           'load_usenet2',
            'load_vehicle',
            'load_yearbook_features_resnet18',
            'load_yearbook_path']

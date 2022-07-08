@@ -90,6 +90,13 @@ class RandomFourierPhi(BasePhi):
             :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`
             where `var` is the variance function.
 
+        'scale2'
+            Approximates `sigma` by
+            :math:`\sqrt{\\frac{\\textrm{n_features}}{2}}`
+            so that `gamma` is
+            :math:`\\frac{1}{\\textrm{n_features}}`
+            where `var` is the variance function.
+
         'avg_ann_50'
             Approximates `sigma` by the average distance to the
             :math:`50^{\\textrm{th}}`
@@ -159,6 +166,9 @@ class RandomFourierPhi(BasePhi):
         if self.sigma == 'scale':
             self.sigma_val = np.sqrt((d * X.var()) / 2)
 
+        elif self.sigma == 'scale2':
+            self.sigma_val = np.sqrt(d / 2)
+
         elif self.sigma == 'avg_ann_50':
             self.sigma_val = self.rff_sigma(X)
 
@@ -169,10 +179,10 @@ class RandomFourierPhi(BasePhi):
             raise ValueError('Unexpected value for sigma ...')
 
         # Obtain the random weight from a normal distribution.
-        self.random_state = check_random_state(self.random_state)
+        self.random_state_ = check_random_state(self.random_state)
         self.random_weights_ = \
-            self.random_state.normal(0, 1 / self.sigma_val,
-                                     size=(d, int(self.n_components / 2)))
+            self.random_state_.normal(0, 1 / self.sigma_val,
+                                      size=(d, int(self.n_components / 2)))
 
         # Sets the length of the feature mapping
         super().fit(X, Y)
