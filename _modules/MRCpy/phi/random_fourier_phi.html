@@ -167,6 +167,13 @@
 <span class="sd">            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`</span>
 <span class="sd">            where `var` is the variance function.</span>
 
+<span class="sd">        &#39;scale2&#39;</span>
+<span class="sd">            Approximates `sigma` by</span>
+<span class="sd">            :math:`\sqrt{\\frac{\\textrm{n_features}}{2}}`</span>
+<span class="sd">            so that `gamma` is</span>
+<span class="sd">            :math:`\\frac{1}{\\textrm{n_features}}`</span>
+<span class="sd">            where `var` is the variance function.</span>
+
 <span class="sd">        &#39;avg_ann_50&#39;</span>
 <span class="sd">            Approximates `sigma` by the average distance to the</span>
 <span class="sd">            :math:`50^{\\textrm{th}}`</span>
@@ -236,6 +243,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">==</span> <span class="s1">&#39;scale&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sigma_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">d</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">var</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
 
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">==</span> <span class="s1">&#39;scale2&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sigma_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">==</span> <span class="s1">&#39;avg_ann_50&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sigma_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rff_sigma</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
@@ -246,10 +256,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected value for sigma ...&#39;</span><span class="p">)</span>
 
         <span class="c1"># Obtain the random weight from a normal distribution.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state_</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span> <span class="o">=</span> \
-            <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_val</span><span class="p">,</span>
-                                     <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">random_state_</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_val</span><span class="p">,</span>
+                                      <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
 
         <span class="c1"># Sets the length of the feature mapping</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
@@ -331,7 +341,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -23,8 +23,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MRCs with Deep Neural Networks: Part II" href="plot_image_classification.html" />
-    <link rel="prev" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" href="plot_grid.html" /> 
+    <link rel="next" title="MRCs with Deep Neural Networks: Part II" href="plot_1_image_classification.html" />
+    <link rel="prev" title="Example: Use of AMRC (Adaptative MRC) for Online Learning" href="../plot_3_example_amrc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,10 +52,6 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="plot_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part I</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction">Introduction to Pretrained models, Transfer Learning and Feature Extraction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#load-pretrained-model-and-preprocess-images">Load pretrained model and preprocess images</a></li>
@@ -63,7 +59,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#using-a-local-dataset-yearbook-dataset">Using a local dataset: Yearbook Dataset</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="plot_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -104,7 +104,7 @@ to download the full example code</p>
 <span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this headline"></a></h1>
 <p>In this example we will use a pretrained neural network to extract features
 of images in a dataset to train and test MRCs with these features in
-<a class="reference internal" href="plot_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.</p>
+<a class="reference internal" href="plot_1_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.</p>
 <p>We are using <a class="reference external" href="https://pytorch.org/hub/pytorch_vision_resnet/">ResNet18</a>
 pretrained model implementation in Pytorch library. Resnet models were proposed
 in “Deep Residual Learning for Image Recognition”. Here we are using the
@@ -354,14 +354,14 @@ is available in the <code class="xref any docutils literal notranslate"><span cl
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plot_grid.html" class="btn btn-neutral float-left" title="Hyperparameter Tuning: Upper Bound vs Cross-Validation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="plot_image_classification.html" class="btn btn-neutral float-right" title="MRCs with Deep Neural Networks: Part II" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../plot_3_example_amrc.html" class="btn btn-neutral float-left" title="Example: Use of AMRC (Adaptative MRC) for Online Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plot_1_image_classification.html" class="btn btn-neutral float-right" title="MRCs with Deep Neural Networks: Part II" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

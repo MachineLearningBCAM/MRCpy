@@ -121,7 +121,7 @@
 
 <span class="sd">    .. _ref1:</span>
 <span class="sd">    .. seealso:: For more information about MRC, one can refer to the following</span>
-<span class="sd">    resources:</span>
+<span class="sd">        resources:</span>
 
 <span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).</span>
 <span class="sd">                    Minimax Classification with</span>
@@ -709,7 +709,7 @@
 
         <span class="k">return</span> <span class="n">new_params_</span>
 
-    <span class="k">def</span> <span class="nf">nesterov_optimization_minimized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">nesterov_optimization_minimized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Solution of the MRC convex optimization (minimization)</span>
 <span class="sd">        using an optimized version of the Nesterov accelerated approach.</span>
@@ -750,147 +750,121 @@
 <span class="sd">            (`mu`: `array-like` shape (`m`,),</span>
 <span class="sd">            `nu`: `float`).</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">M_t</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">Mc</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">lambda_col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">MD</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
-        <span class="n">MD_sum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">1024</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">large_dimension</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="c1"># print(&quot;LARGE DIMENSION&quot;)</span>
-            <span class="n">MMtc</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">Mtc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">large_dimension</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="c1"># print(&quot;SMALL DIMENSION&quot;)</span>
-            <span class="n">MMt</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">M_t</span>
-            <span class="n">MMtc</span> <span class="o">=</span> <span class="n">Mc</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">MMt</span>
-            <span class="n">Mtc</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="n">M_t</span>
-
-        <span class="c1"># Initial values for points</span>
-        <span class="n">y_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">w_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># make it a column</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># make it a column</span>
+        <span class="n">mu_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">c_k</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">mnu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">M</span> <span class="o">@</span> <span class="n">y_k</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>  <span class="c1"># -h en matlab</span>
-        <span class="n">f_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="n">y_k</span><span class="p">)</span> <span class="o">+</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">y_k</span><span class="p">))</span> <span class="o">+</span> <span class="n">mnu</span><span class="p">)</span>
-        <span class="n">upper</span> <span class="o">=</span> <span class="n">f_value</span>
-        <span class="n">mu</span> <span class="o">=</span> <span class="n">y_k</span>
-        <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="n">mnu</span>
-        <span class="n">My</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">y_k</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># -h en matlab</span>
-        <span class="n">Mw</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">h</span>  <span class="c1"># -h en matlab</span>
+        <span class="n">nu_k</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">a</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">F</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">F</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
+        <span class="n">y_k</span> <span class="o">=</span> <span class="n">mu_k</span>
+        <span class="n">v_k</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">mu_k</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="n">w_k</span> <span class="o">=</span> <span class="n">v_k</span>
+        <span class="n">s_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k</span><span class="p">)</span>
+        <span class="n">d_k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">H</span> <span class="o">@</span> <span class="n">s_k</span>
+        <span class="n">i_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k</span><span class="p">)</span>
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k</span>
+        <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span>
+        <span class="n">f_star</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k</span> <span class="o">+</span>\
+            <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span>
 
-        <span class="n">alpha_k</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">signos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
-        <span class="n">signos_old</span> <span class="o">=</span> <span class="n">signos</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="n">signos</span> <span class="o">-</span> <span class="n">signos_old</span>
-        <span class="n">index1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">step_k</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">if</span> <span class="n">large_dimension</span><span class="p">:</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-            <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">MMtc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">1024</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Large Dimension</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="c1"># calculate My-h</span>
-                <span class="n">MD_sum</span> <span class="o">=</span> <span class="n">MD_sum</span> <span class="o">+</span> <span class="n">MD</span><span class="p">[:,</span> <span class="n">index1</span><span class="p">]</span> <span class="o">@</span> <span class="n">delta</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span>
-                <span class="n">Mg0</span> <span class="o">=</span> <span class="n">MD_sum</span> <span class="o">+</span> <span class="n">MMtc</span><span class="p">[:,</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="n">idx</span><span class="p">]]]</span>
-                <span class="n">Mw_prev</span> <span class="o">=</span> <span class="n">Mw</span>
-                <span class="n">Mw</span> <span class="o">=</span> <span class="n">My</span> <span class="o">-</span> <span class="n">alpha_k</span> <span class="o">*</span> <span class="n">Mg0</span>
+                <span class="n">g_k</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">s_k</span> <span class="o">+</span> <span class="n">F</span><span class="p">[[</span><span class="n">i_k</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">y_k_next</span> <span class="o">=</span> <span class="n">mu_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">g_k</span>
+                <span class="n">mu_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">y_k</span>
+                <span class="n">u_k</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">G</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i_k</span><span class="p">]]</span>
+                <span class="n">w_k_next</span> <span class="o">=</span> <span class="n">v_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">u_k</span>
+                <span class="n">v_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">w_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">w_k</span>
+                <span class="n">i_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k_next</span><span class="p">)</span>
+                <span class="n">s_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span>
+                <span class="n">delta_k</span> <span class="o">=</span> <span class="n">s_k_next</span> <span class="o">-</span> <span class="n">s_k</span>
 
-                <span class="n">My</span> <span class="o">=</span> <span class="n">Mw</span> <span class="o">+</span> <span class="n">step_k</span> <span class="o">*</span> <span class="p">(</span><span class="n">Mw</span> <span class="o">-</span> <span class="n">Mw_prev</span><span class="p">)</span>
+                <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">+</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                    <span class="k">elif</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">-</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                    <span class="k">elif</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>\
+                            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
 
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">My</span><span class="p">)</span>
-                <span class="n">mnu</span> <span class="o">=</span> <span class="n">My</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">c_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">theta_k_next</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">nu_k_next</span> <span class="o">=</span> <span class="n">theta_k_next</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">f_k_next</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k_next</span> <span class="o">+</span>\
+                    <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span> <span class="o">+</span>\
+                    <span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">f_k_next</span> <span class="o">&lt;</span> <span class="n">f_star</span><span class="p">:</span>
+                    <span class="n">f_star</span> <span class="o">=</span> <span class="n">f_k_next</span>
+                    <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                    <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">index</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-                    <span class="n">update_MMtc</span> <span class="o">=</span> <span class="n">Mc</span> <span class="o">+</span> <span class="n">M</span> <span class="o">@</span> <span class="p">(</span><span class="n">M_t</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">])</span>
-                    <span class="n">MMtc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">MMtc</span><span class="p">,</span> <span class="n">update_MMtc</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                        <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">update_MMtc</span><span class="p">),</span> <span class="mi">1</span><span class="p">))],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="n">Mtc</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">+</span> <span class="n">M_t</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
-                    <span class="n">index</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">MMtc</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="c1"># Update variables</span>
+                <span class="n">mu_k</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                <span class="n">y_k</span> <span class="o">=</span> <span class="n">y_k_next</span>
+                <span class="n">nu_k</span> <span class="o">=</span> <span class="n">nu_k_next</span>
+                <span class="n">v_k</span> <span class="o">=</span> <span class="n">v_k_next</span>
+                <span class="n">w_k</span> <span class="o">=</span> <span class="n">w_k_next</span>
+                <span class="n">s_k</span> <span class="o">=</span> <span class="n">s_k_next</span>
+                <span class="n">d_k</span> <span class="o">=</span> <span class="n">d_k_next</span>
+                <span class="n">c_k</span> <span class="o">=</span> <span class="n">c_k_next</span>
+                <span class="n">i_k</span> <span class="o">=</span> <span class="n">i_k_next</span>
+                <span class="n">theta_k</span> <span class="o">=</span> <span class="n">theta_k_next</span>
 
-                <span class="n">signos_old</span> <span class="o">=</span> <span class="n">signos</span>
-                <span class="n">signos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
-                <span class="n">delta</span> <span class="o">=</span> <span class="n">signos</span> <span class="o">-</span> <span class="n">signos_old</span>
-                <span class="n">index1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Small Dimension</span>
 
-                <span class="n">g0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">signos</span><span class="p">,</span> <span class="n">lambda_col</span><span class="p">)</span> <span class="o">+</span> <span class="n">Mtc</span><span class="p">[:,</span> <span class="p">[</span><span class="n">idx</span><span class="p">]]</span>
-                <span class="n">f_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_k</span><span class="p">))</span> <span class="o">+</span>
-                                <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">y_k</span><span class="p">)))</span>
-                                <span class="o">+</span> <span class="n">mnu</span><span class="p">)</span>
+            <span class="n">MD</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
 
-                <span class="k">if</span> <span class="n">f_value</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
-                    <span class="n">upper</span> <span class="o">=</span> <span class="n">f_value</span>
-                    <span class="n">mu</span> <span class="o">=</span> <span class="n">y_k</span>
-                    <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="n">mnu</span>
-
-                <span class="n">theta_k_prev</span> <span class="o">=</span> <span class="n">theta_k</span>
-                <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">alpha_k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-                <span class="n">w_k_prev</span> <span class="o">=</span> <span class="n">w_k</span>
-                <span class="n">w_k</span> <span class="o">=</span> <span class="n">y_k</span> <span class="o">-</span> <span class="n">alpha_k</span> <span class="o">*</span> <span class="n">g0</span>
-                <span class="n">step_k</span> <span class="o">=</span> <span class="n">theta_k</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k_prev</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">y_k</span> <span class="o">=</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">step_k</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_k</span> <span class="o">-</span> <span class="n">w_k_prev</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                <span class="c1"># calculate My-h</span>
-                <span class="n">MD_sum</span> <span class="o">=</span> <span class="n">MD_sum</span> <span class="o">+</span> <span class="n">MD</span><span class="p">[:,</span> <span class="n">index1</span><span class="p">]</span> <span class="o">@</span> <span class="n">delta</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span>
-                <span class="n">Mg0</span> <span class="o">=</span> <span class="n">MD_sum</span> <span class="o">+</span> <span class="n">MMtc</span><span class="p">[:,</span> <span class="p">[</span><span class="n">idx</span><span class="p">]]</span>
-                <span class="n">Mw_prev</span> <span class="o">=</span> <span class="n">Mw</span>
-                <span class="n">Mw</span> <span class="o">=</span> <span class="n">My</span> <span class="o">-</span> <span class="n">alpha_k</span> <span class="o">*</span> <span class="n">Mg0</span>
-                <span class="n">My</span> <span class="o">=</span> <span class="n">Mw</span> <span class="o">+</span> <span class="n">step_k</span> <span class="o">*</span> <span class="p">(</span><span class="n">Mw</span> <span class="o">-</span> <span class="n">Mw_prev</span><span class="p">)</span>
+                <span class="n">g_k</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">s_k</span> <span class="o">+</span> <span class="n">F</span><span class="p">[[</span><span class="n">i_k</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">y_k_next</span> <span class="o">=</span> <span class="n">mu_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">g_k</span>
+                <span class="n">mu_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">y_k</span>
+                <span class="n">u_k</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">G</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i_k</span><span class="p">]]</span>
+                <span class="n">w_k_next</span> <span class="o">=</span> <span class="n">v_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">u_k</span>
+                <span class="n">v_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">w_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">w_k</span>
+                <span class="n">i_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k_next</span><span class="p">)</span>
+                <span class="n">s_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span>
+                <span class="n">delta_k</span> <span class="o">=</span> <span class="n">s_k_next</span> <span class="o">-</span> <span class="n">s_k</span>
 
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">My</span><span class="p">)</span>
-                <span class="n">mnu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">My</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta_k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">MD</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">@</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-                <span class="n">signos_old</span> <span class="o">=</span> <span class="n">signos</span>
-                <span class="n">signos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
-                <span class="n">delta</span> <span class="o">=</span> <span class="n">signos</span> <span class="o">-</span> <span class="n">signos_old</span>
-                <span class="n">index1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># where delta!=0</span>
-                <span class="n">g0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">signos</span><span class="p">,</span> <span class="n">lambda_col</span><span class="p">)</span> <span class="o">+</span> <span class="n">Mtc</span><span class="p">[:,</span> <span class="p">[</span><span class="n">idx</span><span class="p">]]</span>
-                <span class="n">f_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_k</span><span class="p">))</span> <span class="o">+</span>
-                                <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">y_k</span><span class="p">)))</span>
-                                <span class="o">+</span> <span class="n">mnu</span><span class="p">)</span>
+                <span class="n">c_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">theta_k_next</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">nu_k_next</span> <span class="o">=</span> <span class="n">theta_k_next</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">f_k_next</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k_next</span> <span class="o">+</span>\
+                    <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span> <span class="o">+</span>\
+                    <span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">f_k_next</span> <span class="o">&lt;</span> <span class="n">f_star</span><span class="p">:</span>
+                    <span class="n">f_star</span> <span class="o">=</span> <span class="n">f_k_next</span>
+                    <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                    <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">f_value</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
-                    <span class="n">upper</span> <span class="o">=</span> <span class="n">f_value</span>
-                    <span class="n">mu</span> <span class="o">=</span> <span class="n">y_k</span>
-                    <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="n">mnu</span>
+                <span class="c1"># Update variables</span>
+                <span class="n">mu_k</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                <span class="n">y_k</span> <span class="o">=</span> <span class="n">y_k_next</span>
+                <span class="n">nu_k</span> <span class="o">=</span> <span class="n">nu_k_next</span>
+                <span class="n">v_k</span> <span class="o">=</span> <span class="n">v_k_next</span>
+                <span class="n">w_k</span> <span class="o">=</span> <span class="n">w_k_next</span>
+                <span class="n">s_k</span> <span class="o">=</span> <span class="n">s_k_next</span>
+                <span class="n">d_k</span> <span class="o">=</span> <span class="n">d_k_next</span>
+                <span class="n">c_k</span> <span class="o">=</span> <span class="n">c_k_next</span>
+                <span class="n">i_k</span> <span class="o">=</span> <span class="n">i_k_next</span>
+                <span class="n">theta_k</span> <span class="o">=</span> <span class="n">theta_k_next</span>
 
-                <span class="n">theta_k_prev</span> <span class="o">=</span> <span class="n">theta_k</span>
-                <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">alpha_k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-                <span class="n">w_k_prev</span> <span class="o">=</span> <span class="n">w_k</span>
-                <span class="n">w_k</span> <span class="o">=</span> <span class="n">y_k</span> <span class="o">-</span> <span class="n">alpha_k</span> <span class="o">*</span> <span class="n">g0</span>
-                <span class="n">step_k</span> <span class="o">=</span> <span class="n">theta_k</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k_prev</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                <span class="n">y_k</span> <span class="o">=</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">step_k</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_k</span> <span class="o">-</span> <span class="n">w_k_prev</span><span class="p">)</span>
-
-        <span class="c1"># Check for possible improvement of the objective value</span>
-        <span class="c1"># for the last generated value of w_k</span>
-        <span class="n">mnu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">M</span> <span class="o">@</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">h</span><span class="p">))</span>
-        <span class="n">f_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">w_k</span><span class="p">))</span> <span class="o">+</span>
-                        <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">w_k</span><span class="p">)))</span> <span class="o">+</span> <span class="n">mnu</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">f_value</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
-            <span class="n">upper</span> <span class="o">=</span> <span class="n">f_value</span>
-            <span class="n">mu</span> <span class="o">=</span> <span class="n">w_k</span>
-            <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="n">mnu</span>
-
-        <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-
-        <span class="c1"># Return the optimized values in a dictionary</span>
-        <span class="n">new_params_</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;w_k&#39;</span><span class="p">:</span> <span class="n">w_k</span><span class="p">,</span>
-                       <span class="s1">&#39;w_k_prev&#39;</span><span class="p">:</span> <span class="n">w_k_prev</span><span class="p">,</span>
-                       <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span>
-                       <span class="s1">&#39;nu&#39;</span><span class="p">:</span> <span class="n">nu</span><span class="p">,</span>
-                       <span class="s1">&#39;best_value&#39;</span><span class="p">:</span> <span class="n">upper</span><span class="p">,</span>
+        <span class="n">new_params_</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;w_k&#39;</span><span class="p">:</span> <span class="n">w_k_next</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;w_k_prev&#39;</span><span class="p">:</span> <span class="n">w_k</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu_star</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;nu&#39;</span><span class="p">:</span> <span class="n">v_star</span><span class="p">,</span>
+                       <span class="s1">&#39;best_value&#39;</span><span class="p">:</span> <span class="n">f_star</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
                        <span class="p">}</span>
+
         <span class="k">return</span> <span class="n">new_params_</span>
 
 <div class="viewcode-block" id="MRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
@@ -932,11 +906,6 @@
             <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="n">hy_x</span> <span class="o">=</span> <span class="n">hy_x</span> <span class="o">/</span> <span class="n">c</span>
 
-            <span class="c1"># Set the approach for prediction to non-deterministic</span>
-            <span class="c1"># if not provided by user.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">False</span>
-
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
             <span class="c1"># Constraints in case of log loss function</span>
 
@@ -948,11 +917,6 @@
                              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">hy_x</span><span class="p">)</span>
 
-            <span class="c1"># Set the approach for prediction to deterministic</span>
-            <span class="c1"># if not provided by user.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="kc">True</span>
-
         <span class="k">return</span> <span class="n">hy_x</span></div></div>
 </pre></div>
 
@@ -963,7 +927,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Kartheek Bondugula, Santiago Mazuelas, Aritz Perez and Claudia Guerrero.</p>
+    <p>&#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
