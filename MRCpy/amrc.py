@@ -197,7 +197,7 @@ class AMRC(BaseMRC):
         p: `float`
             Probability
 
-        p: `float`
+        s: `float`
             Standard deviation
 
         Output
