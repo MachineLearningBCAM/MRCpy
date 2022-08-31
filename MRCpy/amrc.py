@@ -17,7 +17,7 @@ class AMRC(BaseMRC):
     Adaptative Minimax Risk Classifier
 
     The class AMRC implements the method Adaptative Minimimax Risk
-    Classification (MRC) proposed in :ref:`[1] <ref1>`. It is designed for
+    Classificafiers (AMRCs) proposed in :ref:`[1] <ref1>`. It is designed for
     online learning with streaming data. Training samples
     are fed sequentially and the classification rule is
     updated every time a new sample is provided.
@@ -30,17 +30,11 @@ class AMRC(BaseMRC):
     multivariate and high-order tracking of the time-varying
     underlying distribution. In addition, differently
     from conventional techniques, AMRCs
-    can provide computable tight performance guarantees at learning
+    can provide computable tight performance guarantees at learning.
 
     It implements 0-1 loss function and it can be used with linear and
     Random Fourier features.
-
-    Adaptive Minimax Risk Classifiers (AMRCs) account for multidimensional
-    time changes by means of a multivariate and high-order tracking of
-    the timevarying underlying distribution. In addition, differently
-    from conventional techniques, AMRCs can provide computable
-    tight performance guarantees.
-
+    
     .. seealso:: For more information about AMRC, one can refer to the
         following paper:
 
