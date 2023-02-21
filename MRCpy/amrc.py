@@ -34,7 +34,7 @@ class AMRC(BaseMRC):
 
     It implements 0-1 loss function and it can be used with linear and
     Random Fourier features.
-    
+
     .. seealso:: For more information about AMRC, one can refer to the
         following paper:
 
@@ -42,12 +42,16 @@ class AMRC(BaseMRC):
                     Minimax Classification under Concept Drift with
                     Multidimensional Adaptation and Performance Guarantees.
                     International Conference on Machine Learning (ICML) 2022.
-                    
+
                     @InProceedings{AlvMazLoz22,
-                    title = 	 {Minimax Classification under Concept Drift with 
-                                 Multidimensional Adaptation and Performance Guarantees},
-                    author =       {{\'A}lvarez, Ver{\'o}nica and Mazuelas, Santiago and Lozano, Jose A},
-                    booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
+                    title = 	 {Minimax Classification under Concept Drift with
+                                 Multidimensional Adaptation and
+                                 Performance Guarantees},
+                    author =     {{\'A}lvarez, Ver{\'o}nica
+                                  and Mazuelas, Santiago
+                                  and Lozano, Jose A},
+                    booktitle = {Proceedings of the 39th
+                                 International Conference on Machine Learning},
                     pages = 	 {486--499},
                     year = 	 {2022},
                     volume = 	 {162},
