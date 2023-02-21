@@ -205,7 +205,7 @@ class BasePhi():
 
         # One-hot encoding for multi-class classification.
         else:
-            phi = np.zeros((n, self.n_classes * X_feat.shape[1]), dtype=float)
+            phi = np.zeros((n, self.n_classes * X_feat.shape[1]), dtype=np.float16)
             tweaked_eye_mat = (np.eye(self.n_classes))[Y, :]
             for i in range(n):
                 phi[i, :] = np.kron(tweaked_eye_mat[i], X_feat[i, :])
