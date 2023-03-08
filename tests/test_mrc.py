@@ -15,10 +15,10 @@ class TestMRC(unittest.TestCase):
         # Get the sample data for testing.
         self.X, self.y = load_iris(with_info=False)
 
-    def MRC_training(self, phi, loss, use_cvx):
+    def MRC_training(self, phi, loss, solver):
         r = np.unique(self.y).shape[0]
         clf = MRC(phi=phi, loss=loss,
-                  use_cvx=use_cvx, solver='SCS')
+                  solver=solver)
         clf.fit(self.X, self.y)
         upper = clf.upper_
         lower = clf.get_lower_bound()
@@ -38,29 +38,29 @@ class TestMRC(unittest.TestCase):
     # Without using cvxpy
     # Training test for MRC with 0-1 loss.
     def test_MRC0_1(self):
-        self.MRC_training(phi='threshold', loss='0-1', use_cvx=False)
-        self.MRC_training(phi='linear', loss='0-1', use_cvx=False)
-        self.MRC_training(phi='fourier', loss='0-1', use_cvx=False)
-        self.MRC_training(phi='relu', loss='0-1', use_cvx=False)
+        self.MRC_training(phi='threshold', loss='0-1', solver='subgrad')
+        self.MRC_training(phi='linear', loss='0-1', solver='subgrad')
+        self.MRC_training(phi='fourier', loss='0-1', solver='subgrad')
+        self.MRC_training(phi='relu', loss='0-1', solver='subgrad')
 
     # Training test for MRC with log loss.
     def test_MRClog(self):
-        self.MRC_training(phi='threshold', loss='log', use_cvx=False)
-        self.MRC_training(phi='linear', loss='log', use_cvx=False)
-        self.MRC_training(phi='fourier', loss='log', use_cvx=False)
-        self.MRC_training(phi='relu', loss='log', use_cvx=False)
+        self.MRC_training(phi='threshold', loss='log', solver='subgrad')
+        self.MRC_training(phi='linear', loss='log', solver='subgrad')
+        self.MRC_training(phi='fourier', loss='log', solver='subgrad')
+        self.MRC_training(phi='relu', loss='log', solver='subgrad')
 
     # Using cvxpy
     # Training test for MRC with 0-1 loss.
     def test_MRC0_1_cvx(self):
-        self.MRC_training(phi='threshold', loss='0-1', use_cvx=True)
-        self.MRC_training(phi='linear', loss='0-1', use_cvx=True)
-        self.MRC_training(phi='fourier', loss='0-1', use_cvx=True)
-        self.MRC_training(phi='relu', loss='0-1', use_cvx=True)
+        self.MRC_training(phi='threshold', loss='0-1', solver='cvx')
+        self.MRC_training(phi='linear', loss='0-1', solver='cvx')
+        self.MRC_training(phi='fourier', loss='0-1', solver='cvx')
+        self.MRC_training(phi='relu', loss='0-1', solver='cvx')
 
     # Training test for MRC with log loss.
     def test_MRClog_cvx(self):
-        self.MRC_training(phi='threshold', loss='log', use_cvx=True)
-        self.MRC_training(phi='linear', loss='log', use_cvx=True)
-        self.MRC_training(phi='fourier', loss='log', use_cvx=True)
-        self.MRC_training(phi='relu', loss='0-1', use_cvx=True)
+        self.MRC_training(phi='threshold', loss='log', solver='cvx')
+        self.MRC_training(phi='linear', loss='log', solver='cvx')
+        self.MRC_training(phi='fourier', loss='log', solver='cvx')
+        self.MRC_training(phi='relu', loss='log', solver='cvx')

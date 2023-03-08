@@ -5,19 +5,20 @@ import warnings
 
 import cvxpy as cvx
 import numpy as np
+import time
 import scipy.special as scs
 from sklearn.utils import check_array
 from sklearn.utils.validation import check_is_fitted
 
 # Import the MRC super class
 from MRCpy import BaseMRC
-
+from MRCpy.solvers.cvx import *
 
 class MRC(BaseMRC):
     '''
     Minimax Risk Classifier
 
-    The class MRC implements the method Minimimax Risk Classification (MRC)
+    The class MRC implements the method Minimimax Risk Classifiers (MRC)
     proposed in :ref:`[1] <ref1>`
     using the default constraints. It implements two kinds of loss functions,
     namely 0-1 and log loss.
@@ -85,27 +86,6 @@ class MRC(BaseMRC):
         :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
         of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
 
-    sigma : `str` or `float`, default = `scale`
-        When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature
-        mappings such as Random Fourier or ReLU featuress.
-        For comparison its relation with parameter `gamma` used in
-        other methods is :math:`\gamma=1/(2\sigma^2)`.
-        When given a float, it is the value for the scaling parameter.
-
-        'scale'
-            Approximates `sigma` by
-            :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}`
-            so that `gamma` is
-            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`
-            where `var` is the variance function.
-
-        'avg_ann_50'
-            Approximates `sigma` by the average distance to the
-            :math:`50^{\\textrm{th}}`
-            nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`.
-
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
         should be done in a deterministic way (given a fixed `random_state`
@@ -124,22 +104,29 @@ class MRC(BaseMRC):
         When set to True, use CVXpy library for the optimization
         instead of the subgradient methods.
 
-    solver : `str`, default = 'MOSEK'
-        Type of CVX solver to be used for solving the optimization problem.
-        In some cases, one solver might not work,
-        so you might need to change solver depending on the problem.
+    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’cvx’
+        Method to use in solving the optimization problem. 
+        Default is ‘cvx’. To choose a solver,
+        you might want to consider the following aspects:
 
-        'SCS'
-            It uses Splitting Conic Solver (SCS).
+        ’cvx’
+            Solves the optimization problem using the CVXPY library.
+            Obtains an accurate solution while requiring more time
+            than the other methods. 
+            Note that the library uses the GUROBI solver in CVXpy for which
+            one might need to request for a license.
+            A free license can be requested `here 
+            <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
 
-        'ECOS'
-            It uses Embedded Eonic Eolver (ECOS).
+        ’subgrad’
+            Solves the optimization using a subgradient approach.
+            The parameter `max_iters` determines the number of iterations
+            for this approach. More iteration lead to an accurate solution
+            while requiring more time.
 
-        'MOSEK'
-            MOSEK is a commercial solver for which one might need to
-            request for a license. A free license can be requested
-            `here <https://www.mosek.com/products/academic-licenses/>`_.
-
+            [1] `Mazuelas, S., Mauricio, R., & Grunwald, P. (2022).
+                Minimax Risk Classifiers with 0-1 Loss.
+                <https://arxiv.org/abs/2010.07964>`_
 
     max_iters : `int`, default = `10000`
         Maximum number of iterations to use
@@ -273,6 +260,42 @@ class MRC(BaseMRC):
 
     '''
 
+    def __init__(self,
+                 loss='0-1',
+                 s=0.3,
+                 deterministic=True,
+                 random_state=None,
+                 fit_intercept=True,
+                 solver='subgrad',
+                 max_iters=None,
+                 n_max=100,
+                 k_max=20,
+                 eps=1e-4,
+                 stepsize='decay',
+                 phi='linear',
+                 **phi_kwargs):
+
+        if max_iters is None:
+            if phi == 'linear' or phi == 'fourier':
+                self.max_iters = 100000
+            else:
+                self.max_iters = 2000
+        else:
+            self.max_iters = max_iters
+
+        self.stepsize = stepsize
+        self.solver = solver
+        self.n_max = n_max
+        self.k_max = k_max
+        self.eps = eps
+        self.cvx_solvers = ['SCS', 'ECOS']
+        super().__init__(loss=loss,
+                         s=s,
+                         deterministic=deterministic,
+                         random_state=random_state,
+                         fit_intercept=fit_intercept,
+                         phi=phi, **phi_kwargs)
+
     def minimax_risk(self, X, tau_, lambda_, n_classes):
         '''
         Solves the minimax risk problem
@@ -343,7 +366,7 @@ class MRC(BaseMRC):
             M = F / (cardS[:, np.newaxis])
             h = 1 - (1 / cardS)
 
-        if self.use_cvx:
+        if self.solver == 'cvx':
             # Use CVXpy for the convex optimization of the MRC.
 
             # Variables
@@ -371,10 +394,13 @@ class MRC(BaseMRC):
                                      self.tau_ @ mu +
                                      neg_nu(mu))
 
-            self.mu_, self.upper_ = self.try_solvers(objective, None, mu)
+            self.mu_, self.upper_ = try_solvers(objective,
+                                                None,
+                                                mu,
+                                                self.cvx_solvers)
             self.nu_ = (-1) * (neg_nu(self.mu_).value)
 
-        elif not self.use_cvx:
+        elif self.solver == 'subgrad':
             # Use the subgradient approach for the convex optimization of MRC
 
             if self.loss == '0-1':
@@ -389,7 +415,12 @@ class MRC(BaseMRC):
                     return M_t[:, idx]
 
                 # Calculate the upper bound
-                self.upper_params_ = self.nesterov_optimization_minimized(M, h)
+                self.upper_params_ = \
+                    self.nesterov_optimization_minimized(M,
+                                                         h,
+                                                         self.tau_,
+                                                         self.lambda_,
+                                                         self.max_iters)
 
             elif self.loss == 'log':
 
@@ -404,7 +435,12 @@ class MRC(BaseMRC):
                     return (expPhi_xi @ phi_xi).transpose() / np.sum(expPhi_xi)
 
                 # Calculate the upper bound
-                self.upper_params_ = self.nesterov_optimization(m, f_, g_)
+                self.upper_params_ = self.nesterov_optimization(m,
+                                                                f_,
+                                                                g_,
+                                                                self.tau_,
+                                                                self.lambda_,
+                                                                self.max_iters)
 
             else:
                 raise ValueError('The given loss function is not available ' +
@@ -413,6 +449,9 @@ class MRC(BaseMRC):
             self.mu_ = self.upper_params_['mu']
             self.nu_ = self.upper_params_['nu']
             self.upper_ = self.upper_params_['best_value']
+
+        else:
+            raise ValueError('Unexpected solver ... ')
 
         self.is_fitted_ = True
         return self
@@ -483,7 +522,7 @@ class MRC(BaseMRC):
 
         phi = phi.reshape((n * self.n_classes, m))
 
-        if self.use_cvx:
+        if self.solver == 'cvx':
             # Use CVXpy for the convex optimization of the MRC
 
             low_mu = cvx.Variable(m)
@@ -494,12 +533,12 @@ class MRC(BaseMRC):
                                      cvx.max(phi @ low_mu + eps))
 
             self.mu_l_, self.lower_ = \
-                self.try_solvers(objective, None, low_mu)
+                try_solvers(objective, None, low_mu, self.cvx_solvers)
 
             # Maximize the function
             self.lower_ = (-1) * self.lower_
 
-        elif not self.use_cvx:
+        elif self.solver == 'subgrad':
             # Use the subgradient approach for the convex optimization of MRC
 
             # Defining the partial objective and its gradient.
@@ -511,7 +550,12 @@ class MRC(BaseMRC):
 
             # Lower bound
             self.lower_params_ = \
-                self.nesterov_optimization(m, f_, g_)
+                self.nesterov_optimization(m,
+                                           f_,
+                                           g_,
+                                           self.tau_,
+                                           self.lambda_,
+                                           self.max_iters)
 
             self.mu_l_ = self.lower_params_['mu']
             self.lower_ = self.lower_params_['best_value']
@@ -520,13 +564,15 @@ class MRC(BaseMRC):
             # as the nesterov optimization gives the minimum
             self.lower_ = -1 * self.lower_
 
+        else:
+            raise ValueError('Unexpected solver ... ')
+
         return self.lower_
 
-    def nesterov_optimization(self, m, f_, g_):
+    def nesterov_optimization(self, m, f_, g_, tau_, lambda_, max_iters):
         '''
         Solution of the MRC convex optimization (minimization)
         using the Nesterov accelerated approach.
-
         .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
                             The Strength of Nesterov’s Extrapolation in
                             the Individual Convergence of Nonsmooth
@@ -534,18 +580,15 @@ class MRC(BaseMRC):
                             neural networks and learning systems,
                             31(7), 2557-2568.
                             <https://ieeexplore.ieee.org/document/8822632>`_
-
         Parameters
         ----------
         m : `int`
             Length of the feature mapping vector
-
         f_ : a lambda function of the form - f_(mu)
             Lambda function
             calculating a part of the objective function
             depending on the type of loss function chosen
             by taking the parameters (mu) of the optimization as input.
-
         g_ : a lambda function of the form - g_(mu, idx)
             Lambda function
             calculating the part of the subgradient of the objective function
@@ -553,7 +596,6 @@ class MRC(BaseMRC):
             It takes the as input: parameters (mu) of the optimization and
             the index corresponding to the maximum value of data matrix
             obtained from the instances.
-
         Returns
         -------
         new_params_ : `dict`
@@ -579,19 +621,19 @@ class MRC(BaseMRC):
         # Setting initial values for the objective function and other results
         v = f_(y_k)
         mnu = np.max(v)
-        f_best_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + mnu
+        f_best_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + mnu
         mu = y_k
         nu = -1 * mnu
 
         # Iteration for finding the optimal values
         # using Nesterov's extrapolation
-        for k in range(1, (self.max_iters + 1)):
+        for k in range(1, (max_iters + 1)):
             y_k = w_k + theta_k * ((1 / theta_k_prev) - 1) * (w_k - w_k_prev)
 
             # Calculating the subgradient of the objective function at y_k
             v = f_(y_k)
             idx = np.argmax(v)
-            g_0 = self.lambda_ * np.sign(y_k) - self.tau_ + g_(y_k, idx)
+            g_0 = lambda_ * np.sign(y_k) - tau_ + g_(y_k, idx)
 
             # Update the parameters
             theta_k_prev = theta_k
@@ -605,7 +647,7 @@ class MRC(BaseMRC):
             # Check if there is an improvement
             # in the value of the objective function
             mnu = v[idx]
-            f_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + mnu
+            f_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + mnu
             if f_value < f_best_value:
                 f_best_value = f_value
                 mu = y_k
@@ -615,7 +657,7 @@ class MRC(BaseMRC):
         # for the last generated value of w_k
         v = f_(w_k)
         mnu = np.max(v)
-        f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + mnu
+        f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + mnu
 
         if f_value < f_best_value:
             f_best_value = f_value
@@ -632,7 +674,7 @@ class MRC(BaseMRC):
 
         return new_params_
 
-    def nesterov_optimization_minimized(self, F, b):
+    def nesterov_optimization_minimized(self, F, b, tau_, lambda_, max_iters):
         '''
         Solution of the MRC convex optimization (minimization)
         using an optimized version of the Nesterov accelerated approach.
@@ -675,15 +717,14 @@ class MRC(BaseMRC):
         '''
         b = np.reshape(b, (-1, 1))
         n, m = F.shape
-        lambda_ = np.reshape(self.lambda_, (-1, 1))  # make it a column
-        a = np.reshape(-self.tau_, (-1, 1))  # make it a column
+        a = np.reshape(-tau_, (-1, 1))  # make it a column
         mu_k = np.zeros((m, 1))
         c_k = 1
         theta_k = 1
         nu_k = 0
         alpha = F @ a
         G = F @ F.transpose()
-        H = 2 * F @ np.diag(self.lambda_)
+        H = 2 * F @ np.diag(lambda_)
         y_k = mu_k
         v_k = F @ mu_k + b
         w_k = v_k
@@ -692,11 +733,12 @@ class MRC(BaseMRC):
         i_k = np.argmax(v_k)
         mu_star = mu_k
         v_star = -v_k[i_k]
+        lambda_ = np.reshape(lambda_, (-1, 1))  # make it a column
         f_star = a.transpose() @ mu_k +\
             lambda_.transpose() @ np.abs(mu_k) + v_k[i_k]
 
         if n * n > (1024) ** 3:  # Large Dimension
-            for k in range(1, self.max_iters + 1):
+            for k in range(1, max_iters + 1):
                 g_k = a + lambda_ * s_k + F[[i_k], :].T
                 y_k_next = mu_k - c_k * g_k
                 mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
@@ -742,9 +784,9 @@ class MRC(BaseMRC):
 
         else:  # Small Dimension
 
-            MD = F @ np.diag(self.lambda_)
+            MD = H / 2
 
-            for k in range(1, self.max_iters + 1):
+            for k in range(1, max_iters + 1):
                 g_k = a + lambda_ * s_k + F[[i_k], :].T
                 y_k_next = mu_k - c_k * g_k
                 mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k

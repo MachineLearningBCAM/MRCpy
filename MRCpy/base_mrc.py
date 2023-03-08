@@ -72,27 +72,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         standard deviation of :math:`\\phi(X,Y)` in the supervised
         dataset (X,Y).
 
-    sigma : `str` or `float`, default = `scale`
-        When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature
-        mappings such as Random Fourier or ReLU features.
-        For comparison its relation with parameter `gamma` used in
-        other methods is :math:`\gamma=1/(2\sigma^2)`.
-        When given a float, it is the value for the scaling parameter.
-
-        'scale'
-            Approximates `sigma` by
-            :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}`
-            so that `gamma` is
-            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`
-            where `var` is the variance function.
-
-        'avg_ann_50'
-            Approximates `sigma` by the average distance to the
-            :math:`50^{\\textrm{th}}`
-            nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`.
-
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
         should be done in a deterministic way (given a fixed `random_state`
@@ -106,31 +85,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
-
-    use_cvx : `bool`, default = `False`
-        When set to True, use CVXpy library for the optimization
-        instead of the subgradient methods.
-
-    solver : `str`, default = 'MOSEK'
-        Type of CVX solver to use for solving the problem.
-        In some cases, one solver might not work,
-        so you might need to change solver depending on the problem.
-
-        'SCS'
-            It uses Splitting Conic Solver (SCS).
-
-        'ECOS'
-            It uses Embedded Eonic Eolver (ECOS).
-
-        'MOSEK'
-            MOSEK is a commercial solver for which one might need to
-            request for a license. A free license can be requested
-            `here <https://www.mosek.com/products/academic-licenses/>`_.
-
-    max_iters : `int`, default = `10000`
-        Maximum number of iterations to use
-        for finding the solution of optimization when
-        using the subgradient approach.
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
@@ -189,21 +143,20 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         then this array is None.
     '''
 
-    def __init__(self, loss='0-1', s=0.3,
-                 deterministic=True, random_state=None,
-                 fit_intercept=True, use_cvx=False,
-                 solver='MOSEK', max_iters=10000, phi='linear',
-                 sigma=None, **phi_kwargs):
+    def __init__(self,
+                 loss='0-1',
+                 s=0.3,
+                 deterministic=True,
+                 random_state=None,
+                 fit_intercept=True,
+                 phi='linear',
+                 **phi_kwargs):
 
         self.loss = loss
         self.s = s
-        self.sigma = sigma
         self.deterministic = deterministic
         self.random_state = random_state
         self.fit_intercept = fit_intercept
-        self.use_cvx = use_cvx
-        self.solver = solver
-        self.max_iters = max_iters
         # Feature mapping and its parameters
         self.phi = phi
         self.phi_kwargs = phi_kwargs
@@ -228,7 +181,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             - Solving the minimax risk optimization problem.
 
             `n_samples` is the number of training samples and
-            `n_features` is the number of features.
+            `n_dimensions` is the number of features.
 
         Y : `array`-like of shape (`n_samples`, 1), default = `None`
             Labels corresponding to the training instances
@@ -360,64 +313,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
                                   ' This functions needs to be implemented' +
                                   ' by a sub-class implementing a MRC.')
 
-    def try_solvers(self, objective, constraints, mu):
-        '''
-        Solves the MRC problem
-        using different types of solvers available in CVXpy
-
-        Parameters
-        ----------
-        objective : `cvxpy` variable of `float` value
-            Minimization objective function of the
-            problem of the MRC.
-
-        constraints : `array`-like of shape (`n_constraints`)
-            Constraints for the MRC optimization.
-
-        mu : `cvxpy` array of shape (number of featuers in `phi`)
-            Parameters used in the optimization problem
-
-        Returns
-        -------
-        mu_ : `array`-like of shape (number of featuers in `phi`)
-            Value of the parameters
-            corresponding to the optimum value of the objective function.
-
-        objective_value : `float`
-            Optimized objective value.
-
-        '''
-
-        # Solve the problem
-        prob = cvx.Problem(objective, constraints)
-        prob.solve(solver=self.solver, verbose=False)
-
-        mu_ = mu.value
-
-        # if the solver could not find values of mu for the given solver
-        if mu_ is None:
-
-            # try with a different solver for solution
-            for s in self.solvers:
-                if s != self.solver:
-
-                    # Solve the problem
-                    prob.solve(solver=s, verbose=False)
-
-                    # Check the values
-                    mu_ = mu.value
-
-                    # Break the loop once the solution is obtained
-                    if mu_ is not None:
-                        break
-
-        # If no solution can be found for the optimization.
-        if mu_ is None:
-            raise ValueError('CVXpy solver couldn\'t find a solution .... ' +
-                             'The problem is ', prob.status)
-
-        objective_value = prob.value
-        return mu_, objective_value
 
     def predict_proba(self, X):
         '''

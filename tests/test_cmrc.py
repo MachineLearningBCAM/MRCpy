@@ -15,10 +15,10 @@ class TestCMRC(unittest.TestCase):
         # Get the sample data for testing.
         self.X, self.y = load_iris(with_info=False)
 
-    def CMRC_training(self, phi, loss, use_cvx):
+    def CMRC_training(self, phi, loss, solver):
         r = np.unique(self.y).shape[0]
         clf = CMRC(phi=phi, loss=loss,
-                   use_cvx=use_cvx, solver='SCS')
+                   solver=solver)
         clf.fit(self.X, self.y)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
         self.assertTrue(clf.is_fitted_)
@@ -35,29 +35,29 @@ class TestCMRC(unittest.TestCase):
     # Without using cvxpy
     # Training test for CMRC with 0-1 loss.
     def test_CMRC0_1(self):
-        self.CMRC_training(phi='threshold', loss='0-1', use_cvx=False)
-        self.CMRC_training(phi='linear', loss='0-1', use_cvx=False)
-        self.CMRC_training(phi='fourier', loss='0-1', use_cvx=False)
-        self.CMRC_training(phi='relu', loss='0-1', use_cvx=False)
+        self.CMRC_training(phi='threshold', loss='0-1', solver='grad')
+        self.CMRC_training(phi='linear', loss='0-1', solver='grad')
+        self.CMRC_training(phi='fourier', loss='0-1', solver='grad')
+        self.CMRC_training(phi='relu', loss='0-1', solver='grad')
 
     # Training test for CMRC with log loss.
     def test_CMRClog(self):
-        self.CMRC_training(phi='threshold', loss='log', use_cvx=False)
-        self.CMRC_training(phi='linear', loss='log', use_cvx=False)
-        self.CMRC_training(phi='fourier', loss='log', use_cvx=False)
-        self.CMRC_training(phi='relu', loss='log', use_cvx=False)
+        self.CMRC_training(phi='threshold', loss='log', solver='grad')
+        self.CMRC_training(phi='linear', loss='log', solver='grad')
+        self.CMRC_training(phi='fourier', loss='log', solver='grad')
+        self.CMRC_training(phi='relu', loss='log', solver='grad')
 
     # Using cvxpy
     # Training test for CMRC with 0-1 loss.
     def test_CMRC0_1_cvx(self):
-        self.CMRC_training(phi='threshold', loss='0-1', use_cvx=True)
-        self.CMRC_training(phi='linear', loss='0-1', use_cvx=True)
-        self.CMRC_training(phi='fourier', loss='0-1', use_cvx=True)
-        self.CMRC_training(phi='relu', loss='0-1', use_cvx=True)
+        self.CMRC_training(phi='threshold', loss='0-1', solver='cvx')
+        self.CMRC_training(phi='linear', loss='0-1', solver='cvx')
+        self.CMRC_training(phi='fourier', loss='0-1', solver='cvx')
+        self.CMRC_training(phi='relu', loss='0-1', solver='cvx')
 
     # Training test for CMRC with log loss.
     def test_CMRClog_cvx(self):
-        self.CMRC_training(phi='threshold', loss='log', use_cvx=True)
-        self.CMRC_training(phi='linear', loss='log', use_cvx=True)
-        self.CMRC_training(phi='fourier', loss='log', use_cvx=True)
-        self.CMRC_training(phi='relu', loss='log', use_cvx=True)
+        self.CMRC_training(phi='threshold', loss='log', solver='cvx')
+        self.CMRC_training(phi='linear', loss='log', solver='cvx')
+        self.CMRC_training(phi='fourier', loss='log', solver='cvx')
+        self.CMRC_training(phi='relu', loss='log', solver='cvx')

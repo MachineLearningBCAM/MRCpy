@@ -186,7 +186,7 @@ class AMRC(BaseMRC):
                          phi=phi, **phi_kwargs)
 
     def tracking(self, feature, y, p, s):
-        """
+        '''
         Tracking uncertainty sets
 
         This function obtains mean vector estimates and confidence vectors
@@ -222,7 +222,7 @@ class AMRC(BaseMRC):
                 of noise processes
 
                 Q, R: variances of noise processes
-        """
+        '''
         Ht = self.params_['Ht']
         eta = self.params_['eta']
         Sigma = self.params_['Sigma']
@@ -320,7 +320,7 @@ class AMRC(BaseMRC):
         return tau_, lambda_, params_
 
     def initialize_tracking(self, m):
-        """
+        '''
         Initialize tracking stage
 
         This function initializes mean vector estimates, confidence vectors,
@@ -349,7 +349,7 @@ class AMRC(BaseMRC):
                 of noise processes
 
                 Q, R: variances of noise processes
-        """
+        '''
 
         e1 = np.ones((1, self.order + 1))
         for i in range(1, self.order + 1):
@@ -389,7 +389,7 @@ class AMRC(BaseMRC):
         return params_
 
     def minimax_risk(self, x, tau_, lambda_, n_classes):
-        """
+        '''
         Learning
 
         This function efficiently learns classifier parameters
@@ -417,7 +417,7 @@ class AMRC(BaseMRC):
 
         self :
             Fitted estimator
-        """
+        '''
         self.n_classes = n_classes
         self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
         self.lambda_ = check_array(lambda_, accept_sparse=True,
@@ -546,6 +546,7 @@ class AMRC(BaseMRC):
         self :
             Fitted estimator
         '''
+
         x = check_array(x, accept_sparse=True, ensure_2d=False)
 
         # Calculate the length m of the feature vector
@@ -599,13 +600,8 @@ class AMRC(BaseMRC):
                 s[i] = 0
 
         # Feature vector
-        # feature = self.feature_vector(x, y)
         feature = self.phi.eval_xy(x.reshape((1, -1)), [y])
 
-        # print(self.Y)
-        # print(self.p)
-        # print(s)
-        # print(self.p[:, sample_idx], s)
         # Update mean vector estimate and confidence vector
         tau_, lambda_, params_ = \
             self.tracking(feature, y, self.p[:, sample_idx], s)
@@ -674,6 +670,7 @@ class AMRC(BaseMRC):
             for each class.
 
         '''
+
         M = np.zeros((self.n_classes, len(self.mu)))
         c = np.zeros(self.n_classes)
         for j in range(self.n_classes):

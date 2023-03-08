@@ -11,6 +11,7 @@ from sklearn.utils.validation import check_is_fitted
 
 # Import the MRC super class
 from MRCpy import BaseMRC
+from MRCpy.solvers.cvx import *
 from MRCpy.phi import \
     RandomReLUPhi, \
     ThresholdPhi
@@ -20,8 +21,8 @@ class CMRC(BaseMRC):
     '''
     Constrained Minimax Risk Classifier
 
-    The class CMRC implements the method Minimimax Risk Classification
-    (MRC) proposed in :ref:`[1] <ref1>`
+    The class CMRC implements the method Minimimax Risk Classifiers
+    with fixed marginal distributions proposed in :ref:`[1] <ref1>`
     using the additional marginals constraints on the instances.
     It also implements two kinds of loss functions, namely 0-1 and log loss.
 
@@ -30,22 +31,16 @@ class CMRC(BaseMRC):
     See :ref:`Examples of use` for futher applications of this class and
     its methods.
 
-    .. seealso:: For more information about MRC, one can refer to the
+    .. seealso:: For more information about CMRC, one can refer to the
         following resources:
 
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
-                    Minimax Classification with
-                    0-1 Loss and Performance Guarantees.
-                    Advances in Neural Information Processing
-                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
-
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+                    [1] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
                     Generalized Maximum
                     Entropy for Supervised Classification.
                     arXiv preprint arXiv:2007.05447.
                     <https://arxiv.org/abs/2007.05447>`_
 
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    [2] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
                     MRCpy: A Library for Minimax Risk Classifiers.
                     arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
@@ -72,27 +67,6 @@ class CMRC(BaseMRC):
         standard deviation of :math:`\\phi(X,Y)` in the supervised
         dataset (X,Y).
 
-    sigma : `str` or `float`, default = `sigma`
-        When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in some feature
-        mappings such as Random Fourier or ReLU featuress.
-        For comparison its relation with parameter `gamma` used in
-        other methods is :math:`\gamma=1/(2\sigma^2)`.
-        When given a float, it is the value for the scaling parameter.
-
-        'scale'
-            Approximates `sigma` by
-            :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}`
-            so that `gamma` is
-            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`
-            where `var` is the variance function.
-
-        'avg_ann_50'
-            Approximates `sigma` by the average distance to the
-            :math:`50^{\\textrm{th}}`
-            nearest neighbour estimated from 1000 samples of the dataset using
-            the function `rff_sigma`.
-
     deterministic : `bool`, default = `True`
         Whether the prediction of the labels
         should be done in a deterministic way (given a fixed `random_state`
@@ -107,26 +81,29 @@ class CMRC(BaseMRC):
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    use_cvx : `bool`, default = `False`
-        If True, use CVXpy library for the optimization
-        instead of the subgradient or SGD methods.
+    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’cvx’
+        Method to use in solving the optimization problem. 
+        Default is ‘cvx’. To choose a solver,
+        you might want to consider the following aspects:
 
-    solver : `str`, default = 'MOSEK'
-        The type of CVX solver to use for solving the problem.
-        In some cases, one solver might not work,
-        so you might need to change solver depending on the problem.
+        ’cvx’
+            Solves the optimization problem using the CVXPY library.
+            Obtains an accurate solution while requiring more time
+            than the other methods. 
+            Note that the library uses the GUROBI solver in CVXpy for which
+            one might need to request for a license.
+            A free license can be requested `here 
+            <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
 
-        'SCS'
-            It uses Splitting Conic Solver (SCS).
+        ’grad’
+            Solves the optimization using stochastic gradient.
+            The parameter `max_iters` determines the number of iterations
+            for this approach. More iteration lead to an accurate solution
+            while requiring more time.
 
-        'ECOS'
-            It uses Embedded Eonic Eolver (ECOS).
-
-        'MOSEK'
-            MOSEK is a commercial solver for which one might need to
-            request for a license. A free license can be requested
-            `here <https://www.mosek.com/products/academic-licenses/>`_.
-
+            [1] `Mazuelas, S., Mauricio, R., & Grunwald, P. (2022).
+                Minimax Risk Classifiers with 0-1 Loss.
+                <https://arxiv.org/abs/2010.07964>`_
 
     max_iters : `int`, default = `2000` or `30000`
         The maximum number of iterations to use
@@ -243,25 +220,34 @@ class CMRC(BaseMRC):
     # to reduce the default number for maximum iterations.
     # In case of CMRC, the convergence is observed to be fast
     # and hence less iterations should be sufficient
-    def __init__(self, loss='0-1', s=0.3,
-                 deterministic=True, random_state=None,
-                 fit_intercept=True, use_cvx=False,
-                 solver='SCS', max_iters=None, phi='linear',
-                 stepsize='decay', **phi_kwargs):
+    def __init__(self,
+                 loss='0-1',
+                 s=0.3,
+                 deterministic=True,
+                 random_state=None,
+                 fit_intercept=True,
+                 solver='subgrad',
+                 max_iters=None,
+                 stepsize='decay',
+                 phi='linear',
+                 **phi_kwargs):
+
         if max_iters is None:
             if phi == 'linear' or phi == 'fourier':
-                max_iters = 100000
+                self.max_iters = 100000
             else:
-                max_iters = 2000
+                self.max_iters = 2000
+        else:
+            self.max_iters = max_iters
+
         self.stepsize = stepsize
+        self.solver = solver
+        self.cvx_solvers = ['SCS', 'ECOS', 'GUROBI']
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
                          random_state=random_state,
                          fit_intercept=fit_intercept,
-                         use_cvx=use_cvx,
-                         solver=solver,
-                         max_iters=max_iters,
                          phi=phi, **phi_kwargs)
 
     def fit(self, X, Y, X_=None):
@@ -375,7 +361,7 @@ class CMRC(BaseMRC):
                         for numVals in np.arange(1,
                         self.n_classes + 1)])
 
-        if self.use_cvx:
+        if self.solver == 'cvx':
             # Use CVXpy for the convex optimization of the MRC.
 
             # Variables
@@ -410,48 +396,41 @@ class CMRC(BaseMRC):
             objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
                                      self.tau_ @ mu + sum_psi)
 
-            self.mu_, self.obj_value = \
-                self.try_solvers(objective, None, mu)
+            self.mu_, self.upper_ = \
+                try_solvers(objective, None, mu, self.cvx_solvers)
 
-        elif not self.use_cvx:
+        elif self.solver == 'grad':
 
             if self.loss == '0-1':
-                # Define the objective function and
-                # the gradient for the 0-1 loss function.
-                M = F / (cardS[:, np.newaxis])
-                h = 1 - (1 / cardS)
-
                 # Function to calculate the psi subobjective
                 # to be added to the objective function.
+                # In addition the function returns subgradient
+                # of the expected value psi
+                # to be used by nesterov optimization.
                 def f_(mu):
                     # First we calculate the all possible values of psi
                     # for all the points.
-                    psi = M @ mu + h
-                    idx = []
+
+                    psi = 0
+                    psi_grad = 0
 
                     for i in range(n):
                         # Get psi for each data point
                         # and return the max value over all subset
-                        # and its corresponding index
-                        xi_subsetInd = np.arange(i, psi.shape[0], n)
-                        idx.append(xi_subsetInd[np.argmax(psi[xi_subsetInd])])
-                    return (1 / n) * np.sum(psi[idx]), idx
+                        # and its corresponding index.
+                        g, psi_xi = self.psi(mu, phi[i, :, :])
+                        psi_grad = psi_grad + g
+                        psi = psi + psi_xi
 
-                if isinstance(self.phi, RandomReLUPhi) or \
-                   isinstance(self.phi, ThresholdPhi):
-                    # Use the subgradient approach for the convex optimization
-                    # The subgradient of the psi subobjective
-                    # for all the datapoints
-                    def g_(mu, idx):
-                        return (1 / n) * np.sum(M.transpose()[:, idx], axis=1)
-                else:
-                    # Use SGD for the convex optimization
-                    # Subgradient of the subobjective for one point
-                    def g_(mu, sample_id):
-                        xi_subsetInd = np.arange(sample_id, M.shape[0], n)
-                        psi = M[xi_subsetInd] @ mu + h[xi_subsetInd]
-                        idx = xi_subsetInd[np.argmax(psi)]
-                        return M.transpose()[:, idx].flatten()
+                    psi = ((1 / n) * psi)
+                    psi_grad = ((1 / n) * psi_grad)
+                    return psi, psi_grad
+
+                # When using SGD for the convex optimization
+                # To compute the subgradient of the subobjective at one point
+                def g_(mu, sample_id):
+                    g, _ = self.psi(mu, phi[sample_id, :, :])
+                    return g
 
             elif self.loss == 'log':
                 # Define the objective function and
@@ -459,49 +438,107 @@ class CMRC(BaseMRC):
 
                 # The psi subobjective for all the datapoints
                 def f_(mu):
-                    return ((1 / n) *
-                            np.sum(scs.logsumexp((phi @ mu), axis=1)),
-                            None)
+                    phi_mu = phi @ mu
+                    psi = (1 / n) *\
+                            np.sum(scs.logsumexp((phi_mu), axis=1))
 
-                if isinstance(self.phi, RandomReLUPhi) or \
-                   isinstance(self.phi, ThresholdPhi):
-                    # Use the subgradient approach for the convex optimization
-                    # The subgradient of the psi subobjective
-                    # for all the datapoints
-                    def g_(mu, idx):
-                        expPhi = np.exp(phi @ mu)[:, np.newaxis, :]
-                        return (1 / n) *\
-                            (np.sum(((expPhi @ phi)[:, 0, :] /
-                                     np.sum(expPhi, axis=2)).transpose(),
-                                    axis=1))
+                    # Only computed in case of nesterov subgradient.
+                    # In case of SGD, not required.
+                    psi_grad = None
+                    if isinstance(self.phi, RandomReLUPhi) or \
+                       isinstance(self.phi, ThresholdPhi):
+                        # Use the subgradient approach for the convex optimization
+                        # The subgradient of the psi subobjective
+                        # for all the datapoints
+                        expPhi = np.exp(phi_mu)[:, np.newaxis, :]
+                        psi_grad = (1 / n) *\
+                                (np.sum(((expPhi @ phi)[:, 0, :] /
+                                         np.sum(expPhi, axis=2)).transpose(),
+                                        axis=1))
 
-                else:
-                    # Use SGD for the convex optimization
-                    # Subgradient of the subobjective for one point
-                    def g_(mu, sample_id):
-                        expPhi = np.exp(phi[sample_id, :, :] @ mu
-                                        )[np.newaxis, np.newaxis, :]
-                        return (np.sum(((expPhi @ phi[sample_id, :, :])
-                                        [:, 0, :] /
-                                        np.sum(expPhi, axis=2)).transpose(),
-                                       axis=1))
+                    return psi, psi_grad
+
+                # Use SGD for the convex optimization in general.
+                # Gradient of the subobjective (psi) at an instance.
+                def g_(mu, sample_id):
+                    expPhi = np.exp(phi[sample_id, :, :] @ mu
+                                    )[np.newaxis, np.newaxis, :]
+                    return (np.sum(((expPhi @ phi[sample_id, :, :])
+                                    [:, 0, :] /
+                                    np.sum(expPhi, axis=2)).transpose(),
+                                   axis=1))
 
             if isinstance(self.phi, RandomReLUPhi) or \
                isinstance(self.phi, ThresholdPhi):
                 self.params_ = \
-                    self.nesterov_optimization(m, None, f_, g_)
+                    self.nesterov_optimization(m, None, f_, None)
             else:
                 self.params_ = \
                     self.SGD_optimization(m, n, None, f_, g_)
 
             self.mu_ = self.params_['mu']
+            self.upper_ = self.params_['best_value']
+
+        else:
+            raise ValueError('Unexpected solver ... ')
+
         self.is_fitted_ = True
 
         return self
 
+    def psi(self, mu, phi):
+        '''
+        Function to compute the psi function in the objective
+        using the given solution mu and the feature mapping 
+        corresponding to a single instance.
+
+        Parameters:
+        -----------
+        mu : `array`-like of shape (n_features)
+            Solution.
+
+        phi : `array`-like of shape (n_classes, n_features)
+            Feature mapping corresponding to an instance and
+            each class.
+
+        Returns:
+        --------
+        g : `array`-like of shape (n_features)
+            Gradient of psi for a given solution and feature mapping.
+
+        psi_value : `int`
+            The value of psi for a given solution and feature mapping.
+        '''
+        v = phi@mu
+        indices = np.argsort(v)[::-1]
+        value = v[indices[0]] - 1
+        g = phi[indices[0],:]
+
+        for k in range(1, self.n_classes):
+            new_value = (k * value + v[indices[k]]) / (k+1)
+            if new_value >= value:
+                value = new_value
+                g = (k * g + phi[indices[k],:]) / (k+1)
+            else:
+                break
+
+        return g, (value + 1)
+
+    def get_upper_bound(self):
+        '''
+        Returns the upper bound on the expected loss for the fitted classifier.
+
+        Returns
+        -------
+        upper : `float`
+            Upper bound of the expected loss for the fitted classifier.
+        '''
+
+        return self.upper_
+
     def nesterov_optimization(self, m, params_, f_, g_):
         '''
-        Solution of the CMRC convex optimization(minimization)
+        Solution of the CMRC convex optimization
         using the Nesterov accelerated approach.
 
         .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
@@ -549,12 +586,12 @@ class CMRC(BaseMRC):
         theta_k = 1
         theta_k_prev = 1
 
-        y_k = np.zeros(m, dtype=np.float)
-        w_k = np.zeros(m, dtype=np.float)
-        w_k_prev = np.zeros(m, dtype=np.float)
+        y_k = np.zeros(m, dtype=np.float64)
+        w_k = np.zeros(m, dtype=np.float64)
+        w_k_prev = np.zeros(m, dtype=np.float64)
 
         # Setting initial values for the objective function and other results
-        psi, idx = f_(y_k)
+        psi, _ = f_(y_k)
         f_best_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + psi
         mu = y_k
 
@@ -564,8 +601,8 @@ class CMRC(BaseMRC):
             y_k = w_k + theta_k * ((1 / theta_k_prev) - 1) * (w_k - w_k_prev)
 
             # Calculating the subgradient of the objective function at y_k
-            psi, idx = f_(y_k)
-            g_0 = self.lambda_ * np.sign(y_k) - self.tau_ + g_(y_k, idx)
+            psi, psi_grad = f_(y_k)
+            g_0 = self.lambda_ * np.sign(y_k) - self.tau_ + psi_grad
 
             # Update the parameters
             theta_k_prev = theta_k
@@ -585,7 +622,7 @@ class CMRC(BaseMRC):
 
         # Check for possible improvement of the objective valu
         # for the last generated value of w_k
-        psi, idx = f_(w_k)
+        psi, _ = f_(w_k)
         f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + psi
 
         if f_value < f_best_value:
@@ -596,7 +633,7 @@ class CMRC(BaseMRC):
         new_params_ = {'w_k': w_k,
                        'w_k_prev': w_k_prev,
                        'mu': mu,
-                       'best_value': f_best_value,
+                       'best_value': f_best_value
                        }
 
         return new_params_
@@ -626,7 +663,7 @@ class CMRC(BaseMRC):
             It is expected to be a lambda function
             calculating the part of the subgradient of the objective function
             depending on the type of the loss function chosen.
-            It takes the as input -
+            It takes as input -
             parameters (mu) of the optimization and
             the indices corresponding to the maximum value of subobjective
             for a given subset of Y (set of labels).
@@ -664,14 +701,14 @@ class CMRC(BaseMRC):
             epoch_id += sample_id // n
             sample_id = sample_id % n
 
-        psi, idx = f_(w_k)
+        psi, _ = f_(w_k)
         f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + psi
         mu = w_k
 
         # Return the optimized values in a dictionary
         new_params_ = {'w_k': w_k,
                        'mu': mu,
-                       'best_value': f_value,  # actually last value
+                       'best_value': f_value  # actually last value
                        }
 
         return new_params_
