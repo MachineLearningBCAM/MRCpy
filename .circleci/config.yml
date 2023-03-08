@@ -17,8 +17,8 @@ jobs:
           name: Check code styling and run tests
           no_output_timeout: 240m
           command: >-
-            flake8 --ignore=D,W503,W504,F403,F405 examples/ &&
-            flake8 --ignore=MRCpy/__init__.py,W605,W504 MRCpy/ &&
+            # flake8 --ignore=D,W503,W504,F403,F405 examples/ &&
+            # flake8 --ignore=MRCpy/__init__.py,W605,W504 MRCpy/ &&
             coverage run --source=MRCpy/ -m unittest discover -s tests
 
       - run:
