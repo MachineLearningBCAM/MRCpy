@@ -17,7 +17,9 @@ class TestMRC(unittest.TestCase):
 
     def MRC_training(self, phi, loss, solver):
         r = np.unique(self.y).shape[0]
-        clf = MRC(phi=phi, loss=loss,
+        clf = MRC(phi=phi,
+                  loss=loss,
+                  max_iters=500,
                   solver=solver)
         clf.fit(self.X, self.y)
         upper = clf.upper_
@@ -27,10 +29,9 @@ class TestMRC(unittest.TestCase):
         self.assertTrue(clf.is_fitted_)
 
         # Predict the probabilities for each class for the given instances.
-        if loss == 'log':
-            hy_x = clf.predict_proba(self.X)
-            self.assertTrue(hy_x.shape == (self.X.shape[0], r))
-            self.assertTrue(np.all(np.sum(hy_x, axis=1)))
+        hy_x = clf.predict_proba(self.X)
+        self.assertTrue(hy_x.shape == (self.X.shape[0], r))
+        self.assertTrue(np.all(np.sum(hy_x, axis=1)))
 
         y_pred = clf.predict(self.X)
         self.assertTrue(y_pred.shape == (self.X.shape[0], ))
