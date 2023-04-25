@@ -255,7 +255,7 @@ class CMRC(BaseMRC):
                  deterministic=True,
                  random_state=None,
                  fit_intercept=True,
-                 solver='grad',
+                 solver='adam',
                  alpha=0.001,
                  stepsize='decay',
                  mini_batch_size=None,
@@ -264,10 +264,13 @@ class CMRC(BaseMRC):
                  **phi_kwargs):
 
         if max_iters is None:
-            if phi == 'linear' or phi == 'fourier':
-                self.max_iters = 100000
-            else:
+            if phi == 'relu' or phi == 'threshold':
+                # In this case nesterov's gradient descent is used
                 self.max_iters = 2000
+            elif solver == 'adam':
+                self.max_iters = 5000
+            else:
+                self.max_iters = 100000
         else:
             self.max_iters = max_iters
 
@@ -278,6 +281,8 @@ class CMRC(BaseMRC):
                 self.mini_batch_size = 32
             else:
                 raise ValueError("Unexpected solver ... ")
+        else:
+            self.mini_batch_size = mini_batch_size
 
         self.solver = solver
         self.alpha = alpha
