@@ -33,10 +33,12 @@ from MRCpy import CMRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_mammographic, load_haberman, load_indian_liver,
-           load_diabetes, load_credit]
-dataName = ["mammographic", "haberman", "indian_liver",
-            "diabetes", "credit"]
+loaders = [load_haberman]
+#load_mammographic, load_haberman, load_indian_liver,
+ #          load_diabetes, load_credit]
+dataName = ["haberman"]
+#"mammographic", "haberman", "indian_liver",
+ #           "diabetes", "credit"]
 
 
 def runCMRC(phi, loss):
@@ -55,7 +57,10 @@ def runCMRC(phi, loss):
         n, d = X.shape
 
         # Create the CMRC object initilized with the corresponding parameters
-        clf = CMRC(phi=phi, loss=loss, use_cvx=False)
+        clf = CMRC(phi=phi,
+                   loss=loss,
+                   random_state=random_seed,
+                   solver='adam')
 
         # Generate the partitions of the stratified cross-validation
         n_splits = 5
@@ -63,6 +68,7 @@ def runCMRC(phi, loss):
                              shuffle=True)
 
         cvError = list()
+        upper = 0
         auxTime = 0
 
         # Paired and stratified cross-validation
@@ -81,6 +87,7 @@ def runCMRC(phi, loss):
 
             # Train the model
             clf.fit(X_train, y_train)
+            upper += clf.get_upper_bound()
 
             # Save the training time
             auxTime += time.time() - startTime
@@ -90,6 +97,8 @@ def runCMRC(phi, loss):
 
             # Calculate the error made by CMRC classificator
             cvError.append(np.average(y_pred != y_test))
+
+        upper = upper / n_splits
         res_mean = np.average(cvError)
         res_std = np.std(cvError)
 
@@ -100,19 +109,21 @@ def runCMRC(phi, loss):
                                   'n_samples': '%d' % n,
                                   'n_attributes': '%d' % d,
                                   'n_classes': '%d' % r,
+                                  "upper": "%1.2g" % upper,
                                   'error': '%1.2g' % res_mean + " +/- " +
                                   '%1.2g' % res_std,
                                   'avg_train_time (s)': '%1.2g' % auxTime},
                                  ignore_index=True)
+
     return results
 
 
 ####################################################################
 
-r1 = runCMRC(phi='fourier', loss='0-1')
+r1 = runCMRC(phi='threshold', loss='0-1')
 r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
 
 ####################################################################
 
-r2 = runCMRC(phi='fourier', loss='log')
+r2 = runCMRC(phi='threshold', loss='log')
 r2.style.set_caption('Using log loss and fourier feature mapping')
