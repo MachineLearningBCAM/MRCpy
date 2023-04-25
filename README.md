@@ -63,11 +63,11 @@ This repository is the official implementation of Minimax Risk Classifiers propo
 		year={2020}
 		}
                
-- [3] [Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.](<https://arxiv.org/abs/2108.01952>)
+- [3] [Bondugula, K. et al (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.](<https://arxiv.org/abs/2108.01952>)
 
 		@article{bondugula2021mrcpy,
 		title={MRCpy: A Library for Minimax Risk Classifiers},
-		author={Bondugula, Kartheek and Mazuelas, Santiago and P{\'e}rez, Aritz},
+		author={Bondugula, Kartheek, and Alvarez, Veronica and Segovia-Mart{\'i}n J. I. and Mazuelas, Santiago and P{\'e}rez, Aritz},
 		journal={arXiv preprint arXiv:2108.01952},
 		year={2021}
 		}
