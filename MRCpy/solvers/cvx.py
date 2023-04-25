@@ -33,10 +33,16 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
     '''
 
     # Solve the problem
+    print('Solving using : ', cvx_solvers[0])
     prob = cvx.Problem(objective, constraints)
-    prob.solve(solver=cvx_solvers[0], verbose=False)
 
-    mu_ = mu.value
+    try:
+        prob.solve(solver=cvx_solvers[0], verbose=False)
+        mu_ = mu.value
+    except:
+        print('Error occured while using ' + cvx_solvers[0] + ' solver.\n' + \
+              'Trying with the following solvers ' + ' '.join(cvx_solvers[1:]))
+        mu_ = None
 
     # if the solver could not find values of mu for the given solver
     if mu_ is None:
@@ -45,7 +51,12 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
         for s in cvx_solvers[1:]:
 
             # Solve the problem
-            prob.solve(solver=s, verbose=False)
+            try:
+                prob.solve(solver=s, verbose=False)
+                mu_ = mu.value
+            except:
+                print('Error occured while using ' + cvx_solvers[0] + ' solver.')
+                mu_ = None
 
             # Check the values
             mu_ = mu.value
