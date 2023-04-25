@@ -4,6 +4,7 @@ import itertools as it
 import warnings
 
 import cvxpy as cvx
+import time
 import numpy as np
 import scipy.special as scs
 from sklearn.utils import check_array
@@ -12,7 +13,12 @@ from sklearn.utils.validation import check_is_fitted
 # Import the MRC super class
 from MRCpy import BaseMRC
 from MRCpy.solvers.cvx import *
+from MRCpy.solvers.adam import *
+from MRCpy.solvers.sgd import *
+from MRCpy.solvers.nesterov import *
 from MRCpy.phi import \
+    BasePhi, \
+    RandomFourierPhi, \
     RandomReLUPhi, \
     ThresholdPhi
 
@@ -81,7 +87,7 @@ class CMRC(BaseMRC):
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’cvx’
+    solver : {‘cvx’, 'grad', 'adam'}, default = ’cvx’
         Method to use in solving the optimization problem. 
         Default is ‘cvx’. To choose a solver,
         you might want to consider the following aspects:
@@ -96,22 +102,45 @@ class CMRC(BaseMRC):
             <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
 
         ’grad’
-            Solves the optimization using stochastic gradient.
-            The parameter `max_iters` determines the number of iterations
-            for this approach. More iteration lead to an accurate solution
-            while requiring more time.
+            Solves the optimization using stochastic gradient descent.
+            The parameters `max_iters`, `stepsize` and `mini_batch_size`
+            determine the number of iterations, the learning rate and
+            the batch size for gradient computation respectively.
+            Note that the implementation uses nesterov's gradient descent
+            in case of ReLU and threshold features, and the above parameters
+            do no affect the optimization in this case.
 
-            [1] `Mazuelas, S., Mauricio, R., & Grunwald, P. (2022).
-                Minimax Risk Classifiers with 0-1 Loss.
-                <https://arxiv.org/abs/2010.07964>`_
+        ’adam’
+            Solves the optimization using
+            stochastic gradient descent with adam (adam optimizer).
+            The parameters `max_iters`, `alpha` and `mini_batch_size`
+            determine the number of iterations, the learning rate and
+            the batch size for gradient computation respectively.
+            Note that the implementation uses nesterov's gradient descent
+            in case of ReLU and threshold features, and the above parameters
+            do no affect the optimization in this case.
 
-    max_iters : `int`, default = `2000` or `30000`
-        The maximum number of iterations to use
-        for finding the solution of optimization when use_cvx=False.
-        When None is given, default value is 30000 for Linear and RandomFourier
-        feature mappings (optimization performed using SGD) and 2000 when
-        using other feature mappings (optimization performed using nesterov
-        subgradient approach).
+    alpha : `float`, default = `0.001`
+        Learning rate for ’adam’ solver.
+
+    stepsize : `float` or {‘decay’}, default = ‘decay’
+        Learning rate for ’grad’ solver. The default is ‘decay’, that is,
+        the learning rate decreases with the number of epochs of 
+        stochastic gradient descent.
+
+    mini_batch_size : `int`, default = `1` or `32`
+        The size of the batch to be used for computing the gradient
+        in case of stochastic gradient descent and adam optimizer.
+        In case of stochastic gradient descent, the default is 1, and
+        in case of adam optimizer, the default is 32.
+
+    max_iters : `int`, default = `100000` or `5000` or `2000`
+        The maximum number of iterations to use in case of
+        ’grad’ or ’adam’ solver.
+        The default value is
+        100000 for ’grad’ solver and
+        5000 for ’adam’ solver and 
+        2000 for nesterov's gradient descent.
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         The type of feature mapping function to use for mapping the input data.
@@ -226,9 +255,11 @@ class CMRC(BaseMRC):
                  deterministic=True,
                  random_state=None,
                  fit_intercept=True,
-                 solver='subgrad',
-                 max_iters=None,
+                 solver='grad',
+                 alpha=0.001,
                  stepsize='decay',
+                 mini_batch_size=None,
+                 max_iters=None,
                  phi='linear',
                  **phi_kwargs):
 
@@ -240,9 +271,19 @@ class CMRC(BaseMRC):
         else:
             self.max_iters = max_iters
 
-        self.stepsize = stepsize
+        if mini_batch_size is None:
+            if solver == 'grad':
+                self.mini_batch_size = 1
+            elif solver == 'adam':
+                self.mini_batch_size = 32
+            else:
+                raise ValueError("Unexpected solver ... ")
+
         self.solver = solver
-        self.cvx_solvers = ['SCS', 'ECOS', 'GUROBI']
+        self.alpha = alpha
+        self.stepsize = stepsize
+        self.mini_batch_size = mini_batch_size
+        self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
@@ -288,7 +329,8 @@ class CMRC(BaseMRC):
         '''
 
         if X_ is None:
-            if self.phi == 'linear' or self.phi == 'fourier':
+            if self.phi == 'linear' or self.phi == 'fourier' or \
+                type(self.phi) == BasePhi or type(self.phi) == RandomFourierPhi:
                 super().fit(X, Y, X)
             else:
                 super().fit(X, Y)
@@ -378,12 +420,9 @@ class CMRC(BaseMRC):
                 # First we calculate the all possible values of psi
                 # for all the points
                 psi = M @ mu + h
-                sum_psi = 0
-                for i in range(n):
-                    # Get psi for each data point and
-                    # add the min value to objective
-                    psi_xi = psi[np.arange(i, psi.shape[0], n)]
-                    sum_psi = sum_psi + (1 / n) * cvx.max((psi_xi))
+                sum_psi = (1 / n) * cvx.sum(cvx.max( \
+                                        cvx.reshape(psi, (n, int(M.shape[0] / 
+                                                             n))), axis=1))
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
@@ -399,7 +438,7 @@ class CMRC(BaseMRC):
             self.mu_, self.upper_ = \
                 try_solvers(objective, None, mu, self.cvx_solvers)
 
-        elif self.solver == 'grad':
+        elif self.solver == 'grad' or self.solver == 'adam':
 
             if self.loss == '0-1':
                 # Function to calculate the psi subobjective
@@ -412,7 +451,7 @@ class CMRC(BaseMRC):
                     # for all the points.
 
                     psi = 0
-                    psi_grad = 0
+                    psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
 
                     for i in range(n):
                         # Get psi for each data point
@@ -428,9 +467,21 @@ class CMRC(BaseMRC):
 
                 # When using SGD for the convex optimization
                 # To compute the subgradient of the subobjective at one point
-                def g_(mu, sample_id):
-                    g, _ = self.psi(mu, phi[sample_id, :, :])
-                    return g
+                def g_(mu, batch_start_sample_id, batch_end_sample_id, n):
+                    i = batch_start_sample_id
+                    psi = 0
+                    psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
+                    while i < batch_end_sample_id:
+                        sample_id = i % n
+                        g, psi_xi = self.psi(mu, phi[sample_id, :, :])
+                        psi_grad = psi_grad + g
+                        psi = psi + psi_xi
+                        i = i + 1
+
+                    batch_size = batch_end_sample_id - batch_start_sample_id
+                    psi_grad = ((1 / batch_size) * psi_grad)
+                    psi = ((1 / batch_size) * psi)
+                    return psi_grad
 
             elif self.loss == 'log':
                 # Define the objective function and
@@ -460,21 +511,59 @@ class CMRC(BaseMRC):
 
                 # Use SGD for the convex optimization in general.
                 # Gradient of the subobjective (psi) at an instance.
-                def g_(mu, sample_id):
-                    expPhi = np.exp(phi[sample_id, :, :] @ mu
-                                    )[np.newaxis, np.newaxis, :]
-                    return (np.sum(((expPhi @ phi[sample_id, :, :])
-                                    [:, 0, :] /
-                                    np.sum(expPhi, axis=2)).transpose(),
-                                   axis=1))
+                def g_(mu, batch_start_sample_id, batch_end_sample_id, n):
+                    i = batch_start_sample_id
+                    expPhi = 0
+                    batch_size = batch_end_sample_id - batch_start_sample_id
+                    while i < batch_end_sample_id:
+                        sample_id = i % n
+
+                        expPhi_xi = np.exp(phi[sample_id, :, :] @ mu
+                                        )[np.newaxis, np.newaxis, :]
+
+                        sumExpPhi_xi = \
+                                np.sum(((expPhi_xi @ phi[sample_id, :, :])
+                                        [:, 0, :] /
+                                        np.sum(expPhi_xi, axis=2)).transpose(),
+                                       axis=1)
+
+                        expPhi = expPhi + sumExpPhi_xi
+
+                        i = i + 1
+
+                    expPhi = ((1 / batch_size) * expPhi)
+                    return expPhi
 
             if isinstance(self.phi, RandomReLUPhi) or \
                isinstance(self.phi, ThresholdPhi):
-                self.params_ = \
-                    self.nesterov_optimization(m, None, f_, None)
-            else:
-                self.params_ = \
-                    self.SGD_optimization(m, n, None, f_, g_)
+                self.params_ = nesterov_optimization_cmrc(self.tau_,
+                                                          self.lambda_,
+                                                          m,
+                                                          f_,
+                                                          None,
+                                                          self.max_iters)
+            elif self.solver == 'grad':
+                self.params_ = SGD_optimization(self.tau_,
+                                                self.lambda_,
+                                                n,
+                                                m,
+                                                f_,
+                                                g_,
+                                                self.max_iters,
+                                                self.stepsize,
+                                                self.mini_batch_size)
+            elif self.solver == 'adam':
+                self.params_ = adam(self.tau_,
+                                    self.lambda_,
+                                    n,
+                                    m,
+                                    f_,
+                                    g_,
+                                    self.max_iters,
+                                    self.alpha,
+                                    self.beta1,
+                                    self.beta2,
+                                    self.mini_batch_size)
 
             self.mu_ = self.params_['mu']
             self.upper_ = self.params_['best_value']
@@ -509,6 +598,7 @@ class CMRC(BaseMRC):
         psi_value : `int`
             The value of psi for a given solution and feature mapping.
         '''
+
         v = phi@mu
         indices = np.argsort(v)[::-1]
         value = v[indices[0]] - 1
@@ -535,183 +625,6 @@ class CMRC(BaseMRC):
         '''
 
         return self.upper_
-
-    def nesterov_optimization(self, m, params_, f_, g_):
-        '''
-        Solution of the CMRC convex optimization
-        using the Nesterov accelerated approach.
-
-        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
-                            The Strength of Nesterov’s Extrapolation
-                            in the Individual Convergence of Nonsmooth
-                            Optimization. IEEE transactions on
-                            neural networks and learning systems,
-                            31(7), 2557-2568.
-                            <https://ieeexplore.ieee.org/document/8822632>`_
-
-        Parameters
-        ----------
-        m : `int`
-            Length of the feature mapping vector
-        params_ : `dict`
-            A dictionary of parameters values
-            obtained from the previous call to fit
-            used as the initial values for the current optimization
-            when warm_start is True.
-        f_ : a lambda function/ function of the form - `f_(mu)`
-            It is expected to be a lambda function or a function
-            calculating a part of the objective function
-            depending on the type of loss function chosen
-            by taking the parameters(mu) of the optimization as input.
-        g_ : a lambda function of the form - `g_(mu, idx)`
-            It is expected to be a lambda function
-            calculating the part of the subgradient of the objective function
-            depending on the type of the loss function chosen.
-            It takes the as input -
-            parameters (mu) of the optimization and
-            the indices corresponding to the maximum value of subobjective
-            for a given subset of Y (set of labels).
-
-        Return
-        ------
-        new_params_ : `dict`
-            Dictionary containing optimized values: mu (`array`-like,
-            shape (`m`,)) - parameters corresponding to the optimized
-            function value, f_best_value (`float` - optimized value of the
-            function in consideration, w_k and w_k_prev (`array`-like,
-            shape (`m`,)) - parameters corresponding to the last iteration.
-        '''
-
-        # Initial values for the parameters
-        theta_k = 1
-        theta_k_prev = 1
-
-        y_k = np.zeros(m, dtype=np.float64)
-        w_k = np.zeros(m, dtype=np.float64)
-        w_k_prev = np.zeros(m, dtype=np.float64)
-
-        # Setting initial values for the objective function and other results
-        psi, _ = f_(y_k)
-        f_best_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + psi
-        mu = y_k
-
-        # Iteration for finding the optimal values
-        # using Nesterov's extrapolation
-        for k in range(1, (self.max_iters + 1)):
-            y_k = w_k + theta_k * ((1 / theta_k_prev) - 1) * (w_k - w_k_prev)
-
-            # Calculating the subgradient of the objective function at y_k
-            psi, psi_grad = f_(y_k)
-            g_0 = self.lambda_ * np.sign(y_k) - self.tau_ + psi_grad
-
-            # Update the parameters
-            theta_k_prev = theta_k
-            theta_k = 2 / (k + 1)
-            alpha_k = 1 / (np.power((k + 1), (3 / 2)))
-
-            # Calculate the new points
-            w_k_prev = w_k
-            w_k = y_k - alpha_k * g_0
-
-            # Check if there is an improvement
-            # in the value of the objective function
-            f_value = self.lambda_ @ np.abs(y_k) - self.tau_ @ y_k + psi
-            if f_value < f_best_value:
-                f_best_value = f_value
-                mu = y_k
-
-        # Check for possible improvement of the objective valu
-        # for the last generated value of w_k
-        psi, _ = f_(w_k)
-        f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + psi
-
-        if f_value < f_best_value:
-            f_best_value = f_value
-            mu = w_k
-
-        # Return the optimized values in a dictionary
-        new_params_ = {'w_k': w_k,
-                       'w_k_prev': w_k_prev,
-                       'mu': mu,
-                       'best_value': f_best_value
-                       }
-
-        return new_params_
-
-    def SGD_optimization(self, m, n, params_, f_, g_):
-        '''
-        Solution of the CMRC convex optimization(minimization)
-        using SGD approach.
-
-        Parameters
-        ----------
-        m : `int`
-            Length of the feature mapping vector
-        n : `int`
-            Number of samples used for optimization
-        params_ : `dict`
-            A dictionary of parameters values
-            obtained from the previous call to fit
-            used as the initial values for the current optimization
-            when warm_start is True.
-        f_ : a lambda function/ function of the form - `f_(mu)`
-            It is expected to be a lambda function or a function
-            calculating a part of the objective function
-            depending on the type of loss function chosen
-            by taking the parameters(mu) of the optimization as input.
-        g_ : a lambda function of the form - `g_(mu, idx)`
-            It is expected to be a lambda function
-            calculating the part of the subgradient of the objective function
-            depending on the type of the loss function chosen.
-            It takes as input -
-            parameters (mu) of the optimization and
-            the indices corresponding to the maximum value of subobjective
-            for a given subset of Y (set of labels).
-
-        Return
-        ------
-        new_params_ : `dict`
-            Dictionary containing optimized values: mu and w_k (`array`-like,
-            shape (`m`,)) - parameters corresponding to the last iteration,
-            best_value (`float` - optimized value of the
-            function in consideration.
-        '''
-
-        # Initial values for points
-        w_k = np.zeros(m, dtype=np.float)
-
-        # Setting initial values for the objective function and other results
-
-        sample_id = 0
-        epoch_id = 0
-        for k in range(1, (self.max_iters + 1)):
-
-            g_0 = self.lambda_ * np.sign(w_k) - self.tau_ + g_(w_k, sample_id)
-
-            if self.stepsize == 'decay':
-                stepsize = 0.01 * (1 / 1 + 0.01 * epoch_id)
-            elif type(self.stepsize) == float:
-                stepsize = self.stepsize
-            else:
-                raise ValueError('Unexpected stepsize ... ')
-
-            w_k = w_k - stepsize * g_0
-
-            sample_id += 1
-            epoch_id += sample_id // n
-            sample_id = sample_id % n
-
-        psi, _ = f_(w_k)
-        f_value = self.lambda_ @ np.abs(w_k) - self.tau_ @ w_k + psi
-        mu = w_k
-
-        # Return the optimized values in a dictionary
-        new_params_ = {'w_k': w_k,
-                       'mu': mu,
-                       'best_value': f_value  # actually last value
-                       }
-
-        return new_params_
 
     def predict_proba(self, X):
         '''
