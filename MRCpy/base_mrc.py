@@ -161,7 +161,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi = phi
         self.phi_kwargs = phi_kwargs
         # Solver list for cvxpy
-        self.solvers = ['MOSEK', 'SCS', 'ECOS']
+        self.solvers = ['SCS', 'ECOS', 'GUROBI']
 
     def fit(self, X, Y, X_=None):
         '''
@@ -211,13 +211,13 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             # for the optimization.
             X_opt = X
 
-            # If the labels are not given, then these instances
-            # are assumed to be given for optimization only and
-            # hence all the instances will be used.
-            if Y is None:
-                not_all_instances = False
-            else:
-                not_all_instances = True
+            # # If the labels are not given, then these instances
+            # # are assumed to be given for optimization only and
+            # # hence all the instances will be used.
+            # if Y is None:
+            #     not_all_instances = False
+            # else:
+            not_all_instances = True
 
         # Obtaining the number of classes and mapping the labels to integers
         origY = Y
