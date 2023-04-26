@@ -45,9 +45,9 @@ def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
     theta_k_prev = 1
 
     # Initial values for points
-    y_k = np.zeros(m, dtype=np.float)
-    w_k = np.zeros(m, dtype=np.float)
-    w_k_prev = np.zeros(m, dtype=np.float)
+    y_k = np.zeros(m, dtype=np.float64)
+    w_k = np.zeros(m, dtype=np.float64)
+    w_k_prev = np.zeros(m, dtype=np.float64)
 
     # Setting initial values for the objective function and other results
     v = f_(y_k)
