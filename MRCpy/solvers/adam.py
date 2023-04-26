@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def adam(tau_, lambda_, n, m, f_, g_, max_iters, alpha, beta1, beta2, mini_batch_size=32, eps=1e-8):
+def adam(tau_, lambda_, n, m, f_, g_, max_iters, alpha, mini_batch_size=32, eps=1e-8):
 
     # Initial values for points
     w_k = np.zeros(m, dtype=np.float64)
@@ -11,7 +11,7 @@ def adam(tau_, lambda_, n, m, f_, g_, max_iters, alpha, beta1, beta2, mini_batch
     v_ = np.zeros(m, dtype=np.float64)
 
     # Hyperparameters
-    beta1=0.8
+    beta1=0.9
     beta2=0.999
 
     # Setting the initial indices for the batch
