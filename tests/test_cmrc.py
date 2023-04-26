@@ -39,18 +39,32 @@ class TestCMRC(unittest.TestCase):
 
     # Without using cvxpy
     # Training test for CMRC with 0-1 loss.
-    def test_CMRC0_1(self):
+    def test_CMRC0_1_grad(self):
         self.CMRC_training_check(phi='threshold', loss='0-1', solver='grad')
         self.CMRC_training_check(phi='linear', loss='0-1', solver='grad')
         self.CMRC_training_check(phi='fourier', loss='0-1', solver='grad')
         self.CMRC_training_check(phi='relu', loss='0-1', solver='grad')
 
     # Training test for CMRC with log loss.
-    def test_CMRClog(self):
+    def test_CMRClog_grad(self):
         self.CMRC_training_check(phi='threshold', loss='log', solver='grad')
         self.CMRC_training_check(phi='linear', loss='log', solver='grad')
         self.CMRC_training_check(phi='fourier', loss='log', solver='grad')
         self.CMRC_training_check(phi='relu', loss='log', solver='grad')
+
+    # Training test for CMRC with 0-1 loss.
+    def test_CMRC0_1_adam(self):
+        self.CMRC_training_check(phi='threshold', loss='0-1', solver='adam')
+        self.CMRC_training_check(phi='linear', loss='0-1', solver='adam')
+        self.CMRC_training_check(phi='fourier', loss='0-1', solver='adam')
+        self.CMRC_training_check(phi='relu', loss='0-1', solver='adam')
+
+    # Training test for CMRC with log loss.
+    def test_CMRClog_adam(self):
+        self.CMRC_training_check(phi='threshold', loss='log', solver='adam')
+        self.CMRC_training_check(phi='linear', loss='log', solver='adam')
+        self.CMRC_training_check(phi='fourier', loss='log', solver='adam')
+        self.CMRC_training_check(phi='relu', loss='log', solver='adam')
 
     # Using cvxpy
     # Training test for CMRC with 0-1 loss.
