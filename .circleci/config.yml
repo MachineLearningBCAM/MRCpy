@@ -46,6 +46,7 @@ jobs:
             python setup.py install
       - run:
           name: Build docs
+          no_output_timeout: 60m
           command: cd docs/ && make html
       - persist_to_workspace:
           root: docs/_build
