@@ -33,12 +33,10 @@ from MRCpy import CMRC
 from MRCpy.datasets import *
 
 # Data sets
-loaders = [load_haberman]
-#load_mammographic, load_haberman, load_indian_liver,
- #          load_diabetes, load_credit]
-dataName = ["haberman"]
-#"mammographic", "haberman", "indian_liver",
- #           "diabetes", "credit"]
+loaders = [load_mammographic, load_haberman, load_indian_liver,
+          load_diabetes, load_credit]
+dataName = ["mammographic", "haberman", "indian_liver",
+           "diabetes", "credit"]
 
 
 def runCMRC(phi, loss):
@@ -105,7 +103,7 @@ def runCMRC(phi, loss):
         # Calculating the mean training time
         auxTime = auxTime / n_splits
 
-        results = results.append({'dataset': dataName[j],
+        results = results._append({'dataset': dataName[j],
                                   'n_samples': '%d' % n,
                                   'n_attributes': '%d' % d,
                                   'n_classes': '%d' % r,
@@ -120,10 +118,10 @@ def runCMRC(phi, loss):
 
 ####################################################################
 
-r1 = runCMRC(phi='threshold', loss='0-1')
+r1 = runCMRC(phi='fourier', loss='0-1')
 r1.style.set_caption('Using 0-1 loss and fourier feature mapping')
 
 ####################################################################
 
-r2 = runCMRC(phi='threshold', loss='log')
+r2 = runCMRC(phi='fourier', loss='log')
 r2.style.set_caption('Using log loss and fourier feature mapping')

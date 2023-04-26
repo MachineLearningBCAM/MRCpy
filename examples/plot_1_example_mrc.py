@@ -110,7 +110,7 @@ def runMRC(phi, loss):
         lower = lower / n_splits
         auxTime = auxTime / n_splits
 
-        results = results.append(
+        results = results._append(
             {
                 "dataset": dataName[j],
                 "n_samples": "%d" % n,
