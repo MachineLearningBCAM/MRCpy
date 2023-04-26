@@ -61,6 +61,7 @@ def runMRC(phi, loss):
         clf = MRC(phi=phi,
                   loss=loss,
                   random_state=random_seed,
+                  max_iters=5000,
                   solver='subgrad')
 
         # Generate the partitions of the stratified cross-validation
