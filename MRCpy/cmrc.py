@@ -256,7 +256,7 @@ class CMRC(BaseMRC):
                  random_state=None,
                  fit_intercept=True,
                  solver='adam',
-                 alpha=0.001,
+                 alpha=0.01,
                  stepsize='decay',
                  mini_batch_size=None,
                  max_iters=None,
@@ -275,19 +275,16 @@ class CMRC(BaseMRC):
             self.max_iters = max_iters
 
         if mini_batch_size is None:
-            if solver == 'grad':
-                self.mini_batch_size = 1
-            elif solver == 'adam':
+            if solver == 'adam':
                 self.mini_batch_size = 32
             else:
-                raise ValueError("Unexpected solver ... ")
+                self.mini_batch_size = 1
         else:
             self.mini_batch_size = mini_batch_size
 
         self.solver = solver
         self.alpha = alpha
         self.stepsize = stepsize
-        self.mini_batch_size = mini_batch_size
         self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
         super().__init__(loss=loss,
                          s=s,
@@ -566,8 +563,6 @@ class CMRC(BaseMRC):
                                     g_,
                                     self.max_iters,
                                     self.alpha,
-                                    self.beta1,
-                                    self.beta2,
                                     self.mini_batch_size)
 
             self.mu_ = self.params_['mu']

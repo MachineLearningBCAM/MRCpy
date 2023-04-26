@@ -539,7 +539,7 @@ class MRC(BaseMRC):
 
             # Lower bound
             self.lower_params_ = nesterov_optimization_mrc(self.tau_,
-                                                           self.lambda_.
+                                                           self.lambda_,
                                                            m,
                                                            f_,
                                                            g_,
