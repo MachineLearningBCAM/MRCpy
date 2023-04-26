@@ -264,19 +264,12 @@ class MRC(BaseMRC):
                  random_state=None,
                  fit_intercept=True,
                  solver='subgrad',
-                 max_iters=None,
+                 max_iters=10000,
                  phi='linear',
                  **phi_kwargs):
 
-        if max_iters is None:
-            if phi == 'linear' or phi == 'fourier':
-                self.max_iters = 100000
-            else:
-                self.max_iters = 2000
-        else:
-            self.max_iters = max_iters
-
         self.solver = solver
+        self.max_iters = max_iters
         self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
         super().__init__(loss=loss,
                          s=s,
