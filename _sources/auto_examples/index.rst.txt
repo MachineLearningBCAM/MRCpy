@@ -1,9 +1,5 @@
 :orphan:
 
-
-
-.. _sphx_glr_auto_examples:
-
 Gallery of examples
 ===================
 
@@ -18,14 +14,59 @@ specific features of MRCpy library.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_1_example_mrc_thumb.png
-     :alt: Example: Use of MRC with different settings
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_1_example_mrc_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+  :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of MRC with different settings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_2_example_cmrc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of CMRC with different settings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of AMRC (Adaptative MRC) for Online Learning</div>
+    </div>
+
 
 .. raw:: html
 
@@ -36,55 +77,8 @@ specific features of MRCpy library.
    :hidden:
 
    /auto_examples/plot_1_example_mrc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_2_example_cmrc_thumb.png
-     :alt: Example: Use of CMRC with different settings
-
-     :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_2_example_cmrc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
-     :alt: Example: Use of AMRC (Adaptative MRC) for Online Learning
-
-     :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_3_example_amrc
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
-
-
-
-.. _sphx_glr_auto_examples_further_examples:
 
 Further applications
 --------------------
@@ -94,24 +88,25 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl...">
+    <div class="sphx-glr-thumbnails">
 
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part I
-
-     :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="We are using ResNet18 pretrained model implementation in Pytorch library. Resnet models were pr...">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part I</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/feature_extraction
 
 .. raw:: html
 
@@ -119,20 +114,16 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_1_image_classification_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part II
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_1_image_classification_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`
+  :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`
 
 .. raw:: html
 
+      <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part II</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_1_image_classification
 
 .. raw:: html
 
@@ -140,20 +131,16 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_2_grid_thumb.png
-     :alt: Hyperparameter Tuning: Upper Bound vs Cross-Validation
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_2_grid_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_2_grid.py`
+  :ref:`sphx_glr_auto_examples_further_examples_plot_2_grid.py`
 
 .. raw:: html
 
+      <div class="sphx-glr-thumbnail-title">Hyperparameter Tuning: Upper Bound vs Cross-Validation</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_2_grid
 
 .. raw:: html
 
@@ -161,20 +148,16 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_3_comparison_thumb.png
-     :alt: Example: Comparison to other methods
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_3_comparison_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`
+  :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`
 
 .. raw:: html
 
+      <div class="sphx-glr-thumbnail-title">Example: Comparison to other methods</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_3_comparison
 
 .. raw:: html
 
@@ -182,20 +165,16 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_4_upperLower_thumb.png
-     :alt: Example: Use of Upper and Lower bound as error estimation
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_4_upperLower_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_4_upperLower.py`
+  :ref:`sphx_glr_auto_examples_further_examples_plot_4_upperLower.py`
 
 .. raw:: html
 
+      <div class="sphx-glr-thumbnail-title">Example: Use of Upper and Lower bound as error estimation</div>
     </div>
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_4_upperLower
 
 .. raw:: html
 
@@ -203,10 +182,16 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_z_COVID_thumb.png
-     :alt: Example: Predicting COVID-19 patients outcome using MRCs
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_z_COVID_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`
+  :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Predicting COVID-19 patients outcome using MRCs</div>
+    </div>
+
 
 .. raw:: html
 
@@ -215,29 +200,23 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. toctree::
    :hidden:
-
-   /auto_examples/further_examples/z_COVID
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
+   :includehidden:
 
 
-
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-gallery
+   /auto_examples/further_examples/index.rst
 
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+.. only:: html
 
-    :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

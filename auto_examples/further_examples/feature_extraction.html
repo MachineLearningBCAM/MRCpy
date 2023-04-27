@@ -18,13 +18,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MRCs with Deep Neural Networks: Part II" href="plot_1_image_classification.html" />
-    <link rel="prev" title="Example: Use of AMRC (Adaptative MRC) for Online Learning" href="../plot_3_example_amrc.html" /> 
+    <link rel="prev" title="Further applications" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,18 +57,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part I</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction">Introduction to Pretrained models, Transfer Learning and Feature Extraction</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#load-pretrained-model-and-preprocess-images">Load pretrained model and preprocess images</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#using-tensorflow-datasets-mnist-cats-vs-dogs">Using tensorflow datasets: MNIST &amp; Cats vs Dogs</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#using-a-local-dataset-yearbook-dataset">Using a local dataset: Yearbook Dataset</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Further applications</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -83,9 +85,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
-      <li>MRCs with Deep Neural Networks: Part I</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Gallery of examples</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Further applications</a></li>
+      <li class="breadcrumb-item active">MRCs with Deep Neural Networks: Part I</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/auto_examples/further_examples/feature_extraction.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -97,11 +100,11 @@
              
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">here</span></a>
+<p class="last"><a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-i">
-<span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this headline"></a></h1>
+<span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this heading"></a></h1>
 <p>In this example we will use a pretrained neural network to extract features
 of images in a dataset to train and test MRCs with these features in
 <a class="reference internal" href="plot_1_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.</p>
@@ -120,7 +123,7 @@ In Proceedings of the IEEE conference on computer
 vision and pattern recognition (pp. 770-778).</p>
 </div>
 <div class="section" id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
-<h2>Introduction to Pretrained models, Transfer Learning and Feature Extraction<a class="headerlink" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction" title="Permalink to this headline"></a></h2>
+<h2>Introduction to Pretrained models, Transfer Learning and Feature Extraction<a class="headerlink" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction" title="Permalink to this heading"></a></h2>
 <p>Deep convolutional neural network models may take days or even weeks
 to train on very large datasets. A way to short-cut this process is
 to re-use the model weights from <em>pre-trained models</em> that were developed
@@ -135,7 +138,7 @@ Here, the output of the model from a layer prior to the output layer
 of the model is used as input to a new classifier model.</p>
 </div>
 <div class="section" id="load-pretrained-model-and-preprocess-images">
-<h2>Load pretrained model and preprocess images<a class="headerlink" href="#load-pretrained-model-and-preprocess-images" title="Permalink to this headline"></a></h2>
+<h2>Load pretrained model and preprocess images<a class="headerlink" href="#load-pretrained-model-and-preprocess-images" title="Permalink to this heading"></a></h2>
 <p>Firstly, we load the pretrained model <code class="xref any docutils literal notranslate"><span class="pre">torchvision.models.ResNet18</span></code> and
 we take out the last layer in order to obtain the features. We call this
 feature extraction model <code class="xref any docutils literal notranslate"><span class="pre">resnet18_features</span></code>.</p>
@@ -187,9 +190,9 @@ You can check more about <code class="xref any docutils literal notranslate"><sp
 </div>
 </div>
 <div class="section" id="using-tensorflow-datasets-mnist-cats-vs-dogs">
-<h2>Using tensorflow datasets: MNIST &amp; Cats vs Dogs<a class="headerlink" href="#using-tensorflow-datasets-mnist-cats-vs-dogs" title="Permalink to this headline"></a></h2>
+<h2>Using tensorflow datasets: MNIST &amp; Cats vs Dogs<a class="headerlink" href="#using-tensorflow-datasets-mnist-cats-vs-dogs" title="Permalink to this heading"></a></h2>
 <div class="section" id="mnist">
-<h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this headline"></a></h3>
+<h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this heading"></a></h3>
 <p>The MNIST database of handwritten digits, available from
 <code class="xref any docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
 has a training set of 60000 examples, and a test set of 10000 examples. All
@@ -248,7 +251,7 @@ the latter containing the info associated with the builder.</p>
 </div>
 </div>
 <div class="section" id="cats-vs-dogs">
-<h3>Cats vs Dogs<a class="headerlink" href="#cats-vs-dogs" title="Permalink to this headline"></a></h3>
+<h3>Cats vs Dogs<a class="headerlink" href="#cats-vs-dogs" title="Permalink to this heading"></a></h3>
 <p>Cats vs dogs dataset is a database of 23262 RGB cats
 and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
 Cats are labeled by 0 and dogs by 1 and there are 11658 and 11604 images
@@ -279,7 +282,7 @@ It is available in tensorflow datasets, you can check the details <a class="refe
 </div>
 </div>
 <div class="section" id="using-a-local-dataset-yearbook-dataset">
-<h2>Using a local dataset: Yearbook Dataset<a class="headerlink" href="#using-a-local-dataset-yearbook-dataset" title="Permalink to this headline"></a></h2>
+<h2>Using a local dataset: Yearbook Dataset<a class="headerlink" href="#using-a-local-dataset-yearbook-dataset" title="Permalink to this heading"></a></h2>
 <p>In this example, we are going to extract the features from a local dataset.
 We will be using the Yearbook dataset which is a publicly-available dataset
 of 37,921 frontal-facing American high school yearbook portraits taken from
@@ -340,7 +343,7 @@ is available in the <code class="xref any docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-feature-extraction-py">
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-feature-extraction-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/9ad2b43fea12de5c5321c4ab54c3f506/feature_extraction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">feature_extraction.py</span></code></a></div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
@@ -354,7 +357,7 @@ is available in the <code class="xref any docutils literal notranslate"><span cl
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../plot_3_example_amrc.html" class="btn btn-neutral float-left" title="Example: Use of AMRC (Adaptative MRC) for Online Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Further applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="plot_1_image_classification.html" class="btn btn-neutral float-right" title="MRCs with Deep Neural Networks: Part II" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

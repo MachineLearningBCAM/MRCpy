@@ -18,6 +18,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -32,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,16 +57,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Use of Upper and Lower bound as error estimation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#cross-test-validation">Cross test validation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Further applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -81,9 +85,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
-      <li>Example: Use of Upper and Lower bound as error estimation</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Gallery of examples</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Further applications</a></li>
+      <li class="breadcrumb-item active">Example: Use of Upper and Lower bound as error estimation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/auto_examples/further_examples/plot_4_upperLower.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -99,7 +104,7 @@
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-use-of-upper-and-lower-bound-as-error-estimation">
-<span id="pruebas"></span><span id="sphx-glr-auto-examples-further-examples-plot-4-upperlower-py"></span><h1>Example: Use of Upper and Lower bound as error estimation<a class="headerlink" href="#example-use-of-upper-and-lower-bound-as-error-estimation" title="Permalink to this headline"></a></h1>
+<span id="pruebas"></span><span id="sphx-glr-auto-examples-further-examples-plot-4-upperlower-py"></span><h1>Example: Use of Upper and Lower bound as error estimation<a class="headerlink" href="#example-use-of-upper-and-lower-bound-as-error-estimation" title="Permalink to this heading"></a></h1>
 <p>This example is an extension to <a class="reference internal" href="../plot_2_example_cmrc.html#ex2"><span class="std std-ref">Example: Use of CMRC with different settings</span></a> where we will prove how the upper and
 lower bound of the loss are an unbiased estimator of the error. The models are
 trained with different number of cases ranging from 10% to 80% of the data and
@@ -274,7 +279,7 @@ More information about this dataset can be found in the
 </pre></div>
 </div>
 <div class="section" id="cross-test-validation">
-<h2>Cross test validation<a class="headerlink" href="#cross-test-validation" title="Permalink to this headline"></a></h2>
+<h2>Cross test validation<a class="headerlink" href="#cross-test-validation" title="Permalink to this heading"></a></h2>
 <p>5 fold repeated Stratified Cross validation is performed where each of the
 fold is trained with 80% of the data and then tested with the remaining 20%</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">n_splits</span></a> <span class="o">=</span> <span class="mi">5</span>
@@ -285,7 +290,7 @@ fold is trained with 80% of the data and then tested with the remaining 20%</p>
 </div>
 </div>
 <div class="section" id="results">
-<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline"></a></h2>
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
 <p>We will present the results for the 6 datasets. For more information
 about the dataset refer to the
 <a class="reference external" href="https://machinelearningbcam.github.io/MRCpy">MRCpy documentation</a> of the
@@ -293,7 +298,7 @@ loaders. In the results we can see how the upper and lower bounds get closer
 when the training size is increased. Furthermore, the standard deviation of
 both bounds is reduced significantly.</p>
 <div class="section" id="mammographic">
-<h3>Mammographic<a class="headerlink" href="#mammographic" title="Permalink to this headline"></a></h3>
+<h3>Mammographic<a class="headerlink" href="#mammographic" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">()</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="c1"># dataframes.append(table)</span>
@@ -430,7 +435,7 @@ both bounds is reduced significantly.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_4_upperLower_001.png" srcset="../../_images/sphx_glr_plot_4_upperLower_001.png" alt="Mammographic" class = "sphx-glr-single-img"/></div>
 <div class="section" id="haberman">
-<h3>Haberman<a class="headerlink" href="#haberman" title="Permalink to this headline"></a></h3>
+<h3>Haberman<a class="headerlink" href="#haberman" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_haberman</span><span class="p">()</span>
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
@@ -565,7 +570,7 @@ both bounds is reduced significantly.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_4_upperLower_002.png" srcset="../../_images/sphx_glr_plot_4_upperLower_002.png" alt="Haberman" class = "sphx-glr-single-img"/></div>
 <div class="section" id="indian-liver">
-<h3>Indian liver<a class="headerlink" href="#indian-liver" title="Permalink to this headline"></a></h3>
+<h3>Indian liver<a class="headerlink" href="#indian-liver" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_indian_liver</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
@@ -701,7 +706,7 @@ both bounds is reduced significantly.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_4_upperLower_003.png" srcset="../../_images/sphx_glr_plot_4_upperLower_003.png" alt="Indian Liver" class = "sphx-glr-single-img"/></div>
 <div class="section" id="diabetes">
-<h3>diabetes<a class="headerlink" href="#diabetes" title="Permalink to this headline"></a></h3>
+<h3>diabetes<a class="headerlink" href="#diabetes" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_diabetes</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
@@ -837,7 +842,7 @@ both bounds is reduced significantly.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_4_upperLower_004.png" srcset="../../_images/sphx_glr_plot_4_upperLower_004.png" alt="Diabetes" class = "sphx-glr-single-img"/></div>
 <div class="section" id="credit">
-<h3>credit<a class="headerlink" href="#credit" title="Permalink to this headline"></a></h3>
+<h3>credit<a class="headerlink" href="#credit" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">=</span> <span class="n">load_credit</span><span class="p">()</span>
 
 <span class="n">table</span> <span class="o">=</span> <span class="n">getUpperLowerdf</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="n">cv</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">paramsMRC</span></a><span class="p">)</span>
@@ -973,7 +978,7 @@ both bounds is reduced significantly.</p>
 </div>
 <img src="../../_images/sphx_glr_plot_4_upperLower_005.png" srcset="../../_images/sphx_glr_plot_4_upperLower_005.png" alt="Credit" class = "sphx-glr-single-img"/></div>
 <div class="section" id="covid">
-<h3>COVID<a class="headerlink" href="#covid" title="Permalink to this headline"></a></h3>
+<h3>COVID<a class="headerlink" href="#covid" title="Permalink to this heading"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/table.csv&#39;</span><span class="p">)</span>
 <span class="n">means</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
     <span class="p">[</span><span class="s2">&quot;iteration&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;train_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>

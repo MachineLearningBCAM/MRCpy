@@ -18,6 +18,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -31,11 +32,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -51,15 +56,13 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Example: Predicting COVID-19 patients outcome using MRCs</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#covid-dataset-loader">COVID dataset Loader:</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#addressing-dataset-imbalance-with-smote">Addressing dataset imbalance with SMOTE</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#probability-estimation">Probability estimation</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Further applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -81,9 +84,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
-      <li>Example: Predicting COVID-19 patients outcome using MRCs</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Gallery of examples</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Further applications</a></li>
+      <li class="breadcrumb-item active">Example: Predicting COVID-19 patients outcome using MRCs</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/auto_examples/further_examples/z_COVID.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -95,11 +99,11 @@
              
   <div class="sphx-glr-download-link-note admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">here</span></a>
+<p class="last"><a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-predicting-covid-19-patients-outcome-using-mrcs">
-<span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this headline"></a></h1>
+<span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this heading"></a></h1>
 <p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
 of a COVID-19 positive patient at the moment of hospital triage. This example
 uses a dataset that comprises different demographic variables and biomarkers of
@@ -146,7 +150,7 @@ implementation from <code class="xref any docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <div class="section" id="covid-dataset-loader">
-<h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Permalink to this headline"></a></h2>
+<h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/data_consensus.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
     <span class="c1"># rename variables</span>
@@ -204,7 +208,7 @@ implementation from <code class="xref any docutils literal notranslate"><span cl
 </div>
 </div>
 <div class="section" id="addressing-dataset-imbalance-with-smote">
-<h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Permalink to this headline"></a></h2>
+<h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Permalink to this heading"></a></h2>
 <p>The COVID dataset has a significant problem of class imbalance where the
 positive outcome has a prevalence of 85% (1522) whilst the negative outcome
 has only 276. In this example oversampling will be used to add syintetic
@@ -531,7 +535,7 @@ the creation of the synthetic cases through 5 nearest neighbors.</div></blockquo
 <br />
 <br /></div>
 <div class="section" id="probability-estimation">
-<h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this headline"></a></h2>
+<h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this heading"></a></h2>
 <p>In this section we will estimate the conditional probabilities and analyse
 the distribution of the probabilities depending on the real outcome . The
 probability estimation is better when using <code class="xref py py-mod docutils literal notranslate"><span class="pre">loss</span> <span class="pre">=</span> <span class="pre">log</span></code>. We use
@@ -539,7 +543,7 @@ probability estimation is better when using <code class="xref py py-mod docutils
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log'</span></code>. We will then compare these MRCs
 with SVC and LR with default parameters.</p>
 <div class="section" id="load-classification-function">
-<h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Permalink to this headline"></a></h3>
+<h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Permalink to this heading"></a></h3>
 <p>These function classify each of the cases in their correspondent
 confusion matrix’s category. It also allows to set the desired cut-off
 for the predictions.</p>
@@ -582,7 +586,7 @@ for the predictions.</p>
 </div>
 </div>
 <div class="section" id="train-models">
-<h3>Train models:<a class="headerlink" href="#train-models" title="Permalink to this headline"></a></h3>
+<h3>Train models:<a class="headerlink" href="#train-models" title="Permalink to this heading"></a></h3>
 <p>We will train the models with 80% of the data and then test with the other
 20% selected randomly.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
@@ -1126,7 +1130,7 @@ level0 row3" >support</th>
 outperformance of CMRC.</div></blockquote>
 </div>
 <div class="section" id="setting-the-cut-off-point-for-binary-classification">
-<h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Permalink to this headline"></a></h3>
+<h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Permalink to this heading"></a></h3>
 <p>In this section we will use beeswarm-boxplot to select the cut-off point
 to optimise the tradeoff between false positives and false negatives. The
 beeswarm-boxplot is a great tool to determine the performance of the model
@@ -1320,7 +1324,7 @@ visualization with beeswarm-boxplots to increase the recall in the desired
 class.</p>
 </div></blockquote>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-z-covid-py">
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-z-covid-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <a class="reference download internal" download="" href="../../_downloads/5f45adc21364619fdbecd3eeab5d6c30/z_COVID.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">z_COVID.py</span></code></a></div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">

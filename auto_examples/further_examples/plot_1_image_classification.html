@@ -18,6 +18,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -32,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,17 +57,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part II</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mnist-dataset-digit-recognizer">MNIST Dataset: Digit Recognizer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cats-vs-dogs-dataset">Cats vs Dogs Dataset</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#yearbook-dataset">Yearbook Dataset</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Further applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -82,9 +85,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
-      <li>MRCs with Deep Neural Networks: Part II</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Gallery of examples</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Further applications</a></li>
+      <li class="breadcrumb-item active">MRCs with Deep Neural Networks: Part II</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/auto_examples/further_examples/plot_1_image_classification.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,7 +104,7 @@
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-ii">
-<span id="feature-mrc"></span><span id="sphx-glr-auto-examples-further-examples-plot-1-image-classification-py"></span><h1>MRCs with Deep Neural Networks: Part II<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-ii" title="Permalink to this headline"></a></h1>
+<span id="feature-mrc"></span><span id="sphx-glr-auto-examples-further-examples-plot-1-image-classification-py"></span><h1>MRCs with Deep Neural Networks: Part II<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-ii" title="Permalink to this heading"></a></h1>
 <p>In this example we will use a features extracted from different sets of images
 using pretrained neural networks, as explained in <a class="reference internal" href="feature_extraction.html#featureextraction"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a>.</p>
 <p>We will use image features correponding to a set of training images to train an
@@ -118,7 +122,7 @@ correponding extracted features.</p>
 </pre></div>
 </div>
 <div class="section" id="mnist-dataset-digit-recognizer">
-<h2>MNIST Dataset: Digit Recognizer<a class="headerlink" href="#mnist-dataset-digit-recognizer" title="Permalink to this headline"></a></h2>
+<h2>MNIST Dataset: Digit Recognizer<a class="headerlink" href="#mnist-dataset-digit-recognizer" title="Permalink to this heading"></a></h2>
 <p>The MNIST database of handwritten digits, available from
 <code class="xref any docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
 has a training set of 60000 examples, and a test set of 10000 examples. All
@@ -163,7 +167,7 @@ MNIST raw data and obtain accuracy of 98.71%.</p>
 </div>
 </div>
 <div class="section" id="cats-vs-dogs-dataset">
-<h2>Cats vs Dogs Dataset<a class="headerlink" href="#cats-vs-dogs-dataset" title="Permalink to this headline"></a></h2>
+<h2>Cats vs Dogs Dataset<a class="headerlink" href="#cats-vs-dogs-dataset" title="Permalink to this heading"></a></h2>
 <p>Cats vs dogs dataset is a database of 23262 RGB cats
 and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
 Cats are labeled by 0 and dogs by 1 and there are 11658 and 11604 images
@@ -193,7 +197,7 @@ neural layers.</p>
 </div>
 </div>
 <div class="section" id="yearbook-dataset">
-<h2>Yearbook Dataset<a class="headerlink" href="#yearbook-dataset" title="Permalink to this headline"></a></h2>
+<h2>Yearbook Dataset<a class="headerlink" href="#yearbook-dataset" title="Permalink to this heading"></a></h2>
 <p>The Yearbook dataset which is a publicly-available dataset
 of 37,921 frontal-facing American high school yearbook portraits taken from
 1905 to 2013 labeled by gender.

@@ -18,6 +18,7 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -32,11 +33,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,18 +57,15 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Gallery of examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#basic-examples">Basic Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#further-applications">Further applications</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#random-grid-using-upper-bound-parameter">Random Grid using Upper Bound parameter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#randomgridcv">RandomGridCV</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#comparison">Comparison</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Further applications</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
 </ul>
 </li>
 </ul>
@@ -83,9 +85,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Gallery of examples</a> &raquo;</li>
-      <li>Hyperparameter Tuning: Upper Bound vs Cross-Validation</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Gallery of examples</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Further applications</a></li>
+      <li class="breadcrumb-item active">Hyperparameter Tuning: Upper Bound vs Cross-Validation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/auto_examples/further_examples/plot_2_grid.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -101,7 +104,7 @@
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="hyperparameter-tuning-upper-bound-vs-cross-validation">
-<span id="grid"></span><span id="sphx-glr-auto-examples-further-examples-plot-2-grid-py"></span><h1>Hyperparameter Tuning: Upper Bound vs Cross-Validation<a class="headerlink" href="#hyperparameter-tuning-upper-bound-vs-cross-validation" title="Permalink to this headline"></a></h1>
+<span id="grid"></span><span id="sphx-glr-auto-examples-further-examples-plot-2-grid-py"></span><h1>Hyperparameter Tuning: Upper Bound vs Cross-Validation<a class="headerlink" href="#hyperparameter-tuning-upper-bound-vs-cross-validation" title="Permalink to this heading"></a></h1>
 <p>Example of how to use the Upper Bounds provided by the <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRC</span></code></a> method in the
 <code class="xref any docutils literal notranslate"><span class="pre">MRCpy</span></code> library for hyperparameter tuning and comparison to Cross-Validation.
 We will see that using the Upper Bound gets similar performances to
@@ -131,7 +134,7 @@ perform the optimization.</p>
 </pre></div>
 </div>
 <div class="section" id="random-grid-using-upper-bound-parameter">
-<h2>Random Grid using Upper Bound parameter<a class="headerlink" href="#random-grid-using-upper-bound-parameter" title="Permalink to this headline"></a></h2>
+<h2>Random Grid using Upper Bound parameter<a class="headerlink" href="#random-grid-using-upper-bound-parameter" title="Permalink to this heading"></a></h2>
 <p>We select random <code class="xref any docutils literal notranslate"><span class="pre">n_iter</span></code> random set of values for the parameters to tune in
 a given range and select the pair of parameters which minimizes the upper
 bound provided by the MRC method.
@@ -172,7 +175,7 @@ value for the RandomGridCV method.</p>
 </div>
 </div>
 <div class="section" id="randomgridcv">
-<h2>RandomGridCV<a class="headerlink" href="#randomgridcv" title="Permalink to this headline"></a></h2>
+<h2>RandomGridCV<a class="headerlink" href="#randomgridcv" title="Permalink to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_RandomGridCV</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_test</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y_test</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sigma_ini</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">sigma_fin</span></a><span class="p">,</span>
                      <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s_ini</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s_fin</span></a><span class="p">):</span>
     <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">10</span>
@@ -205,7 +208,7 @@ value for the RandomGridCV method.</p>
 </div>
 </div>
 <div class="section" id="comparison">
-<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline"></a></h2>
+<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading"></a></h2>
 <p>We are performing both of the previous methods for hyperparameter tuning
 over a set of different datasets and comparing the performances.
 Before calling them, we set a range of values for the hyperpatameters.
@@ -455,7 +458,7 @@ rely heavily on the train_test_split selected.</p>
 <br />
 <br /></div>
 <div class="section" id="results">
-<h2>Results<a class="headerlink" href="#results" title="Permalink to this headline"></a></h2>
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
 <p>Comparing the resulting tables above we notice that both methods:
 RandomGridCV and Random Grid using Upper bounds are really similar in
 performance, one can do better than the other depending on the datasets but
