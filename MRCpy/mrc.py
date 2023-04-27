@@ -121,10 +121,6 @@ class MRC(BaseMRC):
             for this approach. More iteration lead to an accurate solution
             while requiring more time.
 
-            [1] `Mazuelas, S., Mauricio, R., & Grunwald, P. (2022).
-                Minimax Risk Classifiers with 0-1 Loss.
-                <https://arxiv.org/abs/2010.07964>`_
-
     max_iters : `int`, default = `10000`
         Maximum number of iterations to use
         for finding the solution of optimization when
