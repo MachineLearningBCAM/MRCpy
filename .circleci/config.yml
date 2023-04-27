@@ -85,6 +85,7 @@ workflows:
           requires:
             - style-test
             - docs-build
+            - docs-deploy
           filters:
             branches:
               only: master
