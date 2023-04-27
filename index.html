@@ -18,6 +18,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/js/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -31,11 +32,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> MRCpy
+
+          
+          
+          <a href="#" class="icon icon-home">
+            MRCpy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -64,8 +69,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>MRCpy: A Library for Minimax Risk Classifiers</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">MRCpy: A Library for Minimax Risk Classifiers</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -76,14 +81,14 @@
            <div itemprop="articleBody">
              
   <div class="section" id="mrcpy-a-library-for-minimax-risk-classifiers">
-<h1>MRCpy: A Library for Minimax Risk Classifiers<a class="headerlink" href="#mrcpy-a-library-for-minimax-risk-classifiers" title="Permalink to this headline"></a></h1>
+<h1>MRCpy: A Library for Minimax Risk Classifiers<a class="headerlink" href="#mrcpy-a-library-for-minimax-risk-classifiers" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://circleci.com/gh/MachineLearningBCAM/MRCpy"><img alt="Travis-CI Build Status" src="https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield" /></a> <a class="reference external" href="https://codecov.io/gh/MachineLearningBCAM/MRCpy"><img alt="Code coverage" src="https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy" /></a></p>
 <p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1-loss. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. The presented library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines. In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features.</p>
 <p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. More information about loaders is available in Dataset Loaders <span class="xref std std-ref">load</span>. The next datasets from the <a class="reference external" href="http://archive.ics.uci.edu/ml/index.php">UCI Repository</a> are available: credit, diabetes, ecoli, glass, haberman, indian liver patient, iris, letter recognition, mammographic, optdigits, redwine, satellite and segment.</p>
 <p>There also be several datasets realated to computer vision which are actually “feature datasets”. We obtained these features by using a pretrained neural network over the images and taking the features from the second last layer. You can check more about this in our examples <a class="reference internal" href="auto_examples/further_examples/feature_extraction.html#featureextraction"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a> and <a class="reference internal" href="auto_examples/further_examples/plot_1_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.
 The image dataset <a class="reference external" href="https://people.eecs.berkeley.edu/~shiry/projects/yearbooks/yearbooks.html">Yearbook dataset</a> is available both in its original version consisting of portrait images and in extracted features form in a CSV file. There are also feature datasets of <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST</a> and <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">Cats vs Dogs</a> datasets which images versions are directly available using <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/overview">Tensorflow Datasets</a>. For all these feature datasets we used a pretrained ResNet18 over ImageNet.</p>
 <div class="section" id="documentation-outline">
-<h2>Documentation outline<a class="headerlink" href="#documentation-outline" title="Permalink to this headline"></a></h2>
+<h2>Documentation outline<a class="headerlink" href="#documentation-outline" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
@@ -115,7 +120,7 @@ The image dataset <a class="reference external" href="https://people.eecs.berkel
 </div>
 </div>
 <div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
 <blockquote>
 <div><p>For more information about the MRC method and the MRCpy library, one can refer to the following resources:</p>
 <blockquote>
@@ -162,7 +167,7 @@ The image dataset <a class="reference external" href="https://people.eecs.berkel
 </div></blockquote>
 </div></blockquote>
 <div class="section" id="funding">
-<h3>Funding<a class="headerlink" href="#funding" title="Permalink to this headline"></a></h3>
+<h3>Funding<a class="headerlink" href="#funding" title="Permalink to this heading"></a></h3>
 <p>Funding in direct support of this work has been provided through different research projects by the following institutions.</p>
 <div class="figure align-center" id="id2">
 <a class="reference internal image-reference" href="_images/fund_logo.png"><img alt="Spanish Ministry of Science and Innovation logo" src="_images/fund_logo.png" style="width: 150px;" /></a>
