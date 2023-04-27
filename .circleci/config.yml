@@ -68,9 +68,9 @@ jobs:
             npm install -g --silent gh-pages@2.0.1
             git config user.email "bkartheekreddy@gmail.com"
             git config user.name "KARTHEEKCIC"
-      - add_ssh_keys:
-          fingerprints:
-            - "KMUmTqt5D/K6TBDEx51PkTAQYfe6cyThl9qDayCZGpk"
+      # - add_ssh_keys:
+      #     fingerprints:
+      #       - "KMUmTqt5D/K6TBDEx51PkTAQYfe6cyThl9qDayCZGpk"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
