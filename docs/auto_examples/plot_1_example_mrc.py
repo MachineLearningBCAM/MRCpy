@@ -58,7 +58,11 @@ def runMRC(phi, loss):
         r = len(np.unique(Y))
         n, d = X.shape
 
-        clf = MRC(phi=phi, loss=loss, use_cvx=False)
+        clf = MRC(phi=phi,
+                  loss=loss,
+                  random_state=random_seed,
+                  max_iters=5000,
+                  solver='subgrad')
 
         # Generate the partitions of the stratified cross-validation
         n_splits = 5
@@ -107,7 +111,7 @@ def runMRC(phi, loss):
         lower = lower / n_splits
         auxTime = auxTime / n_splits
 
-        results = results.append(
+        results = results._append(
             {
                 "dataset": dataName[j],
                 "n_samples": "%d" % n,

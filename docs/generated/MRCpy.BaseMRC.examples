@@ -3,21 +3,58 @@
 Examples using ``MRCpy.BaseMRC``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
+.. start-sphx-glr-thumbnails
+
+
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have...">
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and ...">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
-     :alt: Example: Use of AMRC (Adaptative MRC) for Online Learning
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_1_example_mrc_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
+  :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of MRC with different settings</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_2_example_cmrc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of CMRC with different settings</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
 
 .. raw:: html
 
     </div>
 
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`

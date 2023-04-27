@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_further_examples_z_COVID.py>`
+        :ref:`Go to the end <sphx_glr_download_auto_examples_further_examples_z_COVID.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -1447,23 +1447,20 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
 
 .. _sphx_glr_download_auto_examples_further_examples_z_COVID.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
 
-  .. container:: sphx-glr-download sphx-glr-download-python
 
-     :download:`Download Python source code: z_COVID.py <z_COVID.py>`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download Python source code: z_COVID.py <z_COVID.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: z_COVID.ipynb <z_COVID.ipynb>`
+      :download:`Download Jupyter notebook: z_COVID.ipynb <z_COVID.ipynb>`
 
 
 .. only:: html

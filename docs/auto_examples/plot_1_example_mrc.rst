@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_1_example_mrc.py>`
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_1_example_mrc.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -36,7 +36,7 @@ perform the optimization.
 
 You can check a more elaborated example in :ref:`ex_comp`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-126
+.. GENERATED FROM PYTHON SOURCE LINES 23-130
 
 .. code-block:: default
 
@@ -78,7 +78,11 @@ You can check a more elaborated example in :ref:`ex_comp`.
             r = len(np.unique(Y))
             n, d = X.shape
 
-            clf = MRC(phi=phi, loss=loss, use_cvx=False)
+            clf = MRC(phi=phi,
+                      loss=loss,
+                      random_state=random_seed,
+                      max_iters=5000,
+                      solver='subgrad')
 
             # Generate the partitions of the stratified cross-validation
             n_splits = 5
@@ -127,7 +131,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
             lower = lower / n_splits
             auxTime = auxTime / n_splits
 
-            results = results.append(
+            results = results._append(
                 {
                     "dataset": dataName[j],
                     "n_samples": "%d" % n,
@@ -150,7 +154,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-131
+.. GENERATED FROM PYTHON SOURCE LINES 131-135
 
 .. code-block:: default
 
@@ -168,76 +172,76 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_0243c">
+    <table id="T_41d03">
       <caption>Using 0-1 loss and fourier feature mapping</caption>
       <thead>
         <tr>
           <th class="blank level0" >&nbsp;</th>
-          <th id="T_0243c_level0_col0" class="col_heading level0 col0" >dataset</th>
-          <th id="T_0243c_level0_col1" class="col_heading level0 col1" >n_samples</th>
-          <th id="T_0243c_level0_col2" class="col_heading level0 col2" >n_attributes</th>
-          <th id="T_0243c_level0_col3" class="col_heading level0 col3" >n_classes</th>
-          <th id="T_0243c_level0_col4" class="col_heading level0 col4" >error</th>
-          <th id="T_0243c_level0_col5" class="col_heading level0 col5" >upper</th>
-          <th id="T_0243c_level0_col6" class="col_heading level0 col6" >lower</th>
-          <th id="T_0243c_level0_col7" class="col_heading level0 col7" >avg_train_time (s)</th>
+          <th id="T_41d03_level0_col0" class="col_heading level0 col0" >dataset</th>
+          <th id="T_41d03_level0_col1" class="col_heading level0 col1" >n_samples</th>
+          <th id="T_41d03_level0_col2" class="col_heading level0 col2" >n_attributes</th>
+          <th id="T_41d03_level0_col3" class="col_heading level0 col3" >n_classes</th>
+          <th id="T_41d03_level0_col4" class="col_heading level0 col4" >error</th>
+          <th id="T_41d03_level0_col5" class="col_heading level0 col5" >upper</th>
+          <th id="T_41d03_level0_col6" class="col_heading level0 col6" >lower</th>
+          <th id="T_41d03_level0_col7" class="col_heading level0 col7" >avg_train_time (s)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th id="T_0243c_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_0243c_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_0243c_row0_col1" class="data row0 col1" >961</td>
-          <td id="T_0243c_row0_col2" class="data row0 col2" >5</td>
-          <td id="T_0243c_row0_col3" class="data row0 col3" >2</td>
-          <td id="T_0243c_row0_col4" class="data row0 col4" >0.18 +/- 0.018</td>
-          <td id="T_0243c_row0_col5" class="data row0 col5" >0.22</td>
-          <td id="T_0243c_row0_col6" class="data row0 col6" >0.2</td>
-          <td id="T_0243c_row0_col7" class="data row0 col7" >2.1</td>
+          <th id="T_41d03_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_41d03_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_41d03_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_41d03_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_41d03_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_41d03_row0_col4" class="data row0 col4" >0.18 +/- 0.013</td>
+          <td id="T_41d03_row0_col5" class="data row0 col5" >0.23</td>
+          <td id="T_41d03_row0_col6" class="data row0 col6" >0.21</td>
+          <td id="T_41d03_row0_col7" class="data row0 col7" >0.69</td>
         </tr>
         <tr>
-          <th id="T_0243c_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_0243c_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_0243c_row1_col1" class="data row1 col1" >306</td>
-          <td id="T_0243c_row1_col2" class="data row1 col2" >3</td>
-          <td id="T_0243c_row1_col3" class="data row1 col3" >2</td>
-          <td id="T_0243c_row1_col4" class="data row1 col4" >0.26 +/- 0.011</td>
-          <td id="T_0243c_row1_col5" class="data row1 col5" >0.26</td>
-          <td id="T_0243c_row1_col6" class="data row1 col6" >0.23</td>
-          <td id="T_0243c_row1_col7" class="data row1 col7" >1.2</td>
+          <th id="T_41d03_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_41d03_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_41d03_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_41d03_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_41d03_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_41d03_row1_col4" class="data row1 col4" >0.27 +/- 0.016</td>
+          <td id="T_41d03_row1_col5" class="data row1 col5" >0.26</td>
+          <td id="T_41d03_row1_col6" class="data row1 col6" >0.24</td>
+          <td id="T_41d03_row1_col7" class="data row1 col7" >0.45</td>
         </tr>
         <tr>
-          <th id="T_0243c_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_0243c_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_0243c_row2_col1" class="data row2 col1" >583</td>
-          <td id="T_0243c_row2_col2" class="data row2 col2" >10</td>
-          <td id="T_0243c_row2_col3" class="data row2 col3" >2</td>
-          <td id="T_0243c_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
-          <td id="T_0243c_row2_col5" class="data row2 col5" >0.29</td>
-          <td id="T_0243c_row2_col6" class="data row2 col6" >0.28</td>
-          <td id="T_0243c_row2_col7" class="data row2 col7" >2</td>
+          <th id="T_41d03_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_41d03_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_41d03_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_41d03_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_41d03_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_41d03_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
+          <td id="T_41d03_row2_col5" class="data row2 col5" >0.29</td>
+          <td id="T_41d03_row2_col6" class="data row2 col6" >0.28</td>
+          <td id="T_41d03_row2_col7" class="data row2 col7" >0.64</td>
         </tr>
         <tr>
-          <th id="T_0243c_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_0243c_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_0243c_row3_col1" class="data row3 col1" >768</td>
-          <td id="T_0243c_row3_col2" class="data row3 col2" >8</td>
-          <td id="T_0243c_row3_col3" class="data row3 col3" >2</td>
-          <td id="T_0243c_row3_col4" class="data row3 col4" >0.24 +/- 0.029</td>
-          <td id="T_0243c_row3_col5" class="data row3 col5" >0.28</td>
-          <td id="T_0243c_row3_col6" class="data row3 col6" >0.25</td>
-          <td id="T_0243c_row3_col7" class="data row3 col7" >2.2</td>
+          <th id="T_41d03_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_41d03_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_41d03_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_41d03_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_41d03_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_41d03_row3_col4" class="data row3 col4" >0.25 +/- 0.03</td>
+          <td id="T_41d03_row3_col5" class="data row3 col5" >0.29</td>
+          <td id="T_41d03_row3_col6" class="data row3 col6" >0.25</td>
+          <td id="T_41d03_row3_col7" class="data row3 col7" >0.76</td>
         </tr>
         <tr>
-          <th id="T_0243c_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_0243c_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_0243c_row4_col1" class="data row4 col1" >690</td>
-          <td id="T_0243c_row4_col2" class="data row4 col2" >15</td>
-          <td id="T_0243c_row4_col3" class="data row4 col3" >2</td>
-          <td id="T_0243c_row4_col4" class="data row4 col4" >0.14 +/- 0.025</td>
-          <td id="T_0243c_row4_col5" class="data row4 col5" >0.19</td>
-          <td id="T_0243c_row4_col6" class="data row4 col6" >0.14</td>
-          <td id="T_0243c_row4_col7" class="data row4 col7" >2.2</td>
+          <th id="T_41d03_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_41d03_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_41d03_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_41d03_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_41d03_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_41d03_row4_col4" class="data row4 col4" >0.14 +/- 0.034</td>
+          <td id="T_41d03_row4_col5" class="data row4 col5" >0.2</td>
+          <td id="T_41d03_row4_col6" class="data row4 col6" >0.15</td>
+          <td id="T_41d03_row4_col7" class="data row4 col7" >0.95</td>
         </tr>
       </tbody>
     </table>
@@ -246,7 +250,7 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <br />
     <br />
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-135
+.. GENERATED FROM PYTHON SOURCE LINES 136-139
 
 .. code-block:: default
 
@@ -263,76 +267,76 @@ You can check a more elaborated example in :ref:`ex_comp`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_408db">
+    <table id="T_55a75">
       <caption>Using log loss and fourier feature mapping</caption>
       <thead>
         <tr>
           <th class="blank level0" >&nbsp;</th>
-          <th id="T_408db_level0_col0" class="col_heading level0 col0" >dataset</th>
-          <th id="T_408db_level0_col1" class="col_heading level0 col1" >n_samples</th>
-          <th id="T_408db_level0_col2" class="col_heading level0 col2" >n_attributes</th>
-          <th id="T_408db_level0_col3" class="col_heading level0 col3" >n_classes</th>
-          <th id="T_408db_level0_col4" class="col_heading level0 col4" >error</th>
-          <th id="T_408db_level0_col5" class="col_heading level0 col5" >upper</th>
-          <th id="T_408db_level0_col6" class="col_heading level0 col6" >lower</th>
-          <th id="T_408db_level0_col7" class="col_heading level0 col7" >avg_train_time (s)</th>
+          <th id="T_55a75_level0_col0" class="col_heading level0 col0" >dataset</th>
+          <th id="T_55a75_level0_col1" class="col_heading level0 col1" >n_samples</th>
+          <th id="T_55a75_level0_col2" class="col_heading level0 col2" >n_attributes</th>
+          <th id="T_55a75_level0_col3" class="col_heading level0 col3" >n_classes</th>
+          <th id="T_55a75_level0_col4" class="col_heading level0 col4" >error</th>
+          <th id="T_55a75_level0_col5" class="col_heading level0 col5" >upper</th>
+          <th id="T_55a75_level0_col6" class="col_heading level0 col6" >lower</th>
+          <th id="T_55a75_level0_col7" class="col_heading level0 col7" >avg_train_time (s)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th id="T_408db_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_408db_row0_col0" class="data row0 col0" >mammographic</td>
-          <td id="T_408db_row0_col1" class="data row0 col1" >961</td>
-          <td id="T_408db_row0_col2" class="data row0 col2" >5</td>
-          <td id="T_408db_row0_col3" class="data row0 col3" >2</td>
-          <td id="T_408db_row0_col4" class="data row0 col4" >0.18 +/- 0.015</td>
-          <td id="T_408db_row0_col5" class="data row0 col5" >0.53</td>
-          <td id="T_408db_row0_col6" class="data row0 col6" >0.43</td>
-          <td id="T_408db_row0_col7" class="data row0 col7" >5.4</td>
+          <th id="T_55a75_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_55a75_row0_col0" class="data row0 col0" >mammographic</td>
+          <td id="T_55a75_row0_col1" class="data row0 col1" >961</td>
+          <td id="T_55a75_row0_col2" class="data row0 col2" >5</td>
+          <td id="T_55a75_row0_col3" class="data row0 col3" >2</td>
+          <td id="T_55a75_row0_col4" class="data row0 col4" >0.18 +/- 0.011</td>
+          <td id="T_55a75_row0_col5" class="data row0 col5" >0.54</td>
+          <td id="T_55a75_row0_col6" class="data row0 col6" >0.44</td>
+          <td id="T_55a75_row0_col7" class="data row0 col7" >2.3</td>
         </tr>
         <tr>
-          <th id="T_408db_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_408db_row1_col0" class="data row1 col0" >haberman</td>
-          <td id="T_408db_row1_col1" class="data row1 col1" >306</td>
-          <td id="T_408db_row1_col2" class="data row1 col2" >3</td>
-          <td id="T_408db_row1_col3" class="data row1 col3" >2</td>
-          <td id="T_408db_row1_col4" class="data row1 col4" >0.27 +/- 0.0071</td>
-          <td id="T_408db_row1_col5" class="data row1 col5" >0.58</td>
-          <td id="T_408db_row1_col6" class="data row1 col6" >0.49</td>
-          <td id="T_408db_row1_col7" class="data row1 col7" >2.6</td>
+          <th id="T_55a75_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_55a75_row1_col0" class="data row1 col0" >haberman</td>
+          <td id="T_55a75_row1_col1" class="data row1 col1" >306</td>
+          <td id="T_55a75_row1_col2" class="data row1 col2" >3</td>
+          <td id="T_55a75_row1_col3" class="data row1 col3" >2</td>
+          <td id="T_55a75_row1_col4" class="data row1 col4" >0.27 +/- 0.016</td>
+          <td id="T_55a75_row1_col5" class="data row1 col5" >0.58</td>
+          <td id="T_55a75_row1_col6" class="data row1 col6" >0.5</td>
+          <td id="T_55a75_row1_col7" class="data row1 col7" >1.1</td>
         </tr>
         <tr>
-          <th id="T_408db_level0_row2" class="row_heading level0 row2" >2</th>
-          <td id="T_408db_row2_col0" class="data row2 col0" >indian_liver</td>
-          <td id="T_408db_row2_col1" class="data row2 col1" >583</td>
-          <td id="T_408db_row2_col2" class="data row2 col2" >10</td>
-          <td id="T_408db_row2_col3" class="data row2 col3" >2</td>
-          <td id="T_408db_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
-          <td id="T_408db_row2_col5" class="data row2 col5" >0.6</td>
-          <td id="T_408db_row2_col6" class="data row2 col6" >0.59</td>
-          <td id="T_408db_row2_col7" class="data row2 col7" >4.8</td>
+          <th id="T_55a75_level0_row2" class="row_heading level0 row2" >2</th>
+          <td id="T_55a75_row2_col0" class="data row2 col0" >indian_liver</td>
+          <td id="T_55a75_row2_col1" class="data row2 col1" >583</td>
+          <td id="T_55a75_row2_col2" class="data row2 col2" >10</td>
+          <td id="T_55a75_row2_col3" class="data row2 col3" >2</td>
+          <td id="T_55a75_row2_col4" class="data row2 col4" >0.29 +/- 0.0035</td>
+          <td id="T_55a75_row2_col5" class="data row2 col5" >0.6</td>
+          <td id="T_55a75_row2_col6" class="data row2 col6" >0.59</td>
+          <td id="T_55a75_row2_col7" class="data row2 col7" >1.8</td>
         </tr>
         <tr>
-          <th id="T_408db_level0_row3" class="row_heading level0 row3" >3</th>
-          <td id="T_408db_row3_col0" class="data row3 col0" >diabetes</td>
-          <td id="T_408db_row3_col1" class="data row3 col1" >768</td>
-          <td id="T_408db_row3_col2" class="data row3 col2" >8</td>
-          <td id="T_408db_row3_col3" class="data row3 col3" >2</td>
-          <td id="T_408db_row3_col4" class="data row3 col4" >0.24 +/- 0.03</td>
-          <td id="T_408db_row3_col5" class="data row3 col5" >0.6</td>
-          <td id="T_408db_row3_col6" class="data row3 col6" >0.51</td>
-          <td id="T_408db_row3_col7" class="data row3 col7" >6.4</td>
+          <th id="T_55a75_level0_row3" class="row_heading level0 row3" >3</th>
+          <td id="T_55a75_row3_col0" class="data row3 col0" >diabetes</td>
+          <td id="T_55a75_row3_col1" class="data row3 col1" >768</td>
+          <td id="T_55a75_row3_col2" class="data row3 col2" >8</td>
+          <td id="T_55a75_row3_col3" class="data row3 col3" >2</td>
+          <td id="T_55a75_row3_col4" class="data row3 col4" >0.24 +/- 0.027</td>
+          <td id="T_55a75_row3_col5" class="data row3 col5" >0.6</td>
+          <td id="T_55a75_row3_col6" class="data row3 col6" >0.52</td>
+          <td id="T_55a75_row3_col7" class="data row3 col7" >2.7</td>
         </tr>
         <tr>
-          <th id="T_408db_level0_row4" class="row_heading level0 row4" >4</th>
-          <td id="T_408db_row4_col0" class="data row4 col0" >credit</td>
-          <td id="T_408db_row4_col1" class="data row4 col1" >690</td>
-          <td id="T_408db_row4_col2" class="data row4 col2" >15</td>
-          <td id="T_408db_row4_col3" class="data row4 col3" >2</td>
-          <td id="T_408db_row4_col4" class="data row4 col4" >0.15 +/- 0.032</td>
-          <td id="T_408db_row4_col5" class="data row4 col5" >0.5</td>
-          <td id="T_408db_row4_col6" class="data row4 col6" >0.37</td>
-          <td id="T_408db_row4_col7" class="data row4 col7" >6.3</td>
+          <th id="T_55a75_level0_row4" class="row_heading level0 row4" >4</th>
+          <td id="T_55a75_row4_col0" class="data row4 col0" >credit</td>
+          <td id="T_55a75_row4_col1" class="data row4 col1" >690</td>
+          <td id="T_55a75_row4_col2" class="data row4 col2" >15</td>
+          <td id="T_55a75_row4_col3" class="data row4 col3" >2</td>
+          <td id="T_55a75_row4_col4" class="data row4 col4" >0.14 +/- 0.034</td>
+          <td id="T_55a75_row4_col5" class="data row4 col5" >0.5</td>
+          <td id="T_55a75_row4_col6" class="data row4 col6" >0.39</td>
+          <td id="T_55a75_row4_col7" class="data row4 col7" >2.5</td>
         </tr>
       </tbody>
     </table>
@@ -344,28 +348,25 @@ You can check a more elaborated example in :ref:`ex_comp`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 2 minutes  56.706 seconds)
+   **Total running time of the script:** ( 1 minutes  10.256 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_1_example_mrc.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
 
-  .. container:: sphx-glr-download sphx-glr-download-python
 
-     :download:`Download Python source code: plot_1_example_mrc.py <plot_1_example_mrc.py>`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download Python source code: plot_1_example_mrc.py <plot_1_example_mrc.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_1_example_mrc.ipynb <plot_1_example_mrc.ipynb>`
+      :download:`Download Jupyter notebook: plot_1_example_mrc.ipynb <plot_1_example_mrc.ipynb>`
 
 
 .. only:: html
