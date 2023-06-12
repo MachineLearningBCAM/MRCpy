@@ -4,3 +4,4 @@ scikit-learn>=0.21.0
 cvxpy
 mosek
 pandas
+gurobipy
