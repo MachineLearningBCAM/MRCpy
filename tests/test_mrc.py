@@ -65,3 +65,11 @@ class TestMRC(unittest.TestCase):
         self.MRC_training(phi='linear', loss='log', solver='cvx')
         self.MRC_training(phi='fourier', loss='log', solver='cvx')
         self.MRC_training(phi='relu', loss='log', solver='cvx')
+
+    # Using constraint generation.
+    # Training test for MRC with 0-1 loss.
+    def test_MRC0_1_cg(self):
+        self.MRC_training(phi='threshold', loss='0-1', solver='cg')
+        self.MRC_training(phi='linear', loss='0-1', solver='cg')
+        self.MRC_training(phi='fourier', loss='0-1', solver='cg')
+        self.MRC_training(phi='relu', loss='0-1', solver='cg')
