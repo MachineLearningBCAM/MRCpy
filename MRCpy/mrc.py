@@ -14,6 +14,7 @@ from sklearn.utils.validation import check_is_fitted
 from MRCpy import BaseMRC
 from MRCpy.solvers.cvx import *
 from MRCpy.solvers.nesterov import *
+from MRCpy.solvers.cg import *
 
 class MRC(BaseMRC):
     '''
@@ -121,10 +122,25 @@ class MRC(BaseMRC):
             for this approach. More iteration lead to an accurate solution
             while requiring more time.
 
+        ’cg’
+            Solves the optimization using methods
+            based on constraint generation. This method is suitable for
+            optimization problems with large number of features.
+
     max_iters : `int`, default = `10000`
         Maximum number of iterations to use
         for finding the solution of optimization when
         using the subgradient approach.
+
+    n_max : `int`, default = `100`
+        Maximum number of features selected in each iteration
+        in case of ’cg’ solver.
+
+    k_max : `int`, default = `20`
+        Maximum number of iterations in case of ’cg’ solver.
+
+    eps : `float`, default = `1e-4`
+        Dual constraints' violation threshold for ’cg’ solver. 
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
@@ -261,10 +277,16 @@ class MRC(BaseMRC):
                  fit_intercept=True,
                  solver='subgrad',
                  max_iters=10000,
+                 n_max=100,
+                 k_max=20,
+                 eps=1e-4,
                  phi='linear',
                  **phi_kwargs):
 
         self.solver = solver
+        self.n_max = n_max
+        self.k_max = k_max
+        self.eps = eps
         self.max_iters = max_iters
         self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
         super().__init__(loss=loss,
@@ -428,6 +450,59 @@ class MRC(BaseMRC):
             self.nu_ = self.upper_params_['nu']
             self.upper_ = self.upper_params_['best_value']
 
+        elif self.solver == 'cg':
+            # Use methods based on constraint generation
+            # to solve the optimization.
+
+    #-----> Initialization for constraint generation method.
+
+        #-> Reduce the feature space by restricting the number of features
+        #   based on the variance in the features, that is, picking first
+        #   10*N minimum variance features.
+            N = M.shape[0]
+            argsort_columns = np.argsort(np.abs(self.lambda_))
+            index_CG        = argsort_columns[:10*N]
+
+        #-> Solve the optimization using the reduced training set
+        #   and first order subgradient methods to get an
+        #   initial low accuracy solution in minimum time.
+            M_reduced = M[:, index_CG]
+            M_reduced_t = M_reduced.transpose()
+
+            # Calculate the upper bound
+            upper_params_ = \
+                 nesterov_optimization_minimized_mrc(M_reduced,
+                                                     h,
+                                                     self.tau_[index_CG],
+                                                     self.lambda_[index_CG],
+                                                     100)
+            mu_ = upper_params_['mu']
+            nu_ = upper_params_['nu']
+
+        #-> Transform the solution obtained in the reduced space
+        #   to the original space
+            initial_features_limit = 100
+            if np.sum(mu_!=0) > initial_features_limit:
+                I = (np.argsort(np.abs(mu_))[::-1])[:initial_features_limit]
+            else:
+                I = np.where(mu_!=0)[0]
+
+            warm_start = mu_[I] 
+            I = np.array(index_CG)[I].tolist()
+
+    #-----> Now apply the method of constraint generation using the 
+    #       low accuracy solution.
+
+            self.mu_, self.nu_, self.upper_, self.I = mrc_cg(M,
+                                                             h,
+                                                             self.tau_,
+                                                             self.lambda_,
+                                                             I,
+                                                             self.n_max,
+                                                             self.k_max,
+                                                             warm_start,
+                                                             nu_,
+                                                             self.eps)
         else:
             raise ValueError('Unexpected solver ... ')
 
@@ -516,7 +591,7 @@ class MRC(BaseMRC):
             # Maximize the function
             self.lower_ = (-1) * self.lower_
 
-        elif self.solver == 'subgrad':
+        elif self.solver == 'subgrad' or self.solver == 'cg':
             # Use the subgradient approach for the convex optimization of MRC
 
             # Defining the partial objective and its gradient.
