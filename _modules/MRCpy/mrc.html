@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,6 +96,7 @@
 <span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">BaseMRC</span>
 <span class="kn">from</span> <span class="nn">MRCpy.solvers.cvx</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">MRCpy.solvers.nesterov</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">MRCpy.solvers.cg</span> <span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="MRC"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC">[docs]</a><span class="k">class</span> <span class="nc">MRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -203,14 +204,25 @@
 <span class="sd">            for this approach. More iteration lead to an accurate solution</span>
 <span class="sd">            while requiring more time.</span>
 
-<span class="sd">            [1] `Mazuelas, S., Mauricio, R., &amp; Grunwald, P. (2022).</span>
-<span class="sd">                Minimax Risk Classifiers with 0-1 Loss.</span>
-<span class="sd">                &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+<span class="sd">        ’cg’</span>
+<span class="sd">            Solves the optimization using methods</span>
+<span class="sd">            based on constraint generation. This method is suitable for</span>
+<span class="sd">            optimization problems with large number of features.</span>
 
 <span class="sd">    max_iters : `int`, default = `10000`</span>
 <span class="sd">        Maximum number of iterations to use</span>
 <span class="sd">        for finding the solution of optimization when</span>
 <span class="sd">        using the subgradient approach.</span>
+
+<span class="sd">    n_max : `int`, default = `100`</span>
+<span class="sd">        Maximum number of features selected in each iteration</span>
+<span class="sd">        in case of ’cg’ solver.</span>
+
+<span class="sd">    k_max : `int`, default = `20`</span>
+<span class="sd">        Maximum number of iterations in case of ’cg’ solver.</span>
+
+<span class="sd">    eps : `float`, default = `1e-4`</span>
+<span class="sd">        Dual constraints&#39; violation threshold for ’cg’ solver. </span>
 
 <span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
@@ -347,10 +359,16 @@
                  <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;subgrad&#39;</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
+                 <span class="n">n_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">k_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                 <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="n">n_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="n">k_max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
@@ -514,6 +532,59 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;nu&#39;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;best_value&#39;</span><span class="p">]</span>
 
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cg&#39;</span><span class="p">:</span>
+            <span class="c1"># Use methods based on constraint generation</span>
+            <span class="c1"># to solve the optimization.</span>
+
+    <span class="c1">#-----&gt; Initialization for constraint generation method.</span>
+
+        <span class="c1">#-&gt; Reduce the feature space by restricting the number of features</span>
+        <span class="c1">#   based on the variance in the features, that is, picking first</span>
+        <span class="c1">#   10*N minimum variance features.</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">argsort_columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">))</span>
+            <span class="n">index_CG</span>        <span class="o">=</span> <span class="n">argsort_columns</span><span class="p">[:</span><span class="mi">10</span><span class="o">*</span><span class="n">N</span><span class="p">]</span>
+
+        <span class="c1">#-&gt; Solve the optimization using the reduced training set</span>
+        <span class="c1">#   and first order subgradient methods to get an</span>
+        <span class="c1">#   initial low accuracy solution in minimum time.</span>
+            <span class="n">M_reduced</span> <span class="o">=</span> <span class="n">M</span><span class="p">[:,</span> <span class="n">index_CG</span><span class="p">]</span>
+            <span class="n">M_reduced_t</span> <span class="o">=</span> <span class="n">M_reduced</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+
+            <span class="c1"># Calculate the upper bound</span>
+            <span class="n">upper_params_</span> <span class="o">=</span> \
+                 <span class="n">nesterov_optimization_minimized_mrc</span><span class="p">(</span><span class="n">M_reduced</span><span class="p">,</span>
+                                                     <span class="n">h</span><span class="p">,</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">[</span><span class="n">index_CG</span><span class="p">],</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">[</span><span class="n">index_CG</span><span class="p">],</span>
+                                                     <span class="mi">100</span><span class="p">)</span>
+            <span class="n">mu_</span> <span class="o">=</span> <span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
+            <span class="n">nu_</span> <span class="o">=</span> <span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;nu&#39;</span><span class="p">]</span>
+
+        <span class="c1">#-&gt; Transform the solution obtained in the reduced space</span>
+        <span class="c1">#   to the original space</span>
+            <span class="n">initial_features_limit</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">initial_features_limit</span><span class="p">:</span>
+                <span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:</span><span class="n">initial_features_limit</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="n">warm_start</span> <span class="o">=</span> <span class="n">mu_</span><span class="p">[</span><span class="n">I</span><span class="p">]</span> 
+            <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index_CG</span><span class="p">)[</span><span class="n">I</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1">#-----&gt; Now apply the method of constraint generation using the </span>
+    <span class="c1">#       low accuracy solution.</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">mrc_cg</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>
+                                                             <span class="n">h</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span>
+                                                             <span class="n">I</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
+                                                             <span class="n">warm_start</span><span class="p">,</span>
+                                                             <span class="n">nu_</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected solver ... &#39;</span><span class="p">)</span>
 
@@ -602,7 +673,7 @@
             <span class="c1"># Maximize the function</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;subgrad&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;subgrad&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cg&#39;</span><span class="p">:</span>
             <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
 
             <span class="c1"># Defining the partial objective and its gradient.</span>

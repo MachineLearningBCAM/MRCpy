@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -98,8 +98,8 @@
            <div itemprop="articleBody">
              
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Go to the end</span></a>
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-predicting-covid-19-patients-outcome-using-mrcs">
@@ -115,10 +115,10 @@ outbreak in Spanish hospitals. The data is available upon request through HM
 Hospitales
 <a class="reference external" href="https://www.hmhospitales.com/coronavirus/covid-data-save-lives/">here</a> .</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
+<p class="admonition-title">See also</p>
 <p>For more information about the dataset and the creation of a
 risk indicator using Logistic regression refer to:</p>
-<p class="last">[1] Ruben Armañanzas et al. “Derivation of a Cost-Sensitive
+<p>[1] Ruben Armañanzas et al. “Derivation of a Cost-Sensitive
 COVID-19 Mortality Risk Indicator Using a Multistart Framework”
 , in <em>2021 IEEE International Conference on Bioinformatics and
 Biomedicine (BIBM)</em>, 2021, pp. 2179–2186.</p>
@@ -265,9 +265,9 @@ the class imbalance is almost removed. For more information about
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">SMOTE</span></code> refer to it’s <a class="reference external" href="https://imbalanced-learn.org/stable/">documentation</a> .
 We will use the method <code class="xref any docutils literal notranslate"><span class="pre">SMOTE-NC</span></code> for numerical and categorical variables.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
+<p class="admonition-title">See also</p>
 <p>For more information about the SMOTE package refer to:</p>
-<p class="last">[2] Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer,
+<p>[2] Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer,
 W. P. (2002). SMOTE: synthetic minority over-sampling
 technique. Journal of artificial intelligence research,
 16, 321-357.</p>
@@ -489,9 +489,10 @@ technique. Journal of artificial intelligence research,
 </div>
 <br />
 <br /><blockquote>
-<div>We see how the distribution of the real data and the resampled data is
+<div><p>We see how the distribution of the real data and the resampled data is
 different. However the distribution between classes is kept similar due to
-the creation of the synthetic cases through 5 nearest neighbors.</div></blockquote>
+the creation of the synthetic cases through 5 nearest neighbors.</p>
+</div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">y_resampled</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="mf">0.0</span><span class="p">:</span> <span class="s2">&quot;Survive&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">:</span> <span class="s2">&quot;Decease&quot;</span><span class="p">})</span>
 <span class="p">)</span>
@@ -706,13 +707,14 @@ for the predictions.</p>
 </div>
 <br />
 <br /><blockquote>
-<div>We will compare now the histograms of the conditional probability for the
+<div><p>We will compare now the histograms of the conditional probability for the
 two posible outcomes. Overlapping in the histograms means that the
 classification is erroneous. Condisering a cutoff of 0.5 pink cases below
 this point are false negatives (FN) and blue cases above the threhsold false
 positives (FP). It is important to consider that in this classification
 problem the missclassification of a patient with fatal outcome (FN) is
-considered a much more serious error.</div></blockquote>
+considered a much more serious error.</p>
+</div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and creates a boxplot of</span>
@@ -813,12 +815,13 @@ considered a much more serious error.</div></blockquote>
 </div>
 <a class="reference internal image-reference" href="../../_images/COVID_001.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_001.png" style="width: 600px;" /></a>
 <blockquote>
-<div>0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
+<div><p>0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
 model shows a distribution where most of the cases are grouped around 0 and 1
 for survive and decease respectively. This results are similar to the
 Logistic Regression’s but with less overlapping. SVC is the model with the
 worst performance of all having a lot of patients that survived with high
-decease probabilities.</div></blockquote>
+decease probabilities.</p>
+</div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cm_cmrc</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_CMRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># CMRC</span>
 <span class="n">cm_mrc</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_MRC</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># MRC</span>
 <span class="n">cm_lr</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">clf_LR</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))</span>  <span class="c1"># Logistic Regression</span>
@@ -1126,8 +1129,9 @@ level0 row3" >support</th>
     </div>
     <br />
     <br /><blockquote>
-<div>We can see in the classification reports and the confusion matrices the
-outperformance of CMRC.</div></blockquote>
+<div><p>We can see in the classification reports and the confusion matrices the
+outperformance of CMRC.</p>
+</div></blockquote>
 </div>
 <div class="section" id="setting-the-cut-off-point-for-binary-classification">
 <h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Permalink to this heading"></a></h3>
@@ -1326,9 +1330,11 @@ class.</p>
 <p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-z-covid-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<a class="reference download internal" download="" href="../../_downloads/5f45adc21364619fdbecd3eeab5d6c30/z_COVID.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">z_COVID.py</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/5f45adc21364619fdbecd3eeab5d6c30/z_COVID.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">z_COVID.py</span></code></a></p>
+</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<a class="reference download internal" download="" href="../../_downloads/952ecdb7b594216f970d4c743a7ac511/z_COVID.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">z_COVID.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/952ecdb7b594216f970d4c743a7ac511/z_COVID.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">z_COVID.ipynb</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
