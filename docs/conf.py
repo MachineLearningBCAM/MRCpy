@@ -99,7 +99,7 @@ html_theme = 'sphinx_rtd_theme'
 
 # Switch to old behavior with html4, for a good display of references,
 # as described in https://github.com/sphinx-doc/sphinx/issues/6705
-html4_writer = True
+# html4_writer = True
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
