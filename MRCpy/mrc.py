@@ -102,7 +102,7 @@ class MRC(BaseMRC):
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    solver : {‘cvx’, ’subgrad’}, default = ’cvx’
+    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’subgrad’
         Method to use in solving the optimization problem. 
         Default is ‘cvx’. To choose a solver,
         you might want to consider the following aspects:
