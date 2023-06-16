@@ -243,7 +243,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span> <span class="o">=</span> <span class="n">phi_kwargs</span>
         <span class="c1"># Solver list for cvxpy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="s1">&#39;GUROBI&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
@@ -289,8 +289,8 @@
             <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">not_all_instances</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># # Use the training samples used to compute estimate</span>
-            <span class="c1"># # for the optimization.</span>
+            <span class="c1"># Use the training samples used to compute estimate</span>
+            <span class="c1"># for the optimization.</span>
             <span class="n">X_opt</span> <span class="o">=</span> <span class="n">X</span>
 
             <span class="c1"># # If the labels are not given, then these instances</span>
