@@ -169,7 +169,7 @@
 <span class="sd">            If set to false, no intercept will be used in calculations</span>
 <span class="sd">            (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    solver : {‘cvx’, &#39;grad&#39;, &#39;adam&#39;}, default = ’cvx’</span>
+<span class="sd">    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’cvx’</span>
 <span class="sd">        Method to use in solving the optimization problem. </span>
 <span class="sd">        Default is ‘cvx’. To choose a solver,</span>
 <span class="sd">        you might want to consider the following aspects:</span>
@@ -184,45 +184,28 @@
 <span class="sd">            &lt;https://www.gurobi.com/academia/academic-program-and-licenses/&gt;`_</span>
 
 <span class="sd">        ’grad’</span>
-<span class="sd">            Solves the optimization using stochastic gradient descent.</span>
-<span class="sd">            The parameters `max_iters`, `stepsize` and `mini_batch_size`</span>
-<span class="sd">            determine the number of iterations, the learning rate and</span>
-<span class="sd">            the batch size for gradient computation respectively.</span>
-<span class="sd">            Note that the implementation uses nesterov&#39;s gradient descent</span>
-<span class="sd">            in case of ReLU and threshold features, and the above parameters</span>
-<span class="sd">            do no affect the optimization in this case.</span>
+<span class="sd">            Solves the optimization using stochastic gradient.</span>
+<span class="sd">            The parameter `max_iters` determines the number of iterations</span>
+<span class="sd">            for this approach. More iteration lead to an accurate solution</span>
+<span class="sd">            while requiring more time. Note that the current implementation</span>
+<span class="sd">            uses nesterov&#39;s gradient descent approach in case of fourier and</span>
+<span class="sd">            threshold features.</span>
 
-<span class="sd">        ’adam’</span>
-<span class="sd">            Solves the optimization using</span>
-<span class="sd">            stochastic gradient descent with adam (adam optimizer).</span>
-<span class="sd">            The parameters `max_iters`, `alpha` and `mini_batch_size`</span>
-<span class="sd">            determine the number of iterations, the learning rate and</span>
-<span class="sd">            the batch size for gradient computation respectively.</span>
-<span class="sd">            Note that the implementation uses nesterov&#39;s gradient descent</span>
-<span class="sd">            in case of ReLU and threshold features, and the above parameters</span>
-<span class="sd">            do no affect the optimization in this case.</span>
+<span class="sd">            [1] `Mazuelas, S., Mauricio, R., &amp; Grunwald, P. (2022).</span>
+<span class="sd">                Minimax Risk Classifiers with 0-1 Loss.</span>
+<span class="sd">                &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
 
-<span class="sd">    alpha : `float`, default = `0.001`</span>
-<span class="sd">        Learning rate for ’adam’ solver.</span>
-
-<span class="sd">    stepsize : `float` or {‘decay’}, default = ‘decay’</span>
-<span class="sd">        Learning rate for ’grad’ solver. The default is ‘decay’, that is,</span>
-<span class="sd">        the learning rate decreases with the number of epochs of </span>
-<span class="sd">        stochastic gradient descent.</span>
-
-<span class="sd">    mini_batch_size : `int`, default = `1` or `32`</span>
+<span class="sd">    mini_batch_size : `int`, default = `1`</span>
 <span class="sd">        The size of the batch to be used for computing the gradient</span>
-<span class="sd">        in case of stochastic gradient descent and adam optimizer.</span>
-<span class="sd">        In case of stochastic gradient descent, the default is 1, and</span>
-<span class="sd">        in case of adam optimizer, the default is 32.</span>
+<span class="sd">        in case of stochastic gradient descent.</span>
 
-<span class="sd">    max_iters : `int`, default = `100000` or `5000` or `2000`</span>
-<span class="sd">        The maximum number of iterations to use in case of</span>
-<span class="sd">        ’grad’ or ’adam’ solver.</span>
-<span class="sd">        The default value is</span>
-<span class="sd">        100000 for ’grad’ solver and</span>
-<span class="sd">        5000 for ’adam’ solver and </span>
-<span class="sd">        2000 for nesterov&#39;s gradient descent.</span>
+<span class="sd">    max_iters : `int`, default = `2000` or `30000`</span>
+<span class="sd">        The maximum number of iterations to use</span>
+<span class="sd">        for finding the solution of optimization when use_cvx=False.</span>
+<span class="sd">        When None is given, default value is 30000 for Linear and RandomFourier</span>
+<span class="sd">        feature mappings (optimization performed using SGD) and 2000 when</span>
+<span class="sd">        using other feature mappings (optimization performed using nesterov</span>
+<span class="sd">        subgradient approach).</span>
 
 <span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
 <span class="sd">        The type of feature mapping function to use for mapping the input data.</span>
@@ -337,36 +320,38 @@
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span>
-                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-                 <span class="n">stepsize</span><span class="o">=</span><span class="s1">&#39;decay&#39;</span><span class="p">,</span>
+                 <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;grad&#39;</span><span class="p">,</span>
+                 <span class="n">beta1</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+                 <span class="n">beta2</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span>
+                 <span class="n">alpha</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
                  <span class="n">mini_batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">stepsize</span><span class="o">=</span><span class="s1">&#39;decay&#39;</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">max_iters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;relu&#39;</span> <span class="ow">or</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span>
-                <span class="c1"># In this case nesterov&#39;s gradient descent is used</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">2000</span>
-            <span class="k">elif</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;adam&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">5000</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span> <span class="ow">or</span> <span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">100000</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">2000</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
 
         <span class="k">if</span> <span class="n">mini_batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;adam&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;grad&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;adam&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span> <span class="o">=</span> <span class="mi">32</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span> <span class="o">=</span> <span class="n">mini_batch_size</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unexpected solver ... &quot;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span> <span class="o">=</span> <span class="n">mini_batch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta1</span> <span class="o">=</span> <span class="n">beta1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta2</span> <span class="o">=</span> <span class="n">beta2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
                          <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
@@ -515,7 +500,6 @@
                     <span class="n">sum_psi</span> <span class="o">=</span> <span class="n">sum_psi</span> <span class="o">+</span> \
                         <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">log_sum_exp</span><span class="p">(</span><span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span><span class="p">)</span>
 
-            <span class="c1"># Objective function</span>
             <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">-</span>
                                      <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sum_psi</span><span class="p">)</span>
 
@@ -645,6 +629,8 @@
                                     <span class="n">g_</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">beta1</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">beta2</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">mini_batch_size</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
