@@ -255,9 +255,8 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi.fit(X, Y)
 
         # Compute the expectation estimates
-        tau_ = self.phi.est_exp(X, Y)
-        lambda_ = (self.s * self.phi.est_std(X, Y)) / \
-            np.sqrt(X.shape[0])
+        tau_ = self.compute_tau(X, Y)
+        lambda_ = self.compute_lambda(X, Y)
 
         # Limit the number of training samples used in the optimization
         # for large datasets
@@ -271,6 +270,55 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.minimax_risk(X_opt[:n], tau_, lambda_, n_classes)
 
         return self
+
+    def compute_phi(self, X):
+        '''
+        Compute the feature mapping corresponding to instances given
+        for learning the classifiers (in case of training) and 
+        prediction (in case of testing).
+
+        Parameters
+        ----------
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Instances to be converted to features.
+        '''
+
+        return self.phi.eval_x(X)
+
+    def compute_tau(self, X, Y):
+        '''
+        Compute mean estimate tau using the given training instances.
+
+        Parameters
+        ----------
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Training instances used for solving
+            the minimax risk optimization problem.
+
+        Y : `array`-like of shape (`n_samples`, 1), default = `None`
+            Labels corresponding to the training instances
+            used only to compute the expectation estimates.
+        '''
+
+        return self.phi.est_exp(X, Y)
+
+    def compute_lambda(self, X, Y):
+        '''
+        Compute deviation in the mean estimate tau
+        using the given training instances.
+
+        Parameters
+        ----------
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Training instances used for solving
+            the minimax risk optimization problem.
+
+        Y : `array`-like of shape (`n_samples`, 1), default = `None`
+            Labels corresponding to the training instances
+            used only to compute the expectation estimates.
+        '''
+
+        return (self.s * self.phi.est_std(X, Y)) / np.sqrt(X.shape[0])
 
     def minimax_risk(self, X, tau_, lambda_, n_classes):
         '''

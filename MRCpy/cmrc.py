@@ -378,7 +378,7 @@ class CMRC(BaseMRC):
         self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
         self.lambda_ = check_array(lambda_, accept_sparse=True,
                                    ensure_2d=False)
-        phi = self.phi.eval_x(X)
+        phi = self.compute_phi(X)
 
         # Constants
         n = phi.shape[0]
@@ -649,7 +649,7 @@ class CMRC(BaseMRC):
 
         n = X.shape[0]
 
-        phi = self.phi.eval_x(X)
+        phi = self.compute_phi(X)
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function

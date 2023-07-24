@@ -343,7 +343,7 @@ class MRC(BaseMRC):
         self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
         self.lambda_ = check_array(lambda_, accept_sparse=True,
                                    ensure_2d=False)
-        phi = self.phi.eval_x(X)
+        phi = self.compute_phi(X)
 
         phi = np.unique(phi, axis=0)
 
@@ -654,7 +654,7 @@ class MRC(BaseMRC):
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
 
-        phi = self.phi.eval_x(X)
+        phi = self.compute_phi(X)
 
         if self.loss == '0-1':
             # Constraints in case of 0-1 loss function
