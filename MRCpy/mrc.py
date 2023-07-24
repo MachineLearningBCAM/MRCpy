@@ -127,6 +127,13 @@ class MRC(BaseMRC):
             based on constraint generation. This method is suitable for
             optimization problems with large number of features.
 
+        [1] `Bondugula, K., Mazuelas, S., & Pérez, A. (2023).
+                    Efficient Learning of Minimax Risk Classifiers
+                    in High Dimensions.
+                    The 39th Conference on
+                    Uncertainty in Artificial Intelligence, 206-215.
+                    <https://proceedings.mlr.press/v216/bondugula23a.html>`_
+
     max_iters : `int`, default = `10000`
         Maximum number of iterations to use
         for finding the solution of optimization when
