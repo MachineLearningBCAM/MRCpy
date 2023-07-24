@@ -123,11 +123,15 @@ class MRC(BaseMRC):
             while requiring more time.
 
         ’cg’
-            Solves the optimization using methods
-            based on constraint generation. This method is suitable for
-            optimization problems with large number of features.
+            Solves the optimization using an algorithm
+            based on constraint generation. This algorithm provides 
+            efficient learning especially for scenarios
+            with large number of features.
 
-        [1] `Bondugula, K., Mazuelas, S., & Pérez, A. (2023).
+        .. seealso:: For more information about the constraint generation 
+            algorithm for 0-1 MRC, one can refer to the following resource:
+        
+                    [1] `Bondugula, K., Mazuelas, S., & Pérez, A. (2023).
                     Efficient Learning of Minimax Risk Classifiers
                     in High Dimensions.
                     The 39th Conference on
