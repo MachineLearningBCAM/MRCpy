@@ -161,7 +161,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi = phi
         self.phi_kwargs = phi_kwargs
         # Solver list for cvxpy
-        self.solvers = ['SCS', 'ECOS', 'GUROBI']
+        self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
 
     def fit(self, X, Y, X_=None):
         '''
