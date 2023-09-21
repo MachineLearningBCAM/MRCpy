@@ -463,7 +463,11 @@ class MRC(BaseMRC):
 
         elif self.solver == 'cg':
             # Use methods based on constraint generation
-            # to solve the optimization.
+            # to solve the optimization (corresponding to 0-1 loss only).
+
+            if self.loss == 'log':
+                raise ValueError('The \'cg\' solver is only available ' +
+                                 'for 0-1 loss.')
 
     #-----> Initialization for constraint generation method.
 
