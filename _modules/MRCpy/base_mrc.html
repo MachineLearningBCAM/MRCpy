@@ -337,9 +337,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Compute the expectation estimates</span>
-        <span class="n">tau_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
-        <span class="n">lambda_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> \
-            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">tau_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_lambda</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Limit the number of training samples used in the optimization</span>
         <span class="c1"># for large datasets</span>
@@ -353,6 +352,55 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseMRC.compute_phi"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the feature mapping corresponding to instances given</span>
+<span class="sd">        for learning the classifiers (in case of training) and </span>
+<span class="sd">        prediction (in case of testing).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">            Instances to be converted to features.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMRC.compute_tau"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_tau">[docs]</a>    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute mean estimate tau using the given training instances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">            Training instances used for solving</span>
+<span class="sd">            the minimax risk optimization problem.</span>
+
+<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">            Labels corresponding to the training instances</span>
+<span class="sd">            used only to compute the expectation estimates.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BaseMRC.compute_lambda"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute deviation in the mean estimate tau</span>
+<span class="sd">        using the given training instances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">            Training instances used for solving</span>
+<span class="sd">            the minimax risk optimization problem.</span>
+
+<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">            Labels corresponding to the training instances</span>
+<span class="sd">            used only to compute the expectation estimates.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="BaseMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>

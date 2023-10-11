@@ -143,12 +143,12 @@ arXiv preprint arXiv:2108.01952.</a></p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
+<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
 quantifies the probability of classification error at a certain example
 for a certain rule. Log-loss quantifies the minus log-likelihood at a
 certain example for a certain rule.</p>
 </dd>
-<dt><strong>s</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">0.3</span></code></span></dt><dd><p>Parameter that tunes the estimation of expected values
+<dt><strong>s</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">0.3</span></code></span></dt><dd><p>Parameter that tunes the estimation of expected values
 of feature mapping function. It is used to calculate <span class="math notranslate nohighlight">\(\lambda\)</span>
 (variance in the mean estimates
 for the expectations of the feature mappings) in the following way</p>
@@ -159,14 +159,14 @@ labels respectively and
 <span class="math notranslate nohighlight">\(\text{std}(\phi(X,Y))\)</span> stands for standard deviation
 of <span class="math notranslate nohighlight">\(\phi(X,Y)\)</span> in the supervised dataset (X,Y).</p>
 </dd>
-<dt><strong>deterministic</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
+<dt><strong>deterministic</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
 should be done in a deterministic way (given a fixed <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">random_state</span></code></a>
 in the case of using random Fourier or random ReLU features).</p>
 </dd>
-<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings
+<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings
 are used to produce the random weights.</p>
 </dd>
-<dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs
+<dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
@@ -205,18 +205,18 @@ Uncertainty in Artificial Intelligence, 206-215.</a></p>
 </div></blockquote>
 </div>
 </dd>
-<dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">10000</span></code></span></dt><dd><p>Maximum number of iterations to use
+<dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">10000</span></code></span></dt><dd><p>Maximum number of iterations to use
 for finding the solution of optimization when
 using the subgradient approach.</p>
 </dd>
-<dt><strong>n_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">100</span></code></span></dt><dd><p>Maximum number of features selected in each iteration
+<dt><strong>n_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">100</span></code></span></dt><dd><p>Maximum number of features selected in each iteration
 in case of ’cg’ solver.</p>
 </dd>
-<dt><strong>k_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">20</span></code></span></dt><dd><p>Maximum number of iterations in case of ’cg’ solver.</p>
+<dt><strong>k_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">20</span></code></span></dt><dd><p>Maximum number of iterations in case of ’cg’ solver.</p>
 </dd>
-<dt><strong>eps</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1e-4</span></code></span></dt><dd><p>Dual constraints’ violation threshold for ’cg’ solver.</p>
+<dt><strong>eps</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1e-4</span></code></span></dt><dd><p>Dual constraints’ violation threshold for ’cg’ solver.</p>
 </dd>
-<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
 The currenlty available feature mapping methods are
 ‘fourier’, ‘relu’, ‘threshold’ and ‘linear’.
 The users can also implement their own feature mapping object
@@ -300,29 +300,29 @@ using <a class="reference internal" href="#MRCpy.MRC.score" title="MRCpy.MRC.sco
 <dl class="field-list">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
-<dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the classifier is fitted i.e., the parameters are learnt
+<dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the classifier is fitted i.e., the parameters are learnt
 or not.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Variance in the mean estimates
 for the expectations of the feature mappings.</p>
 </dd>
-<dt><strong>mu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by the optimization.</p>
+<dt><strong>mu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by the optimization.</p>
 </dd>
-<dt><strong>nu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameter learnt by the optimization.</p>
+<dt><strong>nu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameter learnt by the optimization.</p>
 </dd>
-<dt><strong>mu_l_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by solving the lower bound optimization of MRC.</p>
+<dt><strong>mu_l_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a>) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by solving the lower bound optimization of MRC.</p>
 </dd>
-<dt><strong>upper_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Optimized upper bound of the MRC classifier.</p>
+<dt><strong>upper_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Optimized upper bound of the MRC classifier.</p>
 </dd>
-<dt><strong>lower_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Optimized lower bound of the MRC classifier.</p>
+<dt><strong>lower_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Optimized lower bound of the MRC classifier.</p>
 </dd>
-<dt><strong>upper_params_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Dictionary that stores the optimal points and best value
+<dt><strong>upper_params_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Dictionary that stores the optimal points and best value
 for the upper bound of the function.</p>
 </dd>
-<dt><strong>params_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Dictionary that stores the optimal points and best value
+<dt><strong>params_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">dict</span></code></a></span></dt><dd><p>Dictionary that stores the optimal points and best value
 for the lower bound of the function.</p>
 </dd>
 </dl>
@@ -335,31 +335,40 @@ for the lower bound of the function.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.fit" title="MRCpy.MRC.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, Y[, X_])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.compute_lambda" title="MRCpy.MRC.compute_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_lambda</span></code></a>(X, Y)</p></td>
+<td><p>Compute deviation in the mean estimate tau using the given training instances.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.compute_phi" title="MRCpy.MRC.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
+<td><p>Compute the feature mapping corresponding to instances given for learning the classifiers (in case of training) and  prediction (in case of testing).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.compute_tau" title="MRCpy.MRC.compute_tau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_tau</span></code></a>(X, Y)</p></td>
+<td><p>Compute mean estimate tau using the given training instances.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.fit" title="MRCpy.MRC.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, Y[, X_])</p></td>
 <td><p>Fit the MRC model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.get_lower_bound" title="MRCpy.MRC.get_lower_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lower_bound</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.get_lower_bound" title="MRCpy.MRC.get_lower_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lower_bound</span></code></a>()</p></td>
 <td><p>Obtains the lower bound on the expected loss for the fitted classifier.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.get_params" title="MRCpy.MRC.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.get_params" title="MRCpy.MRC.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.get_upper_bound" title="MRCpy.MRC.get_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_upper_bound</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.get_upper_bound" title="MRCpy.MRC.get_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_upper_bound</span></code></a>()</p></td>
 <td><p>Returns the upper bound on the expected loss for the fitted classifier.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.minimax_risk" title="MRCpy.MRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X, tau_, lambda_, n_classes)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.minimax_risk" title="MRCpy.MRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X, tau_, lambda_, n_classes)</p></td>
 <td><p>Solves the minimax risk problem for different types of loss (0-1 and log loss).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.predict" title="MRCpy.MRC.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.predict" title="MRCpy.MRC.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predicts classes for new instances using a fitted model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.predict_proba" title="MRCpy.MRC.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.predict_proba" title="MRCpy.MRC.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
 <td><p>Conditional probabilities corresponding to each class for each unlabeled input instance</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.score" title="MRCpy.MRC.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.score" title="MRCpy.MRC.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Return the mean accuracy on the given test data and labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.set_params" title="MRCpy.MRC.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.MRC.set_params" title="MRCpy.MRC.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
 </tbody>
@@ -370,6 +379,59 @@ for the lower bound of the function.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.MRC.compute_lambda">
+<span class="sig-name descname"><span class="pre">compute_lambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.compute_lambda" title="Permalink to this definition"></a></dt>
+<dd><p>Compute deviation in the mean estimate tau
+using the given training instances.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+the minimax risk optimization problem.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
+used only to compute the expectation estimates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.MRC.compute_phi">
+<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.compute_phi" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the feature mapping corresponding to instances given
+for learning the classifiers (in case of training) and 
+prediction (in case of testing).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Instances to be converted to features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.MRC.compute_tau">
+<span class="sig-name descname"><span class="pre">compute_tau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.compute_tau" title="Permalink to this definition"></a></dt>
+<dd><p>Compute mean estimate tau using the given training instances.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+the minimax risk optimization problem.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
+used only to compute the expectation estimates.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.MRC.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the MRC model.</p>
@@ -378,7 +440,7 @@ and then calls the <a class="reference internal" href="#MRCpy.MRC.minimax_risk" 
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
 <ul class="simple">
 <li><p>Calculating the expectation estimates
 that constrain the uncertainty set
@@ -388,7 +450,7 @@ for the minimax risk classification</p></li>
 <p><a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a> is the number of training samples and
 <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
 used only to compute the expectation estimates.</p>
 </dd>
 <dt><strong>X_</strong><span class="classifier">array-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_samples2</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>), default = None</span></dt><dd><p>These instances are optional and
@@ -414,7 +476,7 @@ give an advantage in training time.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl>
-<dt><strong>lower</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Lower bound of the error for the fitted classifier.</p>
+<dt><strong>lower</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Lower bound of the error for the fitted classifier.</p>
 </dd>
 </dl>
 </dd>
@@ -449,7 +511,7 @@ contained subobjects that are estimators.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl>
-<dt><strong>upper</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
+<dt><strong>upper</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
 </dd>
 </dl>
 </dd>
@@ -466,16 +528,16 @@ gives the upper bound of the error.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Variance in the mean estimates
 for the expectations of the feature mappings.</p>
 </dd>
-<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
 </dd>
 </dl>
 </dd>
@@ -497,14 +559,14 @@ using the probabilities given by the function <a class="reference internal" href
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
-<dt><strong>y_pred</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
+<dt><strong>y_pred</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
 </dd>
 </dl>
 </dd>
@@ -519,14 +581,14 @@ for each unlabeled input instance</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.11)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.12)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
 the prediction probabilities are calculated for each class.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
-<dt><strong>hy_x</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-ndarray" title="(in NumPy v1.25)"><code class="xref any docutils literal notranslate"><span class="pre">ndarray</span></code></a> of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Probabilities <span class="math notranslate nohighlight">\((p(y|x))\)</span> corresponding to the predictions
+<dt><strong>hy_x</strong><span class="classifier"><a class="reference external" href="https://numpy.org/doc/stable/glossary.html#term-ndarray" title="(in NumPy v1.26)"><code class="xref any docutils literal notranslate"><span class="pre">ndarray</span></code></a> of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.3)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Probabilities <span class="math notranslate nohighlight">\((p(y|x))\)</span> corresponding to the predictions
 for each class.</p>
 </dd>
 </dl>
