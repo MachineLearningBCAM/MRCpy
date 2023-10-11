@@ -534,6 +534,32 @@ class MRC(BaseMRC):
             Upper bound of the expected loss for the fitted classifier.
         '''
 
+        if self.deterministic:
+            # Number of instances in training 
+            n = self.lowerPhiConfigs.shape[0]
+
+            # Feature mapping length
+            m = self.phi.len_
+
+            phi_mu = self.lowerPhiConfigs @ self.mu_
+
+            hy_x_det = np.zeros((n, self.n_classes))
+            for i in range(phi_mu.shape[0]):
+                hy_x_det[i, np.argmax(phi_mu[i,:])] = 1
+
+            hy_x_det = np.reshape(hy_x_det, (n * self.n_classes,))
+
+            phi = np.reshape(self.lowerPhiConfigs, (n * self.n_classes, m))
+
+            mu = cvx.Variable(self.phi.len_)
+            objective = cvx.Minimize(1 - self.tau_ @ mu + \
+                            self.lambda_ @ cvx.abs(mu) + \
+                            cvx.max(phi @ mu - hy_x_det))
+
+            _, self.upper_ = try_solvers(objective,
+                                         None,
+                                         mu,
+                                         self.cvx_solvers)
         return self.upper_
 
     def get_lower_bound(self):
@@ -551,6 +577,8 @@ class MRC(BaseMRC):
 
         # Learned feature mappings
         phi = self.lowerPhiConfigs
+        phi_mu = np.dot(phi, self.mu_)
+        hy_x = np.clip(1 + phi_mu + self.nu_, 0., None)
 
         # Variables
         n = phi.shape[0]
@@ -590,49 +618,69 @@ class MRC(BaseMRC):
 
         phi = phi.reshape((n * self.n_classes, m))
 
-        if self.solver == 'cvx':
-            # Use CVXpy for the convex optimization of the MRC
+        if not self.deterministic:
 
-            low_mu = cvx.Variable(m)
+            if self.solver == 'cvx':
+                # Use CVXpy for the convex optimization of the MRC
 
-            # Objective function
-            objective = cvx.Minimize(self.lambda_ @ cvx.abs(low_mu) -
-                                     self.tau_ @ low_mu +
-                                     cvx.max(phi @ low_mu + eps))
+                low_mu = cvx.Variable(m)
 
-            self.mu_l_, self.lower_ = \
-                try_solvers(objective, None, low_mu, self.cvx_solvers)
+                # Objective function
+                objective = cvx.Minimize(self.lambda_ @ cvx.abs(low_mu) -
+                                         self.tau_ @ low_mu +
+                                         cvx.max(phi @ low_mu + eps))
 
-            # Maximize the function
-            self.lower_ = (-1) * self.lower_
+                self.mu_l_, self.lower_ = \
+                    try_solvers(objective, None, low_mu, self.cvx_solvers)
 
-        elif self.solver == 'subgrad' or self.solver == 'cg':
-            # Use the subgradient approach for the convex optimization of MRC
+                # Maximize the function
+                self.lower_ = (-1) * self.lower_
 
-            # Defining the partial objective and its gradient.
-            def f_(mu):
-                return phi @ mu + eps
+            elif self.solver == 'subgrad' or self.solver == 'cg':
+                # Use the subgradient approach for the convex optimization of MRC
 
-            def g_(mu, idx):
-                return phi.transpose()[:, idx]
+                # Defining the partial objective and its gradient.
+                def f_(mu):
+                    return phi @ mu + eps
 
-            # Lower bound
-            self.lower_params_ = nesterov_optimization_mrc(self.tau_,
-                                                           self.lambda_,
-                                                           m,
-                                                           f_,
-                                                           g_,
-                                                           self.max_iters)
+                def g_(mu, idx):
+                    return phi.transpose()[:, idx]
 
-            self.mu_l_ = self.lower_params_['mu']
-            self.lower_ = self.lower_params_['best_value']
+                # Lower bound
+                self.lower_params_ = nesterov_optimization_mrc(self.tau_,
+                                                               self.lambda_,
+                                                               m,
+                                                               f_,
+                                                               g_,
+                                                               self.max_iters)
 
-            # Maximize the function
-            # as the nesterov optimization gives the minimum
-            self.lower_ = -1 * self.lower_
+                self.mu_l_ = self.lower_params_['mu']
+                self.lower_ = self.lower_params_['best_value']
 
-        else:
-            raise ValueError('Unexpected solver ... ')
+                # Maximize the function
+                # as the nesterov optimization gives the minimum
+                self.lower_ = -1 * self.lower_
+
+            else:
+                raise ValueError('Unexpected solver ... ')
+
+        elif self.deterministic:
+
+            hy_x_det = np.zeros((n, self.n_classes))
+            for i in range(n):
+                hy_x_det[i, np.argmax(phi_mu[i,:])] = 1
+
+            hy_x_det = np.reshape(hy_x_det, (n * self.n_classes,))
+
+            mu_l_ = cvx.Variable(m)
+            objective = cvx.Maximize(1 - self.tau_ @ mu_l_ - \
+                            self.lambda_ @ cvx.abs(mu_l_) + \
+                            cvx.min(phi @ mu_l_ - hy_x_det))
+
+            self.mu_l_, self.lower_ = try_solvers(objective,
+                                                     None,
+                                                     mu_l_,
+                                                     self.cvx_solvers)
 
         return self.lower_
 
