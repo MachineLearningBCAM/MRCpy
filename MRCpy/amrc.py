@@ -136,9 +136,6 @@ class AMRC(BaseMRC):
         If set to false, no intercept will be used in calculations
         (i.e. data is expected to be already centered).
 
-    use_cvx : `bool`, default = `False`
-        AMRC does not support using cvx.
-
     **phi_kwargs : Additional parameters for feature mappings.
             Groups the multiple optional parameters
             for the corresponding feature mappings(`phi`).
@@ -153,10 +150,15 @@ class AMRC(BaseMRC):
     '''
 
     def __init__(self, n_classes, loss='0-1',
-                 deterministic=True, random_state=None,
-                 phi='linear', sigma='scale2',
-                 unidimensional=False, order=1, W=200, N=100,
-                 fit_intercept=False, use_cvx=False,
+                 deterministic=True,
+                 random_state=None,
+                 phi='linear',
+                 sigma='scale2',
+                 unidimensional=False,
+                 order=1,
+                 W=200,
+                 N=100,
+                 fit_intercept=False,
                  max_iters=2000, **phi_kwargs):
         self.n_classes = n_classes
         self.unidimensional = unidimensional
@@ -173,8 +175,6 @@ class AMRC(BaseMRC):
             raise ValueError('AMRC does not support one_hot=False')
         else:
             phi_kwargs['one_hot'] = True
-        if use_cvx:
-            raise ValueError('AMRC does not support use_cvx=True')
         if loss != '0-1':
             raise ValueError('AMRC only support loss=0-1')
         super().__init__(loss=loss,
