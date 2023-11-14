@@ -218,9 +218,6 @@
 <span class="sd">        If set to false, no intercept will be used in calculations</span>
 <span class="sd">        (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    use_cvx : `bool`, default = `False`</span>
-<span class="sd">        AMRC does not support using cvx.</span>
-
 <span class="sd">    **phi_kwargs : Additional parameters for feature mappings.</span>
 <span class="sd">            Groups the multiple optional parameters</span>
 <span class="sd">            for the corresponding feature mappings(`phi`).</span>
@@ -235,10 +232,15 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="AMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
-                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale2&#39;</span><span class="p">,</span>
-                 <span class="n">unidimensional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+                 <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale2&#39;</span><span class="p">,</span>
+                 <span class="n">unidimensional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">W</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+                 <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unidimensional</span> <span class="o">=</span> <span class="n">unidimensional</span>
@@ -255,8 +257,6 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC does not support one_hot=False&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">phi_kwargs</span><span class="p">[</span><span class="s1">&#39;one_hot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="n">use_cvx</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC does not support use_cvx=True&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">loss</span> <span class="o">!=</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC only support loss=0-1&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
