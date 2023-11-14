@@ -87,7 +87,7 @@ class CMRC(BaseMRC):
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
 
-    solver : {‘cvx’, 'grad', 'adam'}, default = ’adam’
+    solver : {‘cvx’, 'sgd', 'adam'}, default = ’adam’
         Method to use in solving the optimization problem. 
         Default is ‘cvx’. To choose a solver,
         you might want to consider the following aspects:
