@@ -101,7 +101,7 @@ class CMRC(BaseMRC):
             A free license can be requested `here 
             <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
 
-        ’grad’
+        ’sgd’
             Solves the optimization using stochastic gradient descent.
             The parameters `max_iters`, `stepsize` and `mini_batch_size`
             determine the number of iterations, the learning rate and
@@ -440,7 +440,7 @@ class CMRC(BaseMRC):
             self.mu_, self.upper_ = \
                 try_solvers(objective, None, mu, self.cvx_solvers)
 
-        elif self.solver == 'grad' or self.solver == 'adam':
+        elif self.solver == 'sgd' or self.solver == 'adam':
 
             if self.loss == '0-1':
                 # Function to calculate the psi subobjective
@@ -544,7 +544,7 @@ class CMRC(BaseMRC):
                                                           f_,
                                                           None,
                                                           self.max_iters)
-            elif self.solver == 'grad':
+            elif self.solver == 'sgd':
                 self.params_ = SGD_optimization(self.tau_,
                                                 self.lambda_,
                                                 n,
