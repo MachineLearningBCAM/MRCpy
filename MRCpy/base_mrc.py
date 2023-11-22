@@ -431,3 +431,30 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             y_pred = np.asarray([self.classes_[label] for label in y_pred])
 
         return y_pred
+
+    def error(self, X, Y):
+        '''
+        Return the mean error obtained for the given test data and labels.
+
+        Parameters
+        ----------
+        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Test instances for which the labels are to be predicted
+            by the MRC model.
+
+        Y : `array`-like of shape (`n_samples`, 1), default = `None`
+            Labels corresponding to the testing instances
+            used to compute the error in the prediction.
+
+        Returns
+        -------
+        error : float
+            Mean error of the learned MRC classifier
+        '''
+        X = check_array(X, accept_sparse=True)
+        check_is_fitted(self, "is_fitted_")
+
+        Y_pred = self.predict(X)
+
+        error = np.average(Y_pred != Y)
+        return error
