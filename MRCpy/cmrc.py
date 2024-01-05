@@ -620,7 +620,7 @@ class CMRC(BaseMRC):
 
         Returns
         -------
-        upper : `float`
+        upper_bound : `float`
             Upper bound of the expected loss for the fitted classifier.
         '''
 
