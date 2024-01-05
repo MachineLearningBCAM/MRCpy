@@ -80,20 +80,9 @@ class AMRC(BaseMRC):
         Whether to model change in the variables unidimensionally or not.
         Available for comparison purposes.
 
-    sigma : `str` {'scale2'} or `float`, default = `sigma`
-        When given a string, it defines the type of heuristic to be used
-        to calculate the scaling parameter `sigma` used in Random Fourier
-         feature mapping.
-        For comparison its relation with parameter `gamma` used in
-        other methods is :math:`\gamma=1/(2\sigma^2)`.
-        When given a float, it is the value for the scaling parameter.
-
-        'scale2'
-            Approximates `sigma` by
-            :math:`\sqrt{\\frac{\\textrm{n_features}}{2}}`
-            so that `gamma` is
-            :math:`\\frac{1}{\\textrm{n_features}}`
-            where `var` is the variance function.
+    delta : `float`, default = 0.95
+        Confidence of the upper bound on the accumulated mistakes.
+        Higher values will produce loose bounds.
 
     order : `int`, default = 1
         Order of the subgradients used in optimization.
@@ -153,8 +142,8 @@ class AMRC(BaseMRC):
                  deterministic=True,
                  random_state=None,
                  phi='linear',
-                 sigma='scale2',
                  unidimensional=False,
+                 delta = 0.95,
                  order=1,
                  W=200,
                  N=100,
@@ -163,10 +152,12 @@ class AMRC(BaseMRC):
         self.n_classes = n_classes
         self.unidimensional = unidimensional
         self.order = order
+        self.delta = delta
         if self.unidimensional:
             self.order = 0
         self.W = W
         self.N = N
+        self.max_iters = max_iters
         self.Y = np.zeros(self.W)
         self.p = np.zeros((self.n_classes, self.W))
         self.sample_counter = 0
@@ -181,8 +172,6 @@ class AMRC(BaseMRC):
                          deterministic=deterministic,
                          random_state=random_state,
                          fit_intercept=fit_intercept,
-                         max_iters=max_iters,
-                         sigma=sigma,
                          phi=phi, **phi_kwargs)
 
     def tracking(self, feature, y, p, s):
@@ -512,6 +501,7 @@ class AMRC(BaseMRC):
         self.is_fitted_ = True
         self.varphi = varphi
         self.params_['R_Ut'] = R_Ut
+        self.params_['sum_R_Ut'] = self.params_['sum_R_Ut'] + R_Ut
         self.params_['F'] = F
         self.params_['h'] = h
         return self
@@ -556,12 +546,9 @@ class AMRC(BaseMRC):
                                    fit_intercept=self.fit_intercept,
                                    **self.phi_kwargs)
             elif self.phi == 'fourier':
-                if isinstance(self.sigma, str) & (self.sigma != 'scale2'):
-                    raise ValueError('Unexpected sigma for AMRC ... ')
                 self.phi = RandomFourierPhi(n_classes=self.n_classes,
                                             fit_intercept=self.fit_intercept,
                                             random_state=self.random_state,
-                                            sigma=self.sigma,
                                             **self.phi_kwargs)
             elif not isinstance(self.phi, BasePhi):
                 raise ValueError('Unexpected feature mapping type ... ')
@@ -580,6 +567,7 @@ class AMRC(BaseMRC):
             self.params_['w'] = np.zeros((m, 1))
             self.params_['w0'] = np.zeros((m, 1))
             self.params_['R_Ut'] = 0
+            self.params_['sum_R_Ut'] = 0
 
             # Initialize mean vector estimate
             params_ = self.initialize_tracking(m)
@@ -692,8 +680,22 @@ class AMRC(BaseMRC):
 
         Returns
         -------
-        upper : `float`
+        upper_bound : `float`
             Upper bound of the expected loss for the fitted classifier.
         '''
 
         return self.params_['R_Ut']
+
+    def get_upper_bound_accumulated(self):
+        '''
+        Returns the upper bound on the accumulated mistakes 
+        of the fitted classifier.
+
+        Returns
+        -------
+        upper_bound_accumulated : `float`
+            Upper bound of the accumulated for the fitted classifier.
+        '''
+
+        return (self.params_['sum_R_Ut'] + \
+                np.sqrt(2 * self.sample_counter * np.log(1 / self.delta)))
