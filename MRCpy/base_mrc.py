@@ -421,6 +421,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         if self.deterministic:
             y_pred = np.argmax(proba, axis=1)
         else:
+            np.random.seed(self.random_state)
             y_pred = [np.random.choice(self.n_classes, size=1, p=pc)[0]
                       for pc in proba]
 
