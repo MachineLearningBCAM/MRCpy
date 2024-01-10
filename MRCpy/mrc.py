@@ -530,7 +530,7 @@ class MRC(BaseMRC):
 
         Returns
         -------
-        upper : `float`
+        upper_bound : `float`
             Upper bound of the expected loss for the fitted classifier.
         '''
 
@@ -568,7 +568,7 @@ class MRC(BaseMRC):
 
         Returns
         -------
-        lower : `float`
+        lower_bound : `float`
             Lower bound of the error for the fitted classifier.
         '''
 
