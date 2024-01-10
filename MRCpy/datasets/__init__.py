@@ -10,7 +10,6 @@ from .load import \
     load_indian_liver, \
     load_iris, \
     load_letterrecog, \
-    load_magic, \
     load_mammographic, \
     load_mnist_features_resnet18, \
     load_optdigits, \
@@ -33,7 +32,6 @@ __all__ = ['load_adult',
            'load_indian_liver',
            'load_iris',
            'load_letterrecog',
-           'load_magic',
            'load_mammographic',
            'load_mnist_features_resnet18',
            'load_optdigits',
