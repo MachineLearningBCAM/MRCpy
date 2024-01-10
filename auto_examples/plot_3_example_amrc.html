@@ -94,7 +94,7 @@
              
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-plot-3-example-amrc-py"><span class="std std-ref">here</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-3-example-amrc-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-use-of-amrc-adaptative-mrc-for-online-learning">
@@ -209,10 +209,10 @@ settings.</p>
 
     <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">error_det</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.average.html#numpy.average" title="numpy.average" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">average</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">!=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y_pred</span></a><span class="p">)</span>
 
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;feature mapping&#39;</span><span class="p">:</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feature_mapping</span></a><span class="p">,</span>
-                    <span class="s1">&#39;deterministic error&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%1.3g</span><span class="s2">&quot;</span> <span class="o">%</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">error_det</span></a><span class="p">,</span>
-                    <span class="s1">&#39;non deterministic error&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%1.3g</span><span class="s2">&quot;</span> <span class="o">%</span> <a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float64" title="numpy.float64" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">error_nondet</span></a><span class="p">},</span>
-                   <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># df = pd.concat([df, pd.DataFrame.from_dict({&#39;feature mapping&#39;: feature_mapping,</span>
+    <span class="c1">#                 &#39;deterministic error&#39;: &quot;%1.3g&quot; % error_det,</span>
+    <span class="c1">#                 &#39;non deterministic error&#39;: &quot;%1.3g&quot; % error_nondet})],</span>
+    <span class="c1">#                ignore_index=True)</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">U_det</span></a><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
@@ -222,6 +222,7 @@ settings.</p>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Probability&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Instantaneous bounds for error probabilities. &#39;</span> <span class="o">+</span>
               <span class="s1">&#39;Feature mapping: &#39;</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feature_mapping</span></a><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">accumulated_mistakes_per_time_det</span></a><span class="p">)</span>
@@ -234,6 +235,7 @@ settings.</p>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Instances (Time)&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Accumulated Mistakes Per Time. &#39;</span> <span class="o">+</span>
               <span class="s1">&#39;Feature mapping: &#39;</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">feature_mapping</span></a><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <ul class="sphx-glr-horizontal">
@@ -242,49 +244,11 @@ settings.</p>
 <li><img src="../_images/sphx_glr_plot_3_example_amrc_003.png" srcset="../_images/sphx_glr_plot_3_example_amrc_003.png" alt="Instantaneous bounds for error probabilities. Feature mapping: fourier" class = "sphx-glr-multi-img"/></li>
 <li><img src="../_images/sphx_glr_plot_3_example_amrc_004.png" srcset="../_images/sphx_glr_plot_3_example_amrc_004.png" alt="Accumulated Mistakes Per Time. Feature mapping: fourier" class = "sphx-glr-multi-img"/></li>
 </ul>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-  df = df.append({&#39;feature mapping&#39;: feature_mapping,
-/Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-  df = df.append({&#39;feature mapping&#39;: feature_mapping,
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># df.style.set_caption(&#39;AMRC Results&#39;)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">set_caption</span><span class="p">(</span><span class="s1">&#39;AMRC Results&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="output_subarea output_html rendered_html output_result">
-<style type="text/css">
-</style>
-<table id="T_2c11e">
-  <caption>AMRC Results</caption>
-  <thead>
-    <tr>
-      <th class="blank level0" >&nbsp;</th>
-      <th id="T_2c11e_level0_col0" class="col_heading level0 col0" >feature mapping</th>
-      <th id="T_2c11e_level0_col1" class="col_heading level0 col1" >deterministic error</th>
-      <th id="T_2c11e_level0_col2" class="col_heading level0 col2" >non deterministic error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th id="T_2c11e_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_2c11e_row0_col0" class="data row0 col0" >linear</td>
-      <td id="T_2c11e_row0_col1" class="data row0 col1" >0.235</td>
-      <td id="T_2c11e_row0_col2" class="data row0 col2" >0.308</td>
-    </tr>
-    <tr>
-      <th id="T_2c11e_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_2c11e_row1_col0" class="data row1 col0" >fourier</td>
-      <td id="T_2c11e_row1_col1" class="data row1 col1" >0.314</td>
-      <td id="T_2c11e_row1_col2" class="data row1 col2" >0.318</td>
-    </tr>
-  </tbody>
-</table>
-
-</div>
-<br />
-<br /><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 26 minutes  26.993 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-3-example-amrc-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 27 minutes  22.883 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-plot-3-example-amrc-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/afb00f9dd933f73db096dde21b0aa9d1/plot_3_example_amrc.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">plot_3_example_amrc.py</span></code></a></p>
 </div>

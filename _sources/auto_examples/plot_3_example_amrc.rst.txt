@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_3_example_amrc.py>`
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_3_example_amrc.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -54,7 +54,7 @@ settings.
 
 You can check more technical details of the documentation class :ref:`amrc`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-153
+.. GENERATED FROM PYTHON SOURCE LINES 40-155
 
 .. code-block:: default
 
@@ -145,10 +145,10 @@ You can check more technical details of the documentation class :ref:`amrc`.
 
         error_det = np.average(Y[1:] != Y_pred)
 
-        df = df.append({'feature mapping': feature_mapping,
-                        'deterministic error': "%1.3g" % error_det,
-                        'non deterministic error': "%1.3g" % error_nondet},
-                       ignore_index=True)
+        # df = pd.concat([df, pd.DataFrame.from_dict({'feature mapping': feature_mapping,
+        #                 'deterministic error': "%1.3g" % error_det,
+        #                 'non deterministic error': "%1.3g" % error_nondet})],
+        #                ignore_index=True)
 
         plt.figure()
         plt.plot(U_det[1:])
@@ -158,6 +158,7 @@ You can check more technical details of the documentation class :ref:`amrc`.
         plt.ylabel('Probability')
         plt.title('Instantaneous bounds for error probabilities. ' +
                   'Feature mapping: ' + feature_mapping)
+        plt.show()
 
         plt.figure()
         plt.plot(accumulated_mistakes_per_time_det)
@@ -170,6 +171,7 @@ You can check more technical details of the documentation class :ref:`amrc`.
         plt.xlabel('Instances (Time)')
         plt.title('Accumulated Mistakes Per Time. ' +
                   'Feature mapping: ' + feature_mapping)
+        plt.show()
 
 
 
@@ -206,91 +208,44 @@ You can check more technical details of the documentation class :ref:`amrc`.
          :class: sphx-glr-multi-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-      df = df.append({'feature mapping': feature_mapping,
-    /Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-      df = df.append({'feature mapping': feature_mapping,
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 154-156
+.. GENERATED FROM PYTHON SOURCE LINES 156-158
 
 .. code-block:: default
 
 
-    df.style.set_caption('AMRC Results')
+    # df.style.set_caption('AMRC Results')
 
 
 
 
 
-.. raw:: html
 
-    <div class="output_subarea output_html rendered_html output_result">
-    <style type="text/css">
-    </style>
-    <table id="T_2c11e">
-      <caption>AMRC Results</caption>
-      <thead>
-        <tr>
-          <th class="blank level0" >&nbsp;</th>
-          <th id="T_2c11e_level0_col0" class="col_heading level0 col0" >feature mapping</th>
-          <th id="T_2c11e_level0_col1" class="col_heading level0 col1" >deterministic error</th>
-          <th id="T_2c11e_level0_col2" class="col_heading level0 col2" >non deterministic error</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th id="T_2c11e_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_2c11e_row0_col0" class="data row0 col0" >linear</td>
-          <td id="T_2c11e_row0_col1" class="data row0 col1" >0.235</td>
-          <td id="T_2c11e_row0_col2" class="data row0 col2" >0.308</td>
-        </tr>
-        <tr>
-          <th id="T_2c11e_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_2c11e_row1_col0" class="data row1 col0" >fourier</td>
-          <td id="T_2c11e_row1_col1" class="data row1 col1" >0.314</td>
-          <td id="T_2c11e_row1_col2" class="data row1 col2" >0.318</td>
-        </tr>
-      </tbody>
-    </table>
-
-    </div>
-    <br />
-    <br />
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 26 minutes  26.993 seconds)
+   **Total running time of the script:** ( 27 minutes  22.883 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_3_example_amrc.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
 
-  .. container:: sphx-glr-download sphx-glr-download-python
 
-     :download:`Download Python source code: plot_3_example_amrc.py <plot_3_example_amrc.py>`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download Python source code: plot_3_example_amrc.py <plot_3_example_amrc.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_3_example_amrc.ipynb <plot_3_example_amrc.ipynb>`
+      :download:`Download Jupyter notebook: plot_3_example_amrc.ipynb <plot_3_example_amrc.ipynb>`
 
 
 .. only:: html

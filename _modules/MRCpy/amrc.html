@@ -162,20 +162,9 @@
 <span class="sd">        Whether to model change in the variables unidimensionally or not.</span>
 <span class="sd">        Available for comparison purposes.</span>
 
-<span class="sd">    sigma : `str` {&#39;scale2&#39;} or `float`, default = `sigma`</span>
-<span class="sd">        When given a string, it defines the type of heuristic to be used</span>
-<span class="sd">        to calculate the scaling parameter `sigma` used in Random Fourier</span>
-<span class="sd">         feature mapping.</span>
-<span class="sd">        For comparison its relation with parameter `gamma` used in</span>
-<span class="sd">        other methods is :math:`\gamma=1/(2\sigma^2)`.</span>
-<span class="sd">        When given a float, it is the value for the scaling parameter.</span>
-
-<span class="sd">        &#39;scale2&#39;</span>
-<span class="sd">            Approximates `sigma` by</span>
-<span class="sd">            :math:`\sqrt{\\frac{\\textrm{n_features}}{2}}`</span>
-<span class="sd">            so that `gamma` is</span>
-<span class="sd">            :math:`\\frac{1}{\\textrm{n_features}}`</span>
-<span class="sd">            where `var` is the variance function.</span>
+<span class="sd">    delta : `float`, default = 0.95</span>
+<span class="sd">        Confidence of the upper bound on the accumulated mistakes.</span>
+<span class="sd">        Higher values will produce loose bounds.</span>
 
 <span class="sd">    order : `int`, default = 1</span>
 <span class="sd">        Order of the subgradients used in optimization.</span>
@@ -235,8 +224,8 @@
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-                 <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale2&#39;</span><span class="p">,</span>
                  <span class="n">unidimensional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
                  <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                  <span class="n">W</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
                  <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -245,10 +234,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unidimensional</span> <span class="o">=</span> <span class="n">unidimensional</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unidimensional</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">N</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -263,8 +254,6 @@
                          <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
                          <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                         <span class="n">max_iters</span><span class="o">=</span><span class="n">max_iters</span><span class="p">,</span>
-                         <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
@@ -594,6 +583,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varphi</span> <span class="o">=</span> <span class="n">varphi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">R_Ut</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">R_Ut</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
         <span class="k">return</span> <span class="bp">self</span></div>
@@ -638,12 +628,9 @@
                                    <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
                                    <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">!=</span> <span class="s1">&#39;scale2&#39;</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected sigma for AMRC ... &#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span>
                                             <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
                                             <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
-                                            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
                                             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected feature mapping type ... &#39;</span><span class="p">)</span>
@@ -662,6 +649,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;w0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="c1"># Initialize mean vector estimate</span>
             <span class="n">params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tracking</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -774,11 +762,25 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        upper : `float`</span>
+<span class="sd">        upper_bound : `float`</span>
 <span class="sd">            Upper bound of the expected loss for the fitted classifier.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="AMRC.get_upper_bound_accumulated"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound_accumulated">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound_accumulated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns the upper bound on the accumulated mistakes </span>
+<span class="sd">        of the fitted classifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        upper_bound_accumulated : `float`</span>
+<span class="sd">            Upper bound of the accumulated for the fitted classifier.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">)))</span></div></div>
 </pre></div>
 
            </div>

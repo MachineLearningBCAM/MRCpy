@@ -124,10 +124,10 @@ for feature_mapping in ['linear', 'fourier']:
 
     error_det = np.average(Y[1:] != Y_pred)
 
-    df = df.append({'feature mapping': feature_mapping,
-                    'deterministic error': "%1.3g" % error_det,
-                    'non deterministic error': "%1.3g" % error_nondet},
-                   ignore_index=True)
+    # df = pd.concat([df, pd.DataFrame.from_dict({'feature mapping': feature_mapping,
+    #                 'deterministic error': "%1.3g" % error_det,
+    #                 'non deterministic error': "%1.3g" % error_nondet})],
+    #                ignore_index=True)
 
     plt.figure()
     plt.plot(U_det[1:])
@@ -137,6 +137,7 @@ for feature_mapping in ['linear', 'fourier']:
     plt.ylabel('Probability')
     plt.title('Instantaneous bounds for error probabilities. ' +
               'Feature mapping: ' + feature_mapping)
+    plt.show()
 
     plt.figure()
     plt.plot(accumulated_mistakes_per_time_det)
@@ -149,7 +150,8 @@ for feature_mapping in ['linear', 'fourier']:
     plt.xlabel('Instances (Time)')
     plt.title('Accumulated Mistakes Per Time. ' +
               'Feature mapping: ' + feature_mapping)
+    plt.show()
 
 ##################################################################
 
-df.style.set_caption('AMRC Results')
+# df.style.set_caption('AMRC Results')
