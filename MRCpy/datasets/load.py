@@ -1373,3 +1373,453 @@ def load_yearbook_features_resnet18(with_info=False, with_attributes=False):
 
         return Bunch(data=data, target=normalizeLabels(target),
                      DESCR=descr_text)
+
+
+def load_comp_vs_sci(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class [2936, 2373]
+    Samples from training distribution in total          5309
+    Samples from testing distribution per class  [1955, 1579]
+    Samples from testing distribution in total           3534
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'comp-vs-sci_Train.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'comp-vs-sci_Test.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
+
+
+def load_comp_vs_talk(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class [2936, 1952]
+    Samples from training distribution in total          4888
+    Samples from testing distribution per class  [1955, 1301]
+    Samples from testing distribution in total           3256
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'comp-vs-talk_Train.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'comp-vs-talk_Test.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
+
+
+def load_rec_vs_sci(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class [2389, 2373]
+    Samples from training distribution in total          4762
+    Samples from testing distribution per class  [1590, 1579]
+    Samples from testing distribution in total           3169
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'rec-vs-sci_Train.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'rec-vs-sci_Test.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
+
+
+def load_rec_vs_talk(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class [2389, 1952]
+    Samples from training distribution in total          4341
+    Samples from testing distribution per class  [1590, 1301]
+    Samples from testing distribution in total           2891
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'rec-vs-talk_Train.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'rec-vs-talk_Test.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
+
+
+def load_sci_vs_talk(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class [2373, 1952]
+    Samples from training distribution in total          4325
+    Samples from testing distribution per class  [1579, 1301]
+    Samples from testing distribution in total           2880
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'sci-vs-talk_Train.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'sci-vs-talk_Test.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
+
+
+def load_comp_vs_sci_short(with_info=False):
+    """Load and return the  Data Set
+    (classification).
+
+    ============================ =============================
+    Classes                                                 2
+    Samples from training distribution per class   [556, 444]
+    Samples from training distribution in total          1000
+    Samples from testing distribution per class    [563, 437]
+    Samples from testing distribution in total           1000
+    Dimensionality                                       1000  
+    Features                                              int
+    =========================== ==============================
+
+    Parameters
+    ----------
+    with_info : boolean, default=False.
+        If True, returns ``(data, target)`` instead of a Bunch object.
+        See below for more information about the `data` and `target` object.
+
+    Returns
+    -------
+    bunch : Bunch
+        Dictionary-like object, the interesting attributes are:
+        'data', the data to learn, 'target', the classification targets,
+        'DESCR', the full description of the dataset,
+        and 'filename', the physical location of satellite csv dataset.
+
+    (data, target) : tuple if ``with_info`` is True
+
+    """
+    module_path = dirname(__file__)
+
+    with open(join(module_path, 'data',
+                   'comp-vs-sci_shortTrain.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Train = int(temp[0])
+        n_features_Train = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTrain = np.empty((n_samples_Train, n_features_Train))
+        targetTrain = np.empty((n_samples_Train, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTrain[i] = np.asarray(ir[-1], dtype=int)
+            
+    with open(join(module_path, 'data',
+                   'comp-vs-sci_shortTest.csv')) as csv_file:
+        data_file = csv.reader(csv_file)
+        temp = next(data_file)
+        n_samples_Test = int(temp[0])
+        n_features_Test = int(temp[1])
+        target_names = np.array(temp[2:])
+        dataTest = np.empty((n_samples_Test, n_features_Test))
+        targetTest = np.empty((n_samples_Test, ), dtype=int)
+
+        for i, ir in enumerate(data_file):
+            dataTest[i] = np.asarray(ir[:-1], dtype=np.float64)
+            targetTest[i] = np.asarray(ir[-1], dtype=int)        
+
+    if not with_info:
+        return dataTrain, normalizeLabels(targetTrain), \
+            dataTest, normalizeLabels(targetTest)
+
+    return Bunch(data=dataTrain, target=normalizeLabels(targetTrain),
+                 target_names=target_names,
+                 DESCR=None,
+                 ), \
+            Bunch(data=dataTest, target=normalizeLabels(targetTest),
+                 target_names=target_names,
+                 DESCR=None,
+                 )
