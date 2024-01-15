@@ -19,7 +19,13 @@ from .load import \
     load_usenet2, \
     load_vehicle, \
     load_yearbook_features_resnet18, \
-    load_yearbook_path
+    load_yearbook_path, \
+    load_comp_vs_sci, \
+    load_comp_vs_talk, \
+    load_rec_vs_sci, \
+    load_rec_vs_talk, \
+    load_sci_vs_talk, \
+    load_comp_vs_sci_short
 
 __all__ = ['load_adult',
            'load_catsvsdogs_features_resnet18',
@@ -41,4 +47,10 @@ __all__ = ['load_adult',
            'load_usenet2',
            'load_vehicle',
            'load_yearbook_features_resnet18',
-           'load_yearbook_path']
+           'load_yearbook_path',
+           'load_comp_vs_sci',
+           'load_comp_vs_talk',
+           'load_rec_vs_sci',
+           'load_rec_vs_talk',
+           'load_sci_vs_talk',
+           'load_comp_vs_sci_short']
