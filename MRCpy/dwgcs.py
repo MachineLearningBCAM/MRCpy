@@ -335,7 +335,7 @@ class DWGCS(CMRC):
             cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
         ]
         problem = cvx.Problem(objective,constraints)
-        problem.solve(solver='GUROBI', eps=1e-20)
+        problem.solve()
 
         self.beta_ = beta_.value
         self.alpha_ = alpha_.value
@@ -416,7 +416,7 @@ class DWGCS(CMRC):
         ]
 
         problem = cvx.Problem(objective, constraints)
-        problem.solve(solver='GUROBI', eps=1e-20)
+        problem.solve()
 
         lambda_ = np.maximum(lambda_.value, 0)
 
