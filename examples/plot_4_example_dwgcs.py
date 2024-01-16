@@ -31,7 +31,7 @@ rep = 2
 n = 1000
 t = 1000
 
-def runCMRC(phi, loss):
+def runDWGCS(phi, loss):
     columns = ['dataset', 'n_samples', 'n_attributes', 'n_classes', 'upper', 'error']
     results = pd.DataFrame(columns=columns)
 
@@ -88,10 +88,10 @@ def runCMRC(phi, loss):
 
 ####################################################################
 
-r1 = runCMRC(phi='linear', loss='0-1')
+r1 = runDWGCS(phi='linear', loss='0-1')
 r1.style.set_caption('Using 0-1 loss and linear feature mapping')
 
 ####################################################################
 
-r2 = runCMRC(phi='linear', loss='log')
+r2 = runDWGCS(phi='linear', loss='log')
 r2.style.set_caption('Using log loss and linear feature mapping')
