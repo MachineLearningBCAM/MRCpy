@@ -171,6 +171,7 @@ class DWGCS(CMRC):
                  random_state=None,
                  fit_intercept=False,
                  D = 4,
+                 sigma_ = None,
                  B = 1000,
                  solver='adam',
                  alpha=0.01,
@@ -180,6 +181,7 @@ class DWGCS(CMRC):
                  phi='linear',
                  **phi_kwargs):
         self.D = D
+        self.sigma_ = sigma_
         self.B = B
         super().__init__(loss,
                          None,
@@ -316,29 +318,51 @@ class DWGCS(CMRC):
         x = np.concatenate((xTr, xTe), axis=0)
         epsilon_ = 1 - 1 / (np.sqrt(n))
         
-        sigma_ = RandomFourierPhi(self.classes_).rff_sigma(preprocessing.StandardScaler().fit_transform(x))
-        K = sk.metrics.pairwise.rbf_kernel(x, x, 1 / (2 * sigma_ ** 2))
+        if self.sigma_ is None:
+            self.sigma_ = RandomFourierPhi(self.classes_).rff_sigma(x)
 
-        # Define the variables of the opt. problem
-        beta_ = cvx.Variable((n, 1))
-        alpha_ = cvx.Variable((t, 1))
-        # Define the objetive function
-        objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
-        # Define the constraints
-        constraints = [ 
-            beta_ >= np.zeros((n, 1)),
-            beta_ <= (self.B / np.sqrt(self.D)) * np.ones((n, 1)),
-            alpha_ >= np.zeros((t, 1)),
-            alpha_ <= np.ones((t, 1)),
-            cvx.abs(cvx.sum(beta_) / n - cvx.sum(alpha_) / t) <= epsilon_,
-            cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
-        ]
-        problem = cvx.Problem(objective,constraints)
-        problem.solve()
+        K = sk.metrics.pairwise.rbf_kernel(x, x, 1 / (2 * self.sigma_ ** 2))
 
-        self.beta_ = beta_.value
-        self.alpha_ = alpha_.value
-        self.min_DWKMM = problem.value
+        if self.D == 1:
+            # Define the variables of the opt. problem
+            beta_ = cvx.Variable((n, 1))
+            alpha_ = np.ones((t, 1))
+            # Define the objetive function
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            # Define the constraints
+            constraints = [ 
+                beta_ >= np.zeros((n, 1)),
+                beta_ <= (self.B / np.sqrt(self.D)) * np.ones((n, 1)),
+                cvx.abs(cvx.sum(beta_) / n - 1) <= epsilon_,
+            ]
+            problem = cvx.Problem(objective,constraints)
+            problem.solve()
+
+            self.beta_ = beta_.value
+            self.alpha_ = alpha_
+            self.min_DWKMM = problem.value
+
+        else:
+            # Define the variables of the opt. problem
+            beta_ = cvx.Variable((n, 1))
+            alpha_ = cvx.Variable((t, 1))
+            # Define the objetive function
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            # Define the constraints
+            constraints = [ 
+                beta_ >= np.zeros((n, 1)),
+                beta_ <= (self.B / np.sqrt(self.D)) * np.ones((n, 1)),
+                alpha_ >= np.zeros((t, 1)),
+                alpha_ <= np.ones((t, 1)),
+                cvx.abs(cvx.sum(beta_) / n - cvx.sum(alpha_) / t) <= epsilon_,
+                cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
+            ]
+            problem = cvx.Problem(objective,constraints)
+            problem.solve()
+
+            self.beta_ = beta_.value
+            self.alpha_ = alpha_.value
+            self.min_DWKMM = problem.value
 
         return self
 
