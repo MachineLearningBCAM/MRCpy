@@ -314,10 +314,9 @@ class DWGCS(CMRC):
         n = xTr.shape[0]
         t = xTe.shape[0]
         x = np.concatenate((xTr, xTe), axis=0)
-        x = preprocessing.StandardScaler().fit_transform(x)
         epsilon_ = 1 - 1 / (np.sqrt(n))
         
-        sigma_ = RandomFourierPhi(self.classes_).rff_sigma(x)
+        self.sigma_ = RandomFourierPhi(self.classes_).rff_sigma(preprocessing.StandardScaler().fit_transform(x))
         K = sk.metrics.pairwise.rbf_kernel(x, x, 1 / (2 * sigma_ ** 2))
 
         # Define the variables of the opt. problem
