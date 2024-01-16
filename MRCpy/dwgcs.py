@@ -67,7 +67,7 @@ class DWGCS(CMRC):
         Random seed used when 'fourier' and 'relu' options for feature mappings
         are used to produce the random weights.
 
-    fit_intercept : `bool`, default = `True`
+    fit_intercept : `bool`, default = `False`
             Whether to calculate the intercept for MRCs
             If set to false, no intercept will be used in calculations
             (i.e. data is expected to be already centered).
