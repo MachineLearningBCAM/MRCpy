@@ -159,7 +159,7 @@ class BasePhi():
 
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, ["is_fitted_"])
-        X_feat = X
+        X_feat = X.copy()
 
         return X_feat
 
