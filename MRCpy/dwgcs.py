@@ -339,7 +339,10 @@ class DWGCS(CMRC):
             try:
                 problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
-                problem.solve()
+                try:
+                    problem.solve(solver = 'MOSEK')
+                except cvx.error.SolverError:
+                    problem.solve(solver = 'ECOS')
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
@@ -363,9 +366,11 @@ class DWGCS(CMRC):
             problem = cvx.Problem(objective,constraints)
             try:
                 problem.solve(solver = 'GUROBI')
-                print('He usado GUROBI')
             except cvx.error.SolverError:
-                problem.solve()
+                try:
+                    problem.solve(solver = 'MOSEK')
+                except cvx.error.SolverError:
+                    problem.solve(solver = 'ECOS')
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_.value
@@ -449,7 +454,12 @@ class DWGCS(CMRC):
         try:
             problem.solve(solver = 'GUROBI')
         except cvx.error.SolverError:
-            problem.solve()
+            try:
+                problem.solve(solver = 'MOSEK')
+            except cvx.error.SolverError:
+                problem.solve(solver = 'ECOS')
+                print('Using the "ECOS" solver is less efficient than using the "GUROBI" or "MOSEK" solver.\
+                   We recommend obtaining a "GUROBI" or "MOSEK" licence.')
 
         lambda_ = np.maximum(lambda_.value, 0)
 
