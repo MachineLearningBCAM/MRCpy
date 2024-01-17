@@ -16,8 +16,10 @@ from the testing distribution.
 import numpy as np
 from sklearn import preprocessing
 import pandas as pd
+import time
 
 from MRCpy import DWGCS
+from MRCpy import CMRC
 # Import the datasets
 from MRCpy.datasets import *
 
@@ -27,13 +29,16 @@ loaders = [load_comp_vs_sci, load_comp_vs_talk, load_rec_vs_sci,
 dataName = ["comp-vs-sci", "comp-vs-talk", "rec-vs-sci",
            "rec-vs-talk", "sci-vs-talk"]
 
-rep = 2
+rep = 10
 n = 1000
 t = 1000
 
 def runDWGCS(phi, loss):
-    columns = ['dataset', 'n_samples', 'n_attributes', 'n_classes', 'upper', 'error']
-    results = pd.DataFrame(columns=columns)
+    columns = ['dataset', 'n_samples', 'n_attributes', 'n_classes', 'error']
+    resultsCMRC = pd.DataFrame(columns=columns)
+    resultsDWGCS1 = pd.DataFrame(columns=columns)
+    resultsDWGCS2 = pd.DataFrame(columns=columns)
+
 
     for j, load in enumerate(loaders):
 
@@ -46,12 +51,15 @@ def runDWGCS(phi, loss):
         TrainSet = np.concatenate((X_TrainSet, np.reshape(Y_TrainSet,(Y_TrainSet.shape[0], 1))), axis=1)
         TestSet = np.concatenate((X_TestSet, np.reshape(Y_TestSet, (Y_TestSet.shape[0], 1))), axis=1)
 
-        Error = list()
-        upper = 0
+        Error1 = list()
+        Error2 = list()
+        Error3 = list()
         
         for i in range(rep):
-
+            
+            np.random.seed(42)
             np.random.shuffle(TrainSet)
+            np.random.seed(42)
             np.random.shuffle(TestSet)
 
             X_train = TrainSet[:n, :-1]
@@ -59,39 +67,61 @@ def runDWGCS(phi, loss):
             X_test  = TestSet[:t, :-1]
             Y_test  = TestSet[:t, -1]
 
-            x = np.concatenate((X_train, X_test), axis=0)
-            x = preprocessing.StandardScaler().fit_transform(x)   
-            X_train = x[:n, :]
-            X_test = x[n:, :]
+            #x = np.concatenate((X_train, X_test), axis=0)
+            #x = preprocessing.StandardScaler().fit_transform(x)   
+            #X_train = x[:n, :]
+            #X_test = x[n:, :]
+            starting_time = time.time()
 
-            clf = DWGCS(loss = loss, phi = phi, deterministic = True)
-            clf.fit(X_train, Y_train, X_test)
-            upper += clf.get_upper_bound()
+            #CMRC
+            clf = CMRC(loss = loss, phi = phi, one_hot = True)
+            clf.fit(X_train, Y_train)
+            Error1.append(clf.error(X_test, Y_test))
+            #DWGCS D = 4
+            clf2 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, D = 1, one_hot = True)
+            clf2.fit(X_train, Y_train, X_test)
+            Error2.append(clf2.error(X_test, Y_test))
+            #DWGCS D = 4
+            clf3 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, one_hot = True)
+            clf3.fit(X_train, Y_train, X_test)
+            Error3.append(clf3.error(X_test, Y_test))
 
-            Y_pred = clf.predict(X_test)
-            Error.append(np.average(Y_pred != Y_test))
+            end_time = time.time()-starting_time
+            print(end_time)
+
+        res_mean1 = np.average(Error1)
+        res_std1 = np.std(Error1)
+        res_mean2 = np.average(Error2)
+        res_std2 = np.std(Error2)
+        res_mean3 = np.average(Error3)
+        res_std3 = np.std(Error3)
+
         
-        upper = upper / rep
-        res_mean = np.average(Error)
-        res_std = np.std(Error)
-
         new_row = {'dataset': dataName[j],
                                   'n_samples': '%d' % n,
                                   'n_attributes': '%d' % d,
                                   'n_classes': '%d' % r,
-                                  "upper": "%1.2g" % upper,
-                                  'error': '%1.2g' % res_mean + " +/- " +
-                                  '%1.2g' % res_std}
-        results.loc[len(results)] = new_row
+                                  'error': '%1.2g' % res_mean1 + " +/- " +
+                                  '%1.2g' % res_std1}
+        resultsCMRC.loc[len(resultsCMRC)] = new_row
+        new_row = {'dataset': dataName[j],
+                                  'n_samples': '%d' % n,
+                                  'n_attributes': '%d' % d,
+                                  'n_classes': '%d' % r,
+                                  'error': '%1.2g' % res_mean2 + " +/- " +
+                                  '%1.2g' % res_std2}
+        resultsDWGCS1.loc[len(resultsDWGCS1)] = new_row
+        new_row = {'dataset': dataName[j],
+                                  'n_samples': '%d' % n,
+                                  'n_attributes': '%d' % d,
+                                  'n_classes': '%d' % r,
+                                  'error': '%1.2g' % res_mean3 + " +/- " +
+                                  '%1.2g' % res_std3}
+        resultsDWGCS2.loc[len(resultsDWGCS2)] = new_row
         
-    return results
+    return resultsCMRC, resultsDWGCS1, resultsDWGCS2
 
 ####################################################################
 
 r1 = runDWGCS(phi='linear', loss='0-1')
-r1.style.set_caption('Using 0-1 loss and linear feature mapping')
-
-####################################################################
-
-r2 = runDWGCS(phi='linear', loss='log')
-r2.style.set_caption('Using log loss and linear feature mapping')
+print(r1)
