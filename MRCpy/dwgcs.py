@@ -336,7 +336,10 @@ class DWGCS(CMRC):
                 cvx.abs(cvx.sum(beta_) / n - 1) <= epsilon_,
             ]
             problem = cvx.Problem(objective,constraints)
-            problem.solve()
+            try:
+                problem.solve(solver = 'GUROBI')
+            except cvx.error.SolverError:
+                problem.solve()
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
@@ -358,7 +361,11 @@ class DWGCS(CMRC):
                 cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
             ]
             problem = cvx.Problem(objective,constraints)
-            problem.solve()
+            try:
+                problem.solve(solver = 'GUROBI')
+                print('He usado GUROBI')
+            except cvx.error.SolverError:
+                problem.solve()
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_.value
@@ -439,7 +446,10 @@ class DWGCS(CMRC):
         ]
 
         problem = cvx.Problem(objective, constraints)
-        problem.solve()
+        try:
+            problem.solve(solver = 'GUROBI')
+        except cvx.error.SolverError:
+            problem.solve()
 
         lambda_ = np.maximum(lambda_.value, 0)
 
