@@ -20,6 +20,7 @@ import time
 
 from MRCpy import DWGCS
 from MRCpy import CMRC
+from MRCpy import MRC
 # Import the datasets
 from MRCpy.datasets import *
 
@@ -74,15 +75,15 @@ def runDWGCS(phi, loss):
             starting_time = time.time()
 
             #CMRC
-            clf = CMRC(loss = loss, phi = phi, one_hot = True)
-            clf.fit(X_train, Y_train)
+            clf = CMRC(loss = loss, phi = phi, fit_intercept = False, s = 0)
+            clf.fit(X_train, Y_train, X_test)
             Error1.append(clf.error(X_test, Y_test))
             #DWGCS D = 4
-            clf2 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, D = 1, one_hot = True)
+            clf2 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, D = 1)
             clf2.fit(X_train, Y_train, X_test)
             Error2.append(clf2.error(X_test, Y_test))
             #DWGCS D = 4
-            clf3 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, one_hot = True)
+            clf3 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628)
             clf3.fit(X_train, Y_train, X_test)
             Error3.append(clf3.error(X_test, Y_test))
 
