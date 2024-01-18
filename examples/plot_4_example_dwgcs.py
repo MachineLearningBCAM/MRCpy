@@ -14,13 +14,11 @@ from the testing distribution.
 """
 
 import numpy as np
-from sklearn import preprocessing
 import pandas as pd
 import time
 
 from MRCpy import DWGCS
 from MRCpy import CMRC
-from MRCpy import MRC
 # Import the datasets
 from MRCpy.datasets import *
 
@@ -29,17 +27,24 @@ loaders = [load_comp_vs_sci, load_comp_vs_talk, load_rec_vs_sci,
           load_rec_vs_talk, load_sci_vs_talk]
 dataName = ["comp-vs-sci", "comp-vs-talk", "rec-vs-sci",
            "rec-vs-talk", "sci-vs-talk"]
+sigma = np.array([23.5628, 23.4890, 24.5642, 25.1129, 24.8320])
 
-rep = 10
+rep = 20
 n = 1000
 t = 1000
 
+Errors_CMRC = np.zeros([rep,5])
+Errors_DWGCS1 = np.zeros([rep,5])
+Errors_DWGCS2 = np.zeros([rep,5])
+
 def runDWGCS(phi, loss):
+
     columns = ['dataset', 'n_samples', 'n_attributes', 'n_classes', 'error']
     resultsCMRC = pd.DataFrame(columns=columns)
     resultsDWGCS1 = pd.DataFrame(columns=columns)
     resultsDWGCS2 = pd.DataFrame(columns=columns)
 
+    
 
     for j, load in enumerate(loaders):
 
@@ -68,27 +73,23 @@ def runDWGCS(phi, loss):
             X_test  = TestSet[:t, :-1]
             Y_test  = TestSet[:t, -1]
 
-            #x = np.concatenate((X_train, X_test), axis=0)
-            #x = preprocessing.StandardScaler().fit_transform(x)   
-            #X_train = x[:n, :]
-            #X_test = x[n:, :]
-            starting_time = time.time()
 
             #CMRC
             clf = CMRC(loss = loss, phi = phi, fit_intercept = False, s = 0)
             clf.fit(X_train, Y_train, X_test)
             Error1.append(clf.error(X_test, Y_test))
+            Errors_CMRC[i, j] = clf.error(X_test, Y_test)    
             #DWGCS D = 4
-            clf2 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628, D = 1)
+            clf2 = DWGCS(loss = loss, phi = phi, sigma_ = sigma[j], D = 1)
             clf2.fit(X_train, Y_train, X_test)
             Error2.append(clf2.error(X_test, Y_test))
+            Errors_DWGCS1[i, j] = clf2.error(X_test, Y_test)
             #DWGCS D = 4
             clf3 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628)
             clf3.fit(X_train, Y_train, X_test)
             Error3.append(clf3.error(X_test, Y_test))
+            Errors_DWGCS2[i, j] = clf3.error(X_test, Y_test)
 
-            end_time = time.time()-starting_time
-            print(end_time)
 
         res_mean1 = np.average(Error1)
         res_std1 = np.std(Error1)
@@ -119,7 +120,7 @@ def runDWGCS(phi, loss):
                                   'error': '%1.2g' % res_mean3 + " +/- " +
                                   '%1.2g' % res_std3}
         resultsDWGCS2.loc[len(resultsDWGCS2)] = new_row
-        
+    
     return resultsCMRC, resultsDWGCS1, resultsDWGCS2
 
 ####################################################################
