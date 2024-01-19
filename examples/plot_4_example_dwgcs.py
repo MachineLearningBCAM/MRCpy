@@ -29,7 +29,7 @@ dataName = ["comp-vs-sci", "comp-vs-talk", "rec-vs-sci",
            "rec-vs-talk", "sci-vs-talk"]
 sigma = np.array([23.5628, 23.4890, 24.5642, 25.1129, 24.8320])
 
-rep = 20
+rep = 10
 n = 1000
 t = 1000
 
