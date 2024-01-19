@@ -85,7 +85,7 @@ def runDWGCS(phi, loss):
             Error2.append(clf2.error(X_test, Y_test))
             Errors_DWGCS1[i, j] = clf2.error(X_test, Y_test)
             #DWGCS D = 4
-            clf3 = DWGCS(loss = loss, phi = phi, sigma_ = 23.5628)
+            clf3 = DWGCS(loss = loss, phi = phi, sigma_ = sigma[j])
             clf3.fit(X_train, Y_train, X_test)
             Error3.append(clf3.error(X_test, Y_test))
             Errors_DWGCS2[i, j] = clf3.error(X_test, Y_test)
