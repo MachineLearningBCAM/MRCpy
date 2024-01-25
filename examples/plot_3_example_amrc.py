@@ -46,10 +46,6 @@ from sklearn.preprocessing import MinMaxScaler
 from MRCpy import AMRC
 from MRCpy.datasets import load_usenet2
 
-# We fix the significance level (delta) in order to fix a confidence of
-# 1-delta
-delta = 0.05
-
 # Import data
 X, Y = load_usenet2()
 
@@ -65,6 +61,7 @@ n_classes = len(np.unique(Y))
 n, d = X.shape
 
 Y_pred = np.zeros(n - 1)
+Y_pred_det = np.zeros(n - 1)
 U_det = np.zeros(n - 1)
 U_nondet = np.zeros(n - 1)
 
@@ -73,21 +70,24 @@ accumulated_mistakes_per_time_nondet = np.zeros(n - 1)
 
 bound_accumulated_mistakes_per_time = np.zeros(n - 1)
 
-df = pd.DataFrame()
+columns = ['feature_mapping', 'deterministic error', 'non deterministic error']
+df = pd.DataFrame(columns=columns)
 
 for feature_mapping in ['linear', 'fourier']:
 
     # Probabilistic Predictions
 
-    clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=False)
+    clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=False, random_state=42)
 
     mistakes = 0
+    mistakes_det = 0
     sum_of_U = 0
     for i in range(n - 1):
         # Train the model with the instance x_t
         clf.fit(X[i, :], Y[i])
         # We get the upper bound
         U_nondet[i] = clf.get_upper_bound()
+
         # Use the model at this stage to predict the instance x_{t+1}
         Y_pred[i] = clf.predict(X[i + 1, :])
 
@@ -98,36 +98,29 @@ for feature_mapping in ['linear', 'fourier']:
 
         # We calculate the upper bound for accumulated mistakes per time
         sum_of_U += U_nondet[i]
-        bound_accumulated_mistakes_per_time[i] = \
-            (sum_of_U + np.sqrt(2 * (i + 1) * np.log(1 / delta))) / (i + 1)
+        bound_accumulated_mistakes_per_time[i] = clf.get_upper_bound_accumulated()
+
+        # Deterministic classification
+        clf.deterministic = True
+
+        # Use the model at this stage to predict the instance x_{t+1}
+        Y_pred_det[i] = clf.predict(X[i + 1, :])
+
+        # We calculate accumulated mistakes for deterministic classification
+        if Y_pred_det[i] != Y[i + 1]:
+            mistakes_det += 1
+        accumulated_mistakes_per_time_det[i] = mistakes_det / (i + 1)
+
+        # end of deterministic classification
+        clf.deterministic = False
 
     error_nondet = np.average(Y[1:] != Y_pred)
-
-    # Deterministic Predictions
-
-    clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=True)
-
-    mistakes = 0
-    sum_of_U = 0
-    for i in range(n - 1):
-        # Train the model with the instance x_t
-        clf.fit(X[i, :], Y[i])
-        # We get the upper bound
-        U_det[i] = clf.get_upper_bound()
-        # Use the model at this stage to predict the instance x_{t+1}
-        Y_pred[i] = clf.predict(X[i + 1, :])
-
-        # We calculate accumulated mistakes
-        if Y_pred[i] != Y[i + 1]:
-            mistakes += 1
-        accumulated_mistakes_per_time_det[i] = mistakes / (i + 1)
-
     error_det = np.average(Y[1:] != Y_pred)
 
-    df = df.append({'feature mapping': feature_mapping,
-                    'deterministic error': "%1.3g" % error_det,
-                    'non deterministic error': "%1.3g" % error_nondet},
-                   ignore_index=True)
+    new_row = {'feature mapping': feature_mapping,
+               'deterministic error': "%1.3g" % error_det,
+               'non deterministic error': "%1.3g" % error_nondet}
+    df.loc[len(df)] = new_row
 
     plt.figure()
     plt.plot(U_det[1:])
@@ -137,6 +130,7 @@ for feature_mapping in ['linear', 'fourier']:
     plt.ylabel('Probability')
     plt.title('Instantaneous bounds for error probabilities. ' +
               'Feature mapping: ' + feature_mapping)
+    plt.show()
 
     plt.figure()
     plt.plot(accumulated_mistakes_per_time_det)
@@ -149,6 +143,7 @@ for feature_mapping in ['linear', 'fourier']:
     plt.xlabel('Instances (Time)')
     plt.title('Accumulated Mistakes Per Time. ' +
               'Feature mapping: ' + feature_mapping)
+    plt.show()
 
 ##################################################################
 
