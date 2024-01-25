@@ -1,3 +1,5 @@
+      GNU GENERAL PUBLIC LICENSE
+
 MRCpy: A library for minimax risk classifiers
 Copyright (C) 2023 Kartheek Bondugula
 
