@@ -1,7 +1,7 @@
 
 
-Examples using ``MRCpy.BaseMRC``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Examples using ``MRCpy.CMRC.error``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. start-sphx-glr-thumbnails
@@ -11,27 +11,6 @@ Examples using ``MRCpy.BaseMRC``
 
     <div class="sphx-glr-thumbnails">
 
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Example: Use of AMRC (Adaptative MRC) for Online Learning</div>
-    </div>
-
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
 
 .. raw:: html
 

@@ -1,7 +1,7 @@
 
 
-Examples using ``MRCpy.BaseMRC``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Examples using ``MRCpy.base_mrc.BaseMRC.get_upper_bound_accumulated``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. start-sphx-glr-thumbnails
@@ -32,27 +32,6 @@ Examples using ``MRCpy.BaseMRC``
 .. only:: not html
 
  * :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding ...">
-
-.. only:: html
-
-  .. image:: /auto_examples/images/thumb/sphx_glr_plot_4_example_dwgcs_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_auto_examples_plot_4_example_dwgcs.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</div>
-    </div>
-
-
-.. only:: not html
-
- * :ref:`sphx_glr_auto_examples_plot_4_example_dwgcs.py`
 
 .. raw:: html
 

@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_auto_examples_plot_3_example_amrc.py>`
+        :ref:`Go to the end <sphx_glr_download_auto_examples_plot_3_example_amrc.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -54,7 +54,7 @@ settings.
 
 You can check more technical details of the documentation class :ref:`amrc`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-153
+.. GENERATED FROM PYTHON SOURCE LINES 40-148
 
 .. code-block:: default
 
@@ -66,10 +66,6 @@ You can check more technical details of the documentation class :ref:`amrc`.
 
     from MRCpy import AMRC
     from MRCpy.datasets import load_usenet2
-
-    # We fix the significance level (delta) in order to fix a confidence of
-    # 1-delta
-    delta = 0.05
 
     # Import data
     X, Y = load_usenet2()
@@ -86,6 +82,7 @@ You can check more technical details of the documentation class :ref:`amrc`.
     n, d = X.shape
 
     Y_pred = np.zeros(n - 1)
+    Y_pred_det = np.zeros(n - 1)
     U_det = np.zeros(n - 1)
     U_nondet = np.zeros(n - 1)
 
@@ -94,21 +91,24 @@ You can check more technical details of the documentation class :ref:`amrc`.
 
     bound_accumulated_mistakes_per_time = np.zeros(n - 1)
 
-    df = pd.DataFrame()
+    columns = ['feature_mapping', 'deterministic error', 'non deterministic error']
+    df = pd.DataFrame(columns=columns)
 
     for feature_mapping in ['linear', 'fourier']:
 
         # Probabilistic Predictions
 
-        clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=False)
+        clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=False, random_state=42)
 
         mistakes = 0
+        mistakes_det = 0
         sum_of_U = 0
         for i in range(n - 1):
             # Train the model with the instance x_t
             clf.fit(X[i, :], Y[i])
             # We get the upper bound
             U_nondet[i] = clf.get_upper_bound()
+
             # Use the model at this stage to predict the instance x_{t+1}
             Y_pred[i] = clf.predict(X[i + 1, :])
 
@@ -119,36 +119,29 @@ You can check more technical details of the documentation class :ref:`amrc`.
 
             # We calculate the upper bound for accumulated mistakes per time
             sum_of_U += U_nondet[i]
-            bound_accumulated_mistakes_per_time[i] = \
-                (sum_of_U + np.sqrt(2 * (i + 1) * np.log(1 / delta))) / (i + 1)
+            bound_accumulated_mistakes_per_time[i] = clf.get_upper_bound_accumulated()
+
+            # Deterministic classification
+            clf.deterministic = True
+
+            # Use the model at this stage to predict the instance x_{t+1}
+            Y_pred_det[i] = clf.predict(X[i + 1, :])
+
+            # We calculate accumulated mistakes for deterministic classification
+            if Y_pred_det[i] != Y[i + 1]:
+                mistakes_det += 1
+            accumulated_mistakes_per_time_det[i] = mistakes_det / (i + 1)
+
+            # end of deterministic classification
+            clf.deterministic = False
 
         error_nondet = np.average(Y[1:] != Y_pred)
-
-        # Deterministic Predictions
-
-        clf = AMRC(n_classes=2, phi=feature_mapping, deterministic=True)
-
-        mistakes = 0
-        sum_of_U = 0
-        for i in range(n - 1):
-            # Train the model with the instance x_t
-            clf.fit(X[i, :], Y[i])
-            # We get the upper bound
-            U_det[i] = clf.get_upper_bound()
-            # Use the model at this stage to predict the instance x_{t+1}
-            Y_pred[i] = clf.predict(X[i + 1, :])
-
-            # We calculate accumulated mistakes
-            if Y_pred[i] != Y[i + 1]:
-                mistakes += 1
-            accumulated_mistakes_per_time_det[i] = mistakes / (i + 1)
-
         error_det = np.average(Y[1:] != Y_pred)
 
-        df = df.append({'feature mapping': feature_mapping,
-                        'deterministic error': "%1.3g" % error_det,
-                        'non deterministic error': "%1.3g" % error_nondet},
-                       ignore_index=True)
+        new_row = {'feature mapping': feature_mapping,
+                   'deterministic error': "%1.3g" % error_det,
+                   'non deterministic error': "%1.3g" % error_nondet}
+        df.loc[len(df)] = new_row
 
         plt.figure()
         plt.plot(U_det[1:])
@@ -158,6 +151,7 @@ You can check more technical details of the documentation class :ref:`amrc`.
         plt.ylabel('Probability')
         plt.title('Instantaneous bounds for error probabilities. ' +
                   'Feature mapping: ' + feature_mapping)
+        plt.show()
 
         plt.figure()
         plt.plot(accumulated_mistakes_per_time_det)
@@ -170,6 +164,7 @@ You can check more technical details of the documentation class :ref:`amrc`.
         plt.xlabel('Instances (Time)')
         plt.title('Accumulated Mistakes Per Time. ' +
                   'Feature mapping: ' + feature_mapping)
+        plt.show()
 
 
 
@@ -206,21 +201,10 @@ You can check more technical details of the documentation class :ref:`amrc`.
          :class: sphx-glr-multi-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-      df = df.append({'feature mapping': feature_mapping,
-    /Users/cguerrero/Documents/MRCpy_AMRC/examples/plot_3_example_amrc.py:127: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
-      df = df.append({'feature mapping': feature_mapping,
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 154-156
+.. GENERATED FROM PYTHON SOURCE LINES 149-151
 
 .. code-block:: default
 
@@ -236,28 +220,28 @@ You can check more technical details of the documentation class :ref:`amrc`.
     <div class="output_subarea output_html rendered_html output_result">
     <style type="text/css">
     </style>
-    <table id="T_2c11e">
+    <table id="T_f6ba1">
       <caption>AMRC Results</caption>
       <thead>
         <tr>
           <th class="blank level0" >&nbsp;</th>
-          <th id="T_2c11e_level0_col0" class="col_heading level0 col0" >feature mapping</th>
-          <th id="T_2c11e_level0_col1" class="col_heading level0 col1" >deterministic error</th>
-          <th id="T_2c11e_level0_col2" class="col_heading level0 col2" >non deterministic error</th>
+          <th id="T_f6ba1_level0_col0" class="col_heading level0 col0" >feature_mapping</th>
+          <th id="T_f6ba1_level0_col1" class="col_heading level0 col1" >deterministic error</th>
+          <th id="T_f6ba1_level0_col2" class="col_heading level0 col2" >non deterministic error</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <th id="T_2c11e_level0_row0" class="row_heading level0 row0" >0</th>
-          <td id="T_2c11e_row0_col0" class="data row0 col0" >linear</td>
-          <td id="T_2c11e_row0_col1" class="data row0 col1" >0.235</td>
-          <td id="T_2c11e_row0_col2" class="data row0 col2" >0.308</td>
+          <th id="T_f6ba1_level0_row0" class="row_heading level0 row0" >0</th>
+          <td id="T_f6ba1_row0_col0" class="data row0 col0" >nan</td>
+          <td id="T_f6ba1_row0_col1" class="data row0 col1" >0.31</td>
+          <td id="T_f6ba1_row0_col2" class="data row0 col2" >0.31</td>
         </tr>
         <tr>
-          <th id="T_2c11e_level0_row1" class="row_heading level0 row1" >1</th>
-          <td id="T_2c11e_row1_col0" class="data row1 col0" >fourier</td>
-          <td id="T_2c11e_row1_col1" class="data row1 col1" >0.314</td>
-          <td id="T_2c11e_row1_col2" class="data row1 col2" >0.318</td>
+          <th id="T_f6ba1_level0_row1" class="row_heading level0 row1" >1</th>
+          <td id="T_f6ba1_row1_col0" class="data row1 col0" >nan</td>
+          <td id="T_f6ba1_row1_col1" class="data row1 col1" >0.372</td>
+          <td id="T_f6ba1_row1_col2" class="data row1 col2" >0.372</td>
         </tr>
       </tbody>
     </table>
@@ -269,28 +253,25 @@ You can check more technical details of the documentation class :ref:`amrc`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 26 minutes  26.993 seconds)
+   **Total running time of the script:** ( 32 minutes  5.313 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_3_example_amrc.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
 
-  .. container:: sphx-glr-download sphx-glr-download-python
 
-     :download:`Download Python source code: plot_3_example_amrc.py <plot_3_example_amrc.py>`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download Python source code: plot_3_example_amrc.py <plot_3_example_amrc.py>`
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: plot_3_example_amrc.ipynb <plot_3_example_amrc.ipynb>`
+      :download:`Download Jupyter notebook: plot_3_example_amrc.ipynb <plot_3_example_amrc.ipynb>`
 
 
 .. only:: html
