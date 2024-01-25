@@ -33,9 +33,7 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
     '''
 
     # Solve the problem
-    print('Solving using : ', cvx_solvers[0])
     prob = cvx.Problem(objective, constraints)
-
     try:
         prob.solve(solver=cvx_solvers[0], verbose=False)
         mu_ = mu.value

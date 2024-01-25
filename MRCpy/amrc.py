@@ -1,4 +1,17 @@
-'''Adaptative Minimax Risk Classification.'''
+"""
+Adaptative Minimax Risk Classification. Copyright (C) 2022 Veronica Alvarez
+
+This program is free software: you can redistribute it and/or modify it under the terms of the 
+GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.
+If not, see https://www.gnu.org/licenses/.
+"""
 
 import itertools
 import math
@@ -80,9 +93,9 @@ class AMRC(BaseMRC):
         Whether to model change in the variables unidimensionally or not.
         Available for comparison purposes.
 
-    delta : `float`, default = 0.95
-        Confidence of the upper bound on the accumulated mistakes.
-        Higher values will produce loose bounds.
+    delta : `float`, default = 0.05
+        Significance of the upper bound on the accumulated mistakes.
+        Lower values will produce higher values for bounds.
 
     order : `int`, default = 1
         Order of the subgradients used in optimization.
@@ -143,7 +156,7 @@ class AMRC(BaseMRC):
                  random_state=None,
                  phi='linear',
                  unidimensional=False,
-                 delta = 0.95,
+                 delta = 0.05,
                  order=1,
                  W=200,
                  N=100,
@@ -697,5 +710,5 @@ class AMRC(BaseMRC):
             Upper bound of the accumulated for the fitted classifier.
         '''
 
-        return (self.params_['sum_R_Ut'] + \
-                np.sqrt(2 * self.sample_counter * np.log(1 / self.delta)))
+        return ((self.params_['sum_R_Ut'] + \
+                np.sqrt(2 * self.sample_counter * np.log(1 / self.delta))) / self.sample_counter)
