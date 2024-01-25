@@ -4,18 +4,14 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 
-MRCpy library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries for supervised classification using techniques based on empirical risk minimization and surrogate losses.
-
-Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
-
-In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features. The library is designed with an object-oriented approach that facilitates collaborators and users. The source code is available under the MIT license at <https://github.com/MachineLearningBCAM/MRCpy>.
+MRCpy implements recently proposed supervised classification techniques called minimax risk classifiers (MRCs). MRCs are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries using techniques based on empirical risk minimization and surrogate losses. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss, enable efficient learning in high dimensions, and adapt to distribution shifts. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
 
 ## Algorithms
 
-- MRC with 0-1 loss (MRC)
-- MRC with log loss (MRC)
-- MRC with 0-1 loss and fixed instances' marginals (CMRC)
-- MRC with log loss and fixed instances' marginals (CMRC)
+- [Minimax risk classifiers](https://arxiv.org/abs/2007.05447)
+- [Adaptive minimax risk classifiers for classification under concept drift](https://proceedings.mlr.press/v162/alvarez22a/alvarez22a.pdf)
+- [MRCs for covariate shift adaptation](https://proceedings.mlr.press/v202/segovia-martin23a/segovia-martin23a.pdf)
+- [MRCs for classification in high dimensions](https://proceedings.mlr.press/v216/bondugula23a/bondugula23a.pdf)
 
 ## Installation
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
@@ -29,7 +25,7 @@ cd MRCpy
 python3 setup.py install
 ```
 
-__NOTE:__ CVXpy optimization uses MOSEK optimizer(by default) which requires a license. You can get a free academic license from [here](https://www.mosek.com/products/academic-licenses/).
+__NOTE:__ The solver based on CVXpy in the library uses GUROBI optimizer which requires a license. You can get a free academic license from [here](https://portal.gurobi.com/iam/login/?target=https%3A%2F%2Fportal.gurobi.com%2Fiam%2Flicenses%2Flist).
 
 ### Dependencies
 
