@@ -22,7 +22,7 @@ class TestMRC(unittest.TestCase):
                   max_iters=500,
                   solver=solver)
         clf.fit(self.X, self.y)
-        upper = clf.upper_
+        upper = clf.get_upper_bound()
         lower = clf.get_lower_bound()
         self.assertTrue(lower <= upper)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
