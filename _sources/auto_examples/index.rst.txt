@@ -70,6 +70,23 @@ specific features of MRCpy library.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding ...">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_4_example_dwgcs_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_4_example_dwgcs.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</div>
+    </div>
+
+
+.. raw:: html
+
     </div>
 
 
@@ -79,6 +96,7 @@ specific features of MRCpy library.
    /auto_examples/plot_1_example_mrc
    /auto_examples/plot_2_example_cmrc
    /auto_examples/plot_3_example_amrc
+   /auto_examples/plot_4_example_dwgcs
 
 Further applications
 --------------------
