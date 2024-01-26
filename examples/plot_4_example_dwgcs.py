@@ -100,5 +100,5 @@ sns.boxplot(x = results['dataset'],
             width=0.5)
 plt.xlabel("Dataset")
 plt.ylabel("Classification error")
-plt.savefig('./covariate_shift.png')
+plt.show()
 ####################################################################
