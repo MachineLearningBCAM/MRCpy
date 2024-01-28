@@ -19,7 +19,7 @@ class TestAMRC(unittest.TestCase):
 
         # Normalize data
         scaler = MinMaxScaler()
-        X = scaler.fit_transform(X)
+        self.X = scaler.fit_transform(self.X)
 
     def AMRC_training_check(self, phi, loss):
 
@@ -27,9 +27,10 @@ class TestAMRC(unittest.TestCase):
         r = np.unique(self.y).shape[0]
         n = self.X.shape[0]
 
+        n = 200
         Y_pred = np.zeros(n - 1)
 
-        clf = AMRC(phi=phi, loss=loss)
+        clf = AMRC(n_classes=r, phi=phi, loss=loss)
 
         mistakes = 0
         for i in range(n - 1):
@@ -39,7 +40,7 @@ class TestAMRC(unittest.TestCase):
             upper = clf.get_upper_bound()
             upper_accumulated = clf.get_upper_bound_accumulated()
 
-            if Y_pred[i] != Y[i + 1]:
+            if Y_pred[i] != self.y[i + 1]:
                 mistakes += 1
 
             accumulated_mistakes = mistakes / (i + 1)
