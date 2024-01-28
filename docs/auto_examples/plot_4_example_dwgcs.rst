@@ -51,7 +51,7 @@ from the testing distribution.
                "rec-vs-talk", "sci-vs-talk"]
     sigma = np.array([23.5628, 23.4890, 24.5642, 25.1129, 24.8320])
 
-    rep = 2
+    rep = 3
     n = 1000
     t = 1000
 
@@ -137,7 +137,7 @@ from the testing distribution.
                 width=0.5)
     plt.xlabel("Dataset")
     plt.ylabel("Classification error")
-    plt.savefig('./covariate_shift.png')
+    plt.show()
 
 
 
@@ -153,7 +153,7 @@ from the testing distribution.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 19 minutes  53.995 seconds)
+   **Total running time of the script:** ( 25 minutes  54.211 seconds)
 
 
 .. _sphx_glr_download_auto_examples_plot_4_example_dwgcs.py:
