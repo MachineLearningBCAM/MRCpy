@@ -614,6 +614,7 @@ class AMRC(BaseMRC):
 
         self.sample_counter = self.sample_counter + 1
 
+        self.is_fitted_ = True
         return self
 
     def predict(self, X):
