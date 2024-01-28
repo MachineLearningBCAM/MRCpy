@@ -12,6 +12,7 @@ Minimax Risk Classifiers
    MRCpy.MRC
    MRCpy.CMRC
    MRCpy.AMRC
+   MRCpy.DWGCS
 
 .. _Feature Mapping:
 
