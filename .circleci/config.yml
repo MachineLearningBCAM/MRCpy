@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Install dependencies
           command: >-
-            /usr/local/bin/python -m pip install --upgrade pip
+            /usr/local/bin/python -m pip install --upgrade pip &&
             pip install -r requirements.txt &&
             pip install -r dev-requirements.txt &&
             pip install -r ci-requirements.txt
