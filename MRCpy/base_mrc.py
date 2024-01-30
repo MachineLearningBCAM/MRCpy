@@ -257,17 +257,18 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         n_max = 5000
 
         # Check if separate instances are given for the optimization
-        if X_ is not None or (X.shape[0] < n_max):
-            X_opt = check_array(X_, accept_sparse=True)
+        if X_ is not None:
+            X_opt = check_array(X_.copy(), accept_sparse=True)
+        elif X.shape[0] < n_max:
+            X_opt = check_array(X.copy(), accept_sparse=True)
         else:
             # Use some of the training samples
             # for the optimization.
             n_per_class = n_max / n_classes
             X_opt = X[:3, :]
             for i in range(n_classes):
-                X_class = X[y == i, :]
+                X_class = X[Y == i, :]
                 X_opt = np.vstack((X_class[:n_per_class, :], X_opt))
-
 
         # Shuffle the instances
         np.random.seed(self.random_state)
