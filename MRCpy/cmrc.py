@@ -344,8 +344,7 @@ class CMRC(BaseMRC):
         '''
 
         if X_ is None:
-            if self.phi == 'linear' or self.phi == 'fourier' or \
-                type(self.phi) == BasePhi or type(self.phi) == RandomFourierPhi:
+            if self.solver == 'adam' or self.solver == 'sgd':
                 super().fit(X, Y, X)
             else:
                 super().fit(X, Y)

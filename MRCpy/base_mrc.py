@@ -212,23 +212,6 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         X, Y = check_X_y(X, Y, accept_sparse=True)
 
-        # Check if separate instances are given for the optimization
-        if X_ is not None:
-            X_opt = check_array(X_, accept_sparse=True)
-            not_all_instances = False
-        else:
-            # Use the training samples used to compute estimate
-            # for the optimization.
-            X_opt = X
-
-            # # If the labels are not given, then these instances
-            # # are assumed to be given for optimization only and
-            # # hence all the instances will be used.
-            # if Y is None:
-            #     not_all_instances = False
-            # else:
-            not_all_instances = True
-
         # Obtaining the number of classes and mapping the labels to integers
         origY = Y
         self.classes_ = np.unique(origY)
@@ -272,12 +255,26 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         # for large datasets
         # Reduces the training time and use of memory
         n_max = 5000
-        n = X_opt.shape[0]
-        if not_all_instances and n_max < n:
-            n = n_max
+
+        # Check if separate instances are given for the optimization
+        if X_ is not None or (X.shape[0] < n_max):
+            X_opt = check_array(X_, accept_sparse=True)
+        else:
+            # Use some of the training samples
+            # for the optimization.
+            n_per_class = n_max / n_classes
+            X_opt = X[:3, :]
+            for i in range(n_classes):
+                X_class = X[y == i, :]
+                X_opt = np.vstack((X_class[:n_per_class, :], X_opt))
+
+
+        # Shuffle the instances
+        np.random.seed(self.random_state)
+        np.random.shuffle(X_opt)
 
         # Fit the MRC classifier
-        self.minimax_risk(X_opt[:n], tau_, lambda_, n_classes)
+        self.minimax_risk(X_opt, tau_, lambda_, n_classes)
 
         return self
 
