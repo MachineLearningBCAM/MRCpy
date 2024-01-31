@@ -17,7 +17,7 @@ import numpy as np
 import cvxpy as cvx
 import sklearn as sk
 from sklearn import preprocessing
-from sklearn.base import check_X_y, check_array
+from sklearn.utils import check_X_y, check_array
 
 # Import the DWGCS super class
 from MRCpy import CMRC
