@@ -264,7 +264,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         else:
             # Use some of the training samples
             # for the optimization.
-            n_per_class = n_max / n_classes
+            n_per_class = int(n_max / n_classes)
             X_opt = X[:3, :]
             for i in range(n_classes):
                 X_class = X[Y == i, :]

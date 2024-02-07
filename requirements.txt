@@ -1,6 +1,6 @@
-numpy>=1.18.1
-scipy>=1.4.1
-scikit-learn>=0.21.0
+numpy==1.23.5
+scipy==1.10.1
+scikit-learn==1.2.2
 cvxpy
 mosek
 pandas
