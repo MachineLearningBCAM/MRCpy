@@ -3,7 +3,7 @@ version: 2
 jobs:
   style-test:
     docker:
-      - image: python:>=3.8
+      - image: python:3.9
     steps:
       - checkout
       - run:
