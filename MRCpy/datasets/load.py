@@ -55,7 +55,7 @@ def load_adult(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -119,7 +119,7 @@ def load_diabetes(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -182,7 +182,7 @@ def load_iris(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -251,7 +251,7 @@ def load_redwine(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -315,7 +315,7 @@ def load_forestcov(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -378,7 +378,7 @@ def load_letterrecog(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -448,7 +448,7 @@ def load_ecoli(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -517,7 +517,7 @@ def load_vehicle(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -585,7 +585,7 @@ def load_usenet2(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of the dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -700,7 +700,7 @@ def load_satellite(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -766,7 +766,7 @@ def load_optdigits(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -831,7 +831,7 @@ def load_credit(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of adult csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -896,7 +896,7 @@ def load_glass(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of glass csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -967,7 +967,7 @@ def load_haberman(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of haberman csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1030,7 +1030,7 @@ def load_mammographic(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of mammographic csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1097,7 +1097,7 @@ def load_indian_liver(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1187,7 +1187,7 @@ def load_mnist_features_resnet18(with_info=False, split=False):
         an array. If `split=True` data is a dictionary with 'train' and 'test'
         splits.
 
-    (data, target) : tuple if ``with_info`` is True. If `split=False`, data is
+    (data, target) : tuple if ``with_info`` is False. If `split=False`, data is
         an array. If `split=True` data is a dictionary with 'train' and 'test'
         splits.
     """
@@ -1266,7 +1266,7 @@ def load_catsvsdogs_features_resnet18(with_info=False):
         and 'filename', the physical location of Cats vs Dogs ResNet18 features
         csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1331,7 +1331,7 @@ def load_yearbook_features_resnet18(with_info=False, with_attributes=False):
         and 'filename', the physical location of Yearbook ResNet18 features
         csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1403,7 +1403,7 @@ def load_comp_vs_sci(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1478,7 +1478,7 @@ def load_comp_vs_talk(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1553,7 +1553,7 @@ def load_rec_vs_sci(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1628,7 +1628,7 @@ def load_rec_vs_talk(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1703,7 +1703,7 @@ def load_sci_vs_talk(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)
@@ -1778,7 +1778,7 @@ def load_comp_vs_sci_short(with_info=False):
         'DESCR', the full description of the dataset,
         and 'filename', the physical location of satellite csv dataset.
 
-    (data, target) : tuple if ``with_info`` is True
+    (data, target) : tuple if ``with_info`` is False
 
     """
     module_path = dirname(__file__)

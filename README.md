@@ -17,18 +17,18 @@ MRCpy implements recently proposed supervised classification techniques called m
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 <br/>
 
-From a terminal (OS X & linux), the development version (GitHub) of ``MRCpy`` can be installed as follows
+The latest built version of ``MRCpy`` can be installed using `pip` as 
+
+```
+pip install MRCpy
+```
+
+Alternatively, the development version (GitHub) of ``MRCpy`` can be installed from the github as follows
 
 ```
 git clone https://github.com/MachineLearningBCAM/MRCpy.git
 cd MRCpy
 python3 setup.py install
-```
-
-Alternatively, use `pip` to install the latest build version of ``MRCpy`` as 
-
-```
-pip install MRCpy
 ```
 
 __NOTE:__ The solver based on CVXpy in the library uses GUROBI optimizer which requires a license. You can get a free academic license from [here](https://portal.gurobi.com/iam/login/?target=https%3A%2F%2Fportal.gurobi.com%2Fiam%2Flicenses%2Flist).
