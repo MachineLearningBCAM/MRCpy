@@ -375,7 +375,7 @@ class MRC(BaseMRC):
         if self.loss == '0-1':
             # Summing up the phi configurations
             # for all possible subsets of classes for each instance
-            F = np.vstack((np.sum(phi[:, S, ], axis=1)
+            F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
                            for numVals in range(1, self.n_classes + 1)
                            for S in it.combinations(np.arange(self.n_classes),
                                                     numVals)))
@@ -742,9 +742,9 @@ class MRC(BaseMRC):
             v = np.dot(phi, self.mu_)
 
             # Normalizing conditional probabilities
-            hy_x = np.vstack(np.sum(np.exp(v - np.tile(v[:, i],
+            hy_x = np.vstack(list(np.sum(np.exp(v - np.tile(v[:, i],
                              (self.n_classes, 1)).transpose()), axis=1)
-                             for i in range(self.n_classes)).transpose()
+                             for i in range(self.n_classes))).transpose()
             hy_x = np.reciprocal(hy_x)
 
         return hy_x
