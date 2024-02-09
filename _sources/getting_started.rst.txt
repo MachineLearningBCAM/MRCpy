@@ -7,12 +7,30 @@ Installation and Setup
 
 **Installation**
 
-The latest code of MRCpy can be installed by downloading the source repository and running ``python setup.py install``. You may then run ``pytest tests`` to run all tests (you will need to have the ``pytest`` package installed).
+The latest built version of ``MRCpy`` can be installed using `pip` as
+```
+pip install MRCpy
+```
+
+Alternatively, the latest code (under development) of MRCpy can be installed by downloading the source GitHub repository as 
+```
+git clone https://github.com/MachineLearningBCAM/MRCpy.git
+cd MRCpy
+python3 setup.py install
+```
+You may then use ``pytest tests`` to run all the checks (you will need to have the ``pytest`` package installed).
 
 **Dependencies**
 
 - `Python` :math:`\geq` 3.6
-- `numpy` :math:`\geq` 1.18.1, `scipy`:math:`\geq` 1.4.1, `scikit-learn` :math:`\geq` 0.21.0, `cvxpy`, `mosek`, `pandas`
+- `numpy` :math:`==` 1.25.0 
+- `scipy`:math:`==` 1.10.0
+- `scikit-learn` :math:`==` 1.2.2
+- `cvxpy` :math:`==` 1.3.1
+- `pandas` :math:`==` 2.2.0
+- `mosek`
+- `pyarrow`
+- `gurobipy`
 
 Quick start
 ===========
@@ -47,7 +65,7 @@ using 0-1 loss (i.e., the default loss).
 
 Dataset Loaders
 ===============
-`MRCpy <https://github.com/MachineLearningBCAM/MRCpy>`_ library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from `MRCpy.datasets`.
+`MRCpy <https://github.com/MachineLearningBCAM/MRCpy>`_ library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from `MRCpy.datasets`. Note that the datasets ``adult``, ``magic``, ``mnist``, ``cats vs dogs`` and ``yearbook`` are not available in the built version (installed through pip) of ``MRCpy``.
 
 
 ``normalizeLabels(origY)``
@@ -83,7 +101,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_diabetes(with_info=False)``
@@ -92,7 +110,7 @@ Load and return the Pima Indians Diabetes dataset (classification).
 
 =================   =====================
 Classes                                 2
-Samples per class               [500,268]
+Samples per class               [500,168]
 Samples total                         668
 Dimensionality                          8
 Features             int, float, positive
@@ -112,7 +130,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_iris(with_info=False)``
@@ -141,12 +159,11 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``with_info`` is True
-
+(data, target) : tuple if ``with_info`` is False
 
 ``load_redwine(with_info=False)``
-----------------------------------
-Load and return the Red Wine Dataset (classification).
+---------------------------------
+"""Load and return the Red Wine Dataset (classification).
 
 =================   =====================
 Classes                                10
@@ -156,221 +173,23 @@ Dimensionality                         11
 Features             int, float, positive
 =================   =====================
 
-**Parameters**
-
+Parameters
+----------
 with_info : boolean, default=False.
     If True, returns ``(data, target)`` instead of a Bunch object.
     See below for more information about the `data` and `target` object.
 
-**Returns**
-
-data : Bunch
+Returns
+-------
+bunch : Bunch
     Dictionary-like object, the interesting attributes are:
     'data', the data to learn, 'target', the classification targets,
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of the dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
-
-``load_forestcov(with_info=False)``
-------------------------------------
-Load and return the Forestcov Plants Dataset (classification).
-
-=========================   =============================================
-Classes                                                                7
-Samples per class           [211840,283301,35754,2747,9493,17367,20510,0]
-Samples total                                                      581012
-Dimensionality                                                         54
-Features                                             int, float, positive
-=========================   =============================================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of the dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_letterrecog(with_info=False)``
---------------------------------------
-Load and return the Letter Recognition Dataset (classification).
-
-=================   =====================
-Classes                                26
-Samples total                       20000
-Dimensionality                         16
-Features             int, float, positive
-=================   =====================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of the dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_ecoli(with_info=False)``
---------------------------------
-Load and return the Ecoli Dataset (classification).
-
-=================== =========================
-Classes                                     8
-Samples per class     [143,77,52,35,20,5,2,2]
-Samples total                             336
-Dimensionality                              8
-Features                 int, float, positive
-=================== =========================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of the dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_vehicle(with_info=False)``
-----------------------------------
-Load and return the Vehicle Dataset (classification).
-
-=================   =====================
-Classes                                 4
-Samples per class       [240,240,240,226]
-Samples total                         846
-Dimensionality                         18
-Features             int, float, positive
-=================   =====================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of the dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_segment(with_info=False)``
-----------------------------------
-Load and return the Segment prediction dataset (classification).
-
-=================   =====================
-Classes                                 7
-Samples total                        2310
-Dimensionality                         19
-Features             int, float, positive
-=================   =====================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of adult csv dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_satellite(with_info=False)``
-------------------------------------
-Load and return the Satellite prediction dataset (classification).
-
-=================   =====================
-Classes                                 6
-Samples total                        6435
-Dimensionality                         36
-Features             int, float, positive
-=================   =====================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of adult csv dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_optdigits(with_info=False)``
-------------------------------------
-Load and return the Optdigits prediction dataset (classification).
-
-=================   =====================
-Classes                                10
-Samples total                        5620
-Dimensionality                         64
-Features             int, float, positive
-=================   =====================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of adult csv dataset.
-
-(data, target) : tuple if ``with_info`` is True
-
+"""
 
 ``load_credit(with_info=False)``
 ---------------------------------
@@ -397,7 +216,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_magic(with_info=False)``
@@ -426,36 +245,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of adult csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
-
-
-``load_glass(with_info=False)``
---------------------------------
-Load and return the Glass Identification Data Set (classification).
-
-==================== =======================
-Classes                                   6
-Samples per class    [70, 76, 17, 29, 13, 9]
-Samples total                           214
-Dimensionality                            9
-Features                              float
-==================== =======================
-
-**Parameters**
-
-with_info : boolean, default=False.
-    If True, returns ``(data, target)`` instead of a Bunch object.
-    See below for more information about the `data` and `target` object.
-
-**Returns**
-
-data : Bunch
-    Dictionary-like object, the interesting attributes are:
-    'data', the data to learn, 'target', the classification targets,
-    'DESCR', the full description of the dataset,
-    and 'filename', the physical location of glass csv dataset.
-
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_haberman(with_info=False)``
@@ -484,7 +274,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of haberman csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_mammographic(with_info=False)``
@@ -544,12 +334,7 @@ data : Bunch
     'DESCR', the full description of the dataset,
     and 'filename', the physical location of indian liver csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
-
-``load_yearbook_path()``
-------------------------
-Returns the path of Yearbook Image Dataset
-
+(data, target) : tuple if ``with_info`` is False
 
 ``load_mnist_features_resnet18(with_info=False, split=False)``
 --------------------------------------------------------------
@@ -587,7 +372,7 @@ bunch : Bunch
     an array. If `split=True` data is a dictionary with 'train' and 'test'
     splits.
 
-(data, target) : tuple if ``with_info`` is True. If `split=False`, data is
+(data, target) : tuple if ``with_info`` is False. If `split=False`, data is
     an array. If `split=True` data is a dictionary with 'train' and 'test'
     splits.
 
@@ -620,7 +405,7 @@ bunch : Bunch
     and 'filename', the physical location of Cats vs Dogs ResNet18 features
     csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 ``load_yearbook_features_resnet18(with_info=False, with_attributes=False)``
@@ -658,7 +443,7 @@ bunch : Bunch
     and 'filename', the physical location of Yearbook ResNet18 features
     csv dataset.
 
-(data, target) : tuple if ``with_info`` is True
+(data, target) : tuple if ``with_info`` is False
 
 
 

@@ -89,7 +89,7 @@
 
 <div class="viewcode-block" id="BasePhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi">[docs]</a><span class="k">class</span> <span class="nc">BasePhi</span><span class="p">():</span>
 
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Base class for feature mappings</span>
 
 <span class="sd">    The class provides a base for different feature mapping functions</span>
@@ -179,7 +179,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">one_hot</span> <span class="o">=</span> <span class="n">one_hot</span></div>
 
 <div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Performs training stage.</span>
 
 <span class="sd">        Learns the required hyperparameters</span>
@@ -224,7 +224,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="BasePhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transform the given instances to the features.</span>
 
 <span class="sd">        Parameters</span>
@@ -246,7 +246,7 @@
         <span class="k">return</span> <span class="n">X_feat</span></div>
 
 <div class="viewcode-block" id="BasePhi.eval_xy"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_xy">[docs]</a>    <span class="k">def</span> <span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
 <span class="sd">        X, :math:`\phi(x,y)`, x</span>
 <span class="sd">        :math:`\in` X and y :math:`\in` Y.</span>
@@ -287,8 +287,7 @@
 
         <span class="c1"># One-hot encoding for multi-class classification.</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">*</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                           <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float16</span><span class="p">)</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">*</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="n">tweaked_eye_mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))[</span><span class="n">Y</span><span class="p">,</span> <span class="p">:]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
                 <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">kron</span><span class="p">(</span><span class="n">tweaked_eye_mat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">X_feat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
@@ -296,7 +295,7 @@
         <span class="k">return</span> <span class="n">phi</span></div>
 
 <div class="viewcode-block" id="BasePhi.eval_x"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_x">[docs]</a>    <span class="k">def</span> <span class="nf">eval_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
 <span class="sd">        X, :math:`\phi(x,y)`, x</span>
 <span class="sd">        :math:`\in` X and all the labels. The output is 3D matrix</span>
@@ -331,7 +330,7 @@
         <span class="k">return</span> <span class="n">phi</span></div>
 
 <div class="viewcode-block" id="BasePhi.est_exp"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_exp">[docs]</a>    <span class="k">def</span> <span class="nf">est_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Average value of :math:`\phi(x,y)` in the supervised dataset (X,Y).</span>
 <span class="sd">        Used in the learning stage to estimate</span>
 <span class="sd">        the expectation of :math:`\phi(x,y)`, denoted by :math:`{\\tau}`</span>
@@ -355,7 +354,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span> <span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Standard deviation of :math:`\phi(x,y)`</span>
 <span class="sd">        in the supervised dataset (X,Y).</span>
 <span class="sd">        Used in the learning stage</span>

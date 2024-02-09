@@ -549,7 +549,7 @@ with SVC and LR with default parameters.</p>
 confusion matrix’s category. It also allows to set the desired cut-off
 for the predictions.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes x,y test and train and a fitted model and</span>
 <span class="sd">    computes the probabilities to then classify in TP,TN , FP , FN.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -716,7 +716,7 @@ problem the missclassification of a patient with fatal outcome (FN) is
 considered a much more serious error.</p>
 </div></blockquote>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and creates a boxplot of</span>
 <span class="sd">    different classification by mortal probability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -756,7 +756,7 @@ considered a much more serious error.</p>
 
 
 <span class="k">def</span> <span class="nf">plotHisto</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and plots histograms based on the</span>
 <span class="sd">    probability of mortality by real Status at a selected @threshold.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

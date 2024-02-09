@@ -58,20 +58,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#load-diabetes-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_diabetes(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-iris-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_iris(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-redwine-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_redwine(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-forestcov-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_forestcov(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-letterrecog-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_letterrecog(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-ecoli-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_ecoli(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-vehicle-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_vehicle(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-segment-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_segment(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-satellite-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_satellite(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-optdigits-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_optdigits(with_info=False)</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#returns">Returns</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-credit-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_credit(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-magic-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_magic(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-glass-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_glass(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-haberman-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_haberman(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-mammographic-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_mammographic(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-indian-liver-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_indian_liver(with_info=False)</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#load-yearbook-path"><code class="docutils literal notranslate"><span class="pre">load_yearbook_path()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-mnist-features-resnet18-with-info-false-split-false"><code class="docutils literal notranslate"><span class="pre">load_mnist_features_resnet18(with_info=False,</span> <span class="pre">split=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-catsvsdogs-features-resnet18-with-info-false"><code class="docutils literal notranslate"><span class="pre">load_catsvsdogs_features_resnet18(with_info=False)</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-yearbook-features-resnet18-with-info-false-with-attributes-false"><code class="docutils literal notranslate"><span class="pre">load_yearbook_features_resnet18(with_info=False,</span> <span class="pre">with_attributes=False)</span></code></a></li>
@@ -116,11 +109,28 @@
 <div class="section" id="installation-and-setup">
 <h2>Installation and Setup<a class="headerlink" href="#installation-and-setup" title="Permalink to this heading"></a></h2>
 <p><strong>Installation</strong></p>
-<p>The latest code of MRCpy can be installed by downloading the source repository and running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></code>. You may then run <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests</span></code> to run all tests (you will need to have the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> package installed).</p>
+<p>The latest built version of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code> can be installed using <code class="xref any docutils literal notranslate"><span class="pre">pip</span></code> as
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">MRCpy</span>
+<span class="pre">`</span></code></p>
+<p>Alternatively, the latest code (under development) of MRCpy can be installed by downloading the source GitHub repository as
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/MachineLearningBCAM/MRCpy.git</span>
+<span class="pre">cd</span> <span class="pre">MRCpy</span>
+<span class="pre">python3</span> <span class="pre">setup.py</span> <span class="pre">install</span>
+<span class="pre">`</span></code>
+You may then use <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests</span></code> to run all the checks (you will need to have the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> package installed).</p>
 <p><strong>Dependencies</strong></p>
 <ul class="simple">
 <li><p><code class="xref any docutils literal notranslate"><span class="pre">Python</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 3.6</p></li>
-<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v1.26)"><code class="xref any docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(\geq\)</span> 1.18.1, <a class="reference external" href="https://docs.scipy.org/doc/scipy/index.html#module-scipy" title="(in SciPy v1.12.0)"><code class="xref any docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(\geq\)</span> 1.4.1, <code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 0.21.0, <code class="xref any docutils literal notranslate"><span class="pre">cvxpy</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">mosek</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v1.26)"><code class="xref any docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(==\)</span> 1.25.0</p></li>
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/index.html#module-scipy" title="(in SciPy v1.12.0)"><code class="xref any docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(==\)</span> 1.10.0</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.2.2</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">cvxpy</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.3.1</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">pandas</span></code> <span class="math notranslate nohighlight">\(==\)</span> 2.2.0</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">mosek</span></code></p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">pyarrow</span></code></p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">gurobipy</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="quick-start">
@@ -154,7 +164,7 @@ using 0-1 loss (i.e., the default loss).</p>
 </div>
 <div class="section" id="dataset-loaders">
 <h2>Dataset Loaders<a class="headerlink" href="#dataset-loaders" title="Permalink to this heading"></a></h2>
-<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref any docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>.</p>
+<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref any docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>. Note that the datasets <code class="docutils literal notranslate"><span class="pre">adult</span></code>, <code class="docutils literal notranslate"><span class="pre">magic</span></code>, <code class="docutils literal notranslate"><span class="pre">mnist</span></code>, <code class="docutils literal notranslate"><span class="pre">cats</span> <span class="pre">vs</span> <span class="pre">dogs</span></code> and <code class="docutils literal notranslate"><span class="pre">yearbook</span></code> are not available in the built version (installed through pip) of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code>.</p>
 <div class="section" id="normalizelabels-origy">
 <h3><code class="docutils literal notranslate"><span class="pre">normalizeLabels(origY)</span></code><a class="headerlink" href="#normalizelabels-origy" title="Permalink to this heading"></a></h3>
 <p>Normalize the labels of the instances in the range 0,…, r-1 for r classes.</p>
@@ -199,7 +209,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-diabetes-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_diabetes(with_info=False)</span></code><a class="headerlink" href="#load-diabetes-with-info-false" title="Permalink to this heading"></a></h3>
@@ -214,7 +224,7 @@ and ‘filename’, the physical location of the dataset.</p>
 <td><p>2</p></td>
 </tr>
 <tr class="row-even"><td><p>Samples per class</p></td>
-<td><p>[500,268]</p></td>
+<td><p>[500,168]</p></td>
 </tr>
 <tr class="row-odd"><td><p>Samples total</p></td>
 <td><p>668</p></td>
@@ -241,7 +251,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-iris-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_iris(with_info=False)</span></code><a class="headerlink" href="#load-iris-with-info-false" title="Permalink to this heading"></a></h3>
@@ -283,11 +293,11 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-redwine-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_redwine(with_info=False)</span></code><a class="headerlink" href="#load-redwine-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Red Wine Dataset (classification).</p>
+<p>“””Load and return the Red Wine Dataset (classification).</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 45%" />
@@ -311,303 +321,26 @@ and ‘filename’, the physical location of the dataset.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>Parameters</strong></p>
+</div>
+<div class="section" id="parameters">
+<h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
 See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
 </dd>
 </dl>
-<p><strong>Returns</strong></p>
+</div>
+<div class="section" id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
 <dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
+<dt>bunch<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
 ‘data’, the data to learn, ‘target’, the classification targets,
 ‘DESCR’, the full description of the dataset,
 and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-forestcov-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_forestcov(with_info=False)</span></code><a class="headerlink" href="#load-forestcov-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Forestcov Plants Dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 36%" />
-<col style="width: 64%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>7</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples per class</p></td>
-<td><p>[211840,283301,35754,2747,9493,17367,20510,0]</p></td>
-</tr>
-<tr class="row-odd"><td><p>Samples total</p></td>
-<td><p>581012</p></td>
-</tr>
-<tr class="row-even"><td><p>Dimensionality</p></td>
-<td><p>54</p></td>
-</tr>
-<tr class="row-odd"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of the dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-letterrecog-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_letterrecog(with_info=False)</span></code><a class="headerlink" href="#load-letterrecog-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Letter Recognition Dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>26</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples total</p></td>
-<td><p>20000</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dimensionality</p></td>
-<td><p>16</p></td>
-</tr>
-<tr class="row-even"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of the dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-ecoli-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_ecoli(with_info=False)</span></code><a class="headerlink" href="#load-ecoli-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Ecoli Dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 43%" />
-<col style="width: 57%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>8</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples per class</p></td>
-<td><p>[143,77,52,35,20,5,2,2]</p></td>
-</tr>
-<tr class="row-odd"><td><p>Samples total</p></td>
-<td><p>336</p></td>
-</tr>
-<tr class="row-even"><td><p>Dimensionality</p></td>
-<td><p>8</p></td>
-</tr>
-<tr class="row-odd"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of the dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-vehicle-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_vehicle(with_info=False)</span></code><a class="headerlink" href="#load-vehicle-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Vehicle Dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>4</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples per class</p></td>
-<td><p>[240,240,240,226]</p></td>
-</tr>
-<tr class="row-odd"><td><p>Samples total</p></td>
-<td><p>846</p></td>
-</tr>
-<tr class="row-even"><td><p>Dimensionality</p></td>
-<td><p>18</p></td>
-</tr>
-<tr class="row-odd"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of the dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-segment-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_segment(with_info=False)</span></code><a class="headerlink" href="#load-segment-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Segment prediction dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>7</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples total</p></td>
-<td><p>2310</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dimensionality</p></td>
-<td><p>19</p></td>
-</tr>
-<tr class="row-even"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of adult csv dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-satellite-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_satellite(with_info=False)</span></code><a class="headerlink" href="#load-satellite-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Satellite prediction dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>6</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples total</p></td>
-<td><p>6435</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dimensionality</p></td>
-<td><p>36</p></td>
-</tr>
-<tr class="row-even"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of adult csv dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-optdigits-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_optdigits(with_info=False)</span></code><a class="headerlink" href="#load-optdigits-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Optdigits prediction dataset (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>10</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples total</p></td>
-<td><p>5620</p></td>
-</tr>
-<tr class="row-odd"><td><p>Dimensionality</p></td>
-<td><p>64</p></td>
-</tr>
-<tr class="row-even"><td><p>Features</p></td>
-<td><p>int, float, positive</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of adult csv dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
+<p>“””</p>
 </div>
 <div class="section" id="load-credit-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_credit(with_info=False)</span></code><a class="headerlink" href="#load-credit-with-info-false" title="Permalink to this heading"></a></h3>
@@ -646,7 +379,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of adult csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-magic-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_magic(with_info=False)</span></code><a class="headerlink" href="#load-magic-with-info-false" title="Permalink to this heading"></a></h3>
@@ -688,49 +421,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of adult csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-glass-with-info-false">
-<h3><code class="docutils literal notranslate"><span class="pre">load_glass(with_info=False)</span></code><a class="headerlink" href="#load-glass-with-info-false" title="Permalink to this heading"></a></h3>
-<p>Load and return the Glass Identification Data Set (classification).</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Classes</p></td>
-<td><p>6</p></td>
-</tr>
-<tr class="row-even"><td><p>Samples per class</p></td>
-<td><p>[70, 76, 17, 29, 13, 9]</p></td>
-</tr>
-<tr class="row-odd"><td><p>Samples total</p></td>
-<td><p>214</p></td>
-</tr>
-<tr class="row-even"><td><p>Dimensionality</p></td>
-<td><p>9</p></td>
-</tr>
-<tr class="row-odd"><td><p>Features</p></td>
-<td><p>float</p></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Parameters</strong></p>
-<dl class="simple">
-<dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.4)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
-</dd>
-</dl>
-<p><strong>Returns</strong></p>
-<dl class="simple">
-<dt>data<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
-‘data’, the data to learn, ‘target’, the classification targets,
-‘DESCR’, the full description of the dataset,
-and ‘filename’, the physical location of glass csv dataset.</p>
-</dd>
-</dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-haberman-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_haberman(with_info=False)</span></code><a class="headerlink" href="#load-haberman-with-info-false" title="Permalink to this heading"></a></h3>
@@ -772,7 +463,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of haberman csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-mammographic-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_mammographic(with_info=False)</span></code><a class="headerlink" href="#load-mammographic-with-info-false" title="Permalink to this heading"></a></h3>
@@ -860,11 +551,7 @@ See below for more information about the <code class="xref any docutils literal 
 and ‘filename’, the physical location of indian liver csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-yearbook-path">
-<h3><code class="docutils literal notranslate"><span class="pre">load_yearbook_path()</span></code><a class="headerlink" href="#load-yearbook-path" title="Permalink to this heading"></a></h3>
-<p>Returns the path of Yearbook Image Dataset</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-mnist-features-resnet18-with-info-false-split-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_mnist_features_resnet18(with_info=False,</span> <span class="pre">split=False)</span></code><a class="headerlink" href="#load-mnist-features-resnet18-with-info-false-split-false" title="Permalink to this heading"></a></h3>
@@ -921,7 +608,7 @@ csv dataset. If <code class="xref any docutils literal notranslate"><span class=
 an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
 splits.</p>
 </dd>
-<dt>(data, target)<span class="classifier">tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is</span></dt><dd><p>an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
+<dt>(data, target)<span class="classifier">tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is</span></dt><dd><p>an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
 splits.</p>
 </dd>
 </dl>
@@ -968,7 +655,7 @@ and ‘filename’, the physical location of Cats vs Dogs ResNet18 features
 csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 <div class="section" id="load-yearbook-features-resnet18-with-info-false-with-attributes-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_yearbook_features_resnet18(with_info=False,</span> <span class="pre">with_attributes=False)</span></code><a class="headerlink" href="#load-yearbook-features-resnet18-with-info-false-with-attributes-false" title="Permalink to this heading"></a></h3>
@@ -1018,7 +705,7 @@ and ‘filename’, the physical location of Yearbook ResNet18 features
 csv dataset.</p>
 </dd>
 </dl>
-<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
+<p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 </div>
 </div>
 </div>

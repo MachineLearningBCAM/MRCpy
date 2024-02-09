@@ -92,7 +92,7 @@
 
 
 <div class="viewcode-block" id="ThresholdPhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi">[docs]</a><span class="k">class</span> <span class="nc">ThresholdPhi</span><span class="p">(</span><span class="n">BasePhi</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Threshold features</span>
 
 <span class="sd">    A threshold feature is a function, :math:`f(x_d,t)=1`</span>
@@ -170,7 +170,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">n_thresholds</span> <span class="o">=</span> <span class="n">n_thresholds</span></div>
 
 <div class="viewcode-block" id="ThresholdPhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Learns the set of thresholds using one-dimensional decision stumps</span>
 <span class="sd">        obtained from the dataset.</span>
 
@@ -203,7 +203,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="ThresholdPhi.d_tree_split"><a class="viewcode-back" href="../../../generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi.d_tree_split">[docs]</a>    <span class="k">def</span> <span class="nf">d_tree_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">n_thresholds</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Learn the univariate thresholds</span>
 <span class="sd">        by using the split points of decision trees</span>
 <span class="sd">        for each dimension of data.</span>
@@ -252,7 +252,7 @@
         <span class="k">return</span> <span class="n">prodThrsDim</span><span class="p">,</span> <span class="n">prodThrsVal</span></div>
 
 <div class="viewcode-block" id="ThresholdPhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the threshold features (0/1)</span>
 <span class="sd">        by comparing with the thresholds obtained in each dimension.</span>
 
