@@ -23,7 +23,7 @@ The latest built version of ``MRCpy`` can be installed using `pip` as
 pip install MRCpy
 ```
 
-Alternatively, the development version (GitHub) of ``MRCpy`` can be installed from the github as follows
+Alternatively, the development version (GitHub) of ``MRCpy`` can be installed as follows
 
 ```
 git clone https://github.com/MachineLearningBCAM/MRCpy.git
@@ -35,7 +35,7 @@ __NOTE:__ The solver based on CVXpy in the library uses GUROBI optimizer which r
 
 ### Dependencies
 
-- `Python` >= 3.6
+- `Python` >= 3.8
 - `numpy` >= 1.18.1, `scipy`>= 1.4.1, `scikit-learn` >= 0.21.0, `cvxpy`, `mosek`, `pandas`
 
 ## Usage

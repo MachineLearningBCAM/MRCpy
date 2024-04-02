@@ -56,11 +56,11 @@ class DWGCS(CMRC):
                                 and Liu, Anqi},
                     booktitle = {Proceedings of the 40th 
                                 International Conference on Machine Learning},
-                    pages = 	{30439--30457},
-                    year = 	    {2023},
-                    volume = 	{202},
-                    series = 	{Proceedings of Machine Learning Research},
-                    month = 	{23--29 Jul},
+                    pages =     {30439--30457},
+                    year =      {2023},
+                    volume =    {202},
+                    series =    {Proceedings of Machine Learning Research},
+                    month =     {23--29 Jul},
                     publisher = {PMLR},
                     }
     Parameters
@@ -143,6 +143,19 @@ class DWGCS(CMRC):
         5000 for ’adam’ solver and 
         2000 for nesterov's gradient descent.   
 
+    weights_alpha : `array`, default = `None`
+        The weights alpha(x) associated to each testing instance.
+        Note that if just weights_beta is given, 
+        method will assume they are obtained 
+        based on robust approach, and fix beta(x) = 1.
+
+    weights_beta : `beta`, default = `None`
+        Weights beta(x) associated to each training sample.
+        Note that if just weights_beta is given, 
+        method will assume they are obtained 
+        based on reweighted approach, and fix alpha(x) = 1.
+    
+
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
         The currenlty available feature mapping methods are
@@ -191,11 +204,15 @@ class DWGCS(CMRC):
                  stepsize='decay',
                  mini_batch_size=None,
                  max_iters=None,
+                 weights_beta=None,
+                 weights_alpha=None,
                  phi='linear',
                  **phi_kwargs):
         self.D = D
         self.sigma_ = sigma_
         self.B = B
+        self.beta_ = weights_beta
+        self.alpha_ = weights_alpha
         super().__init__(loss,
                          None,
                          deterministic,
@@ -210,6 +227,7 @@ class DWGCS(CMRC):
                          **phi_kwargs)
     
     def fit(self, xTr, yTr, xTe=None):
+        print("Running latest version")
         '''
         Fit the MRC model.
 
@@ -283,8 +301,27 @@ class DWGCS(CMRC):
         # Fit the feature mappings
         self.phi.fit(xTr, yTr)
         
-        # Compute weights alpha and beta
-        self.DWKMM(xTr,xTe)
+        if self.alpha_ is None and self.beta_ is None:
+            # Compute weights alpha and beta
+            print("Computing both weights")
+            self.DWKMM(xTr,xTe)
+        elif self.alpha_ is None and self.beta_ is not None:
+            # Fix self.alpha_ == 1 
+            print("Fixing alpha weights equal 1")
+            self.alpha_ = np.ones((xTe.shape[0],1))
+            self.beta_ = np.reshape(self.beta_, (xTr.shape[0], 1))
+        elif self.alpha_ is not None and self.beta_ is None:
+            # Fix self.beta_ == 1 
+            print("Fixing beta weights equal 1")
+            self.beta_ = np.ones((xTr.shape[0],1))
+            self.alpha_ = np.reshape(self.alpha_, (xTe.shape[0], 1))
+        else:
+            # Make sure the size of alpha and beta are as desired
+            print("Weights were given")
+            self.beta_ = np.reshape(self.beta_, (xTr.shape[0], 1))
+            self.alpha_ = np.reshape(self.alpha_, (xTe.shape[0], 1))
+            
+        
 
         # Compute the expectation estimates
         tau_ = self.compute_tau(xTr, yTr)
@@ -346,19 +383,52 @@ class DWGCS(CMRC):
             constraints = [ 
                 beta_ >= np.zeros((n, 1)),
                 beta_ <= (self.B / np.sqrt(self.D)) * np.ones((n, 1)),
-                cvx.abs(cvx.sum(beta_) / n - 1) <= epsilon_,
+                cvx.sum(beta_) / n - 1 <= epsilon_,
+                -  epsilon_ <= cvx.sum(beta_) / n - 1,
             ]
             problem = cvx.Problem(objective,constraints)
             try:
-                problem.solve(solver = 'GUROBI')
+                problem.solve(solver = 'ECOS')
             except cvx.error.SolverError:
                 try:
-                    problem.solve(solver = 'MOSEK')
+                    problem.solve(solver = 'OSQP')
                 except cvx.error.SolverError:
-                    problem.solve(solver = 'ECOS')
+                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'alpha and beta .... ' + \
+                         'The problem is ', problem.status)
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
+            self.min_DWKMM = problem.value
+
+        elif self.D == np.inf:
+            # Define the variables of the opt. problem
+            print('Solving DWKMM for D equal infinity')
+            beta_ = np.ones((n, 1))
+            alpha_ = cvx.Variable((t, 1))
+            epsilon_ = 1 - 1 / (np.sqrt(t))
+            # Define the objetive function
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            # Define the constraints
+            constraints = [ 
+                alpha_ >= np.zeros((n, 1)),
+                alpha_ <= np.ones((n, 1)),
+                cvx.sum(alpha_) / t - 1 <= epsilon_,
+                -  epsilon_ <= cvx.sum(alpha_) / t - 1,
+            ]
+            problem = cvx.Problem(objective,constraints)
+            try:
+                problem.solve(solver = 'ECOS')
+            except cvx.error.SolverError:
+                try:
+                    problem.solve(solver = 'OSQP')
+                except cvx.error.SolverError:
+                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'alpha and beta .... ' + \
+                         'The problem is ', problem.status)
+
+            self.beta_ = beta_
+            self.alpha_ = alpha_.value
             self.min_DWKMM = problem.value
 
         else:
@@ -373,17 +443,20 @@ class DWGCS(CMRC):
                 beta_ <= (self.B / np.sqrt(self.D)) * np.ones((n, 1)),
                 alpha_ >= np.zeros((t, 1)),
                 alpha_ <= np.ones((t, 1)),
-                cvx.abs(cvx.sum(beta_) / n - cvx.sum(alpha_) / t) <= epsilon_,
+                cvx.sum(beta_) / n - cvx.sum(alpha_) / t <= epsilon_,
+                - epsilon_ <= cvx.sum(beta_) / n - cvx.sum(alpha_) / t,
                 cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
             ]
             problem = cvx.Problem(objective,constraints)
             try:
-                problem.solve(solver = 'GUROBI')
+                problem.solve(solver = 'ECOS')
             except cvx.error.SolverError:
                 try:
-                    problem.solve(solver = 'MOSEK')
+                    problem.solve(solver = 'OSQP')
                 except cvx.error.SolverError:
-                    problem.solve(solver = 'ECOS')
+                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'alpha and beta .... ' + \
+                         'The problem is ', problem.status)
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_.value
@@ -465,14 +538,14 @@ class DWGCS(CMRC):
 
         problem = cvx.Problem(objective, constraints)
         try:
-            problem.solve(solver = 'GUROBI')
+            problem.solve(solver = 'ECOS')
         except cvx.error.SolverError:
             try:
-                problem.solve(solver = 'MOSEK')
+                problem.solve(solver = 'OSQP')
             except cvx.error.SolverError:
-                problem.solve(solver = 'ECOS')
-                print('Using the "ECOS" solver is less efficient than using the "GUROBI" or "MOSEK" solver.\
-                   We recommend obtaining a "GUROBI" or "MOSEK" licence.')
+                raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'lambda .... ' + \
+                         'The problem is ', prob.status)
 
         lambda_ = np.maximum(lambda_.value, 0)
 

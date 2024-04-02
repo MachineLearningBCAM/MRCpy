@@ -38,8 +38,9 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
         prob.solve(solver=cvx_solvers[0], verbose=False)
         mu_ = mu.value
     except:
-        print('Error occured while using ' + cvx_solvers[0] + ' solver.\n' + \
-              'Trying with the following solvers ' + ' '.join(cvx_solvers[1:]))
+        print('Warning: ' + cvx_solvers[0] + \
+              ' solver couldn\'t solve the problem.\n' + \
+              'Trying with the other solvers ...')
         mu_ = None
 
     # if the solver could not find values of mu for the given solver
@@ -53,7 +54,9 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
                 prob.solve(solver=s, verbose=False)
                 mu_ = mu.value
             except:
-                print('Error occured while using ' + cvx_solvers[0] + ' solver.')
+                print('Warning: ' + s + \
+                      ' solver couldn\'t solve the problem.\n' + \
+                      'Trying with the other solvers ...')
                 mu_ = None
 
             # Check the values
