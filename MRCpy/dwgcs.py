@@ -141,7 +141,7 @@ class DWGCS(CMRC):
         The default value is
         100000 for ’grad’ solver and
         5000 for ’adam’ solver and 
-        2000 for nesterov's gradient descent.   
+        2000 for nesterov's gradient descent.  
 
     weights_alpha : `array`, default = `None`
         The weights alpha(x) associated to each testing instance.
@@ -153,8 +153,7 @@ class DWGCS(CMRC):
         Weights beta(x) associated to each training sample.
         Note that if just weights_beta is given, 
         method will assume they are obtained 
-        based on reweighted approach, and fix alpha(x) = 1.
-    
+        based on reweighted approach, and fix alpha(x) = 1. 
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
@@ -211,8 +210,6 @@ class DWGCS(CMRC):
         self.D = D
         self.sigma_ = sigma_
         self.B = B
-        self.beta_ = weights_beta
-        self.alpha_ = weights_alpha
         super().__init__(loss,
                          None,
                          deterministic,
@@ -227,7 +224,6 @@ class DWGCS(CMRC):
                          **phi_kwargs)
     
     def fit(self, xTr, yTr, xTe=None):
-        print("Running latest version")
         '''
         Fit the MRC model.
 
@@ -320,8 +316,6 @@ class DWGCS(CMRC):
             print("Weights were given")
             self.beta_ = np.reshape(self.beta_, (xTr.shape[0], 1))
             self.alpha_ = np.reshape(self.alpha_, (xTe.shape[0], 1))
-            
-        
 
         # Compute the expectation estimates
         tau_ = self.compute_tau(xTr, yTr)
@@ -388,14 +382,12 @@ class DWGCS(CMRC):
             ]
             problem = cvx.Problem(objective,constraints)
             try:
-                problem.solve(solver = 'ECOS')
+                problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
                 try:
-                    problem.solve(solver = 'OSQP')
+                    problem.solve(solver = 'MOSEK')
                 except cvx.error.SolverError:
-                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
-                                     'alpha and beta .... ' + \
-                         'The problem is ', problem.status)
+                    problem.solve(solver = 'ECOS')
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
@@ -449,14 +441,12 @@ class DWGCS(CMRC):
             ]
             problem = cvx.Problem(objective,constraints)
             try:
-                problem.solve(solver = 'ECOS')
+                problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
                 try:
-                    problem.solve(solver = 'OSQP')
+                    problem.solve(solver = 'MOSEK')
                 except cvx.error.SolverError:
-                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
-                                     'alpha and beta .... ' + \
-                         'The problem is ', problem.status)
+                    problem.solve(solver = 'ECOS')
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_.value
@@ -538,14 +528,14 @@ class DWGCS(CMRC):
 
         problem = cvx.Problem(objective, constraints)
         try:
-            problem.solve(solver = 'ECOS')
+            problem.solve(solver = 'GUROBI')
         except cvx.error.SolverError:
             try:
-                problem.solve(solver = 'OSQP')
+                problem.solve(solver = 'MOSEK')
             except cvx.error.SolverError:
-                raise ValueError('CVXpy couldn\'t find a solution for ' + \
-                                     'lambda .... ' + \
-                         'The problem is ', prob.status)
+                problem.solve(solver = 'ECOS')
+                print('Using the "ECOS" solver is less efficient than using the "GUROBI" or "MOSEK" solver.\
+                   We recommend obtaining a "GUROBI" or "MOSEK" licence.')
 
         lambda_ = np.maximum(lambda_.value, 0)
 
