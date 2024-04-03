@@ -617,43 +617,6 @@ class AMRC(BaseMRC):
         self.is_fitted_ = True
         return self
 
-    def predict(self, X):
-        '''
-        Predicts classes for new instances using a fitted model.
-
-        Returns the predicted classes for the given instances in `X`
-        using the probabilities given by the function `predict_proba`.
-
-        Parameters
-        ----------
-        X : `array`-like of shape (`n_features`)
-            Test instance for to predict by the AMRC model.
-
-        Returns
-        -------
-        y_pred : `int`
-            Predicted labels corresponding to the given instances.
-        '''
-
-        X = check_array(X, accept_sparse=True, ensure_2d=False)
-        check_is_fitted(self, "is_fitted_")
-
-        # Get the prediction probabilities for the classifier
-        proba = self.predict_proba(X)
-
-        if self.deterministic:
-            y_pred = np.argmax(proba)
-        else:
-            y_pred = np.random.choice(self.n_classes, p=proba)
-
-        # Check if the labels were provided for fitting
-        # (labels might be omitted if fitting is done through minimax_risk)
-        # Otherwise return the default labels i.e., from 0 to n_classes-1.
-        if hasattr(self, 'classes_'):
-            y_pred = np.asarray([self.classes_[label] for label in y_pred])
-
-        return y_pred
-
     def predict_proba(self, x):
         '''
         Conditional probabilities corresponding to each class
