@@ -17,7 +17,6 @@ import itertools as it
 import warnings
 
 import cvxpy as cvx
-import time
 import numpy as np
 import scipy.special as scs
 from sklearn.utils import check_array
@@ -402,21 +401,6 @@ class CMRC(BaseMRC):
         # In case of 0-1 loss, learn constraints using the phi
         # These constraints are used in the optimization instead of phi
 
-        if self.loss == '0-1':
-            # Summing up the phi configurations
-            # for all possible subsets of classes for each instance
-            F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                           for numVals in range(1, self.n_classes + 1)
-                           for S in it.combinations(np.arange(self.n_classes),
-                                                    numVals)))
-
-            # Compute the corresponding length of the subset of classes
-            # for which sums computed for each instance
-            cardS = np.arange(1, self.n_classes + 1).\
-                repeat([n * scs.comb(self.n_classes, numVals)
-                        for numVals in np.arange(1,
-                        self.n_classes + 1)])
-
         if self.solver == 'cvx':
             # Use CVXpy for the convex optimization of the MRC.
 
@@ -425,6 +409,20 @@ class CMRC(BaseMRC):
 
             if self.loss == '0-1':
                 # Constraints in case of 0-1 loss function
+
+                # Summing up the phi configurations
+                # for all possible subsets of classes for each instance
+                F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
+                               for numVals in range(1, self.n_classes + 1)
+                               for S in it.combinations(np.arange(self.n_classes),
+                                                        numVals)))
+
+                # Compute the corresponding length of the subset of classes
+                # for which sums computed for each instance
+                cardS = np.arange(1, self.n_classes + 1).\
+                    repeat([n * scs.comb(self.n_classes, numVals)
+                            for numVals in np.arange(1,
+                            self.n_classes + 1)])
 
                 M = F / (cardS[:, np.newaxis])
                 h = 1 - (1 / cardS)
