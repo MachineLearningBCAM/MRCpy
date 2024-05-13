@@ -31,7 +31,7 @@ def adam(tau_, lambda_, n, m, f_, g_, max_iters, alpha, mini_batch_size=32, eps=
         m_ = beta1 * m_ + (1.0 - beta1) * g_0
         v_ = beta2 * v_ + (1.0 - beta2) * g_0**2
         mhat = m_ / (1.0 - beta1**(t+1))
-        vhat = v_ / (1.0 - beta2**(t+1) )
+        vhat = v_ / (1.0 - beta2**(t+1))
 
         # Update the weight of MRC using the moments and learning rate
         w_k = w_k - alpha * mhat / (np.sqrt(vhat) + eps)

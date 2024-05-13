@@ -210,6 +210,8 @@ class DWGCS(CMRC):
         self.D = D
         self.sigma_ = sigma_
         self.B = B
+        self.beta_ = weights_beta
+        self.alpha_ = weights_alpha
         super().__init__(loss,
                          None,
                          deterministic,
@@ -387,7 +389,12 @@ class DWGCS(CMRC):
                 try:
                     problem.solve(solver = 'MOSEK')
                 except cvx.error.SolverError:
-                    problem.solve(solver = 'ECOS')
+                    try:
+                        problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
+                    except cvx.error.SolverError:
+                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'alpha and beta .... ' + \
+                                     'The problem is ', problem.status)
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
@@ -410,14 +417,17 @@ class DWGCS(CMRC):
             ]
             problem = cvx.Problem(objective,constraints)
             try:
-                problem.solve(solver = 'ECOS')
+                problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
                 try:
-                    problem.solve(solver = 'OSQP')
+                    problem.solve(solver = 'MOSEK')
                 except cvx.error.SolverError:
-                    raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                    try:
+                        problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
+                    except cvx.error.SolverError:
+                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
                                      'alpha and beta .... ' + \
-                         'The problem is ', problem.status)
+                                     'The problem is ', problem.status)
 
             self.beta_ = beta_
             self.alpha_ = alpha_.value
@@ -427,7 +437,7 @@ class DWGCS(CMRC):
             # Define the variables of the opt. problem
             beta_ = cvx.Variable((n, 1))
             alpha_ = cvx.Variable((t, 1))
-            # Define the objetive function
+            # Define the objective function
             objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
             # Define the constraints
             constraints = [ 
@@ -440,13 +450,19 @@ class DWGCS(CMRC):
                 cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
             ]
             problem = cvx.Problem(objective,constraints)
-            try:
+             try:
                 problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
                 try:
                     problem.solve(solver = 'MOSEK')
                 except cvx.error.SolverError:
-                    problem.solve(solver = 'ECOS')
+                    try:
+                        problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
+                    except cvx.error.SolverError:
+                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                                     'alpha and beta .... ' + \
+                                     'The problem is ', problem.status)
+
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_.value
@@ -533,7 +549,7 @@ class DWGCS(CMRC):
             try:
                 problem.solve(solver = 'MOSEK')
             except cvx.error.SolverError:
-                problem.solve(solver = 'ECOS')
+                problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-6, abstol = 1e-6)
                 print('Using the "ECOS" solver is less efficient than using the "GUROBI" or "MOSEK" solver.\
                    We recommend obtaining a "GUROBI" or "MOSEK" licence.')
 

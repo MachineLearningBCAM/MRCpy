@@ -320,10 +320,6 @@ def load_forestcov(with_info=False):
     """
     module_path = dirname(__file__)
 
-    fdescr_name = join(module_path, 'descr', 'forestcov.rst')
-    with open(fdescr_name) as f:
-        descr_text = f.read()
-
     data_file_name = join(module_path, 'data', 'forestcov.csv')
     with open(data_file_name) as f:
         data_file = csv.reader(f)
@@ -350,7 +346,6 @@ def load_forestcov(with_info=False):
                  target=normalizeLabels(target),
                  # last column is target value
                  feature_names=feature_names[:-1],
-                 DESCR=descr_text,
                  filename=data_file_name)
 
 

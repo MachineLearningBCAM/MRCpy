@@ -2,7 +2,7 @@
 Init file
 """
 
-__version__ = '2.0'
+__version__ = '2.2.0'
 
 
 from MRCpy.base_mrc import BaseMRC
