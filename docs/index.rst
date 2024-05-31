@@ -48,7 +48,7 @@ References
 
  For more information about the MRC method and the MRCpy library, one can refer to the following resources:
 
-   - [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+   - [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312. <https://proceedings.neurips.cc/paper_files/paper/2020/file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf>`_
 
          ::
          
@@ -61,16 +61,19 @@ References
                   year={2020}
                }
 
-   - [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447. <https://arxiv.org/abs/2007.05447>`_
+   - [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized Maximum Entropy for Supervised Classification. IEEE Transactions on Information Theory, 68(4), 2530-2550. <https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9682746>`_
 
          ::
 
-               @article{mazuelas2020generalized,
-                  title={Generalized Maximum Entropy for Supervised Classification},
-                  author={Mazuelas, Santiago and Shen, Yuan and P{\'e}rez, Aritz},
-                  journal={arXiv preprint arXiv:2007.05447},
-                  year={2020}
-               }
+               @article{MazShePer:22,
+                         author = {Santiago Mazuelas and Yuan Shen and Aritz P\'{e}rez},
+                         title = {Generalized Maximum Entropy for Supervised Classification},
+                         journal={IEEE Transactions on Information Theory},
+                         volume = {68},
+                         number = {4},
+                         pages = {2530-2550},
+                         year={2022}
+                        }
 
    - [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. <https://arxiv.org/abs/2108.01952>`_
 
