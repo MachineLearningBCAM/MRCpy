@@ -380,7 +380,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">stepsize</span> <span class="o">=</span> <span class="n">stepsize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
                          <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
                          <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
@@ -484,21 +483,6 @@
         <span class="c1"># In case of 0-1 loss, learn constraints using the phi</span>
         <span class="c1"># These constraints are used in the optimization instead of phi</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
-            <span class="c1"># Summing up the phi configurations</span>
-            <span class="c1"># for all possible subsets of classes for each instance</span>
-            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
-                                                    <span class="n">numVals</span><span class="p">)))</span>
-
-            <span class="c1"># Compute the corresponding length of the subset of classes</span>
-            <span class="c1"># for which sums computed for each instance</span>
-            <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
-                <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cvx&#39;</span><span class="p">:</span>
             <span class="c1"># Use CVXpy for the convex optimization of the MRC.</span>
 
@@ -507,6 +491,20 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
                 <span class="c1"># Constraints in case of 0-1 loss function</span>
+
+                <span class="c1"># Summing up the phi configurations</span>
+                <span class="c1"># for all possible subsets of classes for each instance</span>
+                <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
+                                                        <span class="n">numVals</span><span class="p">)))</span>
+
+                <span class="c1"># Compute the corresponding length of the subset of classes</span>
+                <span class="c1"># for which sums computed for each instance</span>
+                <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
+                    <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
 
                 <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
@@ -693,16 +691,16 @@
 <span class="sd">            The value of psi for a given solution and feature mapping.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">v</span> <span class="o">=</span> <span class="n">phi</span><span class="nd">@mu</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">v</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],:]</span>
 
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">):</span>
-            <span class="n">new_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">value</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">new_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">value</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">new_value</span> <span class="o">&gt;=</span> <span class="n">value</span><span class="p">:</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">new_value</span>
-                <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">],:])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">],:])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">break</span>
 

@@ -138,11 +138,11 @@
 <span class="sd">                                and Liu, Anqi},</span>
 <span class="sd">                    booktitle = {Proceedings of the 40th </span>
 <span class="sd">                                International Conference on Machine Learning},</span>
-<span class="sd">                    pages = 	{30439--30457},</span>
-<span class="sd">                    year = 	    {2023},</span>
-<span class="sd">                    volume = 	{202},</span>
-<span class="sd">                    series = 	{Proceedings of Machine Learning Research},</span>
-<span class="sd">                    month = 	{23--29 Jul},</span>
+<span class="sd">                    pages =     {30439--30457},</span>
+<span class="sd">                    year =      {2023},</span>
+<span class="sd">                    volume =    {202},</span>
+<span class="sd">                    series =    {Proceedings of Machine Learning Research},</span>
+<span class="sd">                    month =     {23--29 Jul},</span>
 <span class="sd">                    publisher = {PMLR},</span>
 <span class="sd">                    }</span>
 <span class="sd">    Parameters</span>
@@ -225,6 +225,19 @@
 <span class="sd">        5000 for ’adam’ solver and </span>
 <span class="sd">        2000 for nesterov&#39;s gradient descent.   </span>
 
+<span class="sd">    weights_alpha : `array`, default = `None`</span>
+<span class="sd">        The weights alpha(x) associated to each testing instance.</span>
+<span class="sd">        Note that if just weights_beta is given, </span>
+<span class="sd">        method will assume they are obtained </span>
+<span class="sd">        based on robust approach, and fix beta(x) = 1.</span>
+
+<span class="sd">    weights_beta : `beta`, default = `None`</span>
+<span class="sd">        Weights beta(x) associated to each training sample.</span>
+<span class="sd">        Note that if just weights_beta is given, </span>
+<span class="sd">        method will assume they are obtained </span>
+<span class="sd">        based on reweighted approach, and fix alpha(x) = 1.</span>
+<span class="sd">    </span>
+
 <span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
 <span class="sd">        The currenlty available feature mapping methods are</span>
@@ -273,11 +286,15 @@
                  <span class="n">stepsize</span><span class="o">=</span><span class="s1">&#39;decay&#39;</span><span class="p">,</span>
                  <span class="n">mini_batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">weights_beta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">weights_alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma_</span> <span class="o">=</span> <span class="n">sigma_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">B</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">weights_beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">weights_alpha</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span>
                          <span class="kc">None</span><span class="p">,</span>
                          <span class="n">deterministic</span><span class="p">,</span>
@@ -365,8 +382,23 @@
         <span class="c1"># Fit the feature mappings</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">)</span>
         
-        <span class="c1"># Compute weights alpha and beta</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">DWKMM</span><span class="p">(</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Compute weights alpha and beta</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">DWKMM</span><span class="p">(</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Fix self.alpha_ == 1 </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">xTe</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_</span><span class="p">,</span> <span class="p">(</span><span class="n">xTr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Fix self.beta_ == 1 </span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">xTr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span><span class="p">,</span> <span class="p">(</span><span class="n">xTe</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Make sure the size of alpha and beta are as desired</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_</span><span class="p">,</span> <span class="p">(</span><span class="n">xTr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span><span class="p">,</span> <span class="p">(</span><span class="n">xTe</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+            
+        
 
         <span class="c1"># Compute the expectation estimates</span>
         <span class="n">tau_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">)</span>
@@ -428,19 +460,53 @@
             <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span> 
                 <span class="n">beta_</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                 <span class="n">beta_</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-                <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">epsilon_</span><span class="p">,</span>
+                <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">epsilon_</span><span class="p">,</span>
+                <span class="o">-</span>  <span class="n">epsilon_</span> <span class="o">&lt;=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
             <span class="p">]</span>
             <span class="n">problem</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span><span class="n">constraints</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;GUROBI&#39;</span><span class="p">)</span>
+                <span class="c1"># Fixing tolerance to ensure replicability across different machines.</span>
+                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="n">feastol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">reltol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">abstol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;MOSEK&#39;</span><span class="p">)</span>
+                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;SCS&#39;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
-                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;CVXpy couldn</span><span class="se">\&#39;</span><span class="s1">t find a solution for &#39;</span> <span class="o">+</span> \
+                                     <span class="s1">&#39;alpha and beta .... &#39;</span> <span class="o">+</span> \
+                         <span class="s1">&#39;The problem is &#39;</span><span class="p">,</span> <span class="n">problem</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">beta_</span><span class="o">.</span><span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_DWKMM</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+            <span class="c1"># Define the variables of the opt. problem</span>
+            <span class="n">beta_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">alpha_</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">epsilon_</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+            <span class="c1"># Define the objetive function</span>
+            <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">quad_form</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">beta_</span><span class="o">/</span><span class="n">n</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha_</span><span class="o">/</span><span class="n">t</span><span class="p">]),</span> <span class="n">cvx</span><span class="o">.</span><span class="n">psd_wrap</span><span class="p">(</span><span class="n">K</span><span class="p">)))</span>
+            <span class="c1"># Define the constraints</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span> 
+                <span class="n">alpha_</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                <span class="n">alpha_</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_</span><span class="p">)</span> <span class="o">/</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">epsilon_</span><span class="p">,</span>
+                <span class="o">-</span>  <span class="n">epsilon_</span> <span class="o">&lt;=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_</span><span class="p">)</span> <span class="o">/</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">]</span>
+            <span class="n">problem</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span><span class="n">constraints</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Fixing tolerance to ensure replicability across different machines.</span>
+                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="n">feastol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">reltol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">abstol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;SCS&#39;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;CVXpy couldn</span><span class="se">\&#39;</span><span class="s1">t find a solution for &#39;</span> <span class="o">+</span> \
+                                     <span class="s1">&#39;alpha and beta .... &#39;</span> <span class="o">+</span> \
+                         <span class="s1">&#39;The problem is &#39;</span><span class="p">,</span> <span class="n">problem</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">beta_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha_</span><span class="o">.</span><span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">min_DWKMM</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">value</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -455,21 +521,28 @@
                 <span class="n">beta_</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                 <span class="n">alpha_</span> <span class="o">&gt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
                 <span class="n">alpha_</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-                <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_</span><span class="p">)</span> <span class="o">/</span> <span class="n">t</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">epsilon_</span><span class="p">,</span>
+                <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_</span><span class="p">)</span> <span class="o">/</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="n">epsilon_</span><span class="p">,</span>
+                <span class="o">-</span> <span class="n">epsilon_</span> <span class="o">&lt;=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">beta_</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha_</span><span class="p">)</span> <span class="o">/</span> <span class="n">t</span><span class="p">,</span>
                 <span class="n">cvx</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">alpha_</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
             <span class="p">]</span>
             <span class="n">problem</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span><span class="n">constraints</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;GUROBI&#39;</span><span class="p">)</span>
+                <span class="c1"># Fixing tolerance to ensure replicability across different machines.</span>
+                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="n">feastol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">reltol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="n">abstol</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;MOSEK&#39;</span><span class="p">)</span>
+                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;SCS&#39;</span><span class="p">)</span>
                 <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
-                    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;CVXpy couldn</span><span class="se">\&#39;</span><span class="s1">t find a solution for &#39;</span> <span class="o">+</span> \
+                                     <span class="s1">&#39;alpha and beta .... &#39;</span> <span class="o">+</span> \
+                         <span class="s1">&#39;The problem is &#39;</span><span class="p">,</span> <span class="n">problem</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span> <span class="o">=</span> <span class="n">beta_</span><span class="o">.</span><span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha_</span><span class="o">.</span><span class="n">value</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">min_DWKMM</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">atol</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
@@ -547,16 +620,18 @@
 
         <span class="n">problem</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Problem</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">constraints</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;GUROBI&#39;</span><span class="p">)</span>
+            <span class="c1"># Fixing tolerance to ensure replicability across different machines.</span>
+            <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="n">feastol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">reltol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span> <span class="n">abstol</span> <span class="o">=</span> <span class="mf">1e-4</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;MOSEK&#39;</span><span class="p">)</span>
+                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;SCS&#39;</span><span class="p">)</span>
             <span class="k">except</span> <span class="n">cvx</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">SolverError</span><span class="p">:</span>
-                <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Using the &quot;ECOS&quot; solver is less efficient than using the &quot;GUROBI&quot; or &quot;MOSEK&quot; solver.</span><span class="se">\</span>
-<span class="s1">                   We recommend obtaining a &quot;GUROBI&quot; or &quot;MOSEK&quot; licence.&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;CVXpy couldn</span><span class="se">\&#39;</span><span class="s1">t find a solution for &#39;</span> <span class="o">+</span> \
+                                     <span class="s1">&#39;lambda .... &#39;</span> <span class="o">+</span> \
+                         <span class="s1">&#39;The problem is &#39;</span><span class="p">,</span> <span class="n">prob</span><span class="o">.</span><span class="n">status</span><span class="p">)</span>
 
         <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">lambda_</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">lambda_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="n">lambda_</span></div>
     
