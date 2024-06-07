@@ -1,2 +1,4 @@
 matplotlib
 seaborn
+sphinx_rtd_theme
+sphinx_gallery
