@@ -12,6 +12,7 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -114,6 +115,8 @@ This gallery contains examples that illustrate further applications of MRCpy lib
       <div class="sphx-glr-thumbnail-title">Example: Predicting COVID-19 patients outcome using MRCs</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 

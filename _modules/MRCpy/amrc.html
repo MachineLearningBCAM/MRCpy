@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy.amrc &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -80,20 +82,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for MRCpy.amrc</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Adaptative Minimax Risk Classification. Copyright (C) 2022 Veronica Alvarez</span>
-
-<span class="sd">This program is free software: you can redistribute it and/or modify it under the terms of the </span>
-<span class="sd">GNU General Public License as published by the Free Software Foundation,</span>
-<span class="sd">either version 3 of the License, or (at your option) any later version.</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;</span>
-<span class="sd">without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-<span class="sd">See the GNU General Public License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU General Public License along with this program.</span>
-<span class="sd">If not, see https://www.gnu.org/licenses/.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&#39;&#39;&#39;Adaptative Minimax Risk Classification.&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">math</span>
@@ -108,11 +97,11 @@
 
 
 <div class="viewcode-block" id="AMRC"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC">[docs]</a><span class="k">class</span> <span class="nc">AMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Adaptative Minimax Risk Classifier</span>
 
 <span class="sd">    The class AMRC implements the method Adaptative Minimimax Risk</span>
-<span class="sd">    Classificafiers (AMRCs) proposed in :ref:`[1] &lt;ref1&gt;`. It is designed for</span>
+<span class="sd">    Classification (MRC) proposed in :ref:`[1] &lt;ref1&gt;`. It is designed for</span>
 <span class="sd">    online learning with streaming data. Training samples</span>
 <span class="sd">    are fed sequentially and the classification rule is</span>
 <span class="sd">    updated every time a new sample is provided.</span>
@@ -125,10 +114,16 @@
 <span class="sd">    multivariate and high-order tracking of the time-varying</span>
 <span class="sd">    underlying distribution. In addition, differently</span>
 <span class="sd">    from conventional techniques, AMRCs</span>
-<span class="sd">    can provide computable tight performance guarantees at learning.</span>
+<span class="sd">    can provide computable tight performance guarantees at learning</span>
 
 <span class="sd">    It implements 0-1 loss function and it can be used with linear and</span>
 <span class="sd">    Random Fourier features.</span>
+
+<span class="sd">    Adaptive Minimax Risk Classifiers (AMRCs) account for multidimensional</span>
+<span class="sd">    time changes by means of a multivariate and high-order tracking of</span>
+<span class="sd">    the timevarying underlying distribution. In addition, differently</span>
+<span class="sd">    from conventional techniques, AMRCs can provide computable</span>
+<span class="sd">    tight performance guarantees.</span>
 
 <span class="sd">    .. seealso:: For more information about AMRC, one can refer to the</span>
 <span class="sd">        following paper:</span>
@@ -137,24 +132,7 @@
 <span class="sd">                    Minimax Classification under Concept Drift with</span>
 <span class="sd">                    Multidimensional Adaptation and Performance Guarantees.</span>
 <span class="sd">                    International Conference on Machine Learning (ICML) 2022.</span>
-
-<span class="sd">                    @InProceedings{AlvMazLoz22,</span>
-<span class="sd">                    title = 	 {Minimax Classification under Concept Drift with</span>
-<span class="sd">                                 Multidimensional Adaptation and</span>
-<span class="sd">                                 Performance Guarantees},</span>
-<span class="sd">                    author =     {{\&#39;A}lvarez, Ver{\&#39;o}nica</span>
-<span class="sd">                                  and Mazuelas, Santiago</span>
-<span class="sd">                                  and Lozano, Jose A},</span>
-<span class="sd">                    booktitle = {Proceedings of the 39th</span>
-<span class="sd">                                 International Conference on Machine Learning},</span>
-<span class="sd">                    pages = 	 {486--499},</span>
-<span class="sd">                    year = 	 {2022},</span>
-<span class="sd">                    volume = 	 {162},</span>
-<span class="sd">                    series = 	 {Proceedings of Machine Learning Research},</span>
-<span class="sd">                    month = 	 {Jul},</span>
-<span class="sd">                    publisher =    {PMLR},</span>
-<span class="sd">                    }</span>
-
+<span class="sd">                    &lt;https://arxiv.org/abs/2205.15942&gt;`_</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n_classes : `int`</span>
@@ -175,9 +153,20 @@
 <span class="sd">        Whether to model change in the variables unidimensionally or not.</span>
 <span class="sd">        Available for comparison purposes.</span>
 
-<span class="sd">    delta : `float`, default = 0.05</span>
-<span class="sd">        Significance of the upper bound on the accumulated mistakes.</span>
-<span class="sd">        Lower values will produce higher values for bounds.</span>
+<span class="sd">    sigma : `str` {&#39;scale2&#39;} or `float`, default = `sigma`</span>
+<span class="sd">        When given a string, it defines the type of heuristic to be used</span>
+<span class="sd">        to calculate the scaling parameter `sigma` used in Random Fourier</span>
+<span class="sd">         feature mapping.</span>
+<span class="sd">        For comparison its relation with parameter `gamma` used in</span>
+<span class="sd">        other methods is :math:`\gamma=1/(2\sigma^2)`.</span>
+<span class="sd">        When given a float, it is the value for the scaling parameter.</span>
+
+<span class="sd">        &#39;scale2&#39;</span>
+<span class="sd">            Approximates `sigma` by</span>
+<span class="sd">            :math:`\sqrt{\\frac{\\textrm{n_features}}{2}}`</span>
+<span class="sd">            so that `gamma` is</span>
+<span class="sd">            :math:`\\frac{1}{\\textrm{n_features}}`</span>
+<span class="sd">            where `var` is the variance function.</span>
 
 <span class="sd">    order : `int`, default = 1</span>
 <span class="sd">        Order of the subgradients used in optimization.</span>
@@ -220,6 +209,9 @@
 <span class="sd">        If set to false, no intercept will be used in calculations</span>
 <span class="sd">        (i.e. data is expected to be already centered).</span>
 
+<span class="sd">    use_cvx : `bool`, default = `False`</span>
+<span class="sd">        AMRC does not support using cvx.</span>
+
 <span class="sd">    **phi_kwargs : Additional parameters for feature mappings.</span>
 <span class="sd">            Groups the multiple optional parameters</span>
 <span class="sd">            for the corresponding feature mappings(`phi`).</span>
@@ -234,25 +226,18 @@
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="AMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
-                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-                 <span class="n">unidimensional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">delta</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-                 <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                 <span class="n">W</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
-                 <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="s1">&#39;scale2&#39;</span><span class="p">,</span>
+                 <span class="n">unidimensional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">W</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cvx</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unidimensional</span> <span class="o">=</span> <span class="n">unidimensional</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unidimensional</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="n">N</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">=</span> <span class="mi">0</span>
@@ -261,16 +246,20 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC does not support one_hot=False&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">phi_kwargs</span><span class="p">[</span><span class="s1">&#39;one_hot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">use_cvx</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC does not support use_cvx=True&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">loss</span> <span class="o">!=</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;AMRC only support loss=0-1&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
                          <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
                          <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
+                         <span class="n">max_iters</span><span class="o">=</span><span class="n">max_iters</span><span class="p">,</span>
+                         <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Tracking uncertainty sets</span>
 
 <span class="sd">        This function obtains mean vector estimates and confidence vectors</span>
@@ -285,7 +274,7 @@
 <span class="sd">        p: `float`</span>
 <span class="sd">            Probability</span>
 
-<span class="sd">        s: `float`</span>
+<span class="sd">        p: `float`</span>
 <span class="sd">            Standard deviation</span>
 
 <span class="sd">        Output</span>
@@ -306,7 +295,7 @@
 <span class="sd">                of noise processes</span>
 
 <span class="sd">                Q, R: variances of noise processes</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Ht</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;Ht&#39;</span><span class="p">]</span>
         <span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;eta&#39;</span><span class="p">]</span>
         <span class="n">Sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;Sigma&#39;</span><span class="p">]</span>
@@ -404,7 +393,7 @@
         <span class="k">return</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">params_</span>
 
     <span class="k">def</span> <span class="nf">initialize_tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize tracking stage</span>
 
 <span class="sd">        This function initializes mean vector estimates, confidence vectors,</span>
@@ -433,7 +422,7 @@
 <span class="sd">                of noise processes</span>
 
 <span class="sd">                Q, R: variances of noise processes</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">e1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
@@ -473,7 +462,7 @@
         <span class="k">return</span> <span class="n">params_</span>
 
 <div class="viewcode-block" id="AMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Learning</span>
 
 <span class="sd">        This function efficiently learns classifier parameters</span>
@@ -501,7 +490,7 @@
 
 <span class="sd">        self :</span>
 <span class="sd">            Fitted estimator</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -596,13 +585,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">varphi</span> <span class="o">=</span> <span class="n">varphi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">R_Ut</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">R_Ut</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="AMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the AMRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -631,7 +619,6 @@
 <span class="sd">        self :</span>
 <span class="sd">            Fitted estimator</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-
         <span class="n">x</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># Calculate the length m of the feature vector</span>
@@ -641,9 +628,12 @@
                                    <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
                                    <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">&#39;fourier&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span> <span class="o">!=</span> <span class="s1">&#39;scale2&#39;</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected sigma for AMRC ... &#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">RandomFourierPhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span>
                                             <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
                                             <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">,</span>
+                                            <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span>
                                             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected feature mapping type ... &#39;</span><span class="p">)</span>
@@ -662,7 +652,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;w&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;w0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
             <span class="c1"># Initialize mean vector estimate</span>
             <span class="n">params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialize_tracking</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -683,8 +672,13 @@
                 <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Feature vector</span>
+        <span class="c1"># feature = self.feature_vector(x, y)</span>
         <span class="n">feature</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_xy</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="p">[</span><span class="n">y</span><span class="p">])</span>
 
+        <span class="c1"># print(self.Y)</span>
+        <span class="c1"># print(self.p)</span>
+        <span class="c1"># print(s)</span>
+        <span class="c1"># print(self.p[:, sample_idx], s)</span>
         <span class="c1"># Update mean vector estimate and confidence vector</span>
         <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">params_</span> <span class="o">=</span> \
             <span class="bp">self</span><span class="o">.</span><span class="n">tracking</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">[:,</span> <span class="n">sample_idx</span><span class="p">],</span> <span class="n">s</span><span class="p">)</span>
@@ -696,11 +690,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="AMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Predicts classes for new instances using a fitted model.</span>
 
 <span class="sd">        Returns the predicted classes for the given instances in `X`</span>
@@ -726,7 +719,6 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
             <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">proba</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
             <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">proba</span><span class="p">)</span>
 
         <span class="c1"># Check if the labels were provided for fitting</span>
@@ -738,7 +730,7 @@
         <span class="k">return</span> <span class="n">y_pred</span></div>
 
 <div class="viewcode-block" id="AMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Conditional probabilities corresponding to each class</span>
 <span class="sd">        for each unlabeled input instance</span>
 
@@ -755,7 +747,6 @@
 <span class="sd">            for each class.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
-
         <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">)))</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">):</span>
@@ -772,30 +763,16 @@
         <span class="k">return</span> <span class="n">h</span></div>
 
 <div class="viewcode-block" id="AMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        upper_bound : `float`</span>
+<span class="sd">        upper : `float`</span>
 <span class="sd">            Upper bound of the expected loss for the fitted classifier.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span></div>
-
-<div class="viewcode-block" id="AMRC.get_upper_bound_accumulated"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound_accumulated">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound_accumulated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Returns the upper bound on the accumulated mistakes </span>
-<span class="sd">        of the fitted classifier.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        upper_bound_accumulated : `float`</span>
-<span class="sd">            Upper bound of the accumulated for the fitted classifier.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;sum_R_Ut&#39;</span><span class="p">]</span> <span class="o">+</span> \
-                <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta</span><span class="p">)))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_counter</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span></div></div>
 </pre></div>
 
            </div>

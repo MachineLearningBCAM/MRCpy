@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy.mrc &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -80,42 +82,26 @@
            <div itemprop="articleBody">
              
   <h1>Source code for MRCpy.mrc</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Minimax Risk Classification. Copyright (C) 2021 Kartheek Bondugula</span>
-
-<span class="sd">This program is free software: you can redistribute it and/or modify it under the terms of the </span>
-<span class="sd">GNU General Public License as published by the Free Software Foundation,</span>
-<span class="sd">either version 3 of the License, or (at your option) any later version.</span>
-
-<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;</span>
-<span class="sd">without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
-<span class="sd">See the GNU General Public License for more details.</span>
-
-<span class="sd">You should have received a copy of the GNU General Public License along with this program.</span>
-<span class="sd">If not, see https://www.gnu.org/licenses/.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&#39;&#39;&#39;Minimax Risk Classification.&#39;&#39;&#39;</span>
 
 <span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
 <span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="c1"># Import the MRC super class</span>
 <span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">BaseMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.cvx</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.nesterov</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.cg</span> <span class="kn">import</span> <span class="o">*</span>
+
 
 <div class="viewcode-block" id="MRC"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC">[docs]</a><span class="k">class</span> <span class="nc">MRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+    <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Minimax Risk Classifier</span>
 
-<span class="sd">    The class MRC implements the method Minimimax Risk Classifiers (MRC)</span>
+<span class="sd">    The class MRC implements the method Minimimax Risk Classification (MRC)</span>
 <span class="sd">    proposed in :ref:`[1] &lt;ref1&gt;`</span>
 <span class="sd">    using the default constraints. It implements two kinds of loss functions,</span>
 <span class="sd">    namely 0-1 and log loss.</span>
@@ -183,6 +169,27 @@
 <span class="sd">        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation</span>
 <span class="sd">        of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).</span>
 
+<span class="sd">    sigma : `str` or `float`, default = `scale`</span>
+<span class="sd">        When given a string, it defines the type of heuristic to be used</span>
+<span class="sd">        to calculate the scaling parameter `sigma` used in some feature</span>
+<span class="sd">        mappings such as Random Fourier or ReLU featuress.</span>
+<span class="sd">        For comparison its relation with parameter `gamma` used in</span>
+<span class="sd">        other methods is :math:`\gamma=1/(2\sigma^2)`.</span>
+<span class="sd">        When given a float, it is the value for the scaling parameter.</span>
+
+<span class="sd">        &#39;scale&#39;</span>
+<span class="sd">            Approximates `sigma` by</span>
+<span class="sd">            :math:`\sqrt{\\frac{\\textrm{n_features} * \\textrm{var}(X)}{2}}`</span>
+<span class="sd">            so that `gamma` is</span>
+<span class="sd">            :math:`\\frac{1}{\\textrm{n_features} * \\textrm{var}(X)}`</span>
+<span class="sd">            where `var` is the variance function.</span>
+
+<span class="sd">        &#39;avg_ann_50&#39;</span>
+<span class="sd">            Approximates `sigma` by the average distance to the</span>
+<span class="sd">            :math:`50^{\\textrm{th}}`</span>
+<span class="sd">            nearest neighbour estimated from 1000 samples of the dataset using</span>
+<span class="sd">            the function `rff_sigma`.</span>
+
 <span class="sd">    deterministic : `bool`, default = `True`</span>
 <span class="sd">        Whether the prediction of the labels</span>
 <span class="sd">        should be done in a deterministic way (given a fixed `random_state`</span>
@@ -197,56 +204,31 @@
 <span class="sd">            If set to false, no intercept will be used in calculations</span>
 <span class="sd">            (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    solver : {‘cvx’, ’subgrad’, ’cg’}, default = ’subgrad’</span>
-<span class="sd">        Method to use in solving the optimization problem. </span>
-<span class="sd">        Default is ‘cvx’. To choose a solver,</span>
-<span class="sd">        you might want to consider the following aspects:</span>
+<span class="sd">    use_cvx : `bool`, default = `False`</span>
+<span class="sd">        When set to True, use CVXpy library for the optimization</span>
+<span class="sd">        instead of the subgradient methods.</span>
 
-<span class="sd">        ’cvx’</span>
-<span class="sd">            Solves the optimization problem using the CVXPY library.</span>
-<span class="sd">            Obtains an accurate solution while requiring more time</span>
-<span class="sd">            than the other methods. </span>
-<span class="sd">            Note that the library uses the GUROBI solver in CVXpy for which</span>
-<span class="sd">            one might need to request for a license.</span>
-<span class="sd">            A free license can be requested `here </span>
-<span class="sd">            &lt;https://www.gurobi.com/academia/academic-program-and-licenses/&gt;`_</span>
+<span class="sd">    solver : `str`, default = &#39;MOSEK&#39;</span>
+<span class="sd">        Type of CVX solver to be used for solving the optimization problem.</span>
+<span class="sd">        In some cases, one solver might not work,</span>
+<span class="sd">        so you might need to change solver depending on the problem.</span>
 
-<span class="sd">        ’subgrad’</span>
-<span class="sd">            Solves the optimization using a subgradient approach.</span>
-<span class="sd">            The parameter `max_iters` determines the number of iterations</span>
-<span class="sd">            for this approach. More iteration lead to an accurate solution</span>
-<span class="sd">            while requiring more time.</span>
+<span class="sd">        &#39;SCS&#39;</span>
+<span class="sd">            It uses Splitting Conic Solver (SCS).</span>
 
-<span class="sd">        ’cg’</span>
-<span class="sd">            Solves the optimization using an algorithm</span>
-<span class="sd">            based on constraint generation. This algorithm provides </span>
-<span class="sd">            efficient learning especially for scenarios</span>
-<span class="sd">            with large number of features.</span>
+<span class="sd">        &#39;ECOS&#39;</span>
+<span class="sd">            It uses Embedded Eonic Eolver (ECOS).</span>
 
-<span class="sd">        .. seealso:: For more information about the constraint generation </span>
-<span class="sd">            algorithm for 0-1 MRC, one can refer to the following resource:</span>
-<span class="sd">        </span>
-<span class="sd">                    [1] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023).</span>
-<span class="sd">                    Efficient Learning of Minimax Risk Classifiers</span>
-<span class="sd">                    in High Dimensions.</span>
-<span class="sd">                    The 39th Conference on</span>
-<span class="sd">                    Uncertainty in Artificial Intelligence, 206-215.</span>
-<span class="sd">                    &lt;https://proceedings.mlr.press/v216/bondugula23a.html&gt;`_</span>
+<span class="sd">        &#39;MOSEK&#39;</span>
+<span class="sd">            MOSEK is a commercial solver for which one might need to</span>
+<span class="sd">            request for a license. A free license can be requested</span>
+<span class="sd">            `here &lt;https://www.mosek.com/products/academic-licenses/&gt;`_.</span>
+
 
 <span class="sd">    max_iters : `int`, default = `10000`</span>
 <span class="sd">        Maximum number of iterations to use</span>
 <span class="sd">        for finding the solution of optimization when</span>
 <span class="sd">        using the subgradient approach.</span>
-
-<span class="sd">    n_max : `int`, default = `100`</span>
-<span class="sd">        Maximum number of features selected in each iteration</span>
-<span class="sd">        in case of ’cg’ solver.</span>
-
-<span class="sd">    k_max : `int`, default = `20`</span>
-<span class="sd">        Maximum number of iterations in case of ’cg’ solver.</span>
-
-<span class="sd">    eps : `float`, default = `1e-4`</span>
-<span class="sd">        Dual constraints&#39; violation threshold for ’cg’ solver. </span>
 
 <span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
@@ -375,34 +357,8 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="MRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
-                 <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;subgrad&#39;</span><span class="p">,</span>
-                 <span class="n">max_iters</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>
-                 <span class="n">n_max</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                 <span class="n">k_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
-                 <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-                 <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="n">n_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="n">k_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
-                         <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span>
-                         <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
-                         <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
-                         <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
-                         <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="MRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Solves the minimax risk problem</span>
 <span class="sd">        for different types of loss (0-1 and log loss).</span>
 <span class="sd">        The solution of the default MRC optimization</span>
@@ -437,7 +393,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                    <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
         <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
@@ -456,7 +412,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
             <span class="c1"># Summing up the phi configurations</span>
             <span class="c1"># for all possible subsets of classes for each instance</span>
-            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                            <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                            <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
                                                     <span class="n">numVals</span><span class="p">)))</span>
@@ -471,7 +427,7 @@
             <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
             <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cvx&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
             <span class="c1"># Use CVXpy for the convex optimization of the MRC.</span>
 
             <span class="c1"># Variables</span>
@@ -499,13 +455,10 @@
                                      <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span>
                                      <span class="n">neg_nu</span><span class="p">(</span><span class="n">mu</span><span class="p">))</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
-                                                <span class="kc">None</span><span class="p">,</span>
-                                                <span class="n">mu</span><span class="p">,</span>
-                                                <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">neg_nu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;subgrad&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
             <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
@@ -520,12 +473,7 @@
                     <span class="k">return</span> <span class="n">M_t</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
 
                 <span class="c1"># Calculate the upper bound</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> \
-                        <span class="n">nesterov_optimization_minimized_mrc</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>
-                                                            <span class="n">h</span><span class="p">,</span>
-                                                            <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span>
-                                                            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span>
-                                                            <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization_minimized</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
 
@@ -540,12 +488,7 @@
                     <span class="k">return</span> <span class="p">(</span><span class="n">expPhi_xi</span> <span class="o">@</span> <span class="n">phi_xi</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expPhi_xi</span><span class="p">)</span>
 
                 <span class="c1"># Calculate the upper bound</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> <span class="n">nesterov_optimization_mrc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span>
-                                                               <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span>
-                                                               <span class="n">m</span><span class="p">,</span>
-                                                               <span class="n">f_</span><span class="p">,</span>
-                                                               <span class="n">g_</span><span class="p">,</span>
-                                                               <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The given loss function is not available &#39;</span> <span class="o">+</span>
@@ -555,114 +498,28 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;nu&#39;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;best_value&#39;</span><span class="p">]</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cg&#39;</span><span class="p">:</span>
-            <span class="c1"># Use methods based on constraint generation</span>
-            <span class="c1"># to solve the optimization (corresponding to 0-1 loss only).</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The </span><span class="se">\&#39;</span><span class="s1">cg</span><span class="se">\&#39;</span><span class="s1"> solver is only available &#39;</span> <span class="o">+</span>
-                                 <span class="s1">&#39;for 0-1 loss.&#39;</span><span class="p">)</span>
-
-    <span class="c1">#-----&gt; Initialization for constraint generation method.</span>
-
-        <span class="c1">#-&gt; Reduce the feature space by restricting the number of features</span>
-        <span class="c1">#   based on the variance in the features, that is, picking first</span>
-        <span class="c1">#   10*N minimum variance features.</span>
-            <span class="n">N</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">argsort_columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">))</span>
-            <span class="n">index_CG</span>        <span class="o">=</span> <span class="n">argsort_columns</span><span class="p">[:</span><span class="mi">10</span><span class="o">*</span><span class="n">N</span><span class="p">]</span>
-
-        <span class="c1">#-&gt; Solve the optimization using the reduced training set</span>
-        <span class="c1">#   and first order subgradient methods to get an</span>
-        <span class="c1">#   initial low accuracy solution in minimum time.</span>
-            <span class="n">M_reduced</span> <span class="o">=</span> <span class="n">M</span><span class="p">[:,</span> <span class="n">index_CG</span><span class="p">]</span>
-            <span class="n">M_reduced_t</span> <span class="o">=</span> <span class="n">M_reduced</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-
-            <span class="c1"># Calculate the upper bound</span>
-            <span class="n">upper_params_</span> <span class="o">=</span> \
-                 <span class="n">nesterov_optimization_minimized_mrc</span><span class="p">(</span><span class="n">M_reduced</span><span class="p">,</span>
-                                                     <span class="n">h</span><span class="p">,</span>
-                                                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">[</span><span class="n">index_CG</span><span class="p">],</span>
-                                                     <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">[</span><span class="n">index_CG</span><span class="p">],</span>
-                                                     <span class="mi">100</span><span class="p">)</span>
-            <span class="n">mu_</span> <span class="o">=</span> <span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
-            <span class="n">nu_</span> <span class="o">=</span> <span class="n">upper_params_</span><span class="p">[</span><span class="s1">&#39;nu&#39;</span><span class="p">]</span>
-
-        <span class="c1">#-&gt; Transform the solution obtained in the reduced space</span>
-        <span class="c1">#   to the original space</span>
-            <span class="n">initial_features_limit</span> <span class="o">=</span> <span class="mi">100</span>
-            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">initial_features_limit</span><span class="p">:</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:</span><span class="n">initial_features_limit</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-
-            <span class="n">warm_start</span> <span class="o">=</span> <span class="n">mu_</span><span class="p">[</span><span class="n">I</span><span class="p">]</span> 
-            <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index_CG</span><span class="p">)[</span><span class="n">I</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-
-    <span class="c1">#-----&gt; Now apply the method of constraint generation using the </span>
-    <span class="c1">#       low accuracy solution.</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">mrc_cg</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>
-                                                             <span class="n">h</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span>
-                                                             <span class="n">I</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
-                                                             <span class="n">warm_start</span><span class="p">,</span>
-                                                             <span class="n">nu_</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected solver ... &#39;</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="MRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        upper_bound : `float`</span>
+<span class="sd">        upper : `float`</span>
 <span class="sd">            Upper bound of the expected loss for the fitted classifier.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
-            <span class="c1"># Number of instances in training </span>
-            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-            <span class="c1"># Feature mapping length</span>
-            <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span>
-
-            <span class="n">phi_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span>
-
-            <span class="n">hy_x_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">phi_mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
-                <span class="n">hy_x_det</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">[</span><span class="n">i</span><span class="p">,:])]</span> <span class="o">=</span> <span class="mi">1</span>
-
-            <span class="n">hy_x_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hy_x_det</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,))</span>
-
-            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
-
-            <span class="n">mu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">len_</span><span class="p">)</span>
-            <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> \
-                            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">+</span> \
-                            <span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">-</span> <span class="n">hy_x_det</span><span class="p">))</span>
-
-            <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
-                                         <span class="kc">None</span><span class="p">,</span>
-                                         <span class="n">mu</span><span class="p">,</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span></div>
 
 <div class="viewcode-block" id="MRC.get_lower_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_lower_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Obtains the lower bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        lower_bound : `float`</span>
+<span class="sd">        lower : `float`</span>
 <span class="sd">            Lower bound of the error for the fitted classifier.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -671,8 +528,6 @@
 
         <span class="c1"># Learned feature mappings</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span>
-        <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
-        <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">phi_mu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># Variables</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -712,74 +567,315 @@
 
         <span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">m</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
+            <span class="c1"># Use CVXpy for the convex optimization of the MRC</span>
 
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cvx&#39;</span><span class="p">:</span>
-                <span class="c1"># Use CVXpy for the convex optimization of the MRC</span>
+            <span class="n">low_mu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-                <span class="n">low_mu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="c1"># Objective function</span>
+            <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">low_mu</span><span class="p">)</span> <span class="o">-</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">low_mu</span> <span class="o">+</span>
+                                     <span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="n">low_mu</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
 
-                <span class="c1"># Objective function</span>
-                <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">low_mu</span><span class="p">)</span> <span class="o">-</span>
-                                         <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">low_mu</span> <span class="o">+</span>
-                                         <span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="n">low_mu</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mu_l_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">low_mu</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">mu_l_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> \
-                    <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">low_mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
+            <span class="c1"># Maximize the function</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span>
 
-                <span class="c1"># Maximize the function</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_cvx</span><span class="p">:</span>
+            <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
 
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;subgrad&#39;</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cg&#39;</span><span class="p">:</span>
-                <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
+            <span class="c1"># Defining the partial objective and its gradient.</span>
+            <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span>
 
-                <span class="c1"># Defining the partial objective and its gradient.</span>
-                <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">eps</span>
+            <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">phi</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[:,</span> <span class="n">idx</span><span class="p">]</span>
 
-                <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">phi</span><span class="o">.</span><span class="n">transpose</span><span class="p">()[:,</span> <span class="n">idx</span><span class="p">]</span>
+            <span class="c1"># Lower bound</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">nesterov_optimization</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">)</span>
 
-                <span class="c1"># Lower bound</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span> <span class="o">=</span> <span class="n">nesterov_optimization_mrc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span>
-                                                               <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span>
-                                                               <span class="n">m</span><span class="p">,</span>
-                                                               <span class="n">f_</span><span class="p">,</span>
-                                                               <span class="n">g_</span><span class="p">,</span>
-                                                               <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mu_l_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span><span class="p">[</span><span class="s1">&#39;best_value&#39;</span><span class="p">]</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">mu_l_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span><span class="p">[</span><span class="s1">&#39;mu&#39;</span><span class="p">]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_params_</span><span class="p">[</span><span class="s1">&#39;best_value&#39;</span><span class="p">]</span>
-
-                <span class="c1"># Maximize the function</span>
-                <span class="c1"># as the nesterov optimization gives the minimum</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span>
-
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unexpected solver ... &#39;</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
-
-            <span class="n">hy_x_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                <span class="n">hy_x_det</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">[</span><span class="n">i</span><span class="p">,:])]</span> <span class="o">=</span> <span class="mi">1</span>
-
-            <span class="n">hy_x_det</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hy_x_det</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,))</span>
-
-            <span class="n">mu_l_</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
-            <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Maximize</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu_l_</span> <span class="o">-</span> \
-                            <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_l_</span><span class="p">)</span> <span class="o">+</span> \
-                            <span class="n">cvx</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">phi</span> <span class="o">@</span> <span class="n">mu_l_</span> <span class="o">-</span> <span class="n">hy_x_det</span><span class="p">))</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">mu_l_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
-                                                     <span class="kc">None</span><span class="p">,</span>
-                                                     <span class="n">mu_l_</span><span class="p">,</span>
-                                                     <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
+            <span class="c1"># Maximize the function</span>
+            <span class="c1"># as the nesterov optimization gives the minimum</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span></div>
 
+    <span class="k">def</span> <span class="nf">nesterov_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Solution of the MRC convex optimization (minimization)</span>
+<span class="sd">        using the Nesterov accelerated approach.</span>
+
+<span class="sd">        .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., &amp; Tao, Q. (2019).</span>
+<span class="sd">                            The Strength of Nesterov’s Extrapolation in</span>
+<span class="sd">                            the Individual Convergence of Nonsmooth</span>
+<span class="sd">                            Optimization. IEEE transactions on</span>
+<span class="sd">                            neural networks and learning systems,</span>
+<span class="sd">                            31(7), 2557-2568.</span>
+<span class="sd">                            &lt;https://ieeexplore.ieee.org/document/8822632&gt;`_</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        m : `int`</span>
+<span class="sd">            Length of the feature mapping vector</span>
+
+<span class="sd">        f_ : a lambda function of the form - f_(mu)</span>
+<span class="sd">            Lambda function</span>
+<span class="sd">            calculating a part of the objective function</span>
+<span class="sd">            depending on the type of loss function chosen</span>
+<span class="sd">            by taking the parameters (mu) of the optimization as input.</span>
+
+<span class="sd">        g_ : a lambda function of the form - g_(mu, idx)</span>
+<span class="sd">            Lambda function</span>
+<span class="sd">            calculating the part of the subgradient of the objective function</span>
+<span class="sd">            depending on the type of the loss function chosen.</span>
+<span class="sd">            It takes the as input: parameters (mu) of the optimization and</span>
+<span class="sd">            the index corresponding to the maximum value of data matrix</span>
+<span class="sd">            obtained from the instances.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_params_ : `dict`</span>
+<span class="sd">            Dictionary that stores the optimal points</span>
+<span class="sd">            (`w_k`: `array-like` shape (`m`,), `w_k_prev`: `array-like`</span>
+<span class="sd">             shape (`m`,)) where `m`is the length of the feature</span>
+<span class="sd">            mapping vector and best value</span>
+<span class="sd">            for the upper bound (`best_value`: `float`) of the function and</span>
+<span class="sd">            the parameters corresponding to the optimized function value</span>
+<span class="sd">            (`mu`: `array-like` shape (`m`,),</span>
+<span class="sd">            `nu`: `float`).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Initial values for the parameters</span>
+        <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">theta_k_prev</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Initial values for points</span>
+        <span class="n">y_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="n">w_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+        <span class="n">w_k_prev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+
+        <span class="c1"># Setting initial values for the objective function and other results</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">f_</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
+        <span class="n">mnu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">f_best_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">y_k</span> <span class="o">+</span> <span class="n">mnu</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">y_k</span>
+        <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">mnu</span>
+
+        <span class="c1"># Iteration for finding the optimal values</span>
+        <span class="c1"># using Nesterov&#39;s extrapolation</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+            <span class="n">y_k</span> <span class="o">=</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">theta_k</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k_prev</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">w_k</span> <span class="o">-</span> <span class="n">w_k_prev</span><span class="p">)</span>
+
+            <span class="c1"># Calculating the subgradient of the objective function at y_k</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">f_</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">g_0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">+</span> <span class="n">g_</span><span class="p">(</span><span class="n">y_k</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+
+            <span class="c1"># Update the parameters</span>
+            <span class="n">theta_k_prev</span> <span class="o">=</span> <span class="n">theta_k</span>
+            <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">alpha_k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">((</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+
+            <span class="c1"># Calculate the new points</span>
+            <span class="n">w_k_prev</span> <span class="o">=</span> <span class="n">w_k</span>
+            <span class="n">w_k</span> <span class="o">=</span> <span class="n">y_k</span> <span class="o">-</span> <span class="n">alpha_k</span> <span class="o">*</span> <span class="n">g_0</span>
+
+            <span class="c1"># Check if there is an improvement</span>
+            <span class="c1"># in the value of the objective function</span>
+            <span class="n">mnu</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+            <span class="n">f_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y_k</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">y_k</span> <span class="o">+</span> <span class="n">mnu</span>
+            <span class="k">if</span> <span class="n">f_value</span> <span class="o">&lt;</span> <span class="n">f_best_value</span><span class="p">:</span>
+                <span class="n">f_best_value</span> <span class="o">=</span> <span class="n">f_value</span>
+                <span class="n">mu</span> <span class="o">=</span> <span class="n">y_k</span>
+                <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">mnu</span>
+
+        <span class="c1"># Check for possible improvement of the objective value</span>
+        <span class="c1"># for the last generated value of w_k</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">f_</span><span class="p">(</span><span class="n">w_k</span><span class="p">)</span>
+        <span class="n">mnu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        <span class="n">f_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w_k</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">w_k</span> <span class="o">+</span> <span class="n">mnu</span>
+
+        <span class="k">if</span> <span class="n">f_value</span> <span class="o">&lt;</span> <span class="n">f_best_value</span><span class="p">:</span>
+            <span class="n">f_best_value</span> <span class="o">=</span> <span class="n">f_value</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">w_k</span>
+            <span class="n">nu</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">mnu</span>
+
+        <span class="c1"># Return the optimized values in a dictionary</span>
+        <span class="n">new_params_</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;w_k&#39;</span><span class="p">:</span> <span class="n">w_k</span><span class="p">,</span>
+                       <span class="s1">&#39;w_k_prev&#39;</span><span class="p">:</span> <span class="n">w_k_prev</span><span class="p">,</span>
+                       <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu</span><span class="p">,</span>
+                       <span class="s1">&#39;nu&#39;</span><span class="p">:</span> <span class="n">nu</span><span class="p">,</span>
+                       <span class="s1">&#39;best_value&#39;</span><span class="p">:</span> <span class="n">f_best_value</span><span class="p">,</span>
+                       <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">new_params_</span>
+
+    <span class="k">def</span> <span class="nf">nesterov_optimization_minimized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Solution of the MRC convex optimization (minimization)</span>
+<span class="sd">        using an optimized version of the Nesterov accelerated approach.</span>
+
+<span class="sd">        .. seealso::         [1] `Tao, W., Pan, Z., Wu, G., &amp; Tao, Q. (2019).</span>
+<span class="sd">                                The Strength of Nesterov’s Extrapolation in</span>
+<span class="sd">                                the Individual Convergence of Nonsmooth</span>
+<span class="sd">                                Optimization. IEEE transactions on</span>
+<span class="sd">                                neural networks and learning systems,</span>
+<span class="sd">                                31(7), 2557-2568.</span>
+<span class="sd">                                &lt;https://ieeexplore.ieee.org/document/8822632&gt;`_</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        M : `array`-like of shape (:math:`m_1`, :math:`m_2`)</span>
+<span class="sd">            Where :math:`m_1` is approximately</span>
+<span class="sd">            :math:`(2^{\\textrm{n_classes}}-1) *</span>
+<span class="sd">            \\textrm{min}(5000,\\textrm{len}(X))`,</span>
+<span class="sd">            where the second factor is the number of training samples used for</span>
+<span class="sd">            solving the optimization problem.</span>
+
+<span class="sd">        h : `array`-like of shape (:math:`m_1`,)</span>
+<span class="sd">            Where :math:`m_1` is approximately</span>
+<span class="sd">            :math:`(2^{\\textrm{n_classes}}-1) *</span>
+<span class="sd">            \\textrm{min}(5000,\\textrm{len}(X))`,</span>
+<span class="sd">            where the second factor is the number of training samples used for</span>
+<span class="sd">            solving the optimization problem.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        ------</span>
+<span class="sd">        new_params_ : `dict`</span>
+<span class="sd">            Dictionary that stores the optimal points</span>
+<span class="sd">            (`w_k`: `array-like` shape (`m`,), `w_k_prev`: `array-like`</span>
+<span class="sd">             shape (`m`,)), where `m` is the length of the feature</span>
+<span class="sd">            mapping vector, and best value</span>
+<span class="sd">            for the upper bound (`best_value`: `float`) of the function and</span>
+<span class="sd">            the parameters corresponding to the optimized function value</span>
+<span class="sd">            (`mu`: `array-like` shape (`m`,),</span>
+<span class="sd">            `nu`: `float`).</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># make it a column</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># make it a column</span>
+        <span class="n">mu_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">c_k</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">theta_k</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">nu_k</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">a</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">F</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">F</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
+        <span class="n">y_k</span> <span class="o">=</span> <span class="n">mu_k</span>
+        <span class="n">v_k</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">mu_k</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="n">w_k</span> <span class="o">=</span> <span class="n">v_k</span>
+        <span class="n">s_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k</span><span class="p">)</span>
+        <span class="n">d_k</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">H</span> <span class="o">@</span> <span class="n">s_k</span>
+        <span class="n">i_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k</span><span class="p">)</span>
+        <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k</span>
+        <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span>
+        <span class="n">f_star</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k</span> <span class="o">+</span>\
+            <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k</span><span class="p">)</span> <span class="o">+</span> <span class="n">v_k</span><span class="p">[</span><span class="n">i_k</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">*</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">1024</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span><span class="p">:</span>  <span class="c1"># Large Dimension</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">g_k</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">s_k</span> <span class="o">+</span> <span class="n">F</span><span class="p">[[</span><span class="n">i_k</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">y_k_next</span> <span class="o">=</span> <span class="n">mu_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">g_k</span>
+                <span class="n">mu_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">y_k</span>
+                <span class="n">u_k</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">G</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i_k</span><span class="p">]]</span>
+                <span class="n">w_k_next</span> <span class="o">=</span> <span class="n">v_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">u_k</span>
+                <span class="n">v_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">w_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">w_k</span>
+                <span class="n">i_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k_next</span><span class="p">)</span>
+                <span class="n">s_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span>
+                <span class="n">delta_k</span> <span class="o">=</span> <span class="n">s_k_next</span> <span class="o">-</span> <span class="n">s_k</span>
+
+                <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">+</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                    <span class="k">elif</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">-</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                    <span class="k">elif</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                        <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k_next</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>\
+                            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">delta_k</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">H</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+
+                <span class="n">c_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">theta_k_next</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">nu_k_next</span> <span class="o">=</span> <span class="n">theta_k_next</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">f_k_next</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k_next</span> <span class="o">+</span>\
+                    <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span> <span class="o">+</span>\
+                    <span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">f_k_next</span> <span class="o">&lt;</span> <span class="n">f_star</span><span class="p">:</span>
+                    <span class="n">f_star</span> <span class="o">=</span> <span class="n">f_k_next</span>
+                    <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                    <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+
+                <span class="c1"># Update variables</span>
+                <span class="n">mu_k</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                <span class="n">y_k</span> <span class="o">=</span> <span class="n">y_k_next</span>
+                <span class="n">nu_k</span> <span class="o">=</span> <span class="n">nu_k_next</span>
+                <span class="n">v_k</span> <span class="o">=</span> <span class="n">v_k_next</span>
+                <span class="n">w_k</span> <span class="o">=</span> <span class="n">w_k_next</span>
+                <span class="n">s_k</span> <span class="o">=</span> <span class="n">s_k_next</span>
+                <span class="n">d_k</span> <span class="o">=</span> <span class="n">d_k_next</span>
+                <span class="n">c_k</span> <span class="o">=</span> <span class="n">c_k_next</span>
+                <span class="n">i_k</span> <span class="o">=</span> <span class="n">i_k_next</span>
+                <span class="n">theta_k</span> <span class="o">=</span> <span class="n">theta_k_next</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Small Dimension</span>
+
+            <span class="n">MD</span> <span class="o">=</span> <span class="n">F</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">g_k</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">lambda_</span> <span class="o">*</span> <span class="n">s_k</span> <span class="o">+</span> <span class="n">F</span><span class="p">[[</span><span class="n">i_k</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+                <span class="n">y_k_next</span> <span class="o">=</span> <span class="n">mu_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">g_k</span>
+                <span class="n">mu_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">y_k</span>
+                <span class="n">u_k</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">+</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">G</span><span class="p">[:,</span> <span class="p">[</span><span class="n">i_k</span><span class="p">]]</span>
+                <span class="n">w_k_next</span> <span class="o">=</span> <span class="n">v_k</span> <span class="o">-</span> <span class="n">c_k</span> <span class="o">*</span> <span class="n">u_k</span>
+                <span class="n">v_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu_k</span><span class="p">)</span> <span class="o">*</span> <span class="n">w_k_next</span> <span class="o">-</span> <span class="n">nu_k</span> <span class="o">*</span> <span class="n">w_k</span>
+                <span class="n">i_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_k_next</span><span class="p">)</span>
+                <span class="n">s_k_next</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span>
+                <span class="n">delta_k</span> <span class="o">=</span> <span class="n">s_k_next</span> <span class="o">-</span> <span class="n">s_k</span>
+
+                <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta_k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">d_k_next</span> <span class="o">=</span> <span class="n">d_k</span> <span class="o">+</span> <span class="n">MD</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">@</span> <span class="n">delta_k</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+                <span class="n">c_k_next</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">theta_k_next</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">nu_k_next</span> <span class="o">=</span> <span class="n">theta_k_next</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">theta_k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">f_k_next</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">mu_k_next</span> <span class="o">+</span>\
+                    <span class="n">lambda_</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_k_next</span><span class="p">)</span> <span class="o">+</span>\
+                    <span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">f_k_next</span> <span class="o">&lt;</span> <span class="n">f_star</span><span class="p">:</span>
+                    <span class="n">f_star</span> <span class="o">=</span> <span class="n">f_k_next</span>
+                    <span class="n">mu_star</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                    <span class="n">v_star</span> <span class="o">=</span> <span class="o">-</span><span class="n">v_k_next</span><span class="p">[</span><span class="n">i_k_next</span><span class="p">]</span>
+
+                <span class="c1"># Update variables</span>
+                <span class="n">mu_k</span> <span class="o">=</span> <span class="n">mu_k_next</span>
+                <span class="n">y_k</span> <span class="o">=</span> <span class="n">y_k_next</span>
+                <span class="n">nu_k</span> <span class="o">=</span> <span class="n">nu_k_next</span>
+                <span class="n">v_k</span> <span class="o">=</span> <span class="n">v_k_next</span>
+                <span class="n">w_k</span> <span class="o">=</span> <span class="n">w_k_next</span>
+                <span class="n">s_k</span> <span class="o">=</span> <span class="n">s_k_next</span>
+                <span class="n">d_k</span> <span class="o">=</span> <span class="n">d_k_next</span>
+                <span class="n">c_k</span> <span class="o">=</span> <span class="n">c_k_next</span>
+                <span class="n">i_k</span> <span class="o">=</span> <span class="n">i_k_next</span>
+                <span class="n">theta_k</span> <span class="o">=</span> <span class="n">theta_k_next</span>
+
+        <span class="n">new_params_</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;w_k&#39;</span><span class="p">:</span> <span class="n">w_k_next</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;w_k_prev&#39;</span><span class="p">:</span> <span class="n">w_k</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;mu&#39;</span><span class="p">:</span> <span class="n">mu_star</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+                       <span class="s1">&#39;nu&#39;</span><span class="p">:</span> <span class="n">v_star</span><span class="p">,</span>
+                       <span class="s1">&#39;best_value&#39;</span><span class="p">:</span> <span class="n">f_star</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                       <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">new_params_</span>
+
 <div class="viewcode-block" id="MRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+        <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Conditional probabilities corresponding to each class</span>
 <span class="sd">        for each unlabeled input instance</span>
 
@@ -800,7 +896,7 @@
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
 
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
             <span class="c1"># Constraints in case of 0-1 loss function</span>
@@ -823,9 +919,9 @@
             <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
 
             <span class="c1"># Normalizing conditional probabilities</span>
-            <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span>
+            <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span>
                              <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
             <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reciprocal</span><span class="p">(</span><span class="n">hy_x</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">hy_x</span></div></div>

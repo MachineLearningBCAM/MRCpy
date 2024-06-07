@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_further_examples_z_COVID.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -57,7 +57,7 @@ implementation from `Scikit-Learn <https://scikit-learn.org/stable/#>`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 43-63
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # Import needed modules
@@ -87,7 +87,7 @@ COVID dataset Loader:
 
 .. GENERATED FROM PYTHON SOURCE LINES 66-123
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -159,7 +159,7 @@ over sampling) is a package that implements such oversampling.
 
 .. GENERATED FROM PYTHON SOURCE LINES 131-140
 
-.. code-block:: default
+.. code-block:: Python
 
     X, y = load_covid(array=False)
     described = (
@@ -231,7 +231,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
 
 .. GENERATED FROM PYTHON SOURCE LINES 195-207
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # We fit the data to the oversampler
@@ -463,7 +463,7 @@ We will use the method `SMOTE-NC` for numerical and categorical variables.
 
 .. GENERATED FROM PYTHON SOURCE LINES 420-426
 
-.. code-block:: default
+.. code-block:: Python
 
 
     pd.DataFrame(
@@ -535,7 +535,7 @@ for the predictions.
 
 .. GENERATED FROM PYTHON SOURCE LINES 486-525
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -586,7 +586,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 530-574
 
-.. code-block:: default
+.. code-block:: Python
 
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -724,7 +724,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 661-760
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -847,7 +847,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 776-810
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -897,7 +897,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 818-827
 
-.. code-block:: default
+.. code-block:: Python
 
     pd.DataFrame(
         classification_report(
@@ -975,7 +975,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 889-897
 
-.. code-block:: default
+.. code-block:: Python
 
     pd.DataFrame(
         classification_report(
@@ -1052,7 +1052,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 959-967
 
-.. code-block:: default
+.. code-block:: Python
 
     pd.DataFrame(
         classification_report(
@@ -1129,7 +1129,7 @@ We will train the models with 80% of the data and then test with the other
 
 .. GENERATED FROM PYTHON SOURCE LINES 1029-1037
 
-.. code-block:: default
+.. code-block:: Python
 
     pd.DataFrame(
         classification_report(
@@ -1220,7 +1220,7 @@ are located near the cut-off point and the true guesses are located near the
 
 .. GENERATED FROM PYTHON SOURCE LINES 1113-1131
 
-.. code-block:: default
+.. code-block:: Python
 
     fig, ax = plt.subplots(
         nrows=2,
@@ -1260,7 +1260,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
 
 .. GENERATED FROM PYTHON SOURCE LINES 1147-1167
 
-.. code-block:: default
+.. code-block:: Python
 
 
     threshold = 0.35
@@ -1350,7 +1350,7 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
 
 .. GENERATED FROM PYTHON SOURCE LINES 1230-1240
 
-.. code-block:: default
+.. code-block:: Python
 
     pd.DataFrame(
         classification_report(
@@ -1440,27 +1440,19 @@ adding just some cases to the FP. In the MRC model adjusting the cutoff to
  class.
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
-
-
 .. _sphx_glr_download_auto_examples_further_examples_z_COVID.py:
 
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: z_COVID.ipynb <z_COVID.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: z_COVID.py <z_COVID.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: z_COVID.ipynb <z_COVID.ipynb>`
 
 
 .. only:: html

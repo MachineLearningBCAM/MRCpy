@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_auto_examples_further_examples_feature_extraction.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -91,7 +91,7 @@ You can check more about `torchvision.transforms` in
 
 .. GENERATED FROM PYTHON SOURCE LINES 73-98
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import os
@@ -142,7 +142,7 @@ the latter containing the info associated with the builder.
 
 .. GENERATED FROM PYTHON SOURCE LINES 117-160
 
-.. code-block:: default
+.. code-block:: Python
 
 
     [[ds_train, ds_test], ds_info] = tfds.load('mnist', split=['train', 'test'],
@@ -202,7 +202,7 @@ It is available in tensorflow datasets, you can check the details `here
 
 .. GENERATED FROM PYTHON SOURCE LINES 170-192
 
-.. code-block:: default
+.. code-block:: Python
 
 
     [ds, ds_info] = tfds.load('cats_vs_dogs', split='train',
@@ -260,7 +260,7 @@ folder and merge them in a dataset ordered by date
 
 .. GENERATED FROM PYTHON SOURCE LINES 221-239
 
-.. code-block:: default
+.. code-block:: Python
 
 
 
@@ -292,7 +292,7 @@ is available in the `dataset` folder of the MRCpy library.
 
 .. GENERATED FROM PYTHON SOURCE LINES 246-259
 
-.. code-block:: default
+.. code-block:: Python
 
 
     X_features = []
@@ -309,27 +309,19 @@ is available in the `dataset` folder of the MRCpy library.
                yearbook_features_resnet18, delimiter=',')
 
 
-.. rst-class:: sphx-glr-timing
-
-   **Total running time of the script:** ( 0 minutes  0.000 seconds)
-
-
 .. _sphx_glr_download_auto_examples_further_examples_feature_extraction.py:
 
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: feature_extraction.ipynb <feature_extraction.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: feature_extraction.py <feature_extraction.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: feature_extraction.ipynb <feature_extraction.ipynb>`
 
 
 .. only:: html

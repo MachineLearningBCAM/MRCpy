@@ -85,6 +85,57 @@ References
                   journal={arXiv preprint arXiv:2108.01952},
                   year={2021}
                }
+      
+   - [4] `Álvarez, V., Mazuelas, S., & Lozano, J.A. (2022). Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees. <https://arxiv.org/abs/2205.15942>`_
+
+         ::
+
+               @inproceedings{AlvMazLoz:22,
+                  title={Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees},
+                  author={Ver{\'o}nica {\'A}lvarez and Santiago Mazuelas and Jose A. Lozano},
+                  booktitle={Proceedings of the 39th International Conference on Machine Learning},
+                  pages={486--499},
+                  month={17--23 Jul}
+                  year={2022}
+               }
+   - [5] `Álvarez, V., Mazuelas, S., & Lozano, J.A. (2023). Minimax Forward and Backward Learning of Evolving Tasks with Performance Guarantees. <https://arxiv.org/abs/2310.15974v1>`_
+
+         ::
+
+               @inproceedings{AlvMazLoz:23,
+                  title={Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees},
+                  author={Ver{\'o}nica {\'A}lvarez and Santiago Mazuelas and Jose A. Lozano},
+                  booktitle={Advances in Neural Information Processing Systems},
+                  volume={36},
+                  pages={65678--65702},
+                  year={2023}
+               }                        
+
+   - [6] `Bondugula, K., Mazuelas, S., & Pérez A. (2023). Efficient Learning of Minimax Risk Classifiers in High Dimensions. <https://arxiv.org/abs/2306.06649>`_
+
+         ::
+
+               @inproceedings{RedMazPer:23,
+                  title={Efficient Learning of Minimax Risk Classifiers in High Dimensions},
+                  author={Kartheek Bondugula and Santiago Mazuelas and Aritz P\'{e}rez},
+                  booktitle={Proceedings of the Thirty-Ninth Conference on Uncertainty in Artificial Intelligence},
+                  pages={206--215},
+                  year={2023}
+               }   
+
+   - [7] `Segovia-Martin, J.I., Mazuelas, S., & Liu, A. (2023). Double-Weighting for Covariate Shift Adaptation. <https://arxiv.org/abs/2305.08637>`_
+
+         ::
+
+               @inproceedings{SegMazLiu:23,
+                  title={Double-Weighting for Covariate Shift Adaptation},
+                  author={Jose I. Segovia-Martin and Santiago Mazuelas and Anqi Liu},
+                  booktitle={Proceedings of the International Conference on Machine Learning},
+                  pages={30439--30457},
+                  volume={40},
+                  year={2023}
+               }
+
 
 Funding
 ^^^^^^^^
@@ -95,7 +146,7 @@ Funding in direct support of this work has been provided through different resea
    :width: 150
    :alt: Spanish Ministry of Science and Innovation logo
 
-   Spanish Ministry of Science and Innovation through the project **PID2019-105058GA-I00** funded by **MCIN/AEI/10.13039/501100011033**.
+   Spanish Ministry of Science and Innovation through the projects **PID2019-105058GA-I00**, **PID2022-137063NB-I00** and **CNS2022-135203** funded by **MCIN/AEI/10.13039/501100011033**.
 
 .. figure:: axalogo.png
    :align: center
