@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy: A Library for Minimax Risk Classifiers &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -80,14 +83,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="mrcpy-a-library-for-minimax-risk-classifiers">
+  <section id="mrcpy-a-library-for-minimax-risk-classifiers">
 <h1>MRCpy: A Library for Minimax Risk Classifiers<a class="headerlink" href="#mrcpy-a-library-for-minimax-risk-classifiers" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://circleci.com/gh/MachineLearningBCAM/MRCpy"><img alt="Travis-CI Build Status" src="https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield" /></a> <a class="reference external" href="https://codecov.io/gh/MachineLearningBCAM/MRCpy"><img alt="Code coverage" src="https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy" /></a></p>
 <p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1-loss. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. The presented library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines. In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features.</p>
 <p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. More information about loaders is available in Dataset Loaders <span class="xref std std-ref">load</span>. The available datasets from the <a class="reference external" href="http://archive.ics.uci.edu/ml/index.php">UCI Repository</a> are: credit, diabetes, ecoli, glass, haberman, indian liver patient, iris, letter recognition, mammographic, optdigits, redwine, satellite and segment.</p>
 <p>There also be several datasets realated to computer vision which are actually “feature datasets”. We obtained these features by using a pretrained neural network over the images and taking the features from the second last layer. You can check more about this in our examples <a class="reference internal" href="auto_examples/further_examples/feature_extraction.html#featureextraction"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a> and <a class="reference internal" href="auto_examples/further_examples/plot_1_image_classification.html#feature-mrc"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a>.
 The image dataset <a class="reference external" href="https://people.eecs.berkeley.edu/~shiry/projects/yearbooks/yearbooks.html">Yearbook dataset</a> is available both in its original version consisting of portrait images and in extracted features form in a CSV file. There are also feature datasets of <a class="reference external" href="http://yann.lecun.com/exdb/mnist/">MNIST</a> and <a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">Cats vs Dogs</a> datasets which images versions are directly available using <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/overview">Tensorflow Datasets</a>. For all these feature datasets we used a pretrained ResNet18 over ImageNet.</p>
-<div class="section" id="documentation-outline">
+<section id="documentation-outline">
 <h2>Documentation outline<a class="headerlink" href="#documentation-outline" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -118,8 +121,8 @@ The image dataset <a class="reference external" href="https://people.eecs.berkel
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="references">
+</section>
+<section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
 <blockquote>
 <div><p>For more information about the MRC method and the MRCpy library, one can refer to the following resources:</p>
@@ -166,27 +169,88 @@ The image dataset <a class="reference external" href="https://people.eecs.berkel
 </div>
 </div></blockquote>
 </li>
+<li><p>[4] <a class="reference external" href="https://arxiv.org/abs/2205.15942">Álvarez, V., Mazuelas, S., &amp; Lozano, J.A. (2022). Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees.</a></p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">AlvMazLoz</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span>
+   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Minimax</span> <span class="n">Classification</span> <span class="n">under</span> <span class="n">Concept</span> <span class="n">Drift</span> <span class="k">with</span> <span class="n">Multidimensional</span> <span class="n">Adaptation</span> <span class="ow">and</span> <span class="n">Performance</span> <span class="n">Guarantees</span><span class="p">},</span>
+   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Ver</span><span class="p">{</span>\<span class="s1">&#39;o}nica {</span><span class="se">\&#39;</span><span class="s1">A}lvarez and Santiago Mazuelas and Jose A. Lozano},</span>
+   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">39</span><span class="n">th</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Machine</span> <span class="n">Learning</span><span class="p">},</span>
+   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">486</span><span class="o">--</span><span class="mi">499</span><span class="p">},</span>
+   <span class="n">month</span><span class="o">=</span><span class="p">{</span><span class="mi">17</span><span class="o">--</span><span class="mi">23</span> <span class="n">Jul</span><span class="p">}</span>
+   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2022</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>[5] <a class="reference external" href="https://arxiv.org/abs/2310.15974v1">Álvarez, V., Mazuelas, S., &amp; Lozano, J.A. (2023). Minimax Forward and Backward Learning of Evolving Tasks with Performance Guarantees.</a></p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">AlvMazLoz</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
+   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Minimax</span> <span class="n">Classification</span> <span class="n">under</span> <span class="n">Concept</span> <span class="n">Drift</span> <span class="k">with</span> <span class="n">Multidimensional</span> <span class="n">Adaptation</span> <span class="ow">and</span> <span class="n">Performance</span> <span class="n">Guarantees</span><span class="p">},</span>
+   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Ver</span><span class="p">{</span>\<span class="s1">&#39;o}nica {</span><span class="se">\&#39;</span><span class="s1">A}lvarez and Santiago Mazuelas and Jose A. Lozano},</span>
+   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Advances</span> <span class="ow">in</span> <span class="n">Neural</span> <span class="n">Information</span> <span class="n">Processing</span> <span class="n">Systems</span><span class="p">},</span>
+   <span class="n">volume</span><span class="o">=</span><span class="p">{</span><span class="mi">36</span><span class="p">},</span>
+   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">65678</span><span class="o">--</span><span class="mi">65702</span><span class="p">},</span>
+   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>[6] <a class="reference external" href="https://arxiv.org/abs/2306.06649">Bondugula, K., Mazuelas, S., &amp; Pérez A. (2023). Efficient Learning of Minimax Risk Classifiers in High Dimensions.</a></p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">RedMazPer</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
+   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Efficient</span> <span class="n">Learning</span> <span class="n">of</span> <span class="n">Minimax</span> <span class="n">Risk</span> <span class="n">Classifiers</span> <span class="ow">in</span> <span class="n">High</span> <span class="n">Dimensions</span><span class="p">},</span>
+   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Kartheek</span> <span class="n">Bondugula</span> <span class="ow">and</span> <span class="n">Santiago</span> <span class="n">Mazuelas</span> <span class="ow">and</span> <span class="n">Aritz</span> <span class="n">P</span>\<span class="s1">&#39;</span><span class="si">{e}</span><span class="s1">rez},</span>
+   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Thirty</span><span class="o">-</span><span class="n">Ninth</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Uncertainty</span> <span class="ow">in</span> <span class="n">Artificial</span> <span class="n">Intelligence</span><span class="p">},</span>
+   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">206</span><span class="o">--</span><span class="mi">215</span><span class="p">},</span>
+   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>[7] <a class="reference external" href="https://arxiv.org/abs/2305.08637">Segovia-Martin, J.I., Mazuelas, S., &amp; Liu, A. (2023). Double-Weighting for Covariate Shift Adaptation.</a></p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">SegMazLiu</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
+   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Double</span><span class="o">-</span><span class="n">Weighting</span> <span class="k">for</span> <span class="n">Covariate</span> <span class="n">Shift</span> <span class="n">Adaptation</span><span class="p">},</span>
+   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Jose</span> <span class="n">I</span><span class="o">.</span> <span class="n">Segovia</span><span class="o">-</span><span class="n">Martin</span> <span class="ow">and</span> <span class="n">Santiago</span> <span class="n">Mazuelas</span> <span class="ow">and</span> <span class="n">Anqi</span> <span class="n">Liu</span><span class="p">},</span>
+   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Machine</span> <span class="n">Learning</span><span class="p">},</span>
+   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">30439</span><span class="o">--</span><span class="mi">30457</span><span class="p">},</span>
+   <span class="n">volume</span><span class="o">=</span><span class="p">{</span><span class="mi">40</span><span class="p">},</span>
+   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
 </ul>
 </div></blockquote>
 </div></blockquote>
-<div class="section" id="funding">
+<section id="funding">
 <h3>Funding<a class="headerlink" href="#funding" title="Permalink to this heading"></a></h3>
 <p>Funding in direct support of this work has been provided through different research projects by the following institutions.</p>
-<div class="figure align-center" id="id2">
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="_images/fund_logo.png"><img alt="Spanish Ministry of Science and Innovation logo" src="_images/fund_logo.png" style="width: 150px;" /></a>
-<p class="caption"><span class="caption-text">Spanish Ministry of Science and Innovation through the project <strong>PID2019-105058GA-I00</strong> funded by <strong>MCIN/AEI/10.13039/501100011033</strong>.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
-</div>
-<div class="figure align-center" id="id3">
+<figcaption>
+<p><span class="caption-text">Spanish Ministry of Science and Innovation through the projects <strong>PID2019-105058GA-I00</strong>, <strong>PID2022-137063NB-I00</strong> and <strong>CNS2022-135203</strong> funded by <strong>MCIN/AEI/10.13039/501100011033</strong>.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="_images/axalogo.png"><img alt="AXA Research Fund logo" src="_images/axalogo.png" style="width: 150px;" /></a>
-<p class="caption"><span class="caption-text">AXA Research Fund through the project <strong>“Early Prognosis of COVID-19 Infections via Machine Learning”</strong> funded in the Exceptional Flash Call <strong>“Mitigating risk in the wake of the COVID-19 pandemic”</strong>.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
-</div>
-<div class="figure align-center" id="id4">
+<figcaption>
+<p><span class="caption-text">AXA Research Fund through the project <strong>“Early Prognosis of COVID-19 Infections via Machine Learning”</strong> funded in the Exceptional Flash Call <strong>“Mitigating risk in the wake of the COVID-19 pandemic”</strong>.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="_images/logogobiernovasco.png"><img alt="Basque Government logo" src="_images/logogobiernovasco.png" style="width: 150px;" /></a>
-<p class="caption"><span class="caption-text">Basque Government through the project <strong>“Mathematical Modeling Applied to Health”</strong>, and through the <strong>“ELKARTEK Program”</strong>.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
-</div>
-</div>
-</div>
-</div>
+<figcaption>
+<p><span class="caption-text">Basque Government through the project <strong>“Mathematical Modeling Applied to Health”</strong>, and through the <strong>“ELKARTEK Program”</strong>.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+</section>
 
 
            </div>
