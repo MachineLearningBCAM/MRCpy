@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Getting started &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -104,9 +107,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="getting-started">
+  <section id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this heading"></a></h1>
-<div class="section" id="installation-and-setup">
+<section id="installation-and-setup">
 <h2>Installation and Setup<a class="headerlink" href="#installation-and-setup" title="Permalink to this heading"></a></h2>
 <p><strong>Installation</strong></p>
 <p>The latest built version of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code> can be installed using <code class="xref any docutils literal notranslate"><span class="pre">pip</span></code> as
@@ -132,8 +135,8 @@ You may then use <code class="docutils literal notranslate"><span class="pre">py
 <li><p><code class="xref any docutils literal notranslate"><span class="pre">pyarrow</span></code></p></li>
 <li><p><code class="xref any docutils literal notranslate"><span class="pre">gurobipy</span></code></p></li>
 </ul>
-</div>
-<div class="section" id="quick-start">
+</section>
+<section id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
 <p>This example loads the mammographic dataset, and trains the <a class="reference internal" href="generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRC</span></code></a> classifier
 using 0-1 loss (i.e., the default loss).</p>
@@ -161,22 +164,18 @@ using 0-1 loss (i.e., the default loss).</p>
 <span class="n">accuracy</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="dataset-loaders">
+</section>
+<section id="dataset-loaders">
 <h2>Dataset Loaders<a class="headerlink" href="#dataset-loaders" title="Permalink to this heading"></a></h2>
 <p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref any docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>. Note that the datasets <code class="docutils literal notranslate"><span class="pre">adult</span></code>, <code class="docutils literal notranslate"><span class="pre">magic</span></code>, <code class="docutils literal notranslate"><span class="pre">mnist</span></code>, <code class="docutils literal notranslate"><span class="pre">cats</span> <span class="pre">vs</span> <span class="pre">dogs</span></code> and <code class="docutils literal notranslate"><span class="pre">yearbook</span></code> are not available in the built version (installed through pip) of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code>.</p>
-<div class="section" id="normalizelabels-origy">
+<section id="normalizelabels-origy">
 <h3><code class="docutils literal notranslate"><span class="pre">normalizeLabels(origY)</span></code><a class="headerlink" href="#normalizelabels-origy" title="Permalink to this heading"></a></h3>
 <p>Normalize the labels of the instances in the range 0,…, r-1 for r classes.</p>
-</div>
-<div class="section" id="load-adult-with-info-false">
+</section>
+<section id="load-adult-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_adult(with_info=False)</span></code><a class="headerlink" href="#load-adult-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the adult incomes prediction dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 55%" />
-<col style="width: 45%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -210,15 +209,11 @@ and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-diabetes-with-info-false">
+</section>
+<section id="load-diabetes-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_diabetes(with_info=False)</span></code><a class="headerlink" href="#load-diabetes-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Pima Indians Diabetes dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -252,15 +247,11 @@ and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-iris-with-info-false">
+</section>
+<section id="load-iris-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_iris(with_info=False)</span></code><a class="headerlink" href="#load-iris-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Iris Plants Dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>3</p></td>
@@ -294,15 +285,11 @@ and ‘filename’, the physical location of the dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-redwine-with-info-false">
+</section>
+<section id="load-redwine-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_redwine(with_info=False)</span></code><a class="headerlink" href="#load-redwine-with-info-false" title="Permalink to this heading"></a></h3>
 <p>“””Load and return the Red Wine Dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>10</p></td>
@@ -321,16 +308,16 @@ and ‘filename’, the physical location of the dataset.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="section" id="parameters">
+</section>
+<section id="parameters">
 <h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
 See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.5)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="returns">
+</section>
+<section id="returns">
 <h3>Returns<a class="headerlink" href="#returns" title="Permalink to this heading"></a></h3>
 <dl class="simple">
 <dt>bunch<span class="classifier">Bunch</span></dt><dd><p>Dictionary-like object, the interesting attributes are:
@@ -341,15 +328,11 @@ and ‘filename’, the physical location of the dataset.</p>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
 <p>“””</p>
-</div>
-<div class="section" id="load-credit-with-info-false">
+</section>
+<section id="load-credit-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_credit(with_info=False)</span></code><a class="headerlink" href="#load-credit-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Credit Approval prediction dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 45%" />
-<col style="width: 55%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -380,15 +363,11 @@ and ‘filename’, the physical location of adult csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-magic-with-info-false">
+</section>
+<section id="load-magic-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_magic(with_info=False)</span></code><a class="headerlink" href="#load-magic-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Magic Gamma Telescope dataset (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 46%" />
-<col style="width: 54%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -422,15 +401,11 @@ and ‘filename’, the physical location of adult csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-haberman-with-info-false">
+</section>
+<section id="load-haberman-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_haberman(with_info=False)</span></code><a class="headerlink" href="#load-haberman-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Haberman’s Survival Data Set (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 67%" />
-<col style="width: 33%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -464,15 +439,11 @@ and ‘filename’, the physical location of haberman csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-mammographic-with-info-false">
+</section>
+<section id="load-mammographic-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_mammographic(with_info=False)</span></code><a class="headerlink" href="#load-mammographic-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Mammographic Mass Data Set (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 63%" />
-<col style="width: 37%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -506,16 +477,12 @@ and ‘filename’, the physical location of mammographic csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is True</p>
-</div>
-<div class="section" id="load-indian-liver-with-info-false">
+</section>
+<section id="load-indian-liver-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_indian_liver(with_info=False)</span></code><a class="headerlink" href="#load-indian-liver-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Indian Liver Patient Data Set
 (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 46%" />
-<col style="width: 54%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -552,16 +519,12 @@ and ‘filename’, the physical location of indian liver csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-mnist-features-resnet18-with-info-false-split-false">
+</section>
+<section id="load-mnist-features-resnet18-with-info-false-split-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_mnist_features_resnet18(with_info=False,</span> <span class="pre">split=False)</span></code><a class="headerlink" href="#load-mnist-features-resnet18-with-info-false-split-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the MNIST Data Set features extracted using a
 pretrained ResNet18 neural network (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 69%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -612,16 +575,12 @@ splits.</p>
 splits.</p>
 </dd>
 </dl>
-</div>
-<div class="section" id="load-catsvsdogs-features-resnet18-with-info-false">
+</section>
+<section id="load-catsvsdogs-features-resnet18-with-info-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_catsvsdogs_features_resnet18(with_info=False)</span></code><a class="headerlink" href="#load-catsvsdogs-features-resnet18-with-info-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Cats vs Dogs Data Set features extracted using a
 pretrained ResNet18 neural network (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -656,16 +615,12 @@ csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-<div class="section" id="load-yearbook-features-resnet18-with-info-false-with-attributes-false">
+</section>
+<section id="load-yearbook-features-resnet18-with-info-false-with-attributes-false">
 <h3><code class="docutils literal notranslate"><span class="pre">load_yearbook_features_resnet18(with_info=False,</span> <span class="pre">with_attributes=False)</span></code><a class="headerlink" href="#load-yearbook-features-resnet18-with-info-false-with-attributes-false" title="Permalink to this heading"></a></h3>
 <p>Load and return the Yearbook Data Set features extracted using a
 pretrained ResNet18 neural network (classification).</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>Classes</p></td>
 <td><p>2</p></td>
@@ -706,9 +661,9 @@ csv dataset.</p>
 </dd>
 </dl>
 <p>(data, target) : tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False</p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

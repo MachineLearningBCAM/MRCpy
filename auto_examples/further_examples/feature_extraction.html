@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCs with Deep Neural Networks: Part I &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -101,9 +104,9 @@
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">Go to the end</span></a>
-to download the full example code</p>
+to download the full example code.</p>
 </div>
-<div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-i">
+<section class="sphx-glr-example-title" id="mrcs-with-deep-neural-networks-part-i">
 <span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this heading"></a></h1>
 <p>In this example we will use a pretrained neural network to extract features
 of images in a dataset to train and test MRCs with these features in
@@ -122,7 +125,7 @@ Deep residual learning for image recognition.
 In Proceedings of the IEEE conference on computer
 vision and pattern recognition (pp. 770-778).</p>
 </div>
-<div class="section" id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
+<section id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
 <h2>Introduction to Pretrained models, Transfer Learning and Feature Extraction<a class="headerlink" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction" title="Permalink to this heading"></a></h2>
 <p>Deep convolutional neural network models may take days or even weeks
 to train on very large datasets. A way to short-cut this process is
@@ -136,8 +139,8 @@ on one problem is used in some way on a second related problem.
 Alternately, the pretrained models may be used as feature extraction models.
 Here, the output of the model from a layer prior to the output layer
 of the model is used as input to a new classifier model.</p>
-</div>
-<div class="section" id="load-pretrained-model-and-preprocess-images">
+</section>
+<section id="load-pretrained-model-and-preprocess-images">
 <h2>Load pretrained model and preprocess images<a class="headerlink" href="#load-pretrained-model-and-preprocess-images" title="Permalink to this heading"></a></h2>
 <p>Firstly, we load the pretrained model <code class="xref any docutils literal notranslate"><span class="pre">torchvision.models.ResNet18</span></code> and
 we take out the last layer in order to obtain the features. We call this
@@ -163,7 +166,7 @@ this transform will normalize each channel i.e.,
 <code class="xref any docutils literal notranslate"><span class="pre">output[channel]</span> <span class="pre">=</span> <span class="pre">(input[channel]</span> <span class="pre">-</span> <span class="pre">mean[channel])</span> <span class="pre">/</span> <span class="pre">std[channel]</span></code>
 You can check more about <code class="xref any docutils literal notranslate"><span class="pre">torchvision.transforms</span></code> in
 <code class="xref any docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">docummentation</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -188,10 +191,10 @@ You can check more about <code class="xref any docutils literal notranslate"><sp
                           <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>       <span class="c1"># [6]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="using-tensorflow-datasets-mnist-cats-vs-dogs">
+</section>
+<section id="using-tensorflow-datasets-mnist-cats-vs-dogs">
 <h2>Using tensorflow datasets: MNIST &amp; Cats vs Dogs<a class="headerlink" href="#using-tensorflow-datasets-mnist-cats-vs-dogs" title="Permalink to this heading"></a></h2>
-<div class="section" id="mnist">
+<section id="mnist">
 <h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this heading"></a></h3>
 <p>The MNIST database of handwritten digits, available from
 <code class="xref any docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
@@ -206,7 +209,7 @@ with the function <code class="xref any docutils literal notranslate"><span clas
 with the images and <code class="xref any docutils literal notranslate"><span class="pre">with_info=True</span></code> will return the tuple
 <code class="xref any docutils literal notranslate"><span class="pre">(tf.data.Dataset,</span> <span class="pre">tfds.core.DatasetInfo)</span></code>,
 the latter containing the info associated with the builder.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_test</span><span class="p">],</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_test</span><span class="p">],</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;mnist&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">],</span>
                                            <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">df_train</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">ds_train</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">)</span>
@@ -249,15 +252,15 @@ the latter containing the info associated with the builder.</p>
            <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="cats-vs-dogs">
+</section>
+<section id="cats-vs-dogs">
 <h3>Cats vs Dogs<a class="headerlink" href="#cats-vs-dogs" title="Permalink to this heading"></a></h3>
 <p>Cats vs dogs dataset is a database of 23262 RGB cats
 and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
 Cats are labeled by 0 and dogs by 1 and there are 11658 and 11604 images
 of each class, respectively.
 It is available in tensorflow datasets, you can check the details <a class="reference external" href="https://www.tensorflow.org/datasets/catalog/cats_vs_dogs">here</a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ds</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;cats_vs_dogs&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ds</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">]</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;cats_vs_dogs&#39;</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">,</span>
                           <span class="n">as_supervised</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">tfds</span><span class="o">.</span><span class="n">as_dataframe</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ds_info</span><span class="p">)</span>
@@ -279,9 +282,9 @@ It is available in tensorflow datasets, you can check the details <a class="refe
            <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="using-a-local-dataset-yearbook-dataset">
+</section>
+</section>
+<section id="using-a-local-dataset-yearbook-dataset">
 <h2>Using a local dataset: Yearbook Dataset<a class="headerlink" href="#using-a-local-dataset-yearbook-dataset" title="Permalink to this heading"></a></h2>
 <p>In this example, we are going to extract the features from a local dataset.
 We will be using the Yearbook dataset which is a publicly-available dataset
@@ -306,7 +309,7 @@ In International Conference on Machine Learning
 folder and merge them in a dataset ordered by date
 (as images name start by the year of the photo). We convert the labels into
 0 for F and 1 for M.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">load_yearbook_path</span><span class="p">()</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">data_path</span> <span class="o">=</span> <span class="n">load_yearbook_path</span><span class="p">()</span>
 <span class="n">F_path</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">)</span>
 <span class="n">F</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.html#os.listdir" title="os.listdir" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">listdir</span></a><span class="p">(</span><span class="n">F_path</span><span class="p">)</span>
 <span class="n">F</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">((</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="numpy.reshape" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">reshape</span></a><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="mi">1</span><span class="p">)),</span>
@@ -328,7 +331,7 @@ the image features using <code class="xref any docutils literal notranslate"><sp
 features to a flat array that will be a new instance of our feature dataset.
 We store this feature dataset extracted with resnet18 in a csv file that
 is available in the <code class="xref any docutils literal notranslate"><span class="pre">dataset</span></code> folder of the MRCpy library.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">X_features</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
@@ -342,18 +345,17 @@ is available in the <code class="xref any docutils literal notranslate"><span cl
            <span class="n">yearbook_features_resnet18</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-further-examples-feature-extraction-py">
-<div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/9ad2b43fea12de5c5321c4ab54c3f506/feature_extraction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">feature_extraction.py</span></code></a></p>
-</div>
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c5ab177a019d9eb71a5f760ed0b28ec/feature_extraction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">feature_extraction.ipynb</span></code></a></p>
 </div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/9ad2b43fea12de5c5321c4ab54c3f506/feature_extraction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">feature_extraction.py</span></code></a></p>
+</div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
