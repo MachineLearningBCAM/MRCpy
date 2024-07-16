@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy Package Contents &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="_static/basic.css" />
-      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
-      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
-      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/basic.css?v=fb9458d3" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=01f34227"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -59,6 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.MRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.MRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.CMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.AMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.AMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.DWGCS.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.DWGCS</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#feature-mappings">Feature Mappings</a><ul>
@@ -104,9 +106,9 @@
            <div itemprop="articleBody">
              
   <section id="mrcpy-package-contents">
-<h1>MRCpy Package Contents<a class="headerlink" href="#mrcpy-package-contents" title="Permalink to this heading"></a></h1>
+<h1>MRCpy Package Contents<a class="headerlink" href="#mrcpy-package-contents" title="Link to this heading"></a></h1>
 <section id="minimax-risk-classifiers">
-<h2>Minimax Risk Classifiers<a class="headerlink" href="#minimax-risk-classifiers" title="Permalink to this heading"></a></h2>
+<h2>Minimax Risk Classifiers<a class="headerlink" href="#minimax-risk-classifiers" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a>([loss, s, deterministic, ...])</p></td>
@@ -118,11 +120,14 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.AMRC.html#MRCpy.AMRC" title="MRCpy.AMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.AMRC</span></code></a>(n_classes[, loss, deterministic, ...])</p></td>
 <td><p>Adaptative Minimax Risk Classifier</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/MRCpy.DWGCS.html#MRCpy.DWGCS" title="MRCpy.DWGCS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.DWGCS</span></code></a>([loss, deterministic, ...])</p></td>
+<td><p>Double-Weighting General Covariate Shift</p></td>
+</tr>
 </tbody>
 </table>
 </section>
 <section id="feature-mappings">
-<span id="feature-mapping"></span><h2>Feature Mappings<a class="headerlink" href="#feature-mappings" title="Permalink to this heading"></a></h2>
+<span id="feature-mapping"></span><h2>Feature Mappings<a class="headerlink" href="#feature-mappings" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.phi.RandomFourierPhi</span></code></a>(n_classes[, ...])</p></td>
@@ -138,7 +143,7 @@
 </table>
 </section>
 <section id="extended-functionalities">
-<h2>Extended Functionalities<a class="headerlink" href="#extended-functionalities" title="Permalink to this heading"></a></h2>
+<h2>Extended Functionalities<a class="headerlink" href="#extended-functionalities" title="Link to this heading"></a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC" title="MRCpy.BaseMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.BaseMRC</span></code></a>([loss, s, deterministic, ...])</p></td>

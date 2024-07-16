@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hyperparameter Tuning: Upper Bound vs Cross-Validation &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=fb9458d3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -107,7 +107,7 @@
 to download the full example code</p>
 </div>
 <section class="sphx-glr-example-title" id="hyperparameter-tuning-upper-bound-vs-cross-validation">
-<span id="grid"></span><span id="sphx-glr-auto-examples-further-examples-plot-2-grid-py"></span><h1>Hyperparameter Tuning: Upper Bound vs Cross-Validation<a class="headerlink" href="#hyperparameter-tuning-upper-bound-vs-cross-validation" title="Permalink to this heading"></a></h1>
+<span id="grid"></span><span id="sphx-glr-auto-examples-further-examples-plot-2-grid-py"></span><h1>Hyperparameter Tuning: Upper Bound vs Cross-Validation<a class="headerlink" href="#hyperparameter-tuning-upper-bound-vs-cross-validation" title="Link to this heading"></a></h1>
 <p>Example of how to use the Upper Bounds provided by the <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRC</span></code></a> method in the
 <code class="xref any docutils literal notranslate"><span class="pre">MRCpy</span></code> library for hyperparameter tuning and comparison to Cross-Validation.
 We will see that using the Upper Bound gets similar performances to
@@ -136,7 +136,7 @@ for the MRC classifier by setting the parameter <code class="xref any docutils l
 </pre></div>
 </div>
 <section id="random-grid-using-upper-bound-parameter">
-<h2>Random Grid using Upper Bound parameter<a class="headerlink" href="#random-grid-using-upper-bound-parameter" title="Permalink to this heading"></a></h2>
+<h2>Random Grid using Upper Bound parameter<a class="headerlink" href="#random-grid-using-upper-bound-parameter" title="Link to this heading"></a></h2>
 <p>We select random <code class="xref any docutils literal notranslate"><span class="pre">n_iter</span></code> random values for the parameter to tune in
 a given range and select the parameter which minimizes the upper
 bound provided by the MRC method.
@@ -172,7 +172,7 @@ value for the RandomGridCV method.</p>
 </div>
 </section>
 <section id="randomgridcv">
-<h2>RandomGridCV<a class="headerlink" href="#randomgridcv" title="Permalink to this heading"></a></h2>
+<h2>RandomGridCV<a class="headerlink" href="#randomgridcv" title="Link to this heading"></a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_RandomGridCV</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y_train</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_test</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y_test</span></a><span class="p">,</span>
                  <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s_ini</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">s_fin</span></a><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
     <span class="n">n_iter</span> <span class="o">=</span> <span class="mi">10</span>
@@ -203,7 +203,7 @@ value for the RandomGridCV method.</p>
 </div>
 </section>
 <section id="comparison">
-<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this heading"></a></h2>
+<h2>Comparison<a class="headerlink" href="#comparison" title="Link to this heading"></a></h2>
 <p>We are performing both of the previous methods for hyperparameter tuning
 over a set of different datasets and comparing the performances.
 Before calling them, we set a range of values for the hyperpatameter.
@@ -429,7 +429,7 @@ rely heavily on the train_test_split selected.</p>
 <br />
 <br /></section>
 <section id="results">
-<h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading"></a></h2>
 <p>Comparing the resulting tables above we notice that both methods:
 RandomGridCV and Random Grid using Upper bounds are really similar in
 performance, one can do better than the other depending on the datasets but

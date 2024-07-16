@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example: Predicting COVID-19 patients outcome using MRCs &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/basic.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=fb9458d3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -106,7 +106,7 @@
 to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="example-predicting-covid-19-patients-outcome-using-mrcs">
-<span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this heading"></a></h1>
+<span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Link to this heading"></a></h1>
 <p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
 of a COVID-19 positive patient at the moment of hospital triage. This example
 uses a dataset that comprises different demographic variables and biomarkers of
@@ -153,7 +153,7 @@ implementation from <code class="xref any docutils literal notranslate"><span cl
 </pre></div>
 </div>
 <section id="covid-dataset-loader">
-<h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Permalink to this heading"></a></h2>
+<h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Link to this heading"></a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/data_consensus.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
     <span class="c1"># rename variables</span>
@@ -211,7 +211,7 @@ implementation from <code class="xref any docutils literal notranslate"><span cl
 </div>
 </section>
 <section id="addressing-dataset-imbalance-with-smote">
-<h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Permalink to this heading"></a></h2>
+<h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Link to this heading"></a></h2>
 <p>The COVID dataset has a significant problem of class imbalance where the
 positive outcome has a prevalence of 85% (1522) whilst the negative outcome
 has only 276. In this example oversampling will be used to add syintetic
@@ -539,7 +539,7 @@ the creation of the synthetic cases through 5 nearest neighbors.</p>
 <br />
 <br /></section>
 <section id="probability-estimation">
-<h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this heading"></a></h2>
+<h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Link to this heading"></a></h2>
 <p>In this section we will estimate the conditional probabilities and analyse
 the distribution of the probabilities depending on the real outcome . The
 probability estimation is better when using <code class="xref py py-mod docutils literal notranslate"><span class="pre">loss</span> <span class="pre">=</span> <span class="pre">log</span></code>. We use
@@ -547,12 +547,12 @@ probability estimation is better when using <code class="xref py py-mod docutils
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log'</span></code>. We will then compare these MRCs
 with SVC and LR with default parameters.</p>
 <section id="load-classification-function">
-<h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Permalink to this heading"></a></h3>
+<h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Link to this heading"></a></h3>
 <p>These function classify each of the cases in their correspondent
 confusion matrix’s category. It also allows to set the desired cut-off
 for the predictions.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes x,y test and train and a fitted model and</span>
 <span class="sd">    computes the probabilities to then classify in TP,TN , FP , FN.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -590,7 +590,7 @@ for the predictions.</p>
 </div>
 </section>
 <section id="train-models">
-<h3>Train models:<a class="headerlink" href="#train-models" title="Permalink to this heading"></a></h3>
+<h3>Train models:<a class="headerlink" href="#train-models" title="Link to this heading"></a></h3>
 <p>We will train the models with 80% of the data and then test with the other
 20% selected randomly.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
@@ -719,7 +719,7 @@ problem the missclassification of a patient with fatal outcome (FN) is
 considered a much more serious error.</p>
 </div></blockquote>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and creates a boxplot of</span>
 <span class="sd">    different classification by mortal probability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -759,7 +759,7 @@ considered a much more serious error.</p>
 
 
 <span class="k">def</span> <span class="nf">plotHisto</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and plots histograms based on the</span>
 <span class="sd">    probability of mortality by real Status at a selected @threshold.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1137,7 +1137,7 @@ outperformance of CMRC.</p>
 </div></blockquote>
 </section>
 <section id="setting-the-cut-off-point-for-binary-classification">
-<h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Permalink to this heading"></a></h3>
+<h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Link to this heading"></a></h3>
 <p>In this section we will use beeswarm-boxplot to select the cut-off point
 to optimise the tradeoff between false positives and false negatives. The
 beeswarm-boxplot is a great tool to determine the performance of the model

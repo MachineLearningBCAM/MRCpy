@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy.phi.RandomReLUPhi &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=fb9458d3" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/js/copybutton.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -59,7 +59,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.ThresholdPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
 </ul>
 </li>
@@ -97,10 +100,10 @@
            <div itemprop="articleBody">
              
   <section id="mrcpy-phi-randomreluphi">
-<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi<a class="headerlink" href="#mrcpy-phi-randomreluphi" title="Permalink to this heading"></a></h1>
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi<a class="headerlink" href="#mrcpy-phi-randomreluphi" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></span><span class="sig-name descname"><span class="pre">RandomReLUPhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></span><span class="sig-name descname"><span class="pre">RandomReLUPhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi" title="Link to this definition"></a></dt>
 <dd><p>ReLU features</p>
 <p>Rectified Linear Unit (ReLU) features are given by:</p>
 <div class="math notranslate nohighlight">
@@ -223,12 +226,12 @@ and the length of the feature mapping is set.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.est_exp">
-<span class="sig-name descname"><span class="pre">est_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">est_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="Link to this definition"></a></dt>
 <dd><p>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).
 Used in the learning stage to estimate
 the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\({\tau}\)</span></p>
@@ -252,7 +255,7 @@ the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</spa
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.est_std">
-<span class="sig-name descname"><span class="pre">est_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_std" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">est_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.est_std" title="Link to this definition"></a></dt>
 <dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>
 in the supervised dataset (X,Y).
 Used in the learning stage
@@ -278,7 +281,7 @@ to estimate the variance in the expectation of
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_x">
-<span class="sig-name descname"><span class="pre">eval_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">eval_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="Link to this definition"></a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
 X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
 <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
@@ -307,7 +310,7 @@ for each of the instances given.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.eval_xy">
-<span class="sig-name descname"><span class="pre">eval_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">eval_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="Link to this definition"></a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
 X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
 <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
@@ -338,7 +341,7 @@ with respect to the labels given for all the instances.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.fit" title="Link to this definition"></a></dt>
 <dd><p>Learns the set of random weights for computing the features space.
 Also, compute the scaling parameter if the value is not given.</p>
 <dl class="field-list">
@@ -355,7 +358,7 @@ among different feature mappings.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>self</strong><span class="classifier"></span></dt><dd><p>Fitted estimator</p>
+<dt>self</dt><dd><p>Fitted estimator</p>
 </dd>
 </dl>
 </dd>
@@ -364,7 +367,7 @@ among different feature mappings.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.rff_sigma">
-<span class="sig-name descname"><span class="pre">rff_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.rff_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.rff_sigma" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">rff_sigma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.rff_sigma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.rff_sigma" title="Link to this definition"></a></dt>
 <dd><p>Computes the scaling parameter for the ReLU features
 using the heuristic given in the paper “Compact Nonlinear Maps
 and Circulant Extensions” <a class="reference internal" href="#refpr"><span class="std std-ref">[1]</span></a>.</p>
@@ -395,7 +398,7 @@ extensions.</a></p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.transform" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.transform" title="Link to this definition"></a></dt>
 <dd><p>Compute the ReLU random features (<span class="math notranslate nohighlight">\(z(x)\)</span>).</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

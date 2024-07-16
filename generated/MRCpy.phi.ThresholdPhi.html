@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy.phi.ThresholdPhi &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b76e3c8a" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=fb9458d3" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
 
   
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=01f34227"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="../_static/js/copybutton.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -60,7 +60,10 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomFourierPhi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.RandomReLUPhi</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#MRCpy.phi.ThresholdPhi"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
@@ -97,10 +100,10 @@
            <div itemprop="articleBody">
              
   <section id="mrcpy-phi-thresholdphi">
-<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi<a class="headerlink" href="#mrcpy-phi-thresholdphi" title="Permalink to this heading"></a></h1>
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.phi</span></code>.ThresholdPhi<a class="headerlink" href="#mrcpy-phi-thresholdphi" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></span><span class="sig-name descname"><span class="pre">ThresholdPhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MRCpy.phi.</span></span><span class="sig-name descname"><span class="pre">ThresholdPhi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi" title="Link to this definition"></a></dt>
 <dd><p>Threshold features</p>
 <p>A threshold feature is a function, <span class="math notranslate nohighlight">\(f(x_d,t)=1\)</span>
 when <span class="math notranslate nohighlight">\(x_d&lt;t\)</span> and 0 otherwise,
@@ -189,12 +192,12 @@ and the length of the feature mapping is set.</p>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.d_tree_split">
-<span class="sig-name descname"><span class="pre">d_tree_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.d_tree_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">d_tree_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.d_tree_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="Link to this definition"></a></dt>
 <dd><p>Learn the univariate thresholds
 by using the split points of decision trees
 for each dimension of data.</p>
@@ -222,7 +225,7 @@ for each dimension of data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_exp">
-<span class="sig-name descname"><span class="pre">est_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_exp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">est_exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_exp" title="Link to this definition"></a></dt>
 <dd><p>Average value of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span> in the supervised dataset (X,Y).
 Used in the learning stage to estimate
 the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, denoted by <span class="math notranslate nohighlight">\({\tau}\)</span></p>
@@ -246,7 +249,7 @@ the expectation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</spa
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.est_std">
-<span class="sig-name descname"><span class="pre">est_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_std" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">est_std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.est_std" title="Link to this definition"></a></dt>
 <dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>
 in the supervised dataset (X,Y).
 Used in the learning stage
@@ -272,7 +275,7 @@ to estimate the variance in the expectation of
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.eval_x">
-<span class="sig-name descname"><span class="pre">eval_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_x" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">eval_x</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_x" title="Link to this definition"></a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
 X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
 <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels. The output is 3D matrix
@@ -301,7 +304,7 @@ for each of the instances given.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.eval_xy">
-<span class="sig-name descname"><span class="pre">eval_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">eval_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="Link to this definition"></a></dt>
 <dd><p>Evaluates the one-hot encoded features of the given instances i.e.,
 X, <span class="math notranslate nohighlight">\(\phi(x,y)\)</span>, x
 <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.
@@ -332,7 +335,7 @@ with respect to the labels given for all the instances.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.fit" title="Link to this definition"></a></dt>
 <dd><p>Learns the set of thresholds using one-dimensional decision stumps
 obtained from the dataset.</p>
 <dl class="field-list">
@@ -348,7 +351,7 @@ used for finding the thresholds from the dataset.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>self</strong><span class="classifier"></span></dt><dd><p>Fitted estimator</p>
+<dt>self</dt><dd><p>Fitted estimator</p>
 </dd>
 </dl>
 </dd>
@@ -357,7 +360,7 @@ used for finding the thresholds from the dataset.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.transform" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.transform" title="Link to this definition"></a></dt>
 <dd><p>Compute the threshold features (0/1)
 by comparing with the thresholds obtained in each dimension.</p>
 <dl class="field-list">
