@@ -59,9 +59,9 @@ if __name__ == '__main__':
             "Topic :: Scientific/Engineering :: Machine Learning",
             "Topic :: Scientific/Engineering :: Mathematics",
             "Operating System :: OS Independent",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
-            "Programming Language :: Python :: 3.8"
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
+            "Programming Language :: Python :: 3.11"
         ],
         data_files=[
             "README.md"
@@ -69,6 +69,6 @@ if __name__ == '__main__':
         test_suite='tests',
         include_package_data=True,
         package_data={'': ['datasets/data/*', 'datasets/descr/*']},
-        python_requires='>=3.6',
+        python_requires='>=3.9',
         zip_safe=False
     )

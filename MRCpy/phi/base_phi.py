@@ -137,13 +137,13 @@ class BasePhi():
         self.is_fitted_ = True
 
         # Defining the length of the phi
-        self.len_ = self.eval_xy(X[0:1, :], np.asarray([0])).shape[1]
+        self.len_ = self.transform(X[0:1, :]).shape[1]
 
         return self
 
     def transform(self, X):
         '''
-        Transform the given instances to the features.
+        Transform the given instances to the features and return a copy.
 
         Parameters
         ----------
@@ -159,7 +159,11 @@ class BasePhi():
 
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, ["is_fitted_"])
-        X_feat = X.copy()
+
+        if self.fit_intercept:
+            X_feat = np.hstack(([[1]] * n, X))
+        else:
+            X_feat = X.copy()
 
         return X_feat
 
@@ -193,10 +197,6 @@ class BasePhi():
         X_feat = self.transform(X)
         X_feat, Y = check_X_y(X_feat, Y, accept_sparse=True)
         n = X_feat.shape[0]
-
-        # Adding intercept
-        if self.fit_intercept:
-            X_feat = np.hstack(([[1]] * n, X_feat))
 
         # Efficient configuration in case of binary classification.
         if self.n_classes == 2 and not self.one_hot:
@@ -247,52 +247,92 @@ class BasePhi():
 
         return phi
 
-    def est_exp(self, X, Y):
+    def est_exp(self, X_transform, Y):
         '''
-        Average value of :math:`\phi(x,y)` in the supervised dataset (X,Y).
-        Used in the learning stage to estimate
-        the expectation of :math:`\phi(x,y)`, denoted by :math:`{\\tau}`
+        Computes the average value of :math:`\phi(x,y)` to estimate :math:`{\tau}`
+        that defines the constraint of the uncertainty set of distribution.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Unlabeled training instances.
+        X : `array`-like of shape (`n_samples`, `n_features`)
+            Features corresponding with the training instances 
+            :math:`\psi(x)`.
 
         Y : `array`-like of shape (`n_samples`,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        tau_ : `array`-like of shape (`n_features` * `n_classes`)
-            Average value of `phi`
+        tau_ : `array`-like of shape (`n_classes`, `n_features`) for multiple classes and
+                 (`1`, `n_features`) for two classes.
+            Empirical mean of :math:`\phi(x,y)`.
 
         '''
 
-        X, Y = check_X_y(X, Y, accept_sparse=True)
-        return np.average(self.eval_xy(X, Y), axis=0)
+        X_transform, Y = check_X_y(X_transform, Y, accept_sparse=True)        
 
-    def est_std(self, X, Y):
+        # Feature mapping length
+        feat_len = X_transform.shape[1]
+        # Number of samples
+        n = X_transform.shape[0]
+
+        # Compute tau efficiently without creating one-hot encoded phi matrix
+        if self.n_classes > 2 or self.one_hot is True:
+            tau_mat = np.zeros((n_classes, feat_len))
+            for y_i in range(self.n_classes):
+                tau_mat[y_i, :] = np.sum(X_transform[Y == y_i, :], axis=0) * (1 / n)
+
+        # This corresponds with binary classification
+        elif self.one_hot is False:
+            tau_mat = np.zeros((1, feat_len))
+            tau_mat[0, :] = (np.sum(X_transform[Y == 0, :], axis=0) + \
+                             np.sum(-1 * X_transform[Y == 1, :], axis=0)) / X_transform.shape[0]
+
+        return tau_mat
+
+    def est_std(self, X_transform, Y, tau_mat):
         '''
-        Standard deviation of :math:`\phi(x,y)`
-        in the supervised dataset (X,Y).
-        Used in the learning stage
-        to estimate the variance in the expectation of
-        :math:`\phi(x,y)`, denoted by :math:`\lambda`
+        Standard deviation of :math:`\phi(x,y)` 
+        that accounts for inaccuracies in the mean estimate :math:`{\tau}`.
+        It is used to estimate :math:`\lambda`
+        defining the uncertainty set constraints.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Unlabeled training instances.
+        X : `array`-like of shape (`n_samples`, `n_features`)
+            Features corresponding with the training instances 
+            :math:`\psi(x)`.
 
         Y : `array`-like of shape (`n_samples`,)
             Labels corresponding to the unlabeled training instances
 
         Returns
         -------
-        lambda_ : `array`-like of shape (`n_features` * `n_classes`)
-            Standard deviation of `phi`
+        lambda_ : `array`-like of shape (`n_classes`, `n_features`) for multiple classes and
+                 (`1`, `n_features`) for two classes.
+            Standard deviation of :math:`\phi(x,y)`.
 
         '''
 
-        X, Y = check_X_y(X, Y, accept_sparse=True)
-        return np.std(self.eval_xy(X, Y), axis=0)
+        X_transform, Y = check_X_y(X_transform, Y, accept_sparse=True)
+
+        # Feature mapping length
+        feat_len = X_transform.shape[1]
+        # Number of samples
+        n = X_transform.shape[0]
+
+        # Compute the standard deviation of features corresponding with the mean tau_mat
+        if self.n_classes > 2 or self.one_hot is True:
+            lambda_mat = np.zeros((n_classes, feat_len))
+            for y_i in range(self.n_classes):
+                not_y_i = np.sum(Y != y_i)
+                lambda_mat[y_i, :] = np.sqrt((np.sum(np.square(X_transform[Y == y_i, :] - tau_mat[y_i, :]), axis=0) + \
+                                                   (np.square(tau_mat[y_i, :]) * not_y_i)) / n)
+
+        # This corresponds with binary classification.
+        elif self.one_hot is False:
+            lambda_mat = np.zeros((1, feat_len))
+            lambda_mat[0, :] = np.sqrt((np.sum(np.square(X_transform[Y == 0, :] - tau_mat[0, :]), axis = 0) + \
+                                        np.sum(np.square((-1 * X_transform[Y == 1, :]) - tau_mat[0, :]), axis = 0)) / n)
+
+        return lambda_mat

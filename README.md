@@ -45,7 +45,7 @@ See the [MRCpy documentation page](https://machinelearningbcam.github.io/MRCpy/)
 ## Citations
 This repository is the official implementation of Minimax Risk Classifiers proposed in the following papers. If you use MRCpy in a scientific publication, we would appreciate citations to:
 
-- [1] [Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312.] (<https://arxiv.org/abs/2010.07964>)
+- [1] [Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312.] (<https://proceedings.neurips.cc/paper_files/paper/2020/file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf>)
 
 		@article{mazuelas2020minimax,
 		title={Minimax Classification with 0-1 Loss and Performance Guarantees},
@@ -67,8 +67,21 @@ This repository is the official implementation of Minimax Risk Classifiers propo
                 pages = {2530-2550},
                 year={2022}
                 }
+
+- [3] [Mazuelas, S., Romero, M., Grunwald, P. (2023). Minimax Risk Classifiers with 0-1 Loss. Journal of Machine Learning Research, 24(208), 1-48.] (<https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>)
+
+		@article{MazRomGrun:22,
+                  author = {Mazuelas, Santiago and Romero, Mauricio and Grunwald, Peter},
+                  title = {Minimax Risk Classifiers with 0-1 Loss},
+                  journal={Journal of Machine Learning Research},
+                  volume = {24},
+                  number = {208},
+                  pages = {1--48},
+                  year={2023}
+                 }
                
-- [3] [Bondugula, K. et al (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.](<https://arxiv.org/abs/2108.01952>)
+
+- [4] [Bondugula, K. et al (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.](<https://arxiv.org/abs/2108.01952>)
 
 		@article{bondugula2021mrcpy,
 		title={MRCpy: A Library for Minimax Risk Classifiers},

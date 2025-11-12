@@ -51,27 +51,13 @@ class AMRC(BaseMRC):
     .. seealso:: For more information about AMRC, one can refer to the
         following paper:
 
-                    [1] `Álvarez, V., Mazuelas, S., & Lozano, J. A. (2022).
+                    [1] `Álvarez, V., Mazuelas, S., Lozano, J.A. (2022).
                     Minimax Classification under Concept Drift with
                     Multidimensional Adaptation and Performance Guarantees.
-                    International Conference on Machine Learning (ICML) 2022.
+                    In Proceedings of the 39th 
+                    International Conference on Machine Learning, pp. 486-499.
+                    <https://proceedings.mlr.press/v162/alvarez22a/alvarez22a.pdf>`_
 
-                    @InProceedings{AlvMazLoz22,
-                    title = 	 {Minimax Classification under Concept Drift with
-                                 Multidimensional Adaptation and
-                                 Performance Guarantees},
-                    author =     {{\'A}lvarez, Ver{\'o}nica
-                                  and Mazuelas, Santiago
-                                  and Lozano, Jose A},
-                    booktitle = {Proceedings of the 39th
-                                 International Conference on Machine Learning},
-                    pages = 	 {486--499},
-                    year = 	 {2022},
-                    volume = 	 {162},
-                    series = 	 {Proceedings of Machine Learning Research},
-                    month = 	 {Jul},
-                    publisher =    {PMLR},
-                    }
 
     Parameters
     ----------

@@ -47,7 +47,7 @@ class MRC(BaseMRC):
 
     where we consider an uncertainty set :math:`\\mathcal{U}` of potential
     probabilities.
-    These untertainty sets of distributions are given by constraints on the
+    These uncertainty sets of distributions are given by constraints on the
     expectations of a vector-valued function :math:`\\phi : \\mathcal{X}
     \\times \\mathcal{Y} \\rightarrow \\mathbb{R}^m` referred to as feature
     mapping.
@@ -66,15 +66,23 @@ class MRC(BaseMRC):
                     Minimax Classification with
                     0-1 Loss and Performance Guarantees. Advances in Neural
                     Information Processing
-                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    Systems, 33, 302-312. 
+                    <https://proceedings.neurips.cc/paper_files/paper/2020
+                    /file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf>`_
 
                     [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
                     Generalized Maximum
                     Entropy for Supervised Classification.
-                    arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_
+                    IEEE Transactions on Information Theory, 68(4), 2530-2550.
+                    <https://ieeexplore.ieee.org/stamp/
+                    stamp.jsp?arnumber=9682746>`_
 
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+                    [3] `Mazuelas, S., Romero, M., Grunwald, P. (2023).
+                    Minimax Risk Classifiers with 0-1 Loss.
+                    Journal of Machine Learning Research, 24(208), 1-48.
+                    <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
+
+                    [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
                     MRCpy: A Library for Minimax Risk Classifiers.
                     arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_

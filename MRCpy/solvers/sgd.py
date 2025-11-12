@@ -37,7 +37,11 @@ def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batc
     '''
 
     # Initial values for points
-    w_k = np.zeros(m, dtype=np.float64)
+    if n_classes > 2:
+        w_k = np.zeros((n_classes, tau_.shape[1]), dtype=np.float64)
+    elif 
+        w_k = np.zeros(tau_.shape[0], dtype=np.float64)
+
     w_k_sum = w_k
 
     # Setting the initial indices for the batch

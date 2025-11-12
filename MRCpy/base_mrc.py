@@ -42,15 +42,22 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
                     Minimax Classification with
                     0-1 Loss and Performance Guarantees.
                     Advances in Neural Information Processing
-                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+                    Systems, 33, 302-312. 
+                    <https://proceedings.neurips.cc/paper_files/paper/2020
+                    /file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf>`_
 
                     [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
-                    Generalized Maximum
-                    Entropy for Supervised Classification.
-                    arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_
+                    Generalized Maximum Entropy for Supervised Classification.
+                    IEEE Transactions on Information Theory, 68(4), 2530-2550.
+                    <https://ieeexplore.ieee.org/stamp/
+                    stamp.jsp?arnumber=9682746>`_
 
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez,
+                    [3] `Mazuelas, S., Romero, M., Grunwald, P. (2023).
+                    Minimax Risk Classifiers with 0-1 Loss.
+                    Journal of Machine Learning Research, 24(208), 1-48.
+                    <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
+
+                    [4] `Bondugula, K., Mazuelas, S., & Pérez,
                     A. (2021). MRCpy: A Library for Minimax Risk Classifiers.
                     arXiv preprint arXiv:2108.01952.
                     <https://arxiv.org/abs/2108.01952>`_
@@ -248,8 +255,9 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi.fit(X, Y)
 
         # Compute the expectation estimates
-        tau_ = self.compute_tau(X, Y)
-        lambda_ = self.compute_lambda(X, Y)
+        X_transform = self.phi.transform(X)
+        tau_ = self.compute_tau(X_transform, Y)
+        lambda_ = self.compute_lambda(X_transform, Y, tau_mat)
 
         # Limit the number of training samples used in the optimization
         # for large datasets
@@ -293,40 +301,40 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
 
         return self.phi.eval_x(X)
 
-    def compute_tau(self, X, Y):
+    def compute_tau(self, X_transform, Y):
         '''
         Compute mean estimate tau using the given training instances.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Training instances used for solving
-            the minimax risk optimization problem.
+        X : `array`-like of shape (`n_samples`, `n_features`)
+            Features corresponding with the training instances 
+            :math:`\psi(x)`.
 
         Y : `array`-like of shape (`n_samples`, 1), default = `None`
             Labels corresponding to the training instances
             used only to compute the expectation estimates.
         '''
 
-        return self.phi.est_exp(X, Y)
+        return self.phi.est_exp(X_transform, Y)
 
-    def compute_lambda(self, X, Y):
+    def compute_lambda(self, X_transform, Y, tau_mat):
         '''
         Compute deviation in the mean estimate tau
         using the given training instances.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Training instances used for solving
-            the minimax risk optimization problem.
+        X : `array`-like of shape (`n_samples`, `n_features`)
+            Features corresponding with the training instances 
+            :math:`\psi(x)`.
 
         Y : `array`-like of shape (`n_samples`, 1), default = `None`
             Labels corresponding to the training instances
             used only to compute the expectation estimates.
         '''
 
-        return (self.s * self.phi.est_std(X, Y)) / np.sqrt(X.shape[0])
+        return (self.s * self.phi.est_std(X_transform, Y, tau_mat)) / np.sqrt(X.shape[0])
 
     def minimax_risk(self, X, tau_, lambda_, n_classes):
         '''
@@ -343,12 +351,12 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             the minimax risk optimization problem.
 
         tau_ : `array`-like of shape (`n_features` * `n_classes`)
-            Mean estimates
-            for the expectations of feature mappings.
+            Mean estimates :math:`{\tau}` corresponding with 
+            the expectations of feature mappings.
 
         lambda_ : `array`-like of shape (`n_features` * `n_classes`)
-            Variance in the mean estimates
-            for the expectations of the feature mappings.
+            Inaccuracies :math:`\lambda` in the mean estimates
+            corresponding with the expectations of the feature mappings.
 
         n_classes : `int`
             Number of labels in the dataset.

@@ -45,24 +45,12 @@ class DWGCS(CMRC):
     .. seealso:: For more information about DWGCS, one can refer to the
         following paper:
 
-                    [1] `Segovia-Martín, J. I., Mazuelas, S., & Liu, A. (2023).
+                    [1] `Segovia-Martín, J.I., Mazuelas, S., Liu, A. (2023).
                     Double-Weighting for Covariate Shift Adaptation.
-                    International Conference on Machine Learning (ICML) 2023.
-
-                    @InProceedings{SegMazLiu:23,
-                    title =     {Double-Weighting for Covariate Shift Adaptation},
-                    author =    {Segovia-Mart{\'i}n, Jos{\'e} I. 
-                                and Mazuelas, Santiago 
-                                and Liu, Anqi},
-                    booktitle = {Proceedings of the 40th 
-                                International Conference on Machine Learning},
-                    pages =     {30439--30457},
-                    year =      {2023},
-                    volume =    {202},
-                    series =    {Proceedings of Machine Learning Research},
-                    month =     {23--29 Jul},
-                    publisher = {PMLR},
-                    }
+                    In Proceedings of the 40th 
+                    International Conference on Machine Learning, pp. 30439-30457.
+                    <https://proceedings.mlr.press/v202/
+                    segovia-martin23a/segovia-martin23a.pdf>`_
     Parameters
     ----------
     loss : `str` {'0-1', 'log'}, default = '0-1'
@@ -450,7 +438,7 @@ class DWGCS(CMRC):
                 cvx.norm(alpha_ - np.ones((t, 1))) <= (1 - 1 / np.sqrt(self.D)) * np.sqrt(t)
             ]
             problem = cvx.Problem(objective,constraints)
-             try:
+            try:
                 problem.solve(solver = 'GUROBI')
             except cvx.error.SolverError:
                 try:

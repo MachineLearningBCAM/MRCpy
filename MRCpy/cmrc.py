@@ -17,6 +17,7 @@ import itertools as it
 import warnings
 
 import cvxpy as cvx
+import time
 import numpy as np
 import scipy.special as scs
 from sklearn.utils import check_array
@@ -273,6 +274,7 @@ class CMRC(BaseMRC):
                  mini_batch_size=None,
                  max_iters=None,
                  phi='linear',
+                 return_fn_vals = False,
                  **phi_kwargs):
 
         if max_iters is None:
@@ -290,14 +292,14 @@ class CMRC(BaseMRC):
             if solver == 'adam':
                 self.mini_batch_size = 32
             else:
-                self.mini_batch_size = 1
+                self.mini_batch_size = 32
         else:
             self.mini_batch_size = mini_batch_size
 
         self.solver = solver
         self.alpha = alpha
         self.stepsize = stepsize
-        self.cvx_solvers = ['GUROBI', 'SCS', 'ECOS']
+        self.return_fn_vals = return_fn_vals
         super().__init__(loss=loss,
                          s=s,
                          deterministic=deterministic,
@@ -408,22 +410,22 @@ class CMRC(BaseMRC):
             mu = cvx.Variable(m)
 
             if self.loss == '0-1':
-                # Constraints in case of 0-1 loss function
 
                 # Summing up the phi configurations
                 # for all possible subsets of classes for each instance
                 F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                               for numVals in range(1, self.n_classes + 1)
-                               for S in it.combinations(np.arange(self.n_classes),
-                                                        numVals)))
-
+                                   for numVals in range(1, self.n_classes + 1)
+                                   for S in it.combinations(np.arange(self.n_classes),
+                                                            numVals)))
+    
                 # Compute the corresponding length of the subset of classes
                 # for which sums computed for each instance
-                cardS = np.arange(1, self.n_classes + 1).\
+                cardS = np.arange(1, self.n_classes + 1). \
                     repeat([n * scs.comb(self.n_classes, numVals)
                             for numVals in np.arange(1,
-                            self.n_classes + 1)])
+                                                     self.n_classes + 1)])
 
+                # Constraints in case of 0-1 loss function
                 M = F / (cardS[:, np.newaxis])
                 h = 1 - (1 / cardS)
 
@@ -465,11 +467,12 @@ class CMRC(BaseMRC):
                     psi = 0
                     psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
 
+                    phi_mu = phi @ mu
                     for i in range(n):
                         # Get psi for each data point
                         # and return the max value over all subset
                         # and its corresponding index.
-                        g, psi_xi = self.psi(mu, phi[i, :, :])
+                        g, psi_xi = self.psi(phi_mu[i, :], phi[i, :, :])
                         psi_grad = psi_grad + g
                         psi = psi + psi_xi
 
@@ -485,7 +488,8 @@ class CMRC(BaseMRC):
                     psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
                     while i < batch_end_sample_id:
                         sample_id = i % n
-                        g, psi_xi = self.psi(mu, phi[sample_id, :, :])
+                        phi_mu = phi[sample_id, :, :] @ mu
+                        g, psi_xi = self.psi(phi_mu, phi[sample_id, :, :])
                         psi_grad = psi_grad + g
                         psi = psi + psi_xi
                         i = i + 1
@@ -563,7 +567,8 @@ class CMRC(BaseMRC):
                                                 g_,
                                                 self.max_iters,
                                                 self.stepsize,
-                                                self.mini_batch_size)
+                                                self.mini_batch_size,
+                                                self.return_fn_vals)
             elif self.solver == 'adam':
                 self.params_ = adam(self.tau_,
                                     self.lambda_,
@@ -585,7 +590,7 @@ class CMRC(BaseMRC):
 
         return self
 
-    def psi(self, mu, phi):
+    def psi(self, phi_mu, phi):
         '''
         Function to compute the psi function in the objective
         using the given solution mu and the feature mapping 
@@ -609,13 +614,12 @@ class CMRC(BaseMRC):
             The value of psi for a given solution and feature mapping.
         '''
 
-        v = phi@mu
-        indices = np.argsort(v)[::-1]
-        value = v[indices[0]] - 1
+        indices = np.argsort(phi_mu)[::-1]
+        value = phi_mu[indices[0]] - 1
         g = phi[indices[0],:]
 
         for k in range(1, self.n_classes):
-            new_value = (k * value + v[indices[k]]) / (k+1)
+            new_value = (k * value + phi_mu[indices[k]]) / (k+1)
             if new_value >= value:
                 value = new_value
                 g = (k * g + phi[indices[k],:]) / (k+1)
@@ -662,42 +666,18 @@ class CMRC(BaseMRC):
         phi = self.compute_phi(X)
 
         if self.loss == '0-1':
-            # Constraints in case of 0-1 loss function
 
-            # Summing up the phi configurations
-            # for all possible subsets of classes for each instance
-            F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                           for numVals in range(1, self.n_classes + 1)
-                           for S in it.combinations(np.arange(self.n_classes),
-                                                    numVals)))
-
-            # Compute the corresponding length of the subset of classes
-            # for which sums computed for each instance
-            cardS = np.arange(1, self.n_classes + 1).\
-                repeat([n * scs.comb(self.n_classes, numVals)
-                        for numVals in np.arange(1,
-                        self.n_classes + 1)])
-
-            # Compute psi
-            psi = np.zeros(n)
-
-            # First we calculate the all possible values of psi
-            # for all the points
-            psi_arr = (np.ones(cardS.shape[0]) -
-                       (F @ self.mu_ + cardS)) / cardS
-
+            # Compute the conditional probabilities
+            hy_x = np.zeros((n, self.n_classes))
+            phi_mu = phi @ self.mu_
             for i in range(n):
-                # Get psi values for each data point and find the min value
-                psi_arr_xi = psi_arr[np.arange(i, psi_arr.shape[0], n)]
-                psi[i] = np.min(psi_arr_xi)
+                # Compute the constraint function (\psi) for each x
+                g, psi_xi = self.psi(phi_mu[i, :], phi[i, :, :])
 
-            # Conditional probabilities
-            hy_x = np.clip(np.ones((n, self.n_classes)) +
-                           np.dot(phi, self.mu_) +
-                           np.tile(psi, (self.n_classes, 1)).transpose(),
-                           0., None)
+                # Conditional probabilities
+                hy_x[i, :] = np.clip((1 + phi_mu[i, :] + psi_xi),0., None)
 
-            # normalization constraint
+            # Normalize the probabilities
             c = np.sum(hy_x, axis=1)
             # check when the sum is zero
             zeros = np.isclose(c, 0)

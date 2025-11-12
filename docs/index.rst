@@ -75,7 +75,20 @@ References
                          year={2022}
                         }
 
-   - [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. <https://arxiv.org/abs/2108.01952>`_
+   - [3] `Mazuelas, S., Romero, M., Grunwald, P. (2023). Minimax Risk Classifiers with 0-1 Loss. Journal of Machine Learning Research, 24(208), 1-48. <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
+          ::
+
+               @article{MazRomGrun:22,
+                         author = {Mazuelas, Santiago and Romero, Mauricio and Grunwald, Peter},
+                         title = {Minimax Risk Classifiers with 0-1 Loss},
+                         journal={Journal of Machine Learning Research},
+                         volume = {24},
+                         number = {208},
+                         pages = {1--48},
+                         year={2023}
+                        }
+
+   - [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952. <https://arxiv.org/abs/2108.01952>`_
 
          ::
 
