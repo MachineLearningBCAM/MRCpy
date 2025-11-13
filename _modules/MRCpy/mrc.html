@@ -318,20 +318,45 @@
 <span class="sd">                    Uncertainty in Artificial Intelligence, 206-215.</span>
 <span class="sd">                    &lt;https://proceedings.mlr.press/v216/bondugula23a.html&gt;`_</span>
 
+<span class="sd">        ’ccg’</span>
+<span class="sd">            Efficient learning algorithm for large number of samples</span>
+<span class="sd">            and features based on constraint generation. Efficiently</span>
+<span class="sd">            handles the multi-class case (with quasi linear complexity).</span>
+<span class="sd">            `eps1` and `eps2` are the parameters that provide a </span>
+<span class="sd">            trade-off between time complexity and acccuracy. </span>
+<span class="sd">            The maximum number of constraints selected in each iteration</span>
+<span class="sd">            is controlled by the hyperparamters `n_max` and `m_max`. </span>
+<span class="sd">            These hyperparameters also affect the comptutional complexity.</span>
+
+<span class="sd">        .. seealso:: For more information about the large-scale learning </span>
+<span class="sd">            algorithms for 0-1 MRC, one can refer to the following resource:</span>
+<span class="sd">    </span>
+<span class="sd">                [1] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025).</span>
+<span class="sd">                Efficient Large-Scale Learning of Minimax Risk Classifiers.</span>
+<span class="sd">                IEEE International Conference on Data Mining</span>
+<span class="sd">                &lt;https://www3.cs.stonybrook.edu/~icdm2025/acceptedpapers.html&gt;`_</span>
+
 <span class="sd">    max_iters : `int`, default = `10000`</span>
 <span class="sd">        Maximum number of iterations to use</span>
 <span class="sd">        for finding the solution of optimization when</span>
 <span class="sd">        using the subgradient approach.</span>
 
-<span class="sd">    n_max : `int`, default = `100`</span>
+<span class="sd">    n_max : `int`, default = `400`</span>
+<span class="sd">        Maximum number of constraints selected in each iteration</span>
+<span class="sd">        in case of ’ccg’ solver.</span>
+
+<span class="sd">    m_max : `int`, default = `100`</span>
 <span class="sd">        Maximum number of features selected in each iteration</span>
-<span class="sd">        in case of ’cg’ solver.</span>
+<span class="sd">        in case of ’ccg’ and ’cg’ solver.</span>
 
 <span class="sd">    k_max : `int`, default = `20`</span>
 <span class="sd">        Maximum number of iterations in case of ’cg’ solver.</span>
 
-<span class="sd">    eps : `float`, default = `1e-4`</span>
-<span class="sd">        Dual constraints&#39; violation threshold for ’cg’ solver. </span>
+<span class="sd">    eps1 : `float`, default = `1e-2`</span>
+<span class="sd">        Primal constraints&#39; violation threshold for ’ccg’ solver. </span>
+
+<span class="sd">    eps2 : `float`, default = `1e-5`</span>
+<span class="sd">        Dual constraints&#39; violation threshold for ’cg’/’ccg’ solver. </span>
 
 <span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>

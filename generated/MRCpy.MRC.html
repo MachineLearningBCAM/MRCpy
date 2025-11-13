@@ -293,17 +293,43 @@ The 39th Conference on
 Uncertainty in Artificial Intelligence, 206-215.</a></p>
 </div></blockquote>
 </div>
+<dl class="simple">
+<dt>’ccg’</dt><dd><p>Efficient learning algorithm for large number of samples
+and features based on constraint generation. Efficiently
+handles the multi-class case (with quasi linear complexity).
+<code class="xref any docutils literal notranslate"><span class="pre">eps1</span></code> and <code class="xref any docutils literal notranslate"><span class="pre">eps2</span></code> are the parameters that provide a 
+trade-off between time complexity and acccuracy. 
+The maximum number of constraints selected in each iteration
+is controlled by the hyperparamters <code class="xref any docutils literal notranslate"><span class="pre">n_max</span></code> and <code class="xref any docutils literal notranslate"><span class="pre">m_max</span></code>. 
+These hyperparameters also affect the comptutional complexity.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For more information about the large-scale learning 
+algorithms for 0-1 MRC, one can refer to the following resource:</p>
+<blockquote>
+<div><p>[1] <a class="reference external" href="https://www3.cs.stonybrook.edu/~icdm2025/acceptedpapers.html">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025).
+Efficient Large-Scale Learning of Minimax Risk Classifiers.
+IEEE International Conference on Data Mining</a></p>
+</div></blockquote>
+</div>
 </dd>
 <dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">10000</span></code></span></dt><dd><p>Maximum number of iterations to use
 for finding the solution of optimization when
 using the subgradient approach.</p>
 </dd>
-<dt><strong>n_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">100</span></code></span></dt><dd><p>Maximum number of features selected in each iteration
-in case of ’cg’ solver.</p>
+<dt><strong>n_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">400</span></code></span></dt><dd><p>Maximum number of constraints selected in each iteration
+in case of ’ccg’ solver.</p>
+</dd>
+<dt><strong>m_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">100</span></code></span></dt><dd><p>Maximum number of features selected in each iteration
+in case of ’ccg’ and ’cg’ solver.</p>
 </dd>
 <dt><strong>k_max</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">20</span></code></span></dt><dd><p>Maximum number of iterations in case of ’cg’ solver.</p>
 </dd>
-<dt><strong>eps</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1e-4</span></code></span></dt><dd><p>Dual constraints’ violation threshold for ’cg’ solver.</p>
+<dt><strong>eps1</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1e-2</span></code></span></dt><dd><p>Primal constraints’ violation threshold for ’ccg’ solver.</p>
+</dd>
+<dt><strong>eps2</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1e-5</span></code></span></dt><dd><p>Dual constraints’ violation threshold for ’cg’/’ccg’ solver.</p>
 </dd>
 <dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
 The currenlty available feature mapping methods are
