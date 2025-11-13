@@ -1,27 +1,25 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="../../">
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MRCpy.dwgcs &mdash; MRCpy 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
-      <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=fb9458d3" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=61a4c737" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
-      <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-
-  
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-binder.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-dataframe.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/sg_gallery-rendered-html.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=01f34227"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
         <script src="../../_static/js/copybutton.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -111,9 +109,7 @@
     <span class="n">RandomReLUPhi</span><span class="p">,</span> \
     <span class="n">ThresholdPhi</span>
 
-<div class="viewcode-block" id="DWGCS">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS">[docs]</a>
-<span class="k">class</span> <span class="nc">DWGCS</span><span class="p">(</span><span class="n">CMRC</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS">[docs]</a><span class="k">class</span> <span class="nc">DWGCS</span><span class="p">(</span><span class="n">CMRC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Double-Weighting General Covariate Shift</span>
 
 <span class="sd">    The class DWGCS implements the method Double-Weighting for </span>
@@ -277,9 +273,7 @@
 <span class="sd">                can be found in the corresponding documentation.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="DWGCS.__init__">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="DWGCS.__init__"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -313,11 +307,8 @@
                          <span class="n">max_iters</span><span class="p">,</span>
                          <span class="n">phi</span><span class="p">,</span>
                          <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
-
     
-<div class="viewcode-block" id="DWGCS.fit">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.fit">[docs]</a>
-    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">,</span> <span class="n">xTe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS.fit"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">,</span> <span class="n">xTe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
@@ -417,11 +408,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">xTe</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
-
     
-<div class="viewcode-block" id="DWGCS.DWKMM">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.DWKMM">[docs]</a>
-    <span class="k">def</span> <span class="nf">DWKMM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS.DWKMM"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.DWKMM">[docs]</a>    <span class="k">def</span> <span class="nf">DWKMM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Obtain training and testing weights.</span>
 
@@ -559,10 +547,7 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-
-<div class="viewcode-block" id="DWGCS.compute_tau">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_tau">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS.compute_tau"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_tau">[docs]</a>    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute mean estimate tau using the given training instances.</span>
 
@@ -587,11 +572,8 @@
         <span class="n">tau_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">phi_betaMatrix</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">tau_</span></div>
-
     
-<div class="viewcode-block" id="DWGCS.compute_lambda">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_lambda">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTe</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS.compute_lambda"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTe</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute deviation in the mean estimate tau</span>
 <span class="sd">        using the given testing instances.</span>
@@ -652,11 +634,8 @@
         <span class="n">lambda_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">return</span> <span class="n">lambda_</span></div>
-
     
-<div class="viewcode-block" id="DWGCS.compute_phi">
-<a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_phi">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="DWGCS.compute_phi"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the feature mapping corresponding to instances given</span>
 <span class="sd">        for learning the classifiers and prediction.</span>
@@ -679,9 +658,7 @@
         <span class="n">alpha_rep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha_</span><span class="p">,</span> <span class="n">d</span><span class="p">),(</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
         <span class="n">phi_alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">alpha_rep</span><span class="p">,</span> <span class="n">phiMatrix</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">phi_alpha</span></div>
-</div>
-
+        <span class="k">return</span> <span class="n">phi_alpha</span></div></div>
 </pre></div>
 
            </div>
