@@ -1,0 +1,10 @@
+#####
+Upper bound using MRCpy cvx:  0.09401833529219787
+Training time mrcpy:  493.0562617778778
+Classification error using mrc cvx :  0.07393786365133384
+#####
+
+
+1) Time taken by CG-CP using 1000 constraints (selecting all constraints corresponding to each sample) and 400 cols in each iteration - 620 secs
+2) ... CG-CP using all the violated constraints and 400 cols in each iteration - 270 secs
+3) ... CG-CP using 500 constraints and 400 cols in each iteration - 570 secs

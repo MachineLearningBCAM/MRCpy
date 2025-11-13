@@ -144,10 +144,13 @@ class MRC(BaseMRC):
             while requiring more time.
 
         ’cg’
-            Solves the optimization using an algorithm
-            based on constraint generation. This algorithm provides 
-            efficient learning especially for scenarios
-            with large number of features.
+            Efficient learning algorithm for large number of features with
+            few samples (high-dimensional data) based on column generation. 
+            `eps2` is the hyperparameter that provide a 
+            trade-off between time complexity and acccuracy.
+            The maximum number of features 
+            selected in each iteration is controlled by `m_max`. It
+            also affects the computational complexity.
 
         .. seealso:: For more information about the constraint generation 
             algorithm for 0-1 MRC, one can refer to the following resource:
@@ -158,6 +161,23 @@ class MRC(BaseMRC):
                     The 39th Conference on
                     Uncertainty in Artificial Intelligence, 206-215.
                     <https://proceedings.mlr.press/v216/bondugula23a.html>`_
+
+        ’ccg’
+            Efficient learning algorithm for large number of samples
+            and features based on constraint generation. Efficiently
+            handles the multi-class case (with quasi linear complexity).
+            `eps1` and `eps2` are the parameters that provide a 
+            trade-off between time complexity and acccuracy. 
+            The maximum number of constraints selected in each iteration
+            is controlled by the hyperparamters `n_max` and `m_max`. 
+            These hyperparameters also affect the comptutional complexity.
+
+        .. seealso:: For more information about the constraint generation 
+            algorithm for 0-1 MRC, one can refer to the following resource:
+        
+                    [1] `Bondugula, K., Mazuelas, S., & Pérez, A. (2025).
+                    Efficient Large-Scale Learning of Minimax Risk Classifiers.
+                    IEEE International Conference on Data Mining`_
 
     max_iters : `int`, default = `10000`
         Maximum number of iterations to use
@@ -484,7 +504,7 @@ class MRC(BaseMRC):
 
         elif self.solver == 'cg':
             # Use methods based on constraint generation
-            # to solve the optimization (corresponding to 0-1 loss only).
+            # to solve the optimization with many features but few samples.
 
             if self.loss == 'log':
                 raise ValueError('The \'cg\' solver is only available ' +
@@ -539,6 +559,67 @@ class MRC(BaseMRC):
                                                              warm_start,
                                                              nu_,
                                                              self.eps)
+        elif self.solver == 'ccg':
+            # Use algorithms based on constraint generation 
+            # to solve large-scale optimization with many samples, features, and classes.
+
+            if loss == "log":
+                raise ValueError('The \'ccg\' solver is only available ' +
+                                 'for 0-1 loss.')
+
+            raise ValueError('Invalid inputs .....')
+
+            if large_features is not True:
+                if self.n_classes == 2:
+                    from main_ccg_large_n.main import main_large_n
+
+                    mu, nu, R, R_k, mrc_cg_time, solver_times, init_mrc_cg_time = main_large_n(X,
+                                                                                  y_train,
+                                                                                  phi_ob,
+                                                                                  s,
+                                                                                  n_max,
+                                                                                  max_iters,
+                                                                                  eps_1)
+
+                else:
+                    from main_ccg_large_n_multiclass.main import main_large_n_efficient_multiclass
+                    mu, nu, R, R_k, mrc_cg_time, solver_times, init_mrc_cg_time, constr_dict = main_large_n_efficient_multiclass(X,
+                                                                                                                  y_train,
+                                                                                                                  phi_ob,
+                                                                                                                  s,
+                                                                                                                  n_max,
+                                                                                                                  max_iters,
+                                                                                                                  eps_1)
+
+                # Perform constraint generation approach for large number of samples.
+            else:
+                if is_sparse and self.n_classes == 2:
+                    from main_ccg_large_n_m_sparse_binary.main import main_large_n_m_sparse_binary
+                    mu, nu, R, R_k, solver_times_gurobi, solver_times, idx_cols, mrc_cg_time, init_mrc_cg_time, n_tries = main_large_n_m_sparse_binary(X,
+                                                                                                                                         y_train,
+                                                                                                                                         fit_intercept,
+                                                                                                                                         s,
+                                                                                                                                         n_max,
+                                                                                                                                         k_max,
+                                                                                                                                         eps_1,
+                                                                                                                                         eps_2,
+                                                                                                                                         is_sparse,
+                                                                                                                                         dict_nnz_X_train,
+                                                                                                                                         max_iters)
+                else:
+                    from main_ccg_large_n_m.main import main_large_n_m
+                    mu, nu, R, R_k, solver_times_gurobi, solver_times, idx_cols, mrc_cg_time, init_mrc_cg_time, n_tries = main_large_n_m(X,
+                                                                                                                             y_train,
+                                                                                                                             phi_ob,
+                                                                                                                             s,
+                                                                                                                             n_max,
+                                                                                                                             k_max,
+                                                                                                                             eps_1,
+                                                                                                                             eps_2,
+                                                                                                                             max_iters)
+                # Perform a combination of constraint and column generation approach
+                # for large number of samples and features.
+
         else:
             raise ValueError('Unexpected solver ... ')
 
