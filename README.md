@@ -37,6 +37,8 @@ __NOTE:__ The solver based on CVXpy in the library uses GUROBI optimizer which r
 
 - `Python` >= 3.8
 - `numpy` >= 1.18.1, `scipy`>= 1.4.1, `scikit-learn` >= 0.21.0, `cvxpy`, `mosek`, `pandas`, `pycddlib`
+
+  
 __NOTE:__ Installing pycddlib requires installing GMP, and using `pip install pycddlib` might not be work. You check the documentation on how to install this package and its dependencies: https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation
 
 ## Usage
