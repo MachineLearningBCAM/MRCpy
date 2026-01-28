@@ -15,6 +15,7 @@ If not, see https://www.gnu.org/licenses/.
 """
 import sys
 import cdd
+import numpy as np
 from cvxpy.utilities.key_utils import to_str
 from scipy.spatial import ConvexHull, convex_hull_plot_2d, Delaunay, distance
 
@@ -158,6 +159,9 @@ class LCMRC(BaseMRC):
                 # Set the diagonal elements to 0
                 np.fill_diagonal(LT, 0)
                 return LT
+            elif loss == "weighted":
+                LT = np.array([[0, 1], [10, 0]])
+                return LT
             return 1
         else: #If it is not a string, we validate it as an array
             if not np.issubdtype(loss.dtype, np.number):
@@ -179,7 +183,8 @@ class LCMRC(BaseMRC):
                  **phi_kwargs):
         self.eps = eps
         self.use_closed_form = use_closed_form
-        self.cvx_solvers = ['GUROBI', 'MOSEK', 'SCS', 'CLARABEL', 'CVXOPT',
+        self.cvx_solvers = ['MOSEK', 'GUROBI'
+        , 'SCS', 'CLARABEL', 'CVXOPT',
                             'ECOS', 'ECOS_BB', 'GLPK', 'GLPK_MI', 'OSQP',
                            "COPT", "XPRESS", "PROXQP", "CPLEX", 'SCIPY']
         self.loss_matrix = self.__generate_loss_matrix(loss, n_classes, alpha)
@@ -193,8 +198,7 @@ class LCMRC(BaseMRC):
         '''
         Solves the minimax risk problem
         for different the given loss matrix
-        The solution of the default L-MRC optimization
-        gives the upper bound of the error.
+        
 
         Parameters
         ----------
@@ -225,14 +229,11 @@ class LCMRC(BaseMRC):
                                   ensure_2d=False)
         phi = self.compute_phi(X)
 
-        phi = np.unique(phi, axis=0)
+        #phi = np.unique(phi, axis=0)
 
         # Constants
         m = phi.shape[2]
         n = phi.shape[0]
-
-        # Save the phi configurations for finding the lower bounds
-        self.lowerPhiConfigs = phi
 
         # Get H-form of the polyhedron of restrictions defined by the Convex learning problem given by the loss matrix
         self.b, self.A = self.__get_A_b(self.loss_matrix)
@@ -257,39 +258,36 @@ class LCMRC(BaseMRC):
         #Define CVXpy problem
         mu = cvx.Variable(m)
         eta = cvx.Variable(m)
-        nu = cvx.Variable(1)
 
         an = self.tau_ - self.lambda_ / np.sqrt(n)
-
         bn = self.tau_ + self.lambda_ / np.sqrt(n)
 
         # Compute C matrix and positive indices
         C = np.array(self.A @ np.ones(self.A.shape[1]))
         pos_index = np.where(C > 0)[0]
 
-        constraints = []
-        constraints.append(eta + mu >= 0)
-        constraints.append(eta - mu >= 0)
+        constraints = [eta + mu >= 0, eta - mu >= 0]
 
         def var_phi_2(phi_xdot):
-            return cvx.min(
-                cvx.hstack(
-                    [(self.b[index] - (C @ phi_xdot @ mu))[index] / C[index] for index in pos_index]))
+            expr = self.b - self.A @ phi_xdot @ mu
+            return cvx.min(expr[pos_index] / C[pos_index])
 
         term2 = (1 / n) * cvx.sum([var_phi_2(phi[j, :, :]) for j in range(n)])
-        objective = cvx.Minimize(0.5 * (bn - an) @ eta - 0.5 * (bn + an) @ mu - term2)
+        objective = cvx.Minimize(0.5 * (bn - an) @ eta - 0.5 * (bn + an) @ mu - term2 )
         problem = cvx.Problem(objective, constraints)
 
         for s in self.cvx_solvers:
             try:
-                problem.solve(solver=s)  # , max_iters=m_iter)
+                problem.solve(solver=s)
                 self.mu_ = mu.value
-                self.nu_ = nu.value
-            except:
+                self.nu_ = term2.value
+                
+            except Exception as e:
+                print(e)
                 pass
-            if mu.value is not None and nu.value is not None:
+            if mu.value is not None: # and term2.value is not None:
                 break
-        if mu.value is None or nu.value is None:
+        if mu.value is None:# or term2.value is None:
             raise RuntimeError("Learning problem is not feasible")
 
         # Get submatrices of N and compute the inverse matrices
@@ -363,109 +361,6 @@ class LCMRC(BaseMRC):
             hy_x.append(h)
         return np.array(hy_x)
 
-    def get_upper_bound(self):
-        '''
-        Returns the upper bound on the expected loss for the fitted classifier.
-
-        Returns
-        -------
-        upper_bound : `float`
-            Upper bound of the expected loss for the fitted classifier.
-        '''
-
-        if self.deterministic:
-            # Number of instances in training
-            n = self.lowerPhiConfigs.shape[0]
-
-            # Feature mapping length
-            m = self.phi.len_
-            mu = cvx.Variable(m)
-            eta = cvx.Variable(m)
-            nu = cvx.Variable(1)
-
-            an = self.tau_ - self.lambda_ / np.sqrt(n)
-
-            bn = self.tau_ + self.lambda_ / np.sqrt(n)
-
-            objective = cvx.Minimize(0.5 * (bn - an) @ eta - 0.5 * (bn + an) @ mu - nu)
-
-            constraints = [
-                self.A @ (cvx.matmul(self.lowerPhiConfigs[i, :, :], mu) +
-                          cvx.matmul(nu, np.ones((1, self.n_classes)))) <= self.b
-                for i in range(n)
-            ]
-            constraints.append(eta + mu >= 0)
-            constraints.append(eta - mu >= 0)
-            problem = cvx.Problem(objective, constraints)
-            for s in self.cvx_solvers:
-                try:
-                    problem.solve(solver=s)
-                except:
-                    pass
-            self.upper_ = (0.5 * (bn - an) @ eta.value -
-                           0.5 * (bn + an) @ mu.value - nu.value)
-
-        return self.upper_
-
-    def get_lower_bound(self, X, Y):
-        '''
-            Obtains the lower bound on the expected loss for the fitted classifier.
-
-            Parameters
-            ----------
-            X : `array`-like of shape (`n_samples`, `n_dimensions`)
-                Test instances for which the labels are to be predicted
-                by the MRC model.
-
-            Y : `array`-like of shape (`n_samples`, 1), default = `None`
-                Labels corresponding to the testing instances
-                used to compute the error in the prediction.
-
-            Returns
-            -------
-            lower_bound : `float`
-                Lower bound of the error for the fitted classifier.
-        '''
-        # Classifier should be fitted to obtain the lower bound
-        check_is_fitted(self, "is_fitted_")
-
-        # Learned feature mappings
-        phi = self.lowerPhiConfigs
-        # Variables
-        n = phi.shape[0]
-        m = phi.shape[2]
-        #Get all errors
-        errors = self.error(X,Y,False)
-
-        #Define the cvx problem that determines the lower bound
-        mu = cvx.Variable(m)
-        eta = cvx.Variable(m)
-        nu = cvx.Variable(1)
-
-        an = self.tau_ - self.lambda_ / np.sqrt(n)
-
-        bn = self.tau_ + self.lambda_ / np.sqrt(n)
-
-        objective = cvx.Maximize(- 0.5 * (bn - an) @ eta + 0.5 * (bn + an) @ mu + nu)
-
-        constraints = [
-            cvx.matmul(self.lowerPhiConfigs[i, :, :], mu) +
-            cvx.matmul(nu, np.ones((1, self.n_classes))) <= errors[i]
-            for i in range(n)
-        ]
-        constraints.append(eta + mu >= 0)
-        constraints.append(eta - mu >= 0)
-        problem = cvx.Problem(objective, constraints)
-
-        for s in self.cvx_solvers:
-            try:
-                problem.solve(solver=s)
-            except:
-                pass
-        self.lower_ = (- 0.5 * (bn - an) @ eta.value +
-                       0.5 * (bn + an) @ mu.value + nu.value)
-
-        return self.lower_
 
     def error(self, X, Y, mean=True):
         '''
@@ -618,7 +513,7 @@ class LCMRC(BaseMRC):
         b = np.concatenate((b, np.array([1, -1])))
         A = np.vstack([A, v])
         b = b.reshape((b.shape[0], 1))
-        #print(A)
+        
         mat = cdd.matrix_from_array(np.hstack([b, -A]))
         mat.rep_type = cdd.RepType.INEQUALITY
         cdd.matrix_canonicalize(mat)
@@ -640,7 +535,6 @@ class LCMRC(BaseMRC):
         # Compute alpha
         alpha = np.max(L_1_norms)
         alpha += 0.1 * np.abs(alpha)
-        # print(alpha)
         # Compute the gamma points for the fist |T| rays as 1/(alpha+<l_(i,·),1>)
         gama = [1 / (alpha + L_1_norms[i]) for i in range(d_2)]
         # Compute intersection points for those rays
@@ -651,7 +545,7 @@ class LCMRC(BaseMRC):
             int_points_2[i][i + 1] = 1
 
         int_points = np.concatenate((int_points_1, int_points_2))
-        # print(int_points)
+        
         # Perform change of reference to a new basis, where Hyperplane H is given by z_0=1
         #   normal vector (alpha,1,1,...,1):
         nv = np.ones(d_1 + 1)
@@ -660,14 +554,14 @@ class LCMRC(BaseMRC):
         B = -alpha * np.identity(d_1 + 1)
         B[0, :] = 1
         B[:, 0] = nv
-        # print(B)
+        
         # K matrix necessary to calculate change of reference matrix
         K = np.zeros((d_1 + 1, d_1 + 1))
         K[0, 1:] = np.ones(d_1)
         # Change of reference matrix D
         # D = (np.identity(d_1+1)+K) @ np.linalg.inv(B)
         D = np.linalg.inv(B)
-        # print(D)
+        
         op = np.zeros(d_1 + 1)
         op[0] = 1
         o = (1 / alpha) * op
