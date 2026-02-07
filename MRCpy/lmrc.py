@@ -107,11 +107,11 @@ class LMRC(BaseMRC):
             can be found in the corresponding documentation.
     '''
 
-    def __generate_loss_matrix(self, loss, n, alpha=None):
+    def __generate_loss_matrix(self, loss, n, alpha=None, Beta=10):
 
         '''
         This function generates some common loss matrices: abstention,
-         0-1, ordinal, ordinal-squared and random.
+         0-1, ordinal, ordinal-squared, weighted (only for binary) and random.
 
         Parameters
         ----------
@@ -155,6 +155,9 @@ class LMRC(BaseMRC):
                 LT = np.random.uniform(0, 1, (n, n))
                 # Set the diagonal elements to 0
                 np.fill_diagonal(LT, 0)
+                return LT
+            elif loss == "weighted" and n == 2:
+                LT = np.array([[0, 1], [Beta, 0]])
                 return LT
             return 1
         else: #If it is not a string, we validate it as an array
@@ -267,6 +270,7 @@ class LMRC(BaseMRC):
             self.A @ (cvx.matmul(phi[i, :, :], mu) + cvx.matmul(nu, np.ones((1, self.n_classes)))) <= self.b
             for i in range(n)
         ]
+
         constraints.append(eta + mu >= 0)
         constraints.append(eta - mu >= 0)
         problem = cvx.Problem(objective, constraints)
@@ -282,7 +286,9 @@ class LMRC(BaseMRC):
                 break
         if mu.value is None or nu.value is None:
             raise RuntimeError("Learning problem is not feasible")
-
+        # Upper bounds are now available.
+        self.upper_ = (0.5 * (bn - an) @ eta.value -
+                            0.5 * (bn + an) @ mu.value - nu.value)
         # Get submatrices of N and compute the inverse matrices
         flag = True
         for T in tri.simplices:
@@ -299,6 +305,7 @@ class LMRC(BaseMRC):
 
 
         self.is_fitted_ = True
+
         return self
 
     def predict_proba(self, X):
@@ -363,6 +370,10 @@ class LMRC(BaseMRC):
         upper_bound : `float`
             Upper bound of the expected loss for the fitted classifier.
         '''
+        # If model is fitted, we already have the upper bound
+        if self.is_fitted_:
+            return self.upper_
+
 
         if self.deterministic:
             # Number of instances in training
@@ -378,6 +389,7 @@ class LMRC(BaseMRC):
 
             bn = self.tau_ + self.lambda_ / np.sqrt(n)
 
+
             objective = cvx.Minimize(0.5 * (bn - an) @ eta - 0.5 * (bn + an) @ mu - nu)
 
             constraints = [
@@ -391,8 +403,14 @@ class LMRC(BaseMRC):
             for s in self.cvx_solvers:
                 try:
                     problem.solve(solver=s)
-                except:
+                except Exception as e:
+                    print(e)
+                    print("Failed cvxpy problem using solver: ", s)
                     pass
+                if mu.value is not None and nu.value is not None:
+                    break
+            if mu.value is None or nu.value is None:
+                raise RuntimeError("Learning problem is not feasible")
             self.upper_ = (0.5 * (bn - an) @ eta.value -
                            0.5 * (bn + an) @ mu.value - nu.value)
 
