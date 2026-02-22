@@ -35,11 +35,10 @@ jobs:
       - run:
           name: Install dependencies
           command: >-
-            pip install sphinx==1.8.1 &&
             pip install sphinx sphinx_rtd_theme &&
             pip install sphinx-gallery &&
             pip install numpydoc &&
-            pip install -r requirements.txt
+            pip install -r requirements.txt &&
             pip install -r doc-requirements.txt
       - run:
           name: Install the library
