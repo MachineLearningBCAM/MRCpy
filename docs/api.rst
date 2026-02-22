@@ -2,8 +2,8 @@ MRCpy Package Contents
 ===========================
 
 
-Minimax Risk Classifiers
-------------------------
+Numpy-based Classifiers
+---------------------------------------------------
 
 .. autosummary::
    :toctree: generated/

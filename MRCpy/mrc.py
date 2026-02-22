@@ -926,7 +926,9 @@ class MRC(BaseMRC):
 
         self.is_fitted_ = True
 
-        if self.n_classes > 2 and (self.mu_.ndim != 2 or self.mu_.shape[0] == 1 or self.mu_.shape[1] == 1):
+        if self.n_classes == 2:
+            self.mu_ = self.mu_.flatten().reshape(1, d)
+        elif self.n_classes > 2 and (self.mu_.ndim != 2 or self.mu_.shape[0] == 1 or self.mu_.shape[1] == 1):
             self.mu_ = self.mu_.reshape(self.n_classes, d)
 
         return self
@@ -1171,7 +1173,6 @@ class MRC(BaseMRC):
         phi_mu = X_tranform @ self.mu_.T
 
         if self.n_classes == 2:
-            phi_mu = phi_mu[:, None]
             phi_mu = np.hstack([phi_mu, -phi_mu])
 
         if self.loss == '0-1':
