@@ -79,11 +79,22 @@ class TestMRC(unittest.TestCase):
     # Using constraint-column generation (ccg) solver
     # Training test for MRC with 0-1 loss.
     # Note: ccg solver only supports 0-1 loss
+    # Uses a smaller dataset to stay within Gurobi free license limits
     def test_MRC0_1_ccg(self):
-        self.MRC_training(phi='threshold', loss='0-1', solver='ccg')
-        self.MRC_training(phi='linear', loss='0-1', solver='ccg')
-        self.MRC_training(phi='fourier', loss='0-1', solver='ccg')
-        self.MRC_training(phi='relu', loss='0-1', solver='ccg')
+        X_small = self.X[:60]
+        y_small = self.y[:60]
+        r = np.unique(y_small).shape[0]
+        for phi in ['threshold', 'linear', 'fourier', 'relu']:
+            clf = MRC(phi=phi, loss='0-1', max_iters=500, solver='ccg')
+            clf.fit(X_small, y_small)
+            upper = clf.get_upper_bound()
+            print('Upper bound: ', upper)
+            self.assertTrue(hasattr(clf, 'is_fitted_'))
+            self.assertTrue(clf.is_fitted_)
+            hy_x = clf.predict_proba(X_small)
+            self.assertTrue(hy_x.shape == (X_small.shape[0], r))
+            y_pred = clf.predict(X_small)
+            self.assertTrue(y_pred.shape == (X_small.shape[0], ))
 
     # Test binary classification
     def test_MRC_binary(self):

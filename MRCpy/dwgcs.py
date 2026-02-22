@@ -458,9 +458,12 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
-                                     'alpha and beta .... ' + \
-                                     'The problem is ', problem.status)
+                        try:
+                            problem.solve(solver = 'SCS')
+                        except cvx.error.SolverError:
+                            raise ValueError('cvxpy couldn\'t find a solution for ' + \
+                                         'alpha and beta .... ' + \
+                                         'The problem is ', problem.status)
 
             self.beta_ = beta_.value
             self.alpha_ = alpha_
@@ -491,9 +494,12 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
-                                     'alpha and beta .... ' + \
-                                     'The problem is ', problem.status)
+                        try:
+                            problem.solve(solver = 'SCS')
+                        except cvx.error.SolverError:
+                            raise ValueError('cvxpy couldn\'t find a solution for ' + \
+                                         'alpha and beta .... ' + \
+                                         'The problem is ', problem.status)
 
             self.beta_ = beta_
             self.alpha_ = alpha_.value
@@ -525,9 +531,12 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
-                                     'alpha and beta .... ' + \
-                                     'The problem is ', problem.status)
+                        try:
+                            problem.solve(solver = 'SCS')
+                        except cvx.error.SolverError:
+                            raise ValueError('cvxpy couldn\'t find a solution for ' + \
+                                         'alpha and beta .... ' + \
+                                         'The problem is ', problem.status)
 
 
             self.beta_ = beta_.value
@@ -615,9 +624,10 @@ class DWGCS(CMRC):
             try:
                 problem.solve(solver = 'MOSEK')
             except cvx.error.SolverError:
-                problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-6, abstol = 1e-6)
-                print('Using the "ECOS" solver is less efficient than using the "GUROBI" or "MOSEK" solver.\
-                   We recommend obtaining a "GUROBI" or "MOSEK" licence.')
+                try:
+                    problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-6, abstol = 1e-6)
+                except cvx.error.SolverError:
+                    problem.solve(solver = 'SCS')
 
         lambda_ = np.maximum(lambda_.value, 0)
 

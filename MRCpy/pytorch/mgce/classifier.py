@@ -553,7 +553,7 @@ class mgce_clf():
             # Save weights from the current (last) epoch since validation set is not available
             print('Validation set is not provided for best model weights. \
                    Saving the last model weights')
-            best_model_weights = copy.deepcopy(self.model_state.dict())
+            best_model_weights = copy.deepcopy(self.model.state_dict())
         elif save_model_weights not in ['best', 'last', 'None', None]:
             # Raise error for invalid save_model_weights options
             raise ValueError(f"Invalid value for saving model weights: {save_model_weights}. "
