@@ -1,0 +1,708 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.pytorch.mgce.classifier.mgce_clf &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MRCpy.pytorch.mgce.loss.mgce_loss" href="MRCpy.pytorch.mgce.loss.mgce_loss.html" />
+    <link rel="prev" title="MRCpy.LCMRC" href="MRCpy.LCMRC.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.pytorch.mgce.loss.mgce_loss.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">MRCpy Package Contents</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/generated/MRCpy.pytorch.mgce.classifier.mgce_clf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mrcpy-pytorch-mgce-classifier-mgce-clf">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf<a class="headerlink" href="#mrcpy-pytorch-mgce-classifier-mgce-clf" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.pytorch.mgce.classifier.</span></span><span class="sig-name descname"><span class="pre">mgce_clf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cuda'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf" title="Permalink to this definition">¶</a></dt>
+<dd><p>PyTorch-based Minimax Generalized Cross-Entropy (MGCE).</p>
+<p>This class implements a PyTorch-based Minimax Risk Classifier (MRC)
+using <span class="math notranslate nohighlight">\(\alpha\)</span>-losses (<span class="math notranslate nohighlight">\(\ell_\alpha\)</span>), a convex surrogate loss 
+defined over classification margins.</p>
+<p>The classifier solves the minimax risk problem:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}
+\max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})\]</div>
+<p>which finds the classifier <span class="math notranslate nohighlight">\(\mathrm{h}\)</span> that minimizes the
+worst-case expected <span class="math notranslate nohighlight">\(\ell\)</span>-loss over an uncertainty set
+<span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> of distributions. This provides theoretical
+performance guarantees even when the true data distribution is
+unknown.</p>
+<p>The uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> is defined by fixing the
+marginal distribution of features to the empirical marginal and
+bounding the expectations of the feature mappings
+<span class="math notranslate nohighlight">\(\Phi(x, y)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{U}_2 = \left\{ \mathrm{p} : \mathrm{p}_x =
+\hat{\mathrm{p}}_x, \;
+\left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]
+- \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\hat{\mathrm{p}}_x\)</span> is the empirical marginal
+distribution of features, <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> are the empirical mean
+estimates, and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> controls the size of the uncertainty
+set based on the estimation accuracy.</p>
+<p>The <span class="math notranslate nohighlight">\(\alpha\)</span>-loss family, indexed by <span class="math notranslate nohighlight">\(\alpha \geq 1\)</span>, smoothly
+interpolates between well-known losses:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha = 1\)</span>: the <strong>0-1 loss</strong> <span class="math notranslate nohighlight">\(\ell_1(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)\)</span>,
+which directly measures classification error but is non-smooth.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha \to \infty\)</span>: the <strong>log-loss</strong>
+<span class="math notranslate nohighlight">\(\ell_\infty(\mathrm{h}, y) = -\log \mathrm{h}_y(x)\)</span> (cross-entropy),
+which is smooth and easy to optimize.</p></li>
+</ul>
+<p>For intermediate <span class="math notranslate nohighlight">\(\alpha &gt; 1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\ell_\alpha(\mathrm{h}(x), y) = \frac{\alpha}{\alpha - 1}
+\left(1 - \mathrm{h}_y(x)^{(\alpha-1)/\alpha}\right)\]</div>
+<p>Smaller <span class="math notranslate nohighlight">\(\alpha\)</span> values stay closer to the 0-1 loss (more robust),
+while larger values behave more like log-loss (smoother optimization).</p>
+<p>See <a class="reference internal" href="#r6a380e0f369e-1" id="id1">[1]</a> for further details.
+Following <a class="reference internal" href="#r6a380e0f369e-1" id="id2">[1]</a>, the implementation uses the parameter
+<span class="math notranslate nohighlight">\(\beta = \alpha / (\alpha-1)\)</span>, so that <span class="math notranslate nohighlight">\(\beta = 1\)</span>
+corresponds to the 0-1 loss (<span class="math notranslate nohighlight">\(\alpha \to \infty\)</span>) and
+<span class="math notranslate nohighlight">\(\beta \to \infty\)</span> corresponds to the log-loss
+(<span class="math notranslate nohighlight">\(\alpha = 1\)</span>). The <code class="docutils literal notranslate"><span class="pre">loss_parameter</span></code> argument
+accepts <span class="math notranslate nohighlight">\(\beta\)</span> values directly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>loss_parameter</strong><span class="classifier">float, default=1.4</span></dt><dd><p>The <span class="math notranslate nohighlight">\(\beta = \alpha / (\alpha-1)\)</span> parameter for the
+<span class="math notranslate nohighlight">\(\alpha\)</span>-loss function. When beta=0 (alpha=1), it corresponds to
+0-1 loss. Larger beta values provide smoother approximations
+closer to log-loss (cross-entropy). Typical values are 
+in the range [1.0, 11.0].</p>
+</dd>
+<dt><strong>lambda_</strong><span class="classifier">float, default=1e-5</span></dt><dd><p>L1 regularization strength applied to model parameters.
+In the minimax framework, large lambda implies bigger uncertainty sets
+with better generalization. The implementation uses the same lambda
+for all the model parameters (features).</p>
+</dd>
+<dt><strong>deterministic</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether predictions should be deterministic. When True, uses argmax
+for prediction. When False, samples from the predicted probability
+distribution.</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">int or None, default=None</span></dt><dd><p>Random seed for reproducible results. Used for weight initialization
+and stochastic operations.</p>
+</dd>
+<dt><strong>optimizer</strong><span class="classifier">torch.optim.Optimizer or None, default=None</span></dt><dd><p>PyTorch optimizer instance for training. If None, must be provided
+during training or set as an attribute before calling fit().</p>
+</dd>
+<dt><strong>scheduler</strong><span class="classifier">torch.optim.lr_scheduler or None, default=None</span></dt><dd><p>Learning rate scheduler for adaptive learning rate adjustment
+during training. Optional parameter.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">torch.nn.Module or None, default=None</span></dt><dd><p>PyTorch neural network model to be trained. Must be provided
+either during initialization or before calling fit().</p>
+</dd>
+<dt><strong>device</strong><span class="classifier">str, default=’cuda’</span></dt><dd><p>Device for computation (‘cuda’ for GPU, ‘cpu’ for CPU).
+Automatically falls back to CPU if CUDA is not available.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss" title="MRCpy.pytorch.mgce.loss.mgce_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss.mgce_loss</span></code></a></dt><dd><p><span class="math notranslate nohighlight">\(\alpha\)</span>-loss function used by this classifier.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="r6a380e0f369e-1"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026).
+Minimax Generalized Cross-Entropy. In Proceedings of the
+International Conference on Artificial Intelligence and
+Statistics (AISTATS).</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Basic usage with a simple neural network:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">TensorDataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">MRCpy.pytorch.mgce.classifier</span> <span class="kn">import</span> <span class="n">mgce_clf</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create a simple model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+<span class="gp">... </span>    <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create optimizer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize classifier with beta=1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf</span> <span class="o">=</span> <span class="n">mgce_clf</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">loss_parameter</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">lambda_</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create dummy data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">TensorDataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Train the model</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final training accuracy: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;train_acc&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Training with validation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">train_loader</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">val_dataloader</span><span class="o">=</span><span class="n">val_loader</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">save_model_weights</span><span class="o">=</span><span class="s1">&#39;best&#39;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best validation accuracy: </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Compute probabilities for test samples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_data</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probabilities</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">probabilities</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># (10, n_classes)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First sample probabilities: </span><span class="si">{</span><span class="n">probabilities</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Deterministic predictions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">predictions</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Predicted classes: </span><span class="si">{</span><span class="n">predictions</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Stochastic predictions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clf_stochastic</span> <span class="o">=</span> <span class="n">mgce_clf</span><span class="p">(</span><span class="n">deterministic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clf_stochastic</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_loader</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pred1</span> <span class="o">=</span> <span class="n">clf_stochastic</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pred2</span> <span class="o">=</span> <span class="n">clf_stochastic</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>  <span class="c1"># May differ from pred1</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>is_fitted_</strong><span class="classifier">bool</span></dt><dd><p>Whether the classifier has been fitted to training data.</p>
+</dd>
+<dt><strong>loss_parameter</strong><span class="classifier">str or float</span></dt><dd><p>The <span class="math notranslate nohighlight">\(\beta\)</span> parameter for the loss function.</p>
+</dd>
+<dt><strong>lambda_</strong><span class="classifier">float</span></dt><dd><p>L1 regularization strength.</p>
+</dd>
+<dt><strong>model</strong><span class="classifier">torch.nn.Module</span></dt><dd><p>The neural network model being trained.</p>
+</dd>
+<dt><strong>optimizer</strong><span class="classifier">torch.optim.Optimizer</span></dt><dd><p>Optimizer used for training.</p>
+</dd>
+<dt><strong>device</strong><span class="classifier">str</span></dt><dd><p>Device used for computation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi" title="MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
+<td><p>Compute phi features for the minimax risk framework.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.fit" title="MRCpy.pytorch.mgce.classifier.mgce_clf.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(train_dataloader[, pretrained, …])</p></td>
+<td><p>Fit the MRC model using the provided training data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs" title="MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_worst_case_probs</span></code></a>(X)</p></td>
+<td><p>Compute worst-case class probabilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<td><p>Predict class labels for the given input samples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<td><p>Compute class probabilities for the given input samples.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cuda'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi">
+<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.compute_phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute phi features for the minimax risk framework.</p>
+<p>This method computes the phi feature representation used in the
+minimax risk classification framework by performing a forward pass
+through the neural network model. The output logits serve as the
+phi features in the MRC optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples for which to compute phi features.
+Should be preprocessed in the same way as the training data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>phi_features</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>Model logits for each input sample, used as phi features
+in the minimax risk classification framework.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotFittedError</dt><dd><p>If the classifier has not been fitted yet.</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the input data format is invalid or incompatible with the
+trained model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method is primarily used internally by the MRC framework
+and may not be needed for typical usage scenarios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretrained</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_ece</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the MRC model using the provided training data.</p>
+<p>This method trains the neural network using the minimax risk
+optimization corresponding with <span class="math notranslate nohighlight">\(lpha\)</span>-losses. It supports both training-only
+and training-with-validation modes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>train_dataloader</strong><span class="classifier">torch.utils.data.DataLoader</span></dt><dd><p>DataLoader containing the training data. Each batch should return
+(inputs, labels) where inputs are feature tensors and labels are
+class indices.</p>
+</dd>
+<dt><strong>pretrained</strong><span class="classifier">bool, default=False</span></dt><dd><p>Whether to use a pretrained model. If True, assumes the model
+has been pre-trained and may adjust training parameters accordingly.</p>
+</dd>
+<dt><strong>grad_bound</strong><span class="classifier">float, default=5.0</span></dt><dd><p>Maximum gradient norm for gradient clipping. Helps prevent
+gradient explosion during training.</p>
+</dd>
+<dt><strong>n_epochs</strong><span class="classifier">int, default=100</span></dt><dd><p>Number of training epochs to run.</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to print training progress and metrics during training.</p>
+</dd>
+<dt><strong>validate</strong><span class="classifier">bool, default=False</span></dt><dd><p>Whether to perform validation during training. If True,
+val_dataloader must be provided.</p>
+</dd>
+<dt><strong>val_dataloader</strong><span class="classifier">torch.utils.data.DataLoader or None, default=None</span></dt><dd><p>DataLoader containing validation data. Required if validate=True.
+Should have the same format as train_dataloader.</p>
+</dd>
+<dt><strong>compute_ece</strong><span class="classifier">bool, default=True</span></dt><dd><p>Whether to compute Expected Calibration Error (ECE) during
+validation. Only used if validate=True.</p>
+</dd>
+<dt><strong>bins</strong><span class="classifier">int, default=15</span></dt><dd><p>Number of bins to use for ECE computation. Only used if
+compute_ece=True and validate=True.</p>
+</dd>
+<dt><strong>save_model_weights</strong><span class="classifier">{‘best’, ‘last’, ‘None’}, default=’best’</span></dt><dd><p>Strategy for saving model weights:
+- ‘best’: Save weights from epoch with highest validation accuracy
+- ‘last’: Save weights from the final epoch
+- ‘None’: Don’t save any weights</p>
+</dd>
+<dt><strong>path</strong><span class="classifier">str, default=”./”</span></dt><dd><p>Directory path where model weights should be saved (if applicable).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>Dictionary containing training metrics:
+- ‘train_loss’: List of training losses per epoch
+- ‘train_acc’: List of training accuracies per epoch
+- ‘val_loss’: List of validation losses per epoch (if validate=True)
+- ‘val_acc’: List of validation accuracies per epoch (if validate=True)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If invalid save_model_weights option is provided or if validation
+is enabled but val_dataloader is None.</p>
+</dd>
+<dt>RuntimeError</dt><dd><p>If model or optimizer are not properly initialized.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>See class-level examples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs">
+<span class="sig-name descname"><span class="pre">get_worst_case_probs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.get_worst_case_probs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute worst-case class probabilities.</p>
+<p>This method computes the worst-case probability distribution
+<span class="math notranslate nohighlight">\(\mathrm{p}^*\)</span> corresponding to the minimax solution.
+Given the prediction probabilities <span class="math notranslate nohighlight">\(\mathrm{h}(x)\)</span> from
+<a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-meth docutils literal notranslate"><span class="pre">predict_proba()</span></code></a>, the worst-case probabilities are:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{p}^*_y(x) = \frac{\mathrm{h}_y(x)^{(\beta-1)/\beta}}
+{\sum_{y'} \mathrm{h}_{y'}(x)^{(\beta-1)/\beta}}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples for which to compute worst-case probabilities.
+Should be preprocessed in the same way as the training data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>worst_case_probs</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>Worst-case class probabilities for each input sample.
+Each row sums to 1.0.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotFittedError</dt><dd><p>If the classifier has not been fitted yet.</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the input data format is invalid or incompatible with the
+trained model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a></dt><dd><p>Compute prediction probabilities <span class="math notranslate nohighlight">\(\mathrm{h}(x)\)</span>.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>The figure below illustrates the relationship between worst-case
+and prediction probabilities for different <span class="math notranslate nohighlight">\(\beta\)</span> values.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="../_images/worst_case_probs_relation.png"><img alt="Relationship between worst-case and prediction probabilities" src="../_images/worst_case_probs_relation.png" style="width: 400px;" /></a>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict class labels for the given input samples.</p>
+<p>This method predicts the most likely class for each input sample
+using the trained model. The prediction behavior depends on the
+deterministic parameter set during initialization:</p>
+<ul class="simple">
+<li><p>If deterministic=True: Returns the class with highest logit value</p></li>
+<li><p>If deterministic=False: Samples from the predicted probability distribution</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples for which to predict class labels.
+Should be preprocessed in the same way as the training data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>predictions</strong><span class="classifier">ndarray of shape (n_samples,)</span></dt><dd><p>Predicted class labels for each input sample as integer indices
+in the range [0, num_classes-1].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotFittedError</dt><dd><p>If the classifier has not been fitted yet (i.e., fit() has not
+been called).</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the input data format is invalid or incompatible with the
+trained model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a></dt><dd><p>Get class probabilities instead of hard predictions</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<p>See class-level examples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute class probabilities for the given input samples.</p>
+<p>This method computes the conditional probabilities p(y|x) for each
+class given the input features. The probabilities are computed using
+the trained model and the minimax risk framework with <span class="math notranslate nohighlight">\(lpha\)</span>-losses
+via the loss function’s get_probs method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples for which to compute class probabilities.
+Should be preprocessed in the same way as the training data.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>probabilities</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>Class probabilities for each input sample. Each row sums to 1.0
+and represents the probability distribution over all classes
+for the corresponding input sample, computed using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss
+framework.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>NotFittedError</dt><dd><p>If the classifier has not been fitted yet (i.e., fit() has not
+been called).</p>
+</dd>
+<dt>ValueError</dt><dd><p>If the input data format is invalid or incompatible with the
+trained model.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This method uses the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework’s get_probs function to compute
+probabilities, ensuring consistency with the training loss function
+rather than using standard softmax normalization.</p>
+<p class="rubric">Examples</p>
+<p>See class-level examples.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.pytorch.mgce.loss.mgce_loss.html" class="btn btn-neutral float-right" title="MRCpy.pytorch.mgce.loss.mgce_loss" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.LCMRC.html" class="btn btn-neutral float-left" title="MRCpy.LCMRC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

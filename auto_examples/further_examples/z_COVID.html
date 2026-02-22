@@ -96,6 +96,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
 </ul>
 <ul class="current">
@@ -193,7 +196,7 @@ to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="example-predicting-covid-19-patients-outcome-using-mrcs">
 <span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this headline">¶</a></h1>
-<p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
+<p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
 of a COVID-19 positive patient at the moment of hospital triage. This example
 uses a dataset that comprises different demographic variables and biomarkers of
 the patients and a binary outcome <code class="xref py py-attr docutils literal notranslate"><span class="pre">Status</span></code> where <code class="xref py py-attr docutils literal notranslate"><span class="pre">Status</span> <span class="pre">=</span> <span class="pre">0</span></code>
@@ -218,7 +221,7 @@ comparetwo MRC with two state of the art machine learning models probability
 estimation . The selected models are <code class="xref py py-mod docutils literal notranslate"><span class="pre">CMRC(phi</span> <span class="pre">=</span> <span class="pre">'threshold'</span> <span class="pre">,</span>
 <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> &amp; <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> for  the group of
 MRCs and Logistic Regression (LR) &amp; C-Support Vector Classifier(SVC) with the
-implementation from <code class="xref any docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>.</p>
+implementation from <code class="xref py py-obj docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -352,7 +355,7 @@ over sampling) is a package that implements such oversampling.</p>
 <p>So we create a set of cases syntehtically using 5 nearest neighbors until
 the class imbalance is almost removed. For more information about
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">SMOTE</span></code> refer to it’s <a class="reference external" href="https://imbalanced-learn.org/stable/">documentation</a> .
-We will use the method <code class="xref any docutils literal notranslate"><span class="pre">SMOTE-NC</span></code> for numerical and categorical variables.</p>
+We will use the method <code class="xref py py-obj docutils literal notranslate"><span class="pre">SMOTE-NC</span></code> for numerical and categorical variables.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For more information about the SMOTE package refer to:</p>
@@ -668,7 +671,7 @@ for the predictions.</p>
         <span class="s2">&quot;True Negative&quot;</span><span class="p">,</span>
         <span class="s2">&quot;False Positive&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Category&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">select</span></a></a></a></a></a><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;No&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Category&quot;</span><span class="p">]</span> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.select.html#numpy.select" title="numpy.select" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">select</span></a><span class="p">(</span><span class="n">conditions</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;No&quot;</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">sort_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Category&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">df</span>

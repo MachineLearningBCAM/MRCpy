@@ -41,13 +41,14 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MRCpy.phi.RandomFourierPhi" href="MRCpy.phi.RandomFourierPhi.html" />
+    <link rel="next" title="MRCpy.LMRC" href="MRCpy.LMRC.html" />
     <link rel="prev" title="MRCpy.AMRC" href="MRCpy.AMRC.html" /> 
 </head>
 
@@ -96,6 +97,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../minimax_framework.html">Minimax Framework</a></li>
+</ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul class="current">
@@ -106,8 +110,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-mrcpy-dwgcs">Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.DWGCS</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.LMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.LCMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LCMRC</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
 </ul>
@@ -188,140 +195,215 @@
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.DWGCS<a class="headerlink" href="#mrcpy-dwgcs" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.DWGCS">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.</span></span><span class="sig-name descname"><span class="pre">DWGCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'decay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mini_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/dwgcs.html#DWGCS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.DWGCS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Double-Weighting General Covariate Shift</p>
-<p>The class DWGCS implements the method Double-Weighting for 
-General Covariate Shift (DWGCS) proposed in <a class="reference internal" href="MRCpy.MRC.html#ref1"><span class="std std-ref">[1]</span></a>. 
-It is designed for supervised classification under covariate shift.</p>
-<p>DW-GCS provides adaptatition to covariate shift when a set of training samples
-and a set of unlabeled samples from the testing distribution are available
-at learning, without any prior knowledge about the supports of the training
-and testing distribution.</p>
-<p>It implements 0-1 and log loss, and it can be used with multiple feature
-mappings.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>For more information about DWGCS, one can refer to the
-following paper:</p>
-<blockquote>
-<div><p>[1] <a href="#id1"><span class="problematic" id="id2">`</span></a>Segovia-Martín, J. I., Mazuelas, S., &amp; Liu, A. (2023).
-Double-Weighting for Covariate Shift Adaptation.
-International Conference on Machine Learning (ICML) 2023.</p>
-<p>&#64;InProceedings{SegMazLiu:23,
-title =     {Double-Weighting for Covariate Shift Adaptation},
-author =    {Segovia-Mart{‘i}n, Jos{‘e} I.</p>
-<blockquote>
-<div><p>and Mazuelas, Santiago 
-and Liu, Anqi},</p>
-</div></blockquote>
-<dl class="simple">
-<dt>booktitle = {Proceedings of the 40th </dt><dd><p>International Conference on Machine Learning},</p>
-</dd>
-</dl>
-<p>pages =     {30439–30457},
-year =          {2023},
-volume =    {202},
-series =    {Proceedings of Machine Learning Research},
-month =     {23–29 Jul},
-publisher = {PMLR},
-}</p>
-</div></blockquote>
-</div>
-<dl>
-<dt>loss<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.</span></span><span class="sig-name descname"><span class="pre">DWGCS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'decay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mini_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/dwgcs.html#DWGCS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.DWGCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Double-Weighting for General Covariate Shift</p>
+<p>This class implements the Double-Weighting for General Covariate Shift
+(DW-GCS) method proposed in <a class="reference internal" href="#rf2ac934372e6-1" id="id1">[1]</a>. It is designed for supervised
+classification under covariate shift, where the marginal distributions
+of instances at training <span class="math notranslate nohighlight">\(\mathrm{p}_{\text{tr}}(x)\)</span> and testing
+<span class="math notranslate nohighlight">\(\mathrm{p}_{\text{te}}(x)\)</span> differ but the label conditionals
+coincide.</p>
+<p>The classifier solves the minimax risk problem:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}
+\max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})\]</div>
+<p>which finds the classifier <span class="math notranslate nohighlight">\(\mathrm{h}\)</span> that minimizes the
+worst-case expected loss over an uncertainty set
+<span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> of distributions.</p>
+<p>The uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> is constructed using both
+training weights <span class="math notranslate nohighlight">\(\beta(x)\)</span> and testing weights
+<span class="math notranslate nohighlight">\(\alpha(x)\)</span>, with feature mappings weighted by
+<span class="math notranslate nohighlight">\(\alpha(x)\)</span> as
+<span class="math notranslate nohighlight">\(\Phi_\alpha(x,y) = \alpha(x) \Phi(x,y)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{U}_2 = \left\{ \mathrm{p} :
+\mathrm{p}_x = \mathrm{p}_{\text{te}}(x), \;
+\left| \mathbb{E}_{\mathrm{p}}[\Phi_\alpha(x,y)]
+- \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> is estimated using
+<span class="math notranslate nohighlight">\(\beta\)</span>-weighted training samples as
+<span class="math notranslate nohighlight">\(\boldsymbol{\tau} = \frac{1}{n} \sum_{i=1}^{n}
+\beta(x_i) \Phi(x_i, y_i)\)</span>, and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span>
+is obtained by solving a convex optimization that ensures the
+uncertainty set is non-empty.</p>
+<p>The double-weighting approach avoids the limitations of the
+reweighted methods (which only weight training samples by
+<span class="math notranslate nohighlight">\(\mathrm{p}_{\text{te}}/\mathrm{p}_{\text{tr}}\)</span>) and robust
+methods (which only weight testing samples by
+<span class="math notranslate nohighlight">\(\mathrm{p}_{\text{tr}}/\mathrm{p}_{\text{te}}\)</span>). By using
+both weights, DW-GCS can handle general covariate shift scenarios
+where the supports of training and testing distributions do not
+need to contain each other.</p>
+<p>The weights <span class="math notranslate nohighlight">\(\alpha(x)\)</span> and <span class="math notranslate nohighlight">\(\beta(x)\)</span> are obtained
+by solving a Double-Weighting Kernel Mean Matching (DW-KMM)
+problem. The hyperparameter <code class="docutils literal notranslate"><span class="pre">D</span></code> controls the trade-off between
+estimation error and prediction confidence: the estimation error
+is of order <span class="math notranslate nohighlight">\(\mathcal{O}(1/\sqrt{Dn})\)</span>, so larger <code class="docutils literal notranslate"><span class="pre">D</span></code>
+increases the effective sample size by a factor of <code class="docutils literal notranslate"><span class="pre">D</span></code> compared
+with reweighted methods.</p>
+<p>It implements 0-1 and log loss, and can be used with linear,
+Random Fourier, and ReLU features.</p>
+<p>See <a class="reference internal" href="#rf2ac934372e6-1" id="id2">[1]</a> for further details.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
 quantifies the probability of classification error at a certain example
 for a certain rule. Log-loss quantifies the minus log-likelihood at a
 certain example for a certain rule.</p>
 </dd>
-<dt>deterministic<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
-should be done in a deterministic way (given a fixed <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-random_state" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">random_state</span></code></a>
+<dt><strong>deterministic</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a></span></dt><dd><p>Whether the prediction of the labels
+should be done in a deterministic way (given a fixed <code class="xref py py-obj docutils literal notranslate"><span class="pre">random_state</span></code>
 in the case of using random Fourier or random ReLU features).</p>
 </dd>
-<dt>random_state<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings
+<dt><strong>random_state</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, RandomState instance, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Random seed used when ‘fourier’ and ‘relu’ options for feature mappings
 are used to produce the random weights.</p>
 </dd>
-<dt>fit_intercept<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs
+<dt><strong>fit_intercept</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a></span></dt><dd><p>Whether to calculate the intercept for MRCs.
 If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
-<dt>D<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = 4</span></dt><dd><p>Hyperparameter that balances the trade-off between error in
-expectation estimates and confidence of the classification.</p>
+<dt><strong>D</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">4</span></code></span></dt><dd><p>Hyperparameter that controls the trade-off between error in
+expectation estimates and confidence of the classification.
+The weights are computed using <span class="math notranslate nohighlight">\(C = B / \sqrt{D}\)</span>.
+Larger values of <code class="docutils literal notranslate"><span class="pre">D</span></code> reduce estimation error (effective sample
+size increases by factor <code class="docutils literal notranslate"><span class="pre">D</span></code>) but may reduce prediction
+confidence for testing instances unlikely at training.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">D=1</span></code>: Only training weights <span class="math notranslate nohighlight">\(\beta(x)\)</span> are used
+(reweighted approach, <span class="math notranslate nohighlight">\(\alpha(x) = 1\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">D=inf</span></code>: Only testing weights <span class="math notranslate nohighlight">\(\alpha(x)\)</span> are used
+(robust approach, <span class="math notranslate nohighlight">\(\beta(x) = 1\)</span>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">D</span> <span class="pre">&lt;</span> <span class="pre">inf</span></code>: Both weights are used (double-weighting).</p></li>
+</ul>
 </dd>
-<dt>B<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = 1000</span></dt><dd><p>Parameter that bound the maximum value of the weights
-beta associated to the training samples.</p>
+<dt><strong>B</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">1000</span></code></span></dt><dd><p>Upper bound on the maximum value of the training weights
+<span class="math notranslate nohighlight">\(\beta(x)\)</span>. Used in the DW-KMM optimization to constrain
+<span class="math notranslate nohighlight">\(\beta(x) \leq B / \sqrt{D}\)</span>.</p>
 </dd>
-<dt>solver<span class="classifier">{‘cvx’, ‘grad’, ‘adam’}, default = ’adam’</span></dt><dd><p>Method to use in solving the optimization problem. 
-Default is ‘cvx’. To choose a solver,
+<dt><strong>solver</strong><span class="classifier">{‘cvx’, ‘grad’, ‘adam’}, default = ‘adam’</span></dt><dd><p>Method to use in solving the optimization problem.
+Default is ‘adam’. To choose a solver,
 you might want to consider the following aspects:</p>
 <dl class="simple">
-<dt>’cvx’</dt><dd><p>Solves the optimization problem using the CVXPY library.
+<dt>‘cvx’</dt><dd><p>Solves the optimization problem using the cvxpy library.
 Obtains an accurate solution while requiring more time
-than the other methods. 
-Note that the library uses the GUROBI solver in CVXpy for which
+than the other methods.
+Note that the library uses the GUROBI solver in cvxpy for which
 one might need to request for a license.
 A free license can be requested <a class="reference external" href="https://www.gurobi.com/academia/academic-program-and-licenses/">here</a></p>
 </dd>
-<dt>’grad’</dt><dd><p>Solves the optimization using stochastic gradient descent.
-The parameters <code class="xref any docutils literal notranslate"><span class="pre">max_iters</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">stepsize</span></code> and <code class="xref any docutils literal notranslate"><span class="pre">mini_batch_size</span></code>
+<dt>‘grad’</dt><dd><p>Solves the optimization using stochastic gradient descent.
+The parameters <code class="docutils literal notranslate"><span class="pre">max_iters</span></code>, <code class="docutils literal notranslate"><span class="pre">stepsize</span></code> and <code class="docutils literal notranslate"><span class="pre">mini_batch_size</span></code>
 determine the number of iterations, the learning rate and
 the batch size for gradient computation respectively.
 Note that the implementation uses nesterov’s gradient descent
 in case of ReLU and threshold features, and the above parameters
-do no affect the optimization in this case.</p>
+do not affect the optimization in this case.</p>
 </dd>
-<dt>’adam’</dt><dd><p>Solves the optimization using
+<dt>‘adam’</dt><dd><p>Solves the optimization using
 stochastic gradient descent with adam (adam optimizer).
-The parameters <code class="xref any docutils literal notranslate"><span class="pre">max_iters</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="xref any docutils literal notranslate"><span class="pre">mini_batch_size</span></code>
+The parameters <code class="docutils literal notranslate"><span class="pre">max_iters</span></code>, <code class="docutils literal notranslate"><span class="pre">alpha</span></code> and <code class="docutils literal notranslate"><span class="pre">mini_batch_size</span></code>
 determine the number of iterations, the learning rate and
 the batch size for gradient computation respectively.
 Note that the implementation uses nesterov’s gradient descent
 in case of ReLU and threshold features, and the above parameters
-do no affect the optimization in this case.</p>
+do not affect the optimization in this case.</p>
 </dd>
 </dl>
 </dd>
-<dt>alpha<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">0.001</span></code></span></dt><dd><p>Learning rate for ’adam’ solver.</p>
+<dt><strong>alpha</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">0.001</span></code></span></dt><dd><p>Learning rate for ‘adam’ solver.</p>
 </dd>
-<dt>mini_batch_size<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">1</span></code> or <code class="xref any docutils literal notranslate"><span class="pre">32</span></code></span></dt><dd><p>The size of the batch to be used for computing the gradient
+<dt><strong>mini_batch_size</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">1</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">32</span></code></span></dt><dd><p>The size of the batch to be used for computing the gradient
 in case of stochastic gradient descent and adam optimizer.
 In case of stochastic gradient descent, the default is 1, and
 in case of adam optimizer, the default is 32.</p>
 </dd>
-<dt>max_iters<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref any docutils literal notranslate"><span class="pre">100000</span></code> or <code class="xref any docutils literal notranslate"><span class="pre">5000</span></code> or <code class="xref any docutils literal notranslate"><span class="pre">2000</span></code></span></dt><dd><p>The maximum number of iterations to use in case of
-’grad’ or ’adam’ solver.
+<dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">100000</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">5000</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">2000</span></code></span></dt><dd><p>The maximum number of iterations to use in case of
+‘grad’ or ‘adam’ solver.
 The default value is
-100000 for ’grad’ solver and
-5000 for ’adam’ solver and 
+100000 for ‘grad’ solver and
+5000 for ‘adam’ solver and
 2000 for nesterov’s gradient descent.</p>
 </dd>
-<dt>phi<span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">str</span></code></a> or <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
-The currenlty available feature mapping methods are
+<dt><strong>weights_alpha</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Pre-computed testing weights <span class="math notranslate nohighlight">\(\alpha(x)\)</span> associated to
+each testing instance. If only <code class="docutils literal notranslate"><span class="pre">weights_alpha</span></code> is given,
+the method fixes <span class="math notranslate nohighlight">\(\beta(x) = 1\)</span> (robust approach).</p>
+</dd>
+<dt><strong>weights_beta</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>, default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Pre-computed training weights <span class="math notranslate nohighlight">\(\beta(x)\)</span> associated to
+each training sample. If only <code class="docutils literal notranslate"><span class="pre">weights_beta</span></code> is given,
+the method fixes <span class="math notranslate nohighlight">\(\alpha(x) = 1\)</span> (reweighted approach).</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">BasePhi</span></code> instance, default = ‘linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
+The currently available feature mapping methods are
 ‘fourier’, ‘relu’, and ‘linear’.
 The users can also implement their own feature mapping object
-(should be a <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a> instance) and pass it to this argument.
+(should be a <code class="xref py py-obj docutils literal notranslate"><span class="pre">BasePhi</span></code> instance) and pass it to this argument.
 Note that when using ‘fourier’ feature mapping,
 training and testing instances are expected to be normalized.
 To implement a feature mapping, please go through the
 <a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
 <dl class="simple">
 <dt>‘linear’</dt><dd><p>It uses the identity feature map referred to as Linear feature map.
-See class <a class="reference internal" href="MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a>.</p>
+See class <code class="xref py py-obj docutils literal notranslate"><span class="pre">BasePhi</span></code>.</p>
 </dd>
-<dt>‘fourier’</dt><dd><p>It uses Random Fourier Feature map. See class <a class="reference internal" href="MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code></a>.</p>
+<dt>‘fourier’</dt><dd><p>It uses Random Fourier Feature map. See class <code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code>.</p>
 </dd>
 <dt>‘relu’</dt><dd><p>It uses Rectified Linear Unit (ReLU) features.
-See class <a class="reference internal" href="MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref any py py-class docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a>.</p>
+See class <code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt><a href="#id3"><span class="problematic" id="id4">**</span></a>phi_kwargs<span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
-for the corresponding feature mappings(<code class="xref any docutils literal notranslate"><span class="pre">phi</span></code>).</p>
+<dt><strong>**phi_kwargs</strong><span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
+for the corresponding feature mappings(<code class="docutils literal notranslate"><span class="pre">phi</span></code>).</p>
 <p>For example in case of fourier features,
-the number of features is given by <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_components" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_components</span></code></a>
-parameter which can be passed as argument -
-<code class="xref any docutils literal notranslate"><span class="pre">DWGCS(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=300)</span></code></p>
+the number of features is given by <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
+parameter which can be passed as argument
+<code class="docutils literal notranslate"><span class="pre">DWGCS(loss='log',</span> <span class="pre">phi='fourier',</span> <span class="pre">n_components=300)</span></code></p>
 <p>The list of arguments for each feature mappings class
 can be found in the corresponding documentation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a></dt><dd><p>CMRC using uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> with marginal constraints <a class="reference internal" href="#rf2ac934372e6-2" id="id3">[2]</a>.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="rf2ac934372e6-1"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>Segovia-Martín, J.I., Mazuelas, S., &amp; Liu, A. (2023).
+Double-Weighting for Covariate Shift Adaptation. In Proceedings
+of the 40th International Conference on Machine Learning,
+pp. 30439-30457.</p>
+</dd>
+<dt class="label" id="rf2ac934372e6-2"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
+Maximum Entropy for Supervised Classification. IEEE Transactions
+on Information Theory, 68(4), 2530-2550.</p>
+</dd>
+</dl>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the classifier is fitted i.e., the parameters are learnt.</p>
+</dd>
+<dt><strong>beta_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_train_samples</span></code>, 1)</span></dt><dd><p>Training weights <span class="math notranslate nohighlight">\(\beta(x)\)</span> obtained from the DW-KMM
+optimization.</p>
+</dd>
+<dt><strong>alpha_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_test_samples</span></code>, 1)</span></dt><dd><p>Testing weights <span class="math notranslate nohighlight">\(\alpha(x)\)</span> obtained from the DW-KMM
+optimization.</p>
+</dd>
+<dt><strong>classes_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>,)</span></dt><dd><p>Labels in the given dataset.</p>
+</dd>
+<dt><strong>mu_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>,) or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Parameters learnt by the optimization.</p>
+</dd>
+<dt><strong>sigma_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Kernel bandwidth parameter for the RBF kernel used in DW-KMM.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -334,52 +416,55 @@ can be found in the corresponding documentation.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.DWKMM" title="MRCpy.DWGCS.DWKMM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DWKMM</span></code></a>(xTr, xTe)</p></td>
 <td><p>Obtain training and testing weights.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_lambda" title="MRCpy.DWGCS.compute_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_lambda</span></code></a>(xTe, tau_, n_classes)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_features" title="MRCpy.DWGCS.compute_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code></a>(X)</p></td>
+<td><p>Compute the features (without one-hot encoding) corresponding to instances given for learning the classifiers (in case of training) and prediction (in case of testing).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_lambda" title="MRCpy.DWGCS.compute_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_lambda</span></code></a>(xTe, tau_, n_classes)</p></td>
 <td><p>Compute deviation in the mean estimate tau using the given testing instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_phi" title="MRCpy.DWGCS.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_phi" title="MRCpy.DWGCS.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
 <td><p>Compute the feature mapping corresponding to instances given for learning the classifiers and prediction.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_tau" title="MRCpy.DWGCS.compute_tau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_tau</span></code></a>(xTr, yTr)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.compute_tau" title="MRCpy.DWGCS.compute_tau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_tau</span></code></a>(xTr, yTr)</p></td>
 <td><p>Compute mean estimate tau using the given training instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.error" title="MRCpy.DWGCS.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a>(X, Y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.error" title="MRCpy.DWGCS.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a>(X, Y)</p></td>
 <td><p>Return the mean error obtained for the given test data and labels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.fit" title="MRCpy.DWGCS.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(xTr, yTr[, xTe])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.fit" title="MRCpy.DWGCS.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(xTr, yTr[, xTe])</p></td>
 <td><p>Fit the MRC model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_metadata_routing" title="MRCpy.DWGCS.get_metadata_routing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_metadata_routing" title="MRCpy.DWGCS.get_metadata_routing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code></a>()</p></td>
 <td><p>Get metadata routing of this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_params" title="MRCpy.DWGCS.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_params" title="MRCpy.DWGCS.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_upper_bound" title="MRCpy.DWGCS.get_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_upper_bound</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.get_upper_bound" title="MRCpy.DWGCS.get_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_upper_bound</span></code></a>()</p></td>
 <td><p>Returns the upper bound on the expected loss for the fitted classifier.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.minimax_risk" title="MRCpy.DWGCS.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X, tau_, lambda_, n_classes)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.minimax_risk" title="MRCpy.DWGCS.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X, tau_mat, lambda_mat, n_classes)</p></td>
 <td><p>Solves the marginally constrained minimax risk optimization problem for different types of loss (0-1 and log loss).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.predict" title="MRCpy.DWGCS.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.predict" title="MRCpy.DWGCS.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predicts classes for new instances using a fitted model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.predict_proba" title="MRCpy.DWGCS.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.predict_proba" title="MRCpy.DWGCS.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
 <td><p>Computes conditional probabilities corresponding to each class for the given unlabeled instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.psi" title="MRCpy.DWGCS.psi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psi</span></code></a>(phi_mu, phi)</p></td>
-<td><p>Function to compute the psi function in the objective using the given solution mu and the feature mapping  corresponding to a single instance.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.psi" title="MRCpy.DWGCS.psi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psi</span></code></a>(phi_mu, phi)</p></td>
+<td><p>Function to compute the psi function in the objective using the given solution mu and the feature mapping corresponding to a single instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.score" title="MRCpy.DWGCS.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.score" title="MRCpy.DWGCS.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Return the mean accuracy on the given test data and labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_fit_request" title="MRCpy.DWGCS.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, xTe, xTr, yTr])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_fit_request" title="MRCpy.DWGCS.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, xTe, xTr, yTr])</p></td>
 <td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_params" title="MRCpy.DWGCS.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_params" title="MRCpy.DWGCS.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
 <td><p>Set the parameters of this estimator.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_score_request" title="MRCpy.DWGCS.set_score_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_score_request</span></code></a>(*[, sample_weight])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.DWGCS.set_score_request" title="MRCpy.DWGCS.set_score_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_score_request</span></code></a>(*[, sample_weight])</p></td>
 <td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p></td>
 </tr>
 </tbody>
@@ -393,25 +478,17 @@ training and testing samples solving the DW-KMM problem.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
-<ul class="simple">
-<li><p>Computing the training weights beta and testing weights alpha.</p></li>
-</ul>
-<p><a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a> is the number of training samples and
-<code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
+<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for computing the training weights
+beta and testing weights alpha.</p>
 </dd>
-<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances used in</p>
-<ul class="simple">
-<li><p>Computing the training weights beta and testing weights alpha.</p></li>
-</ul>
-<p><a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a> is the number of training samples and
-<code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
+<dt><strong>xTe</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances used for computing the training weights
+beta and testing weights alpha.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>self :</dt><dd><p>Weights <a href="#id5"><span class="problematic" id="id6">self.beta_</span></a> and <a href="#id7"><span class="problematic" id="id8">self.alpha_</span></a></p>
+<dt>self :</dt><dd><p>Fitted estimator with <code class="docutils literal notranslate"><span class="pre">beta_</span></code> and <code class="docutils literal notranslate"><span class="pre">alpha_</span></code> attributes set.</p>
 </dd>
 </dl>
 </dd>
@@ -420,8 +497,30 @@ training and testing samples solving the DW-KMM problem.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.DWGCS.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'decay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mini_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/dwgcs.html#DWGCS.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.DWGCS.__init__" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stepsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'decay'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mini_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/dwgcs.html#DWGCS.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.DWGCS.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.DWGCS.compute_features">
+<span class="sig-name descname"><span class="pre">compute_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the features (without one-hot encoding) corresponding
+to instances given for learning the classifiers (in case of
+training) and prediction (in case of testing).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Instances to be converted to features.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_transform</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Feature corresponding with each instance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -432,19 +531,19 @@ using the given testing instances.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xTe</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+<dt><strong>xTe</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> * <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a href="#id9"><span class="problematic" id="id10">lambda_</span></a> :</dt><dd><p>Confidence vector</p>
+<dt><strong>lambda_</strong><span class="classifier">array-like</span></dt><dd><p>Confidence vector</p>
 </dd>
 </dl>
 </dd>
@@ -459,13 +558,13 @@ for learning the classifiers and prediction.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Instances to be converted to features.</p>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Instances to be converted to features.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>phi_alpha :</dt><dd><p>Feature mapping weighted by alpha</p>
+<dt><strong>phi_alpha</strong><span class="classifier">array-like</span></dt><dd><p>Feature mapping weighted by alpha</p>
 </dd>
 </dl>
 </dd>
@@ -479,17 +578,17 @@ for learning the classifiers and prediction.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
 </dd>
-<dt><strong>yTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
+<dt><strong>yTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
 used only to compute the expectation estimates.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><a href="#id11"><span class="problematic" id="id12">tau_</span></a> :</dt><dd><p>Mean expectation estimate</p>
+<dt><strong>tau_</strong><span class="classifier">array-like</span></dt><dd><p>Mean expectation estimate</p>
 </dd>
 </dl>
 </dd>
@@ -500,13 +599,13 @@ used only to compute the expectation estimates.</p>
 <dt class="sig sig-object py" id="MRCpy.DWGCS.error">
 <span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean error obtained for the given test data and labels.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
 </dd>
-<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the testing instances
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the testing instances
 used to compute the error in the prediction.</p>
 </dd>
 </dl>
@@ -525,24 +624,24 @@ used to compute the error in the prediction.</p>
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xTr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yTr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xTe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/dwgcs.html#DWGCS.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.DWGCS.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the MRC model.</p>
 <p>Computes the parameters required for the minimax risk optimization
-and then calls the <a class="reference internal" href="#MRCpy.DWGCS.minimax_risk" title="MRCpy.DWGCS.minimax_risk"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">minimax_risk</span></code></a> function to solve the optimization.</p>
+and then calls the <a class="reference internal" href="#MRCpy.DWGCS.minimax_risk" title="MRCpy.DWGCS.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a> function to solve the optimization.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
+<dt><strong>xTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
 <ul class="simple">
 <li><p>Calculating the expectation estimates
 that constrain the uncertainty set
 for the minimax risk classification</p></li>
 <li><p>Solving the minimax risk optimization problem.</p></li>
 </ul>
-<p><a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a> is the number of training samples and
-<code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of training samples and
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
 </dd>
-<dt><strong>yTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
+<dt><strong>yTr</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the training instances
 used only to compute the expectation estimates.</p>
 </dd>
-<dt><strong>xTe</strong><span class="classifier">array-like of shape (<code class="xref any docutils literal notranslate"><span class="pre">n_samples2</span></code>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>), default = None</span></dt><dd><p>These instances will be used in the minimax risk optimization.
+<dt><strong>xTe</strong><span class="classifier">array-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples2</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>), default = None</span></dt><dd><p>These instances will be used in the minimax risk optimization.
 These extra instances are generally a smaller set and
 give an advantage in training time.</p>
 </dd>
@@ -561,12 +660,12 @@ give an advantage in training time.</p>
 <dt class="sig sig-object py" id="MRCpy.DWGCS.get_metadata_routing">
 <span class="sig-name descname"><span class="pre">get_metadata_routing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.get_metadata_routing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get metadata routing of this object.</p>
-<p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.7)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+<p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>routing</strong><span class="classifier">MetadataRequest</span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
+<dt><strong>routing</strong><span class="classifier">MetadataRequest</span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
 routing information.</p>
 </dd>
 </dl>
@@ -602,7 +701,7 @@ contained subobjects that are estimators.</p>
 <dl class="field-list">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl>
-<dt><strong>upper_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
+<dt><strong>upper_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
 </dd>
 </dl>
 </dd>
@@ -611,7 +710,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.DWGCS.minimax_risk">
-<span class="sig-name descname"><span class="pre">minimax_risk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.minimax_risk" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">minimax_risk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.minimax_risk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Solves the marginally constrained minimax risk
 optimization problem for
 different types of loss (0-1 and log loss).
@@ -621,16 +720,16 @@ the rest.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
 </dd>
-<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The mean estimates
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> * <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The mean estimates
 for the expectations of feature mappings.</p>
 </dd>
-<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_features" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_features</span></code></a> * <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The variance in the mean estimates
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> * <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The variance in the mean estimates
 for the expectations of the feature mappings.</p>
 </dd>
-<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
 </dd>
 </dl>
 </dd>
@@ -647,19 +746,19 @@ for the expectations of the feature mappings.</p>
 <dt class="sig sig-object py" id="MRCpy.DWGCS.predict">
 <span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Predicts classes for new instances using a fitted model.</p>
-<p>Returns the predicted classes for the given instances in <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">X</span></code></a>
-using the probabilities given by the function <a class="reference internal" href="#MRCpy.DWGCS.predict_proba" title="MRCpy.DWGCS.predict_proba"><code class="xref any py py-meth docutils literal notranslate"><span class="pre">predict_proba</span></code></a>.</p>
-<dl class="field-list">
+<p>Returns the predicted classes for the given instances in <code class="docutils literal notranslate"><span class="pre">X</span></code>
+using the probabilities given by the function <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><dl>
-<dt><strong>y_pred</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
 </dd>
 </dl>
 </dd>
@@ -674,14 +773,14 @@ to each class for the given unlabeled instances.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
 the prediction probabilities are calculated for each class.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
-<dt><strong>hy_x</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref any docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-n_samples" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">n_samples</span></code></a>, <code class="xref any docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The conditional probabilities (p(y|x))
+<dt><strong>hy_x</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>The conditional probabilities (p(y|x))
 corresponding to each class.</p>
 </dd>
 </dl>
@@ -693,8 +792,27 @@ corresponding to each class.</p>
 <dt class="sig sig-object py" id="MRCpy.DWGCS.psi">
 <span class="sig-name descname"><span class="pre">psi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.psi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to compute the psi function in the objective
-using the given solution mu and the feature mapping 
+using the given solution mu and the feature mapping
 corresponding to a single instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>phi_mu</strong><span class="classifier">array-like of shape (n_features,)</span></dt><dd><p>Product of feature mapping and solution vector.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier">array-like of shape (n_classes, n_features)</span></dt><dd><p>Feature mapping corresponding to an instance and
+each class.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>g</strong><span class="classifier">array-like of shape (n_features,)</span></dt><dd><p>Gradient of psi for a given solution and feature mapping.</p>
+</dd>
+<dt><strong>psi_value</strong><span class="classifier">float</span></dt><dd><p>The value of psi for a given solution and feature mapping.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -709,7 +827,7 @@ each label set be correctly predicted.</p>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Test samples.</p>
 </dd>
-<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs)</span></dt><dd><p>True labels for <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-X" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">X</span></code></a>.</p>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs)</span></dt><dd><p>True labels for <code class="xref py py-obj docutils literal notranslate"><span class="pre">X</span></code>.</p>
 </dd>
 <dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights.</p>
 </dd>
@@ -717,7 +835,7 @@ each label set be correctly predicted.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-y" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">y</span></code></a>.</p>
+<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -729,8 +847,8 @@ each label set be correctly predicted.</p>
 <span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xTe</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xTr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yTr</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#MRCpy.DWGCS" title="MRCpy.dwgcs.DWGCS"><span class="pre">MRCpy.dwgcs.DWGCS</span></a><a class="headerlink" href="#MRCpy.DWGCS.set_fit_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
 <p>Note that this method is only relevant if
-<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
-Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.7)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <p>The options for each parameter are:</p>
 <ul class="simple">
@@ -749,7 +867,7 @@ parameters and not others.</p>
 <p class="admonition-title">Note</p>
 <p>This method is only relevant if this estimator is used as a
 sub-estimator of a meta-estimator, e.g. used inside a
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -776,7 +894,7 @@ sub-estimator of a meta-estimator, e.g. used inside a
 <span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.DWGCS.set_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the parameters of this estimator.</p>
 <p>The method works on simple estimators as well as on nested objects
-(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
 parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
 possible to update each component of a nested object.</p>
 <dl class="field-list simple">
@@ -800,8 +918,8 @@ possible to update each component of a nested object.</p>
 <span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#MRCpy.DWGCS" title="MRCpy.dwgcs.DWGCS"><span class="pre">MRCpy.dwgcs.DWGCS</span></a><a class="headerlink" href="#MRCpy.DWGCS.set_score_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
 <p>Note that this method is only relevant if
-<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
-Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.7)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <p>The options for each parameter are:</p>
 <ul class="simple">
@@ -820,7 +938,7 @@ parameters and not others.</p>
 <p class="admonition-title">Note</p>
 <p>This method is only relevant if this estimator is used as a
 sub-estimator of a meta-estimator, e.g. used inside a
-<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -854,7 +972,7 @@ sub-estimator of a meta-estimator, e.g. used inside a
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="MRCpy.phi.RandomFourierPhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.RandomFourierPhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.LMRC.html" class="btn btn-neutral float-right" title="MRCpy.LMRC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="MRCpy.AMRC.html" class="btn btn-neutral float-left" title="MRCpy.AMRC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

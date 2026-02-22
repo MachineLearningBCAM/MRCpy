@@ -95,6 +95,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
 </ul>
 <ul>
@@ -195,80 +198,88 @@
 
 
 <div class="viewcode-block" id="BaseMRC"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC">[docs]</a><span class="k">class</span> <span class="nc">BaseMRC</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Base class for different minimax risk classifiers</span>
 
 <span class="sd">    This class is a parent class for different MRCs</span>
 <span class="sd">    implemented in the library.</span>
 <span class="sd">    It defines the different parameters and the layout.</span>
 
-<span class="sd">    .. seealso:: For more information about MRC, one can refer to the</span>
-<span class="sd">    following resources:</span>
+<span class="sd">    .. seealso::</span>
 
-<span class="sd">                    [1] `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).</span>
-<span class="sd">                    Minimax Classification with</span>
-<span class="sd">                    0-1 Loss and Performance Guarantees.</span>
-<span class="sd">                    Advances in Neural Information Processing</span>
-<span class="sd">                    Systems, 33, 302-312. &lt;https://arxiv.org/abs/2010.07964&gt;`_</span>
+<span class="sd">        For more information about MRC, one can refer to the</span>
+<span class="sd">        following resources:</span>
 
-<span class="sd">                    [2] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).</span>
-<span class="sd">                    Generalized Maximum</span>
-<span class="sd">                    Entropy for Supervised Classification.</span>
-<span class="sd">                    arXiv preprint arXiv:2007.05447.</span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_</span>
+<span class="sd">        - `Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020).</span>
+<span class="sd">          Minimax Classification with</span>
+<span class="sd">          0-1 Loss and Performance Guarantees.</span>
+<span class="sd">          Advances in Neural Information Processing</span>
+<span class="sd">          Systems, 33, 302-312.</span>
+<span class="sd">          &lt;https://proceedings.neurips.cc/paper_files/paper/2020</span>
+<span class="sd">          /file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf&gt;`_</span>
 
-<span class="sd">                    [3] `Bondugula, K., Mazuelas, S., &amp; Pérez,</span>
-<span class="sd">                    A. (2021). MRCpy: A Library for Minimax Risk Classifiers.</span>
-<span class="sd">                    arXiv preprint arXiv:2108.01952.</span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
+<span class="sd">        - `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).</span>
+<span class="sd">          Generalized Maximum Entropy for Supervised Classification.</span>
+<span class="sd">          IEEE Transactions on Information Theory, 68(4), 2530-2550.</span>
+<span class="sd">          &lt;https://ieeexplore.ieee.org/stamp/</span>
+<span class="sd">          stamp.jsp?arnumber=9682746&gt;`_</span>
+
+<span class="sd">        - `Mazuelas, S., Romero, M., Grunwald, P. (2023).</span>
+<span class="sd">          Minimax Risk Classifiers with 0-1 Loss.</span>
+<span class="sd">          Journal of Machine Learning Research, 24(208), 1-48.</span>
+<span class="sd">          &lt;https://jmlr.org/papers/volume24/22-0339/22-0339.pdf&gt;`_</span>
+
+<span class="sd">        - `Bondugula, K., Mazuelas, S., &amp; Pérez,</span>
+<span class="sd">          A. (2021). MRCpy: A Library for Minimax Risk Classifiers.</span>
+<span class="sd">          arXiv preprint arXiv:2108.01952.</span>
+<span class="sd">          &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    loss : `str`, default = &#39;0-1&#39;</span>
+<span class="sd">    loss : str, default=&#39;0-1&#39;</span>
 <span class="sd">        Type of loss function to use for the risk</span>
 <span class="sd">        minimization.</span>
-<span class="sd">        The options are 0-1 loss and logaritmic loss.</span>
-<span class="sd">        &#39;0-1&#39;</span>
-<span class="sd">            0-1 loss quantifies the probability of classification</span>
-<span class="sd">            error at a certain example for a certain rule.</span>
-<span class="sd">        &#39;log&#39;</span>
-<span class="sd">            Log-loss quantifies the minus log-likelihood at a</span>
-<span class="sd">            certain example for a certain rule.</span>
+<span class="sd">        The options are 0-1 loss and logarithmic loss.</span>
 
-<span class="sd">    s : `float`, default = `0.3`</span>
+<span class="sd">        - ``&#39;0-1&#39;`` : 0-1 loss quantifies the probability of classification</span>
+<span class="sd">          error at a certain example for a certain rule.</span>
+<span class="sd">        - ``&#39;log&#39;`` : Log-loss quantifies the minus log-likelihood at a</span>
+<span class="sd">          certain example for a certain rule.</span>
+
+<span class="sd">    s : float, default=0.3</span>
 <span class="sd">        Parameter that tunes the estimation of expected values</span>
-<span class="sd">        of feature mapping function. It is used to calculate :math:`\lambda`</span>
+<span class="sd">        of feature mapping function. It is used to calculate :math:`\boldsymbol{\lambda}`</span>
 <span class="sd">        (variance in the mean estimates</span>
 <span class="sd">        for the expectations of the feature mappings) in the following way</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}</span>
+<span class="sd">            \boldsymbol{\lambda} = s * \text{std}(\Phi(X,Y)) / \sqrt{\left| X \right|}</span>
 
 <span class="sd">        where (X,Y) is the dataset of training samples and their labels</span>
-<span class="sd">        respectively and :math:`\\text{std}(\\phi(X,Y))` stands for</span>
-<span class="sd">        standard deviation of :math:`\\phi(X,Y)` in the supervised</span>
+<span class="sd">        respectively and :math:`\text{std}(\Phi(X,Y))` stands for</span>
+<span class="sd">        standard deviation of :math:`\Phi(X,Y)` in the supervised</span>
 <span class="sd">        dataset (X,Y).</span>
 
-<span class="sd">    deterministic : `bool`, default = `True`</span>
+<span class="sd">    deterministic : bool, default=True</span>
 <span class="sd">        Whether the prediction of the labels</span>
-<span class="sd">        should be done in a deterministic way (given a fixed `random_state`</span>
+<span class="sd">        should be done in a deterministic way (given a fixed ``random_state``</span>
 <span class="sd">        in the case of using random Fourier or random ReLU features).</span>
 
-<span class="sd">    random_state : `int`, RandomState instance, default = `None`</span>
+<span class="sd">    random_state : int, RandomState instance, default=None</span>
 <span class="sd">        Random seed used when &#39;fourier&#39; and &#39;relu&#39; options for feature mappings</span>
 <span class="sd">        are used to produce the random weights.</span>
 
-<span class="sd">    fit_intercept : `bool`, default = `True`</span>
-<span class="sd">            Whether to calculate the intercept for MRCs</span>
-<span class="sd">            If set to false, no intercept will be used in calculations</span>
-<span class="sd">            (i.e. data is expected to be already centered).</span>
+<span class="sd">    fit_intercept : bool, default=True</span>
+<span class="sd">        Whether to calculate the intercept for MRCs.</span>
+<span class="sd">        If set to false, no intercept will be used in calculations</span>
+<span class="sd">        (i.e. data is expected to be already centered).</span>
 
-<span class="sd">    phi : `str` or `BasePhi` instance, default = &#39;linear&#39;</span>
+<span class="sd">    phi : str or BasePhi instance, default=&#39;linear&#39;</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
-<span class="sd">        The currenlty available feature mapping methods are</span>
+<span class="sd">        The currently available feature mapping methods are</span>
 <span class="sd">        &#39;fourier&#39;, &#39;relu&#39;, &#39;threshold&#39; and &#39;linear&#39;.</span>
 <span class="sd">        The users can also implement their own feature mapping object</span>
-<span class="sd">        (should be a `BasePhi` instance) and pass it to this argument.</span>
+<span class="sd">        (should be a ``BasePhi`` instance) and pass it to this argument.</span>
 <span class="sd">        Note that when using &#39;fourier&#39; or &#39;relu&#39; feature mappings,</span>
 <span class="sd">        training and testing instances are expected to be normalized.</span>
 <span class="sd">        To implement a feature mapping, please go through the</span>
@@ -276,44 +287,44 @@
 
 <span class="sd">        &#39;linear&#39;</span>
 <span class="sd">            It uses the identity feature map referred to as Linear feature map.</span>
-<span class="sd">            See class `BasePhi`.</span>
+<span class="sd">            See class ``BasePhi``.</span>
 
 <span class="sd">        &#39;fourier&#39;</span>
-<span class="sd">            It uses Random Fourier Feature map. See class `RandomFourierPhi`.</span>
+<span class="sd">            It uses Random Fourier Feature map. See class ``RandomFourierPhi``.</span>
 
 <span class="sd">        &#39;relu&#39;</span>
 <span class="sd">            It uses Rectified Linear Unit (ReLU) features.</span>
-<span class="sd">            See class `RandomReLUPhi`.</span>
+<span class="sd">            See class ``RandomReLUPhi``.</span>
 
 <span class="sd">        &#39;threshold&#39;</span>
 <span class="sd">            It uses Feature mappings obtained using a threshold.</span>
-<span class="sd">            See class `ThresholdPhi`.</span>
+<span class="sd">            See class ``ThresholdPhi``.</span>
 
 <span class="sd">    **phi_kwargs : Additional parameters for feature mappings.</span>
-<span class="sd">                Groups the multiple optional parameters</span>
-<span class="sd">                for the corresponding feature mappings (`phi`).</span>
+<span class="sd">        Groups the multiple optional parameters</span>
+<span class="sd">        for the corresponding feature mappings (``phi``).</span>
 
-<span class="sd">                For example in case of fourier features,</span>
-<span class="sd">                the number of features is given by `n_components`</span>
-<span class="sd">                parameter which can be passed as argument -</span>
-<span class="sd">                `MRC(loss=&#39;log&#39;, phi=&#39;fourier&#39;, n_components=500)`</span>
+<span class="sd">        For example in case of fourier features,</span>
+<span class="sd">        the number of features is given by ``n_components``</span>
+<span class="sd">        parameter which can be passed as argument -</span>
+<span class="sd">        ``MRC(loss=&#39;log&#39;, phi=&#39;fourier&#39;, n_components=500)``</span>
 
-<span class="sd">                The list of arguments for each feature mappings class</span>
-<span class="sd">                can be found in the corresponding documentation.</span>
+<span class="sd">        The list of arguments for each feature mappings class</span>
+<span class="sd">        can be found in the corresponding documentation.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    is_fitted_ : `bool`</span>
+<span class="sd">    is_fitted_ : bool</span>
 <span class="sd">        Whether the classifier is fitted i.e., the parameters are learnt.</span>
 
-<span class="sd">    tau_ : `array`-like of shape (`n_features`)</span>
+<span class="sd">    tau_mat : array-like of shape (n_classes, n_features)</span>
 <span class="sd">        Mean estimates for the expectations of feature mappings.</span>
 
-<span class="sd">    lambda_ : `array`-like of shape (`n_features`)</span>
+<span class="sd">    lambda_mat : array-like of shape (n_classes, n_features)</span>
 <span class="sd">        Variance in the mean estimates for the expectations</span>
 <span class="sd">        of the feature mappings.</span>
 
-<span class="sd">    classes_ : `array`-like of shape (`n_classes`)</span>
+<span class="sd">    classes_ : array-like of shape (n_classes,)</span>
 <span class="sd">        Labels in the given dataset.</span>
 <span class="sd">        If the labels Y are not given during fit</span>
 <span class="sd">        i.e., tau and lambda are given as input,</span>
@@ -338,18 +349,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span> <span class="o">=</span> <span class="n">phi_kwargs</span>
         <span class="c1"># Solver list for cvxpy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
-<span class="sd">        and then calls the `minimax_risk` function to solve the optimization.</span>
+<span class="sd">        and then calls the ``minimax_risk`` function to solve the optimization.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Training instances used in</span>
 
 <span class="sd">            - Calculating the expectation estimates</span>
@@ -357,14 +368,14 @@
 <span class="sd">              for the minimax risk classification</span>
 <span class="sd">            - Solving the minimax risk optimization problem.</span>
 
-<span class="sd">            `n_samples` is the number of training samples and</span>
-<span class="sd">            `n_dimensions` is the number of features.</span>
+<span class="sd">            ``n_samples`` is the number of training samples and</span>
+<span class="sd">            ``n_dimensions`` is the number of features.</span>
 
-<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">        Y : array-like of shape (n_samples, 1), default=None</span>
 <span class="sd">            Labels corresponding to the training instances</span>
 <span class="sd">            used only to compute the expectation estimates.</span>
 
-<span class="sd">        X_ : array-like of shape (`n_samples2`, `n_dimensions`), default = None</span>
+<span class="sd">        X_ : array-like of shape (n_samples2, n_dimensions), default=None</span>
 <span class="sd">            These instances are optional and</span>
 <span class="sd">            when given, will be used in the minimax risk optimization.</span>
 <span class="sd">            These extra instances are generally a smaller set and</span>
@@ -415,12 +426,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Compute the expectation estimates</span>
-        <span class="n">tau_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
-        <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_lambda</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">tau_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+        <span class="n">lambda_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_lambda</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">)</span>
 
         <span class="c1"># Limit the number of training samples used in the optimization</span>
         <span class="c1"># for large datasets</span>
-        <span class="c1"># Reduces the training time and use of memory</span>
+        <span class="c1"># Reduces the training time and use of memory </span>
+        <span class="c1"># while retaining competitive performance</span>
         <span class="n">n_max</span> <span class="o">=</span> <span class="mi">5000</span>
 
         <span class="c1"># Check if separate instances are given for the optimization</span>
@@ -442,60 +455,82 @@
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">X_opt</span><span class="p">)</span>
 
         <span class="c1"># Fit the MRC classifier</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_opt</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="BaseMRC.compute_phi"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMRC.compute_features"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_features">[docs]</a>    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compute the feature mapping corresponding to instances given</span>
-<span class="sd">        for learning the classifiers (in case of training) and </span>
-<span class="sd">        prediction (in case of testing).</span>
+<span class="sd">        Compute the features (without one-hot encoding) corresponding</span>
+<span class="sd">        to instances given for learning the classifiers (in case of</span>
+<span class="sd">        training) and prediction (in case of testing).</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Instances to be converted to features.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_transform : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Feature corresponding with each instance.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseMRC.compute_tau"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_tau">[docs]</a>    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMRC.compute_tau"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_tau">[docs]</a>    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute mean estimate tau using the given training instances.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
-<span class="sd">            Training instances used for solving</span>
-<span class="sd">            the minimax risk optimization problem.</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Features corresponding with the training instances</span>
+<span class="sd">            :math:`\psi(x)`.</span>
 
-<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">        Y : array-like of shape (n_samples, 1), default=None</span>
 <span class="sd">            Labels corresponding to the training instances</span>
 <span class="sd">            used only to compute the expectation estimates.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tau_mat : array-like of shape (n_classes, n_features) or (1, n_features)</span>
+<span class="sd">            Mean estimates :math:`\boldsymbol{\tau}` of the feature mappings.</span>
+<span class="sd">            Shape is (n_classes, n_features) for multi-class problems,</span>
+<span class="sd">            or (1, n_features) for binary classification.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BaseMRC.compute_lambda"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMRC.compute_lambda"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute deviation in the mean estimate tau</span>
 <span class="sd">        using the given training instances.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
-<span class="sd">            Training instances used for solving</span>
-<span class="sd">            the minimax risk optimization problem.</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Features corresponding with the training instances</span>
+<span class="sd">            :math:`\psi(x)`.</span>
 
-<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">        Y : array-like of shape (n_samples, 1), default=None</span>
 <span class="sd">            Labels corresponding to the training instances</span>
 <span class="sd">            used only to compute the expectation estimates.</span>
+
+<span class="sd">        tau_mat : array-like of shape (n_classes, n_features)</span>
+<span class="sd">            Mean estimates :math:`\boldsymbol{\tau}` corresponding with</span>
+<span class="sd">            the expectations of feature mappings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lambda_mat : array-like of shape (n_classes, n_features) or (1, n_features)</span>
+<span class="sd">            Deviation estimates :math:`\boldsymbol{\lambda}` that define the uncertainty</span>
+<span class="sd">            set constraints. Shape matches tau_mat.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="BaseMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<div class="viewcode-block" id="BaseMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Abstract function for sub-classes implementing</span>
 <span class="sd">        the different MRCs.</span>
@@ -505,19 +540,19 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Training instances used for solving</span>
 <span class="sd">            the minimax risk optimization problem.</span>
 
-<span class="sd">        tau_ : `array`-like of shape (`n_features` * `n_classes`)</span>
-<span class="sd">            Mean estimates</span>
-<span class="sd">            for the expectations of feature mappings.</span>
+<span class="sd">        tau_mat : array-like of shape (n_classes, n_features)</span>
+<span class="sd">            Mean estimates :math:`\boldsymbol{\tau}` corresponding with</span>
+<span class="sd">            the expectations of feature mappings.</span>
 
-<span class="sd">        lambda_ : `array`-like of shape (`n_features` * `n_classes`)</span>
-<span class="sd">            Variance in the mean estimates</span>
-<span class="sd">            for the expectations of the feature mappings.</span>
+<span class="sd">        lambda_mat : array-like of shape (n_classes, n_features)</span>
+<span class="sd">            Inaccuracies :math:`\boldsymbol{\lambda}` in the mean estimates</span>
+<span class="sd">            corresponding with the expectations of the feature mappings.</span>
 
-<span class="sd">        n_classes : `int`</span>
+<span class="sd">        n_classes : int</span>
 <span class="sd">            Number of labels in the dataset.</span>
 
 <span class="sd">        Returns</span>
@@ -547,13 +582,13 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Testing instances for which</span>
 <span class="sd">            the prediction probabilities are calculated for each class.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        hy_x : `array`-like of shape (`n_samples`, `n_classes`)</span>
+<span class="sd">        hy_x : array-like of shape (n_samples, n_classes)</span>
 <span class="sd">            Conditional probabilities (:math:`p(y|x)`)</span>
 <span class="sd">            corresponding to each class.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -567,22 +602,36 @@
                                   <span class="s1">&#39; This functions needs to be implemented&#39;</span> <span class="o">+</span>
                                   <span class="s1">&#39; by a sub-class implementing a MRC.&#39;</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="BaseMRC.compute_phi"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the feature mapping corresponding to instances given</span>
+<span class="sd">        for learning the classifiers (in case of training) and</span>
+<span class="sd">        prediction (in case of testing).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
+<span class="sd">            Instances to be converted to features.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="BaseMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Predicts classes for new instances using a fitted model.</span>
 
-<span class="sd">        Returns the predicted classes for the given instances in `X`</span>
-<span class="sd">        using the probabilities given by the function `predict_proba`.</span>
+<span class="sd">        Returns the predicted classes for the given instances in ``X``</span>
+<span class="sd">        using the probabilities given by the function ``predict_proba``.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Test instances for which the labels are to be predicted</span>
 <span class="sd">            by the MRC model.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        y_pred : `array`-like of shape (`n_samples`)</span>
+<span class="sd">        y_pred : array-like of shape (n_samples,)</span>
 <span class="sd">            Predicted labels corresponding to the given instances.</span>
 
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -614,11 +663,11 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        X : `array`-like of shape (`n_samples`, `n_dimensions`)</span>
+<span class="sd">        X : array-like of shape (n_samples, n_dimensions)</span>
 <span class="sd">            Test instances for which the labels are to be predicted</span>
 <span class="sd">            by the MRC model.</span>
 
-<span class="sd">        Y : `array`-like of shape (`n_samples`, 1), default = `None`</span>
+<span class="sd">        Y : array-like of shape (n_samples, 1), default=None</span>
 <span class="sd">            Labels corresponding to the testing instances</span>
 <span class="sd">            used to compute the error in the prediction.</span>
 

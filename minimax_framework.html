@@ -1,0 +1,365 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Minimax Framework &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MRCpy Package Contents" href="api.html" />
+    <link rel="prev" title="Getting started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Minimax Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#minimax-risk-classification">Minimax Risk Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uncertainty-sets">Uncertainty Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#feature-mappings">Feature Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loss-functions">Loss Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Minimax Framework</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/minimax_framework.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="minimax-framework">
+<h1>Minimax Framework<a class="headerlink" href="#minimax-framework" title="Permalink to this headline">¶</a></h1>
+<p>MRCpy <a class="footnote-reference brackets" href="#id17" id="id1">8</a> implements minimax risk classifiers (MRCs) that obtain
+classification rules by minimizing the worst-case expected loss over an
+uncertainty set of distributions. This section provides a general overview
+of the framework underlying all methods in the library, following the
+formulation in <a class="footnote-reference brackets" href="#id18" id="id2">9</a>.</p>
+<div class="section" id="minimax-risk-classification">
+<h2>Minimax Risk Classification<a class="headerlink" href="#minimax-risk-classification" title="Permalink to this headline">¶</a></h2>
+<p>Given a loss function <span class="math notranslate nohighlight">\(\ell\)</span>, an MRC obtains a classification rule
+<span class="math notranslate nohighlight">\(\mathrm{h}^{\mathcal{U}}\)</span> that solves:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{h}^{\mathcal{U}} \in \arg\min_{\mathrm{h}}
+\max_{\mathrm{p} \in \mathcal{U}} \ell(\mathrm{h}, \mathrm{p})\]</div>
+<p>where the maximization is over distributions <span class="math notranslate nohighlight">\(\mathrm{p}\)</span> in an
+uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}\)</span> defined by expectation constraints on
+feature mappings <span class="math notranslate nohighlight">\(\Phi(x, y)\)</span>.</p>
+</div>
+<div class="section" id="uncertainty-sets">
+<h2>Uncertainty Sets<a class="headerlink" href="#uncertainty-sets" title="Permalink to this headline">¶</a></h2>
+<p>MRCpy implements two types of uncertainty sets:</p>
+<ul>
+<li><p><strong>Uncertainty set</strong> <span class="math notranslate nohighlight">\(\mathcal{U}_1\)</span>: Defined by constraints that
+bound the expectations of a feature mapping <span class="math notranslate nohighlight">\(\Phi(x, y)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{U}_1 = \left\{ \mathrm{p} :
+\left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)] - \boldsymbol{\tau} \right|
+\leq \boldsymbol{\lambda} \right\}\]</div>
+<p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_1\)</span> (the <code class="docutils literal notranslate"><span class="pre">MRC</span></code> class) provide upper and
+lower bounds on the expected loss <a class="footnote-reference brackets" href="#id12" id="id3">3</a>. Efficient learning algorithms
+for high-dimensional settings are available via column generation <a class="footnote-reference brackets" href="#id13" id="id4">4</a>
+and constraint generation <a class="footnote-reference brackets" href="#id11" id="id5">2</a>.</p>
+</li>
+<li><p><strong>Uncertainty set</strong> <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span>: Adds an additional constraint
+that fixes the instances’ marginal distribution to coincide with the
+empirical marginal:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{U}_2 = \left\{ \mathrm{p} :
+\mathrm{p}_x = \hat{\mathrm{p}}_x, \;
+\left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)] - \boldsymbol{\tau} \right|
+\leq \boldsymbol{\lambda} \right\}\]</div>
+<p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> (the <code class="docutils literal notranslate"><span class="pre">CMRC</span></code> class) correspond to
+popular techniques such as L1-regularized logistic regression, zero-one
+adversarial classifiers, and maximum entropy machines <a class="footnote-reference brackets" href="#id15" id="id6">6</a>.</p>
+</li>
+</ul>
+<p>In both cases, <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> denotes the empirical mean estimates of the
+feature mappings and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> controls the size of the uncertainty
+set based on the estimation accuracy.</p>
+<p>The library also provides methods for adaptation to concept drift <a class="footnote-reference brackets" href="#id16" id="id7">7</a> and
+covariate shift <a class="footnote-reference brackets" href="#id14" id="id8">5</a> within the minimax risk classification framework.</p>
+</div>
+<div class="section" id="feature-mappings">
+<h2>Feature Mappings<a class="headerlink" href="#feature-mappings" title="Permalink to this headline">¶</a></h2>
+<p>MRCs use feature mappings to represent instance-label pairs as real vectors.
+MRCpy implements several feature mappings:</p>
+<ul class="simple">
+<li><p><strong>Linear (identity)</strong>: Direct use of input features.</p></li>
+<li><p><strong>Random Fourier features</strong>: Approximation of kernel methods via random projections.</p></li>
+<li><p><strong>Random ReLU features</strong>: Non-linear random features using ReLU activations.</p></li>
+<li><p><strong>Threshold features</strong>: Binary features based on thresholding input dimensions.</p></li>
+</ul>
+<p>All feature mappings can be combined with any MRC variant.</p>
+</div>
+<div class="section" id="loss-functions">
+<h2>Loss Functions<a class="headerlink" href="#loss-functions" title="Permalink to this headline">¶</a></h2>
+<p>MRCpy supports two main types of loss functions:</p>
+<ul class="simple">
+<li><p><strong>0-1 loss</strong>: Directly quantifies the probability of classification error.
+Unlike common techniques that rely on surrogate losses, MRCs can utilize
+the 0-1 loss directly.</p></li>
+<li><p><strong>Log-loss</strong>: Quantifies the negative log-likelihood for a classification
+rule (cross-entropy).</p></li>
+</ul>
+<p>The PyTorch MGCE module extends this framework by supporting the full
+alpha-loss family (<span class="math notranslate nohighlight">\(\ell_\alpha\)</span>) <a class="footnote-reference brackets" href="#id10" id="id9">1</a>, which smoothly interpolates
+between 0-1 loss (<span class="math notranslate nohighlight">\(\alpha = 1\)</span>) and log-loss
+(<span class="math notranslate nohighlight">\(\alpha \to \infty\)</span>) through the parameter <span class="math notranslate nohighlight">\(\alpha\)</span>.
+See <code class="xref py py-obj docutils literal notranslate"><span class="pre">mgce_clf</span></code> in the API reference for details.</p>
+<p>The library implements multiple techniques within the minimax risk
+classification framework; see the references below for details.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id9">1</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026). Minimax
+Generalized Cross-Entropy. In Proceedings of the International
+Conference on Artificial Intelligence and Statistics (AISTATS).</p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id5">2</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient
+Large-Scale Learning of Minimax Risk Classifiers. IEEE International
+Conference on Data Mining (ICDM).</p>
+</dd>
+<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
+Classifiers with 0-1 Loss. Journal of Machine Learning Research,
+24(208), 1-48.</p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient Learning
+of Minimax Risk Classifiers in High Dimensions. The 39th Conference
+on Uncertainty in Artificial Intelligence (UAI), 206-215.</p>
+</dd>
+<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id8">5</a></span></dt>
+<dd><p>Segovia-Martín, J.I., Mazuelas, S., &amp; Liu, A. (2023).
+Double-Weighting for Covariate Shift Adaptation. In Proceedings of
+the 40th International Conference on Machine Learning (ICML),
+pp. 30439-30457.</p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized Maximum
+Entropy for Supervised Classification. IEEE Transactions on
+Information Theory, 68(4), 2530-2550.</p>
+</dd>
+<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id7">7</a></span></dt>
+<dd><p>Álvarez, V., Mazuelas, S., &amp; Lozano, J.A. (2022). Minimax
+Classification under Concept Drift with Multidimensional Adaptation
+and Performance Guarantees. In Proceedings of the 39th International
+Conference on Machine Learning (ICML), pp. 486-499.</p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id1">8</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A Library
+for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id2">9</a></span></dt>
+<dd><p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification
+with 0-1 Loss and Performance Guarantees. Advances in Neural
+Information Processing Systems, 33, 302-312.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="api.html" class="btn btn-neutral float-right" title="MRCpy Package Contents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

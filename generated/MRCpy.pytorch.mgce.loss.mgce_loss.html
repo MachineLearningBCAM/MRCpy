@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.pytorch.mgce.loss.mgce_loss &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MRCpy.phi.RandomFourierPhi" href="MRCpy.phi.RandomFourierPhi.html" />
+    <link rel="prev" title="MRCpy.pytorch.mgce.classifier.mgce_clf" href="MRCpy.pytorch.mgce.classifier.mgce_clf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.pytorch.mgce.classifier.mgce_clf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">MRCpy Package Contents</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/generated/MRCpy.pytorch.mgce.loss.mgce_loss.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mrcpy-pytorch-mgce-loss-mgce-loss">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss<a class="headerlink" href="#mrcpy-pytorch-mgce-loss-mgce-loss" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.pytorch.mgce.loss.</span></span><span class="sig-name descname"><span class="pre">mgce_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.02</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
+See <a class="reference internal" href="MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf" title="MRCpy.pytorch.mgce.classifier.mgce_clf"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgce_clf</span></code></a> for the full
+<span class="math notranslate nohighlight">\(\alpha\)</span>-loss definition and the minimax framework.</p>
+<p>This class implements the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss (<span class="math notranslate nohighlight">\(\ell_\beta\)</span>) used in the
+Minimax Generalized Cross-Entropy (MGCE) framework. The class provides a
+parametric family of loss functions indexed by <span class="math notranslate nohighlight">\(\beta \geq 1\)</span> 
+such that <span class="math notranslate nohighlight">\(\beta = \alpha / (\alpha-1)\)</span> generalize the standard cross-entropy 
+(log-loss):</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta = 1\)</span>: the convex 0-1 loss (see <a class="reference internal" href="#rce87d5c1552e-2" id="id1">[2]</a>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta \to \infty\)</span>: the log-loss (cross-entropy)</p></li>
+</ul>
+<p>The name “generalized cross-entropy” reflects that the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss
+family extends the standard cross-entropy by allowing the practitioner
+to tune <span class="math notranslate nohighlight">\(\beta\)</span> to control the trade-off between robustness
+(low <span class="math notranslate nohighlight">\(\beta\)</span>) and smoothness (high <span class="math notranslate nohighlight">\(\beta\)</span>).</p>
+<p>This class computes gradients and loss values that can be directly
+integrated with PyTorch training loops.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>num_classes</strong><span class="classifier">int</span></dt><dd><p>Number of classes in the classification problem. Must be &gt;= 2.</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier">float, default=1.02</span></dt><dd><p>The <span class="math notranslate nohighlight">\(\beta\)</span> parameter controlling the loss behavior.
+Values in the range <span class="math notranslate nohighlight">\([1, 11]\)</span> sufficiently interpolate
+between all possible loss functions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">=</span> <span class="pre">1.0</span></code>: 0-1 loss (non-smooth).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">beta</span> <span class="pre">≈</span> <span class="pre">11</span></code>: approximately the log-loss (cross-entropy).</p></li>
+<li><p>Intermediate values smoothly trade off between robustness
+(low <span class="math notranslate nohighlight">\(\beta\)</span>) and smoothness (high <span class="math notranslate nohighlight">\(\beta\)</span>).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="citation">
+<dt class="label" id="rce87d5c1552e-1"><span class="brackets">1</span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026).
+Minimax Generalized Cross-Entropy. In Proceedings of the
+International Conference on Artificial Intelligence and
+Statistics (AISTATS).</p>
+</dd>
+<dt class="label" id="rce87d5c1552e-2"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
+<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
+Maximum Entropy for Supervised Classification. IEEE Transactions
+on Information Theory, 68(4), 2530-2550.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Basic usage in a training loop:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">MRCpy.pytorch.mgce.loss</span> <span class="kn">import</span> <span class="n">mgce_loss</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize with beta=1.4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># In training loop</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>  <span class="c1"># Shape: (batch_size, num_classes)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">targets</span>       <span class="c1"># Shape: (batch_size,)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute gradients for backpropagation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gradients</span><span class="p">,</span> <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Backpropagate using computed gradients</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For validation/inference:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compute loss and probabilities</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss_val</span><span class="p">,</span> <span class="n">probabilities</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="o">.</span><span class="n">get_loss_value</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">reg_val</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predicted_classes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>num_classes</strong><span class="classifier">int</span></dt><dd><p>Number of classes in the classification problem.</p>
+</dd>
+<dt><strong>beta</strong><span class="classifier">float</span></dt><dd><p>The parameter for the loss function.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a>(logits, labels)</p></td>
+<td><p>Compute gradients for the <span class="math notranslate nohighlight">\(lpha\)</span>-loss function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_loss_value</span></code></a>(logits, labels, reg_val)</p></td>
+<td><p>Compute loss value and probability predictions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_probs" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_probs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probs</span></code></a>(logits)</p></td>
+<td><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.02</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient">
+<span class="sig-name descname"><span class="pre">get_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gradients for the <span class="math notranslate nohighlight">\(lpha\)</span>-loss function.</p>
+<p>This method computes the gradients with respect to the logits for
+backpropagation. The gradients are computed using either the 0-1 loss
+formulation (when beta=1) or the smooth <span class="math notranslate nohighlight">\(lpha\)</span>-loss approximation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax or other
+activation functions.</p>
+</dd>
+<dt><strong>labels</strong><span class="classifier">torch.Tensor of shape (batch_size,)</span></dt><dd><p>True class labels as integer indices in range [0, num_classes-1].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>gradients</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Gradients with respect to the input logits. Can be used directly
+with logits.backward(gradients) for backpropagation.</p>
+</dd>
+<dt><strong>loss_value</strong><span class="classifier">torch.Tensor (scalar)</span></dt><dd><p>The computed loss value for the current batch.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">32</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gradients</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">gradients</span><span class="p">)</span>  <span class="c1"># Backpropagate</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value">
+<span class="sig-name descname"><span class="pre">get_loss_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_loss_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute loss value and probability predictions.</p>
+<p>This method computes the <span class="math notranslate nohighlight">\(lpha\)</span>-loss value and the corresponding
+probability predictions. It is typically used during validation
+or when you need both the loss and the predicted probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax.</p>
+</dd>
+<dt><strong>labels</strong><span class="classifier">torch.Tensor of shape (batch_size,)</span></dt><dd><p>True class labels as integer indices in range [0, num_classes-1].</p>
+</dd>
+<dt><strong>reg_val</strong><span class="classifier">float or torch.Tensor (scalar)</span></dt><dd><p>Regularization value to add to the loss. Typically the L1 or L2
+regularization term from the model parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>total_loss</strong><span class="classifier">torch.Tensor (scalar)</span></dt><dd><p>The computed loss value including regularization.</p>
+</dd>
+<dt><strong>probabilities</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Predicted class probabilities. Each row sums to 1.0 and represents
+the probability distribution over classes for the corresponding sample.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">(</span><span class="mi">32</span><span class="p">,))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reg_val</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="o">.</span><span class="n">get_loss_value</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">reg_val</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predicted_classes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_probs">
+<span class="sig-name descname"><span class="pre">get_probs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_probs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_probs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework.</p>
+<p>This method computes class probabilities for given logits without
+computing the loss value, making it efficient for inference.</p>
+<p>For beta=1 (0-1 loss case), uses the psi function with batched
+computation. For beta&gt;1 (smooth approximation), uses the bisection
+solver to find optimal nu values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax or other
+activation functions.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>probabilities</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Predicted class probabilities for each input sample. Each row
+sums to 1.0. Probabilities are computed using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss
+framework rather than standard softmax.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_loss_value</span></code></a></dt><dd><p>Compute both loss value and probabilities.</p>
+</dd>
+<dt><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a></dt><dd><p>Compute gradients for backpropagation.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">probabilities</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="o">.</span><span class="n">get_probs</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">predicted_classes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">confidence_scores</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.phi.RandomFourierPhi.html" class="btn btn-neutral float-right" title="MRCpy.phi.RandomFourierPhi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.pytorch.mgce.classifier.mgce_clf.html" class="btn btn-neutral float-left" title="MRCpy.pytorch.mgce.classifier.mgce_clf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

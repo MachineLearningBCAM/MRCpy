@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="MRCpy.MRC" href="generated/MRCpy.MRC.html" />
-    <link rel="prev" title="Getting started" href="getting_started.html" /> 
+    <link rel="prev" title="Minimax Framework" href="minimax_framework.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -96,6 +96,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="minimax_framework.html">Minimax Framework</a></li>
+</ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">MRCpy Package Contents</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul>
@@ -103,6 +106,13 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.CMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.AMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.AMRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.DWGCS.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.DWGCS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.LMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.LCMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LCMRC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pytorch-based-classifiers">PyTorch-based Classifiers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/MRCpy.pytorch.mgce.loss.mgce_loss.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#feature-mappings">Feature Mappings</a><ul>
@@ -205,10 +215,33 @@
 <td><p>Constrained Minimax Risk Classifier</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.AMRC.html#MRCpy.AMRC" title="MRCpy.AMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.AMRC</span></code></a>(n_classes[, loss, deterministic, …])</p></td>
-<td><p>Adaptative Minimax Risk Classifier</p></td>
+<td><p>Adaptive Minimax Risk Classifier</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="generated/MRCpy.DWGCS.html#MRCpy.DWGCS" title="MRCpy.DWGCS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.DWGCS</span></code></a>([loss, deterministic, …])</p></td>
-<td><p>Double-Weighting General Covariate Shift</p></td>
+<td><p>Double-Weighting for General Covariate Shift</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.LMRC.html#MRCpy.LMRC" title="MRCpy.LMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.LMRC</span></code></a>([s, loss, n_classes, alpha, eps, …])</p></td>
+<td><p>Cost Sensitive Minimax Risk Classifier.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/MRCpy.LCMRC.html#MRCpy.LCMRC" title="MRCpy.LCMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.LCMRC</span></code></a>([s, loss, n_classes, alpha, …])</p></td>
+<td><p>Marginally Constrained Cost Sensitive Minimax Risk Classifier.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="pytorch-based-classifiers">
+<h2>PyTorch-based Classifiers<a class="headerlink" href="#pytorch-based-classifiers" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf" title="MRCpy.pytorch.mgce.classifier.mgce_clf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier.mgce_clf</span></code></a>([…])</p></td>
+<td><p>PyTorch-based Minimax Generalized Cross-Entropy (MGCE).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss" title="MRCpy.pytorch.mgce.loss.mgce_loss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss.mgce_loss</span></code></a>(num_classes)</p></td>
+<td><p>Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.</p></td>
 </tr>
 </tbody>
 </table>
@@ -259,7 +292,7 @@
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="generated/MRCpy.MRC.html" class="btn btn-neutral float-right" title="MRCpy.MRC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="minimax_framework.html" class="btn btn-neutral float-left" title="Minimax Framework" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

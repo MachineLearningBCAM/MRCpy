@@ -95,6 +95,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
 </ul>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
 </ul>
 <ul>
@@ -204,32 +207,43 @@
 
 
 <div class="viewcode-block" id="CMRC"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC">[docs]</a><span class="k">class</span> <span class="nc">CMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Constrained Minimax Risk Classifier</span>
 
-<span class="sd">    The class CMRC implements the method Minimimax Risk Classifiers</span>
-<span class="sd">    with fixed marginal distributions proposed in :ref:`[1] &lt;ref1&gt;`</span>
-<span class="sd">    using the additional marginals constraints on the instances.</span>
-<span class="sd">    It also implements two kinds of loss functions, namely 0-1 and log loss.</span>
+<span class="sd">    This class implements Minimax Risk Classifiers with fixed marginal</span>
+<span class="sd">    distributions (CMRC) proposed in [1]_ using additional marginals</span>
+<span class="sd">    constraints on the instances. It supports two loss functions:</span>
+<span class="sd">    0-1 loss and log-loss.</span>
 
-<span class="sd">    This is a subclass of the super class BaseMRC.</span>
+<span class="sd">    The classifier solves the minimax risk problem:</span>
 
-<span class="sd">    See :ref:`Examples of use` for futher applications of this class and</span>
-<span class="sd">    its methods.</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">    .. seealso:: For more information about CMRC, one can refer to the</span>
-<span class="sd">        following resources:</span>
+<span class="sd">        \mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}</span>
+<span class="sd">        \max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})</span>
 
-<span class="sd">                    [1] `Mazuelas, S., Shen, Y., &amp; Pérez, A. (2020).</span>
-<span class="sd">                    Generalized Maximum</span>
-<span class="sd">                    Entropy for Supervised Classification.</span>
-<span class="sd">                    arXiv preprint arXiv:2007.05447.</span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2007.05447&gt;`_</span>
+<span class="sd">    which finds the classifier :math:`\mathrm{h}` that minimizes the</span>
+<span class="sd">    worst-case expected loss over an uncertainty set</span>
+<span class="sd">    :math:`\mathcal{U}_2` of distributions.</span>
 
-<span class="sd">                    [2] `Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021).</span>
-<span class="sd">                    MRCpy: A Library for Minimax Risk Classifiers.</span>
-<span class="sd">                    arXiv preprint arXiv:2108.01952.</span>
-<span class="sd">                    &lt;https://arxiv.org/abs/2108.01952&gt;`_</span>
+<span class="sd">    The uncertainty set :math:`\mathcal{U}_2` is defined by fixing the</span>
+<span class="sd">    marginal distribution of features to the empirical marginal and</span>
+<span class="sd">    bounding the expectations of the feature mappings</span>
+<span class="sd">    :math:`\Phi(x, y)`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathcal{U}_2 = \left\{ \mathrm{p} : \mathrm{p}_x =</span>
+<span class="sd">        \hat{\mathrm{p}}_x, \;</span>
+<span class="sd">        \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]</span>
+<span class="sd">        - \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}</span>
+
+<span class="sd">    where :math:`\hat{\mathrm{p}}_x` is the empirical marginal</span>
+<span class="sd">    distribution of features, :math:`\boldsymbol{\tau}` are the empirical mean</span>
+<span class="sd">    estimates, and :math:`\boldsymbol{\lambda}` controls the size of the</span>
+<span class="sd">    uncertainty set based on the estimation accuracy.</span>
+
+<span class="sd">    See [1]_ for further details.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -241,16 +255,16 @@
 
 <span class="sd">    s : `float`, default = `0.3`</span>
 <span class="sd">        Parameter that tunes the estimation of expected values</span>
-<span class="sd">        of feature mapping function. It is used to calculate :math:`\lambda`</span>
+<span class="sd">        of feature mapping function. It is used to calculate :math:`\boldsymbol{\lambda}`</span>
 <span class="sd">        (variance in the mean estimates</span>
 <span class="sd">        for the expectations of the feature mappings) in the following way</span>
 
 <span class="sd">        .. math::</span>
-<span class="sd">            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}</span>
+<span class="sd">            \boldsymbol{\lambda} = s * \text{std}(\Phi(X,Y)) / \sqrt{\left| X \right|}</span>
 
 <span class="sd">        where (X,Y) is the dataset of training samples and their labels</span>
-<span class="sd">        respectively and :math:`\\text{std}(\\phi(X,Y))` stands for</span>
-<span class="sd">        standard deviation of :math:`\\phi(X,Y)` in the supervised</span>
+<span class="sd">        respectively and :math:`\text{std}(\Phi(X,Y))` stands for</span>
+<span class="sd">        standard deviation of :math:`\Phi(X,Y)` in the supervised</span>
 <span class="sd">        dataset (X,Y).</span>
 
 <span class="sd">    deterministic : `bool`, default = `True`</span>
@@ -276,7 +290,7 @@
 <span class="sd">            Solves the optimization problem using the CVXPY library.</span>
 <span class="sd">            Obtains an accurate solution while requiring more time</span>
 <span class="sd">            than the other methods. </span>
-<span class="sd">            Note that the library uses the GUROBI solver in CVXpy for which</span>
+<span class="sd">            Note that the library uses the GUROBI solver in cvxpy for which</span>
 <span class="sd">            one might need to request for a license.</span>
 <span class="sd">            A free license can be requested `here </span>
 <span class="sd">            &lt;https://www.gurobi.com/academia/academic-program-and-licenses/&gt;`_</span>
@@ -364,14 +378,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    is_fitted_ : `bool`</span>
 <span class="sd">        Whether the classifier is fitted i.e., the parameters are learnt.</span>
-<span class="sd">    tau_ : `array`-like of shape (`n_features`) or `float`</span>
-<span class="sd">        Mean estimates</span>
-<span class="sd">        for the expectations of feature mappings.</span>
-<span class="sd">    lambda_ : `array`-like of shape (`n_features`) or `float`</span>
+
+<span class="sd">    tau_ : `array`-like of shape (`n_classes`, `n_features`)</span>
+<span class="sd">        Mean estimates for the expectations of feature mappings.</span>
+
+<span class="sd">    lambda_ : `array`-like of shape (`n_classes`, `n_features`)</span>
 <span class="sd">        Variance in the mean estimates</span>
 <span class="sd">        for the expectations of the feature mappings.</span>
-<span class="sd">    mu_ : `array`-like of shape (`n_features`) or `float`</span>
+
+<span class="sd">    mu_ : `array`-like of shape (`n_classes`, `n_features`)</span>
 <span class="sd">        Parameters learnt by the optimization.</span>
+
 <span class="sd">    params_ : `dict`</span>
 <span class="sd">        Dictionary that stores the optimal points and best value of</span>
 <span class="sd">        the function.</span>
@@ -423,6 +440,16 @@
 <span class="sd">    &gt;&gt;&gt; # (mean accuracy on the given test data and labels)</span>
 <span class="sd">    &gt;&gt;&gt; clf.score(X_test, Y_test)</span>
 <span class="sd">    0.8247422680412371</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints [1]_.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized</span>
+<span class="sd">           Maximum Entropy for Supervised Classification. IEEE Transactions</span>
+<span class="sd">           on Information Theory, 68(4), 2530-2550.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Redefining the init function</span>
@@ -520,7 +547,7 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="CMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<div class="viewcode-block" id="CMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Solves the marginally constrained minimax risk</span>
 <span class="sd">        optimization problem for</span>
@@ -555,23 +582,21 @@
 
         <span class="c1"># Set the parameters for the optimization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                    <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
         <span class="c1"># Constants</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="c1"># Supress the depreciation warnings</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-
         <span class="c1"># In case of 0-1 loss, learn constraints using the phi</span>
         <span class="c1"># These constraints are used in the optimization instead of phi</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">&#39;cvx&#39;</span><span class="p">:</span>
-            <span class="c1"># Use CVXpy for the convex optimization of the MRC.</span>
+            <span class="c1"># Use cvxpy for the convex optimization of the MRC.</span>
 
             <span class="c1"># Variables</span>
             <span class="n">mu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
@@ -684,7 +709,12 @@
                         <span class="c1"># Use the subgradient approach for the convex optimization</span>
                         <span class="c1"># The subgradient of the psi subobjective</span>
                         <span class="c1"># for all the datapoints</span>
-                        <span class="n">expPhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+                        
+                        <span class="c1"># Use log-sum-exp trick for numerical stability</span>
+                        <span class="c1"># phi_mu shape: (n_samples, n_classes)</span>
+                        <span class="n">max_phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">expPhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi_mu</span> <span class="o">-</span> <span class="n">max_phi</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+                        
                         <span class="n">psi_grad</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span>\
                                 <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">expPhi</span> <span class="o">@</span> <span class="n">phi</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span>
                                          <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expPhi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span>
@@ -701,8 +731,10 @@
                     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">batch_end_sample_id</span><span class="p">:</span>
                         <span class="n">sample_id</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n</span>
 
-                        <span class="n">expPhi_xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span>
-                                        <span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
+                        <span class="c1"># Use log-sum-exp trick for numerical stability</span>
+                        <span class="n">phi_mu_xi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span>
+                        <span class="n">max_phi_xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi_mu_xi</span><span class="p">)</span>
+                        <span class="n">expPhi_xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi_mu_xi</span> <span class="o">-</span> <span class="n">max_phi_xi</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
 
                         <span class="n">sumExpPhi_xi</span> <span class="o">=</span> \
                                 <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">expPhi_xi</span> <span class="o">@</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
@@ -760,28 +792,27 @@
 <div class="viewcode-block" id="CMRC.psi"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.psi">[docs]</a>    <span class="k">def</span> <span class="nf">psi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Function to compute the psi function in the objective</span>
-<span class="sd">        using the given solution mu and the feature mapping </span>
+<span class="sd">        using the given solution mu and the feature mapping</span>
 <span class="sd">        corresponding to a single instance.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">        -----------</span>
-<span class="sd">        mu : `array`-like of shape (n_features)</span>
-<span class="sd">            Solution.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        phi_mu : array-like of shape (n_features,)</span>
+<span class="sd">            Product of feature mapping and solution vector.</span>
 
-<span class="sd">        phi : `array`-like of shape (n_classes, n_features)</span>
+<span class="sd">        phi : array-like of shape (n_classes, n_features)</span>
 <span class="sd">            Feature mapping corresponding to an instance and</span>
 <span class="sd">            each class.</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">        --------</span>
-<span class="sd">        g : `array`-like of shape (n_features)</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        g : array-like of shape (n_features,)</span>
 <span class="sd">            Gradient of psi for a given solution and feature mapping.</span>
 
-<span class="sd">        psi_value : `int`</span>
+<span class="sd">        psi_value : float</span>
 <span class="sd">            The value of psi for a given solution and feature mapping.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">phi_mu</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">phi_mu</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],:]</span>
@@ -864,7 +895,9 @@
 
             <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
 
-            <span class="c1"># Normalizing conditional probabilities</span>
+            <span class="c1"># Normalizing conditional probabilities using log-sum-exp trick</span>
+            <span class="c1"># For each class i, compute: 1 / sum_j(exp(v_j - v_i))</span>
+            <span class="c1"># This is numerically stable as we subtract v_i before exp</span>
             <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">v</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span>
                              <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                              <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>

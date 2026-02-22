@@ -1,0 +1,252 @@
+PyTorch MGCE Classifier
+=======================
+
+The PyTorch MGCE (Marginally Constrained Generalized Cross-Entropy) classifier provides a PyTorch-based implementation of Minimax Risk Classifiers with GPU acceleration and deep neural network support.
+
+Overview
+--------
+
+The PyTorch MGCE classifier extends the MRCpy framework to support deep neural networks through PyTorch integration. It implements the marginally constrained minimax risk optimization with generalized cross-entropy loss functions, providing theoretical robustness guarantees while leveraging the flexibility and performance of PyTorch.
+
+Key Features
+------------
+
+* **GPU Acceleration**: Full CUDA support for training and inference
+* **Deep Neural Networks**: Compatible with any PyTorch neural network architecture
+* **Theoretical Guarantees**: Maintains the robustness properties of MRC framework
+* **Flexible Loss Functions**: Supports both 0-1 loss and smooth beta-loss approximations
+* **Model Checkpointing**: Automatic saving of best model weights during training
+* **Validation Support**: Built-in validation loop with metrics tracking
+* **Expected Calibration Error**: Optional ECE computation for model calibration assessment
+
+Quick Start
+-----------
+
+Basic Usage
+~~~~~~~~~~~
+
+.. code-block:: python
+
+    import torch
+    import torch.nn as nn
+    from torch.utils.data import DataLoader, TensorDataset
+    from MRCpy.pytorch.mgce.classifier import mgce_clf
+
+    # Create a neural network model
+    model = nn.Sequential(
+        nn.Linear(10, 64),
+        nn.ReLU(),
+        nn.Linear(64, 32),
+        nn.ReLU(),
+        nn.Linear(32, 3)
+    )
+
+    # Create optimizer
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+    # Initialize MGCE classifier
+    clf = mgce_clf(
+        loss_parameter=1.4,
+        lambda_=1e-5,
+        model=model,
+        optimizer=optimizer,
+        device='cuda'  # Use GPU if available
+    )
+
+    # Prepare data (assuming X_train, y_train are your training data)
+    train_dataset = TensorDataset(
+        torch.tensor(X_train, dtype=torch.float32),
+        torch.tensor(y_train, dtype=torch.long)
+    )
+    train_dataset.classes = list(range(n_classes))
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+
+    # Train the classifier
+    results = clf.fit(
+        train_loader,
+        n_epochs=100,
+        validate=True,
+        val_dataloader=val_loader,
+        save_model_weights='best'
+    )
+
+    # Make predictions
+    probabilities = clf.predict_proba(X_test)
+    predictions = clf.predict(X_test)
+
+Advanced Usage
+~~~~~~~~~~~~~~
+
+Training with Validation and Model Checkpointing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    # Train with comprehensive validation
+    results = clf.fit(
+        train_dataloader=train_loader,
+        n_epochs=200,
+        verbose=True,
+        validate=True,
+        val_dataloader=val_loader,
+        compute_ece=True,
+        bins=15,
+        save_model_weights='best',
+        path='./models/',
+        grad_bound=5.0
+    )
+
+    # Access training metrics
+    print(f"Final training accuracy: {results['train_acc'][-1]:.2f}%")
+    print(f"Best validation accuracy: {max(results['val_acc']):.2f}%")
+    print(f"Final validation ECE: {results['val_ece'][-1]:.4f}")
+
+Different Beta Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    # 0-1 loss (non-smooth)
+    clf_01 = mgce_clf(loss_parameter=1.0, model=model, optimizer=optimizer)
+
+    # Smooth approximations
+    clf_smooth = mgce_clf(loss_parameter=1.4, model=model, optimizer=optimizer)
+    clf_very_smooth = mgce_clf(loss_parameter=2.0, model=model, optimizer=optimizer)
+
+Stochastic vs Deterministic Predictions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+    # Deterministic predictions (default)
+    clf_det = mgce_clf(deterministic=True, model=model, optimizer=optimizer)
+    pred1 = clf_det.predict(X_test)
+    pred2 = clf_det.predict(X_test)  # Will be identical to pred1
+
+    # Stochastic predictions (samples from probability distribution)
+    clf_stoch = mgce_clf(deterministic=False, model=model, optimizer=optimizer)
+    pred_stoch = clf_stoch.predict(X_test)  # May vary between calls
+
+Mathematical Framework
+----------------------
+
+The MGCE loss function implements the marginally constrained minimax risk optimization:
+
+.. math::
+
+    \\min_{h \\in \\mathcal{H}} \\max_{\\mu \\in \\mathcal{U}} \\mathbb{E}_{\\mu}[\\ell(h(X), Y)]
+
+where:
+
+* :math:`\\mathcal{H}` is the hypothesis class (neural networks)
+* :math:`\\mathcal{U}` is the uncertainty set of distributions
+* :math:`\\ell` is the loss function (0-1 or beta-loss)
+
+The beta-loss provides a smooth approximation to the 0-1 loss:
+
+.. math::
+
+    \\ell_{\\beta}(\\hat{y}, y) = \\begin{cases}
+    0 & \\text{if } \\hat{y} = y \\\\
+    1 & \\text{if } \\hat{y} \\neq y \\text{ and } \\beta = 1 \\\\
+    \\text{smooth approximation} & \\text{if } \\beta > 1
+    \\end{cases}
+
+Performance Considerations
+--------------------------
+
+GPU Usage
+~~~~~~~~~
+
+The classifier automatically detects CUDA availability and can be configured to use GPU acceleration:
+
+.. code-block:: python
+
+    # Automatic device selection
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    clf = mgce_clf(device=device, model=model, optimizer=optimizer)
+
+Memory Management
+~~~~~~~~~~~~~~~~~
+
+For large datasets, consider:
+
+* Using appropriate batch sizes in DataLoader
+* Enabling gradient clipping to prevent memory issues
+* Using mixed precision training for very large models
+
+Batch Size Recommendations
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* **Small datasets** (< 1000 samples): batch_size = 16-32
+* **Medium datasets** (1000-10000 samples): batch_size = 32-128  
+* **Large datasets** (> 10000 samples): batch_size = 128-512
+
+Integration with Existing MRCpy Workflow
+-----------------------------------------
+
+The PyTorch MGCE classifier is designed to integrate seamlessly with the existing MRCpy ecosystem:
+
+.. code-block:: python
+
+    from MRCpy import MRC  # Traditional MRC
+    from MRCpy.pytorch.mgce.classifier import mgce_clf  # PyTorch MRC
+
+    # Compare traditional MRC with PyTorch MGCE
+    traditional_mrc = MRC(phi='linear', loss='0-1')
+    traditional_mrc.fit(X_train, y_train)
+
+    pytorch_mgce = mgce_clf(loss_parameter=1.0, model=linear_model, optimizer=optimizer)
+    pytorch_mgce.fit(train_loader)
+
+    # Both provide similar interfaces
+    trad_probs = traditional_mrc.predict_proba(X_test)
+    pytorch_probs = pytorch_mgce.predict_proba(X_test)
+
+API Reference
+-------------
+
+.. currentmodule:: MRCpy.pytorch.mgce
+
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+   classifier.mgce_clf
+   loss.mgce_loss
+
+Examples
+--------
+
+See the `examples directory <https://github.com/MachineLearningBCAM/MRCpy/tree/main/examples>`_ for complete working examples including:
+
+* Basic classification with synthetic data
+* Real-world dataset applications  
+* Comparison with traditional MRC methods
+* Advanced training configurations
+* Model evaluation and visualization
+
+Troubleshooting
+---------------
+
+Common Issues
+~~~~~~~~~~~~~
+
+**CUDA Out of Memory**
+  Reduce batch size or use gradient accumulation
+
+**Slow Training**
+  Ensure CUDA is properly configured and model is on GPU
+
+**Poor Convergence**
+  Try different learning rates, beta parameters, or regularization strengths
+
+**NaN Loss Values**
+  Check for numerical instability, reduce learning rate, or increase gradient clipping
+
+References
+----------
+
+.. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+
+.. [2] Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.

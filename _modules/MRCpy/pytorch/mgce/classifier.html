@@ -1,0 +1,1069 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.pytorch.mgce.classifier &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/js/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">MRCpy Package Contents</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>MRCpy.pytorch.mgce.classifier</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for MRCpy.pytorch.mgce.classifier</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">PyTorch-based minimax risk classification with alpha-losses.</span>
+
+<span class="sd">Copyright (C) 2026 Kartheek Bondugula</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify it under the terms of the </span>
+<span class="sd">GNU General Public License as published by the Free Software Foundation,</span>
+<span class="sd">either version 3 of the License, or (at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;</span>
+<span class="sd">without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span>
+<span class="sd">See the GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License along with this program.</span>
+<span class="sd">If not, see https://www.gnu.org/licenses/.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">ConcatDataset</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">trange</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Import the loss function from the local loss module</span>
+<span class="kn">from</span> <span class="nn">.loss</span> <span class="kn">import</span> <span class="n">mgce_loss</span>
+
+<span class="c1"># Import sklearn utilities for validation</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+
+<span class="c1"># Import optional dependencies with fallback</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pycalib.metrics</span> <span class="kn">import</span> <span class="n">conf_ECE</span><span class="p">,</span> <span class="n">classwise_ECE</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># Provide fallback or warning if pycalib is not available</span>
+    <span class="n">conf_ECE</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">classwise_ECE</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="mgce_clf"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf">[docs]</a><span class="k">class</span> <span class="nc">mgce_clf</span><span class="p">():</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    PyTorch-based Minimax Generalized Cross-Entropy (MGCE).</span>
+
+<span class="sd">    This class implements a PyTorch-based Minimax Risk Classifier (MRC)</span>
+<span class="sd">    using :math:`\alpha`-losses (:math:`\ell_\alpha`), a convex surrogate loss </span>
+<span class="sd">    defined over classification margins.</span>
+
+<span class="sd">    The classifier solves the minimax risk problem:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}</span>
+<span class="sd">        \max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})</span>
+
+<span class="sd">    which finds the classifier :math:`\mathrm{h}` that minimizes the</span>
+<span class="sd">    worst-case expected :math:`\ell`-loss over an uncertainty set</span>
+<span class="sd">    :math:`\mathcal{U}_2` of distributions. This provides theoretical</span>
+<span class="sd">    performance guarantees even when the true data distribution is</span>
+<span class="sd">    unknown.</span>
+
+<span class="sd">    The uncertainty set :math:`\mathcal{U}_2` is defined by fixing the</span>
+<span class="sd">    marginal distribution of features to the empirical marginal and</span>
+<span class="sd">    bounding the expectations of the feature mappings</span>
+<span class="sd">    :math:`\Phi(x, y)`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathcal{U}_2 = \left\{ \mathrm{p} : \mathrm{p}_x =</span>
+<span class="sd">        \hat{\mathrm{p}}_x, \;</span>
+<span class="sd">        \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]</span>
+<span class="sd">        - \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}</span>
+
+<span class="sd">    where :math:`\hat{\mathrm{p}}_x` is the empirical marginal</span>
+<span class="sd">    distribution of features, :math:`\boldsymbol{\tau}` are the empirical mean</span>
+<span class="sd">    estimates, and :math:`\boldsymbol{\lambda}` controls the size of the uncertainty</span>
+<span class="sd">    set based on the estimation accuracy.</span>
+
+<span class="sd">    The :math:`\alpha`-loss family, indexed by :math:`\alpha \geq 1`, smoothly</span>
+<span class="sd">    interpolates between well-known losses:</span>
+
+<span class="sd">    - :math:`\alpha = 1`: the **0-1 loss** :math:`\ell_1(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,</span>
+<span class="sd">      which directly measures classification error but is non-smooth.</span>
+<span class="sd">    - :math:`\alpha \to \infty`: the **log-loss**</span>
+<span class="sd">      :math:`\ell_\infty(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),</span>
+<span class="sd">      which is smooth and easy to optimize.</span>
+
+<span class="sd">    For intermediate :math:`\alpha &gt; 1`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \ell_\alpha(\mathrm{h}(x), y) = \frac{\alpha}{\alpha - 1}</span>
+<span class="sd">        \left(1 - \mathrm{h}_y(x)^{(\alpha-1)/\alpha}\right)</span>
+
+<span class="sd">    Smaller :math:`\alpha` values stay closer to the 0-1 loss (more robust),</span>
+<span class="sd">    while larger values behave more like log-loss (smoother optimization).</span>
+
+<span class="sd">    See [1]_ for further details.</span>
+<span class="sd">    Following [1]_, the implementation uses the parameter</span>
+<span class="sd">    :math:`\beta = \alpha / (\alpha-1)`, so that :math:`\beta = 1`</span>
+<span class="sd">    corresponds to the 0-1 loss (:math:`\alpha \to \infty`) and</span>
+<span class="sd">    :math:`\beta \to \infty` corresponds to the log-loss</span>
+<span class="sd">    (:math:`\alpha = 1`). The ``loss_parameter`` argument</span>
+<span class="sd">    accepts :math:`\beta` values directly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    loss_parameter : float, default=1.4</span>
+<span class="sd">        The :math:`\beta = \alpha / (\alpha-1)` parameter for the</span>
+<span class="sd">        :math:`\alpha`-loss function. When beta=0 (alpha=1), it corresponds to</span>
+<span class="sd">        0-1 loss. Larger beta values provide smoother approximations</span>
+<span class="sd">        closer to log-loss (cross-entropy). Typical values are </span>
+<span class="sd">        in the range [1.0, 11.0].</span>
+
+<span class="sd">    lambda_ : float, default=1e-5</span>
+<span class="sd">        L1 regularization strength applied to model parameters.</span>
+<span class="sd">        In the minimax framework, large lambda implies bigger uncertainty sets</span>
+<span class="sd">        with better generalization. The implementation uses the same lambda</span>
+<span class="sd">        for all the model parameters (features).</span>
+
+<span class="sd">    deterministic : bool, default=True</span>
+<span class="sd">        Whether predictions should be deterministic. When True, uses argmax</span>
+<span class="sd">        for prediction. When False, samples from the predicted probability</span>
+<span class="sd">        distribution.</span>
+
+<span class="sd">    random_state : int or None, default=None</span>
+<span class="sd">        Random seed for reproducible results. Used for weight initialization</span>
+<span class="sd">        and stochastic operations.</span>
+
+<span class="sd">    optimizer : torch.optim.Optimizer or None, default=None</span>
+<span class="sd">        PyTorch optimizer instance for training. If None, must be provided</span>
+<span class="sd">        during training or set as an attribute before calling fit().</span>
+
+<span class="sd">    scheduler : torch.optim.lr_scheduler or None, default=None</span>
+<span class="sd">        Learning rate scheduler for adaptive learning rate adjustment</span>
+<span class="sd">        during training. Optional parameter.</span>
+
+<span class="sd">    model : torch.nn.Module or None, default=None</span>
+<span class="sd">        PyTorch neural network model to be trained. Must be provided</span>
+<span class="sd">        either during initialization or before calling fit().</span>
+
+<span class="sd">    device : str, default=&#39;cuda&#39;</span>
+<span class="sd">        Device for computation (&#39;cuda&#39; for GPU, &#39;cpu&#39; for CPU).</span>
+<span class="sd">        Automatically falls back to CPU if CUDA is not available.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    is_fitted_ : bool</span>
+<span class="sd">        Whether the classifier has been fitted to training data.</span>
+
+<span class="sd">    loss_parameter : str or float</span>
+<span class="sd">        The :math:`\beta` parameter for the loss function.</span>
+
+<span class="sd">    lambda_ : float</span>
+<span class="sd">        L1 regularization strength.</span>
+
+<span class="sd">    model : torch.nn.Module</span>
+<span class="sd">        The neural network model being trained.</span>
+
+<span class="sd">    optimizer : torch.optim.Optimizer</span>
+<span class="sd">        Optimizer used for training.</span>
+
+<span class="sd">    device : str</span>
+<span class="sd">        Device used for computation.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Basic usage with a simple neural network:</span>
+
+<span class="sd">    &gt;&gt;&gt; import torch</span>
+<span class="sd">    &gt;&gt;&gt; import torch.nn as nn</span>
+<span class="sd">    &gt;&gt;&gt; from torch.utils.data import DataLoader, TensorDataset</span>
+<span class="sd">    &gt;&gt;&gt; from MRCpy.pytorch.mgce.classifier import mgce_clf</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create a simple model</span>
+<span class="sd">    &gt;&gt;&gt; model = nn.Sequential(</span>
+<span class="sd">    ...     nn.Linear(10, 64),</span>
+<span class="sd">    ...     nn.ReLU(),</span>
+<span class="sd">    ...     nn.Linear(64, 3)</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create optimizer</span>
+<span class="sd">    &gt;&gt;&gt; optimizer = torch.optim.Adam(model.parameters(), lr=0.001)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Initialize classifier with beta=1.4</span>
+<span class="sd">    &gt;&gt;&gt; clf = mgce_clf(</span>
+<span class="sd">    ...     loss_parameter=1.4,</span>
+<span class="sd">    ...     lambda_=1e-5,</span>
+<span class="sd">    ...     model=model,</span>
+<span class="sd">    ...     optimizer=optimizer,</span>
+<span class="sd">    ...     device=&#39;cuda&#39;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create dummy data</span>
+<span class="sd">    &gt;&gt;&gt; X = torch.randn(100, 10)</span>
+<span class="sd">    &gt;&gt;&gt; y = torch.randint(0, 3, (100,))</span>
+<span class="sd">    &gt;&gt;&gt; dataset = TensorDataset(X, y)</span>
+<span class="sd">    &gt;&gt;&gt; dataloader = DataLoader(dataset, batch_size=32)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Train the model</span>
+<span class="sd">    &gt;&gt;&gt; results = clf.fit(dataloader, n_epochs=10, verbose=True)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Final training accuracy: {results[&#39;train_acc&#39;][-1]:.2f}%&quot;)</span>
+
+<span class="sd">    Training with validation:</span>
+
+<span class="sd">    &gt;&gt;&gt; results = clf.fit(</span>
+<span class="sd">    ...     train_loader,</span>
+<span class="sd">    ...     validate=True,</span>
+<span class="sd">    ...     val_dataloader=val_loader,</span>
+<span class="sd">    ...     save_model_weights=&#39;best&#39;</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Best validation accuracy: {max(results[&#39;val_acc&#39;]):.2f}%&quot;)</span>
+
+<span class="sd">    Compute probabilities for test samples:</span>
+
+<span class="sd">    &gt;&gt;&gt; test_data = torch.randn(10, input_dim)</span>
+<span class="sd">    &gt;&gt;&gt; probabilities = clf.predict_proba(test_data)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Shape: {probabilities.shape}&quot;)  # (10, n_classes)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;First sample probabilities: {probabilities[0]}&quot;)</span>
+
+<span class="sd">    Deterministic predictions:</span>
+
+<span class="sd">    &gt;&gt;&gt; predictions = clf.predict(test_data)</span>
+<span class="sd">    &gt;&gt;&gt; print(f&quot;Predicted classes: {predictions}&quot;)</span>
+
+<span class="sd">    Stochastic predictions:</span>
+
+<span class="sd">    &gt;&gt;&gt; clf_stochastic = mgce_clf(deterministic=False, ...)</span>
+<span class="sd">    &gt;&gt;&gt; clf_stochastic.fit(train_loader)</span>
+<span class="sd">    &gt;&gt;&gt; pred1 = clf_stochastic.predict(test_data)</span>
+<span class="sd">    &gt;&gt;&gt; pred2 = clf_stochastic.predict(test_data)  # May differ from pred1</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    MRCpy.pytorch.mgce.loss.mgce_loss : :math:`\alpha`-loss function used by this classifier.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026).</span>
+<span class="sd">           Minimax Generalized Cross-Entropy. In Proceedings of the</span>
+<span class="sd">           International Conference on Artificial Intelligence and</span>
+<span class="sd">           Statistics (AISTATS).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="mgce_clf.__init__"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">loss_parameter</span><span class="o">=</span><span class="s1">&#39;1.4&#39;</span><span class="p">,</span>
+                 <span class="n">lambda_</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+                 <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                 <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span> <span class="o">=</span> <span class="n">loss_parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">lambda_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="n">deterministic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span></div>
+
+<div class="viewcode-block" id="mgce_clf.fit"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grad_bound</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">compute_ece</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">save_model_weights</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the MRC model using the provided training data.</span>
+
+<span class="sd">        This method trains the neural network using the minimax risk</span>
+<span class="sd">        optimization corresponding with :math:`\alpha`-losses. It supports both training-only</span>
+<span class="sd">        and training-with-validation modes.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        train_dataloader : torch.utils.data.DataLoader</span>
+<span class="sd">            DataLoader containing the training data. Each batch should return</span>
+<span class="sd">            (inputs, labels) where inputs are feature tensors and labels are</span>
+<span class="sd">            class indices.</span>
+<span class="sd">            </span>
+<span class="sd">        pretrained : bool, default=False</span>
+<span class="sd">            Whether to use a pretrained model. If True, assumes the model</span>
+<span class="sd">            has been pre-trained and may adjust training parameters accordingly.</span>
+<span class="sd">            </span>
+<span class="sd">        grad_bound : float, default=5.0</span>
+<span class="sd">            Maximum gradient norm for gradient clipping. Helps prevent</span>
+<span class="sd">            gradient explosion during training.</span>
+<span class="sd">            </span>
+<span class="sd">        n_epochs : int, default=100</span>
+<span class="sd">            Number of training epochs to run.</span>
+<span class="sd">            </span>
+<span class="sd">        verbose : bool, default=True</span>
+<span class="sd">            Whether to print training progress and metrics during training.</span>
+<span class="sd">            </span>
+<span class="sd">        validate : bool, default=False</span>
+<span class="sd">            Whether to perform validation during training. If True,</span>
+<span class="sd">            val_dataloader must be provided.</span>
+<span class="sd">            </span>
+<span class="sd">        val_dataloader : torch.utils.data.DataLoader or None, default=None</span>
+<span class="sd">            DataLoader containing validation data. Required if validate=True.</span>
+<span class="sd">            Should have the same format as train_dataloader.</span>
+<span class="sd">            </span>
+<span class="sd">        compute_ece : bool, default=True</span>
+<span class="sd">            Whether to compute Expected Calibration Error (ECE) during</span>
+<span class="sd">            validation. Only used if validate=True.</span>
+<span class="sd">            </span>
+<span class="sd">        bins : int, default=15</span>
+<span class="sd">            Number of bins to use for ECE computation. Only used if</span>
+<span class="sd">            compute_ece=True and validate=True.</span>
+<span class="sd">            </span>
+<span class="sd">        save_model_weights : {&#39;best&#39;, &#39;last&#39;, &#39;None&#39;}, default=&#39;best&#39;</span>
+<span class="sd">            Strategy for saving model weights:</span>
+<span class="sd">            - &#39;best&#39;: Save weights from epoch with highest validation accuracy</span>
+<span class="sd">            - &#39;last&#39;: Save weights from the final epoch</span>
+<span class="sd">            - &#39;None&#39;: Don&#39;t save any weights</span>
+<span class="sd">            </span>
+<span class="sd">        path : str, default=&quot;./&quot;</span>
+<span class="sd">            Directory path where model weights should be saved (if applicable).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            Dictionary containing training metrics:</span>
+<span class="sd">            - &#39;train_loss&#39;: List of training losses per epoch</span>
+<span class="sd">            - &#39;train_acc&#39;: List of training accuracies per epoch</span>
+<span class="sd">            - &#39;val_loss&#39;: List of validation losses per epoch (if validate=True)</span>
+<span class="sd">            - &#39;val_acc&#39;: List of validation accuracies per epoch (if validate=True)</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If invalid save_model_weights option is provided or if validation</span>
+<span class="sd">            is enabled but val_dataloader is None.</span>
+<span class="sd">            </span>
+<span class="sd">        RuntimeError</span>
+<span class="sd">            If model or optimizer are not properly initialized.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        See class-level examples.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validate inputs</span>
+        <span class="k">if</span> <span class="n">validate</span> <span class="ow">and</span> <span class="n">val_dataloader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;val_dataloader must be provided when validate=True&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Model must be provided before calling fit()&quot;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Optimizer must be provided before calling fit()&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the alpha-loss function with the number of classes and beta parameter</span>
+        <span class="n">loss_function</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">classes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span><span class="p">)</span>
+        
+        <span class="c1"># Initialize arrays to store training metrics for each epoch</span>
+        <span class="n">train_loss_arr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">train_acc_arr</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Initialize variables for model checkpointing and best model tracking</span>
+        <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">n_epochs</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">best_val_acc</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_model_weights</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Initialize validation metric arrays if validation is enabled</span>
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="n">val_loss_arr</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">val_acc_arr</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">val_ece_arr</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Small epsilon value to prevent division by zero in regularization</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+        <span class="c1"># Main training loop over epochs with optional progress bar</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training&quot;</span><span class="p">):</span>
+
+            <span class="c1"># Initialize training statistics for the current epoch</span>
+            <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">total_train_samples</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">correct_train</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Set model to training mode for proper batch normalization and dropout behavior</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+            
+            <span class="c1"># Iterate through training batches</span>
+            <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
+                <span class="c1"># Move data to the specified device (GPU/CPU) with non-blocking transfer for efficiency</span>
+                <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+                <span class="c1"># Clear gradients from previous iteration</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+               
+                <span class="c1"># Forward pass: compute model predictions</span>
+                <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+                <span class="c1"># Compute alpha-loss gradients and loss</span>
+                <span class="n">grad</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_function</span><span class="o">.</span><span class="n">get_gradient</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+                
+                <span class="c1"># Backward pass: compute gradients using the custom alpha-loss gradients</span>
+                <span class="n">logits</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+
+                <span class="c1"># Apply L1 regularization manually since alpha-loss requires custom regularization</span>
+                <span class="c1"># Select appropriate parameters based on whether using pretrained model</span>
+                <span class="k">if</span> <span class="n">pretrained</span><span class="p">:</span>
+                    <span class="c1"># For pretrained models, only regularize the final classification layer</span>
+                    <span class="n">model_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># For models trained from scratch, regularize all parameters</span>
+                    <span class="n">model_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+
+                <span class="c1"># Initialize regularization value for this batch</span>
+                <span class="n">reg_val</span> <span class="o">=</span> <span class="mi">0</span>
+                
+                <span class="c1"># Apply L1 regularization to gradients and compute regularization loss</span>
+                <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model_parameters</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1"># Add L1 regularization term to gradients</span>
+                        <span class="n">param</span><span class="o">.</span><span class="n">grad</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">*</span> <span class="n">param</span> <span class="o">/</span> <span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">)</span>
+                    <span class="c1"># Accumulate L1 regularization loss</span>
+                    <span class="n">reg_val</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">*</span> <span class="n">param</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+                <span class="c1"># Apply gradient clipping to prevent gradient explosion</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">clip_grad_norm_</span><span class="p">(</span><span class="n">model_parameters</span><span class="p">,</span> <span class="n">grad_bound</span><span class="p">)</span>
+                
+                <span class="c1"># Update model parameters using the optimizer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+                <span class="c1"># Accumulate training statistics for this batch</span>
+                <span class="n">batch_size</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">train_loss</span> <span class="o">+=</span> <span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="n">reg_val</span><span class="p">)</span> <span class="o">*</span> <span class="n">batch_size</span>
+                <span class="n">total_train_samples</span> <span class="o">+=</span> <span class="n">batch_size</span>
+
+                <span class="c1"># Compute training accuracy for this batch</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">correct_train</span> <span class="o">+=</span> <span class="n">predicted</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            
+            <span class="c1"># Calculate average training metrics for this epoch</span>
+            <span class="n">avg_train_loss</span> <span class="o">=</span> <span class="n">train_loss</span> <span class="o">/</span> <span class="n">total_train_samples</span>
+            <span class="n">avg_train_acc</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct_train</span> <span class="o">/</span> <span class="n">total_train_samples</span>
+
+            <span class="c1"># Store training metrics for this epoch</span>
+            <span class="n">train_loss_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_train_loss</span><span class="p">)</span>
+            <span class="n">train_acc_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_train_acc</span><span class="p">)</span>
+
+            <span class="c1"># Log training progress if verbose mode is enabled</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Train Loss: </span><span class="si">%.4f</span><span class="s2"> | Train Acc: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">n_epochs</span><span class="p">,</span>
+                    <span class="n">avg_train_loss</span><span class="p">,</span>
+                    <span class="n">avg_train_acc</span>
+                <span class="p">)</span>
+
+            <span class="c1"># Perform validation if enabled</span>
+            <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+
+                <span class="c1"># Initialize validation statistics for the current epoch</span>
+                <span class="n">val_loss</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">total_val_samples</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">correct_val</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">probs</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Store probability predictions for ECE computation</span>
+                <span class="n">y_true</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Store true labels for ECE computation</span>
+
+                <span class="c1"># Set model to evaluation mode to disable dropout and batch norm updates</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+                
+                <span class="c1"># Disable gradient computation for validation to save memory and computation</span>
+                <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                    <span class="c1"># Compute regularization value from current model parameters</span>
+                    <span class="k">if</span> <span class="n">pretrained</span><span class="p">:</span>
+                        <span class="c1"># For pretrained models, only consider final layer parameters</span>
+                        <span class="n">model_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fc</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># For models trained from scratch, consider all parameters</span>
+                        <span class="n">model_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+
+                    <span class="c1"># Calculate total L1 regularization penalty</span>
+                    <span class="n">reg_val</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">*</span> <span class="n">param</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model_parameters</span><span class="p">)</span>
+
+                    <span class="c1"># Iterate through validation batches</span>
+                    <span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">val_dataloader</span><span class="p">:</span>
+                        <span class="c1"># Move validation data to device</span>
+                        <span class="n">inputs</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                        <span class="n">labels</span> <span class="o">=</span> <span class="n">labels</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+                        <span class="c1"># Forward pass: compute model predictions</span>
+                        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+                        
+                        <span class="c1"># Compute validation loss and probability predictions using alpha-loss</span>
+                        <span class="n">loss</span><span class="p">,</span> <span class="n">probs_batch_i</span> <span class="o">=</span> <span class="n">loss_function</span><span class="o">.</span><span class="n">get_loss_value</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">reg_val</span><span class="p">)</span>
+                        
+                        <span class="c1"># Store predictions and labels for ECE computation</span>
+                        <span class="n">probs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">probs_batch_i</span><span class="p">)</span>
+                        <span class="n">y_true</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+                        <span class="c1"># Accumulate validation loss (includes regularization from get_loss_value)</span>
+                        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="n">val_loss</span> <span class="o">+=</span> <span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span> <span class="o">*</span> <span class="n">batch_size</span>
+                        <span class="n">total_val_samples</span> <span class="o">+=</span> <span class="n">batch_size</span>
+
+                        <span class="c1"># Compute validation accuracy for this batch</span>
+                        <span class="n">_</span><span class="p">,</span> <span class="n">predicted</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">correct_val</span> <span class="o">+=</span> <span class="n">predicted</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+                <span class="c1"># Calculate average validation metrics for this epoch</span>
+                <span class="n">avg_val_loss</span> <span class="o">=</span> <span class="n">val_loss</span> <span class="o">/</span> <span class="n">total_val_samples</span>
+                <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">correct_val</span> <span class="o">/</span> <span class="n">total_val_samples</span>
+
+                <span class="c1"># Store validation metrics</span>
+                <span class="n">val_loss_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_val_loss</span><span class="p">)</span>
+                <span class="n">val_acc_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_val_acc</span><span class="p">)</span>
+
+                <span class="c1"># Compute Expected Calibration Error (ECE) if requested</span>
+                <span class="k">if</span> <span class="n">compute_ece</span> <span class="ow">and</span> <span class="n">conf_ECE</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Calculate ECE using concatenated predictions and true labels</span>
+                    <span class="n">conf_ece</span> <span class="o">=</span> <span class="n">conf_ECE</span><span class="p">(</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">y_true</span><span class="p">]),</span>
+                                        <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">probs</span><span class="p">]),</span>
+                                        <span class="n">bins</span><span class="o">=</span><span class="n">bins</span>
+                                    <span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>  <span class="c1"># Convert to percentage</span>
+                    <span class="n">val_ece_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conf_ece</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">conf_ece</span> <span class="o">=</span> <span class="kc">None</span>
+
+                <span class="c1"># Log validation progress if verbose mode is enabled</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">compute_ece</span> <span class="ow">and</span> <span class="n">conf_ece</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2"> | Val ECE: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">avg_val_loss</span><span class="p">,</span> <span class="n">avg_val_acc</span><span class="p">,</span> <span class="n">conf_ece</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">avg_val_loss</span><span class="p">,</span> <span class="n">avg_val_acc</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Update best model if current validation accuracy is better</span>
+                <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span> <span class="ow">and</span> <span class="n">avg_val_acc</span> <span class="o">&gt;</span> <span class="n">best_val_acc</span><span class="p">:</span>
+                    <span class="n">best_val_acc</span> <span class="o">=</span> <span class="n">avg_val_acc</span>
+                    <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+                    <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+
+        <span class="c1"># Handle model weight saving based on the specified strategy</span>
+        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;last&#39;</span><span class="p">:</span>
+            <span class="c1"># Save weights from the current (last) epoch</span>
+            <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span> <span class="ow">and</span> <span class="n">validate</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># Save weights from the current (last) epoch since validation set is not available</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set is not provided for best model weights. </span><span class="se">\</span>
+<span class="s1">                   Saving the last model weights&#39;</span><span class="p">)</span>
+            <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_state</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+            <span class="c1"># Raise error for invalid save_model_weights options</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for saving model weights: </span><span class="si">{</span><span class="n">save_model_weights</span><span class="si">}</span><span class="s2">. &quot;</span>
+                            <span class="s2">&quot;Valid options are: &#39;best&#39;, &#39;last&#39;, &#39;None&#39;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Save model weights to file if a saving strategy is specified</span>
+        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">best_model_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create output directory if it doesn&#39;t exist</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+            <span class="c1"># Generate filename with epoch information</span>
+            <span class="n">save_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;mrc_model_epoch_</span><span class="si">{</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Save the model state dictionary to file</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">best_model_weights</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
+            
+            <span class="c1"># Log the save location if verbose mode is enabled</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Model weights saved at: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
+
+        <span class="c1"># Mark classifier as fitted</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Prepare results dictionary with training metrics</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;train_loss&quot;</span><span class="p">:</span> <span class="n">train_loss_arr</span><span class="p">,</span>
+            <span class="s2">&quot;train_acc&quot;</span><span class="p">:</span> <span class="n">train_acc_arr</span>
+        <span class="p">}</span>
+        
+        <span class="c1"># Add validation metrics to results if validation was performed</span>
+        <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="n">val_loss_arr</span><span class="p">,</span>
+                <span class="s2">&quot;val_acc&quot;</span><span class="p">:</span> <span class="n">val_acc_arr</span><span class="p">,</span>
+                <span class="s2">&quot;val_ece&quot;</span><span class="p">:</span> <span class="n">val_ece_arr</span>
+            <span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">results</span></div>
+        
+<div class="viewcode-block" id="mgce_clf.predict_proba"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute class probabilities for the given input samples.</span>
+
+<span class="sd">        This method computes the conditional probabilities p(y|x) for each</span>
+<span class="sd">        class given the input features. The probabilities are computed using</span>
+<span class="sd">        the trained model and the minimax risk framework with :math:`\alpha`-losses</span>
+<span class="sd">        via the loss function&#39;s get_probs method.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples for which to compute class probabilities.</span>
+<span class="sd">            Should be preprocessed in the same way as the training data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        probabilities : ndarray of shape (n_samples, n_classes)</span>
+<span class="sd">            Class probabilities for each input sample. Each row sums to 1.0</span>
+<span class="sd">            and represents the probability distribution over all classes</span>
+<span class="sd">            for the corresponding input sample, computed using the :math:`\alpha`-loss</span>
+<span class="sd">            framework.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotFittedError</span>
+<span class="sd">            If the classifier has not been fitted yet (i.e., fit() has not</span>
+<span class="sd">            been called).</span>
+<span class="sd">            </span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input data format is invalid or incompatible with the</span>
+<span class="sd">            trained model.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        See class-level examples.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method uses the :math:`\alpha`-loss framework&#39;s get_probs function to compute</span>
+<span class="sd">        probabilities, ensuring consistency with the training loss function</span>
+<span class="sd">        rather than using standard softmax normalization.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validate input data format and check if model has been fitted</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Convert to tensor if needed and move to device</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="c1"># Set model to evaluation mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        
+        <span class="c1"># Compute probabilities without gradient computation</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            
+            <span class="c1"># Initialize the alpha-loss function to use get_probs</span>
+            <span class="c1"># We need to determine the number of classes from the logits</span>
+            <span class="n">num_classes</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">loss_function</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span><span class="p">)</span>
+            
+            <span class="c1"># Use alpha-loss framework to compute probabilities</span>
+            <span class="n">probabilities</span> <span class="o">=</span> <span class="n">loss_function</span><span class="o">.</span><span class="n">get_probs</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+            
+        <span class="c1"># Convert back to numpy and return</span>
+        <span class="k">return</span> <span class="n">probabilities</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="mgce_clf.get_worst_case_probs"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs">[docs]</a>    <span class="k">def</span> <span class="nf">get_worst_case_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute worst-case class probabilities.</span>
+
+<span class="sd">        This method computes the worst-case probability distribution</span>
+<span class="sd">        :math:`\mathrm{p}^*` corresponding to the minimax solution.</span>
+<span class="sd">        Given the prediction probabilities :math:`\mathrm{h}(x)` from</span>
+<span class="sd">        :meth:`predict_proba`, the worst-case probabilities are:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \mathrm{p}^*_y(x) = \frac{\mathrm{h}_y(x)^{(\beta-1)/\beta}}</span>
+<span class="sd">            {\sum_{y&#39;} \mathrm{h}_{y&#39;}(x)^{(\beta-1)/\beta}}</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples for which to compute worst-case probabilities.</span>
+<span class="sd">            Should be preprocessed in the same way as the training data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        worst_case_probs : ndarray of shape (n_samples, n_classes)</span>
+<span class="sd">            Worst-case class probabilities for each input sample.</span>
+<span class="sd">            Each row sums to 1.0.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotFittedError</span>
+<span class="sd">            If the classifier has not been fitted yet.</span>
+
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input data format is invalid or incompatible with the</span>
+<span class="sd">            trained model.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        predict_proba : Compute prediction probabilities :math:`\mathrm{h}(x)`.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The figure below illustrates the relationship between worst-case</span>
+<span class="sd">        and prediction probabilities for different :math:`\beta` values.</span>
+
+<span class="sd">        .. figure:: /_static/worst_case_probs_relation.png</span>
+<span class="sd">           :alt: Relationship between worst-case and prediction probabilities</span>
+<span class="sd">           :width: 400px</span>
+<span class="sd">           :align: center</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get prediction probabilities</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+        <span class="c1"># Compute h^{(beta-1)/beta}</span>
+        <span class="n">exponent</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span>
+        <span class="n">h_pow</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">exponent</span><span class="p">)</span>
+
+        <span class="c1"># Normalize</span>
+        <span class="n">worst_case_probs</span> <span class="o">=</span> <span class="n">h_pow</span> <span class="o">/</span> <span class="n">h_pow</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdim</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">worst_case_probs</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="mgce_clf.predict"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Predict class labels for the given input samples.</span>
+
+<span class="sd">        This method predicts the most likely class for each input sample</span>
+<span class="sd">        using the trained model. The prediction behavior depends on the</span>
+<span class="sd">        deterministic parameter set during initialization:</span>
+<span class="sd">        </span>
+<span class="sd">        - If deterministic=True: Returns the class with highest logit value</span>
+<span class="sd">        - If deterministic=False: Samples from the predicted probability distribution</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples for which to predict class labels.</span>
+<span class="sd">            Should be preprocessed in the same way as the training data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        predictions : ndarray of shape (n_samples,)</span>
+<span class="sd">            Predicted class labels for each input sample as integer indices</span>
+<span class="sd">            in the range [0, num_classes-1].</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotFittedError</span>
+<span class="sd">            If the classifier has not been fitted yet (i.e., fit() has not</span>
+<span class="sd">            been called).</span>
+<span class="sd">            </span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input data format is invalid or incompatible with the</span>
+<span class="sd">            trained model.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        See class-level examples.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        predict_proba : Get class probabilities instead of hard predictions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
+            <span class="c1"># Validate input data format and check if model has been fitted</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Convert to tensor if needed and move to device</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+                <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            
+            <span class="c1"># Set model to evaluation mode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+            
+            <span class="c1"># Compute predictions without gradient computation</span>
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+                <span class="c1"># Get the logits and predict the label directly</span>
+                <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">predictions</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                
+            <span class="c1"># Convert back to numpy and return</span>
+            <span class="k">return</span> <span class="n">predictions</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Get class probabilities (this handles input validation)</span>
+            <span class="n">probabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+            <span class="c1"># Sample from the probability distribution</span>
+            <span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">probabilities</span><span class="p">:</span>
+                <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prob</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="mgce_clf.compute_phi"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute phi features for the minimax risk framework.</span>
+
+<span class="sd">        This method computes the phi feature representation used in the</span>
+<span class="sd">        minimax risk classification framework by performing a forward pass</span>
+<span class="sd">        through the neural network model. The output logits serve as the</span>
+<span class="sd">        phi features in the MRC optimization.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Input samples for which to compute phi features.</span>
+<span class="sd">            Should be preprocessed in the same way as the training data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        phi_features : ndarray of shape (n_samples, n_classes)</span>
+<span class="sd">            Model logits for each input sample, used as phi features</span>
+<span class="sd">            in the minimax risk classification framework.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotFittedError</span>
+<span class="sd">            If the classifier has not been fitted yet.</span>
+
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input data format is invalid or incompatible with the</span>
+<span class="sd">            trained model.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method is primarily used internally by the MRC framework</span>
+<span class="sd">        and may not be needed for typical usage scenarios.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validate input and check if fitted</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Convert to tensor if needed and move to device</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="c1"># Set model to evaluation mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        
+        <span class="c1"># Compute phi features (model logits in this case)</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">phi_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            
+        <span class="c1"># Convert back to numpy and return</span>
+        <span class="k">return</span> <span class="n">phi_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,837 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>MRCpy.LMRC &mdash; MRCpy 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/js/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MRCpy.LCMRC" href="MRCpy.LCMRC.html" />
+    <link rel="prev" title="MRCpy.DWGCS" href="MRCpy.DWGCS.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MRCpy
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../minimax_framework.html">Minimax Framework</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.MRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.MRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.CMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.AMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.AMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.DWGCS.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.DWGCS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LMRC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MRCpy.LCMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LCMRC</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#feature-mappings">Feature Mappings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#extended-functionalities">Extended Functionalities</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auto_examples/index.html">Gallery of examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MRCpy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../api.html">MRCpy Package Contents</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LMRC</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/generated/MRCpy.LMRC.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mrcpy-lmrc">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.LMRC<a class="headerlink" href="#mrcpy-lmrc" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="MRCpy.LMRC">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.</span></span><span class="sig-name descname"><span class="pre">LMRC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_closed_form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cost Sensitive Minimax Risk Classifier.</p>
+<p>The class LMRC implements Cost Sensitive Minimax Risk Classifiers (MRC),
+an MRC that can use any loss defined by a loss matrix.
+It implements two kinds of prediction methods.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n_classes</strong><span class="classifier">int</span></dt><dd><p>Number of different possible labels for an instance.</p>
+</dd>
+<dt><strong>s</strong><span class="classifier">float, default=0.3</span></dt><dd><p>Parameter that tunes the estimation of expected values
+of feature mapping function. It is used to calculate <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span>
+(variance in the mean estimates
+for the expectations of the feature mappings) in the following way</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\lambda} = s \cdot \text{std}(\Phi(X,Y)) / \sqrt{|X|}\]</div>
+<p>where (X,Y) is the dataset of training samples and their
+labels respectively and
+<span class="math notranslate nohighlight">\(\text{std}(\Phi(X,Y))\)</span> stands for standard deviation
+of <span class="math notranslate nohighlight">\(\Phi(X,Y)\)</span> in the supervised dataset (X,Y).</p>
+</dd>
+<dt><strong>loss</strong><span class="classifier">str or array-like of shape (n_classes_classification, n_classes)</span></dt><dd><p>If a string, one of <code class="docutils literal notranslate"><span class="pre">'0-1'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ordinal'</span></code>, <code class="docutils literal notranslate"><span class="pre">'abstention'</span></code>,
+<code class="docutils literal notranslate"><span class="pre">'random'</span></code>, <code class="docutils literal notranslate"><span class="pre">'ordinal-squared'</span></code>. Generates the corresponding
+loss matrix. If an array, it will be used as the transposed loss matrix.</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier">float, optional</span></dt><dd><p>Penalty for abstention in that type of loss.
+Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">/</span> <span class="pre">(n_classes</span> <span class="pre">+</span> <span class="pre">1)</span></code>.</p>
+</dd>
+<dt><strong>max_iters</strong><span class="classifier">int, default=2000</span></dt><dd><p>Maximum number of iterations to use
+for finding the solution of optimization in
+the subgradient approach.</p>
+</dd>
+<dt><strong>phi</strong><span class="classifier">str or BasePhi instance, default=’linear’</span></dt><dd><p>Type of feature mapping function to use for mapping the input data.
+The currently available feature mapping methods are
+<code class="docutils literal notranslate"><span class="pre">'fourier'</span></code> and <code class="docutils literal notranslate"><span class="pre">'linear'</span></code>.
+The users can also implement their own feature mapping object
+(should be a <code class="docutils literal notranslate"><span class="pre">BasePhi</span></code> instance) and pass it to this argument.
+Note that when using <code class="docutils literal notranslate"><span class="pre">'fourier'</span></code> feature mapping,
+training and testing instances are expected to be normalized.
+To implement a feature mapping, please go through the
+<a class="reference internal" href="../api.html#feature-mapping"><span class="std std-ref">Feature Mappings</span></a> section.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">'linear'</span></code></dt><dd><p>It uses the identity feature map referred to as Linear feature map.
+See class <code class="docutils literal notranslate"><span class="pre">BasePhi</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">'fourier'</span></code></dt><dd><p>It uses Random Fourier Feature map. See class <code class="docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>eps</strong><span class="classifier">float, default=1e-4</span></dt><dd><p>Threshold for comparing values. For instance, testing if two values
+are different is done as <code class="docutils literal notranslate"><span class="pre">abs(value1</span> <span class="pre">-</span> <span class="pre">value2)</span> <span class="pre">&lt;</span> <span class="pre">eps</span></code>
+instead of <code class="docutils literal notranslate"><span class="pre">value1</span> <span class="pre">==</span> <span class="pre">value2</span></code>.</p>
+</dd>
+<dt><strong>use_closed_form</strong><span class="classifier">bool, default=False</span></dt><dd><p>If True, and if the loss matrix is squared, then it will use the
+closed form method for classification.</p>
+</dd>
+<dt><strong>**phi_kwargs</strong><span class="classifier">Additional parameters for feature mappings.</span></dt><dd><p>Groups the multiple optional parameters
+for the corresponding feature mappings (<code class="docutils literal notranslate"><span class="pre">phi</span></code>).</p>
+<p>For example in case of fourier features,
+the number of features is given by <code class="docutils literal notranslate"><span class="pre">n_components</span></code>
+parameter which can be passed as argument
+<code class="docutils literal notranslate"><span class="pre">LMRC(phi='fourier',</span> <span class="pre">n_components=500)</span></code>.</p>
+<p>The list of arguments for each feature mappings class
+can be found in the corresponding documentation.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_features" title="MRCpy.LMRC.compute_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code></a>(X)</p></td>
+<td><p>Compute the features (without one-hot encoding) corresponding to instances given for learning the classifiers (in case of training) and prediction (in case of testing).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_lambda" title="MRCpy.LMRC.compute_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_lambda</span></code></a>(X_transform, Y, tau_mat)</p></td>
+<td><p>Compute deviation in the mean estimate tau using the given training instances.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_phi" title="MRCpy.LMRC.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
+<td><p>Compute the feature mapping corresponding to instances given for learning the classifiers (in case of training) and prediction (in case of testing).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_tau" title="MRCpy.LMRC.compute_tau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_tau</span></code></a>(X_transform, Y)</p></td>
+<td><p>Compute mean estimate tau using the given training instances.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.error" title="MRCpy.LMRC.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a>(X, Y[, mean])</p></td>
+<td><p>Return the error obtained for the given test</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.fit" title="MRCpy.LMRC.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, Y[, X_])</p></td>
+<td><p>Fit the MRC model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.get_lower_bound" title="MRCpy.LMRC.get_lower_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lower_bound</span></code></a>(X, Y)</p></td>
+<td><p>Obtains the lower bound on the expected loss for the fitted classifier.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.get_metadata_routing" title="MRCpy.LMRC.get_metadata_routing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code></a>()</p></td>
+<td><p>Get metadata routing of this object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.get_params" title="MRCpy.LMRC.get_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code></a>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.get_upper_bound" title="MRCpy.LMRC.get_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_upper_bound</span></code></a>()</p></td>
+<td><p>Returns the upper bound on the expected loss for the fitted classifier.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.minimax_risk" title="MRCpy.LMRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a>(X, tau_, lambda_, n_classes)</p></td>
+<td><p>Solves the minimax risk problem for different the given loss matrix The solution of the default L-MRC optimization gives the upper bound of the error.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.predict" title="MRCpy.LMRC.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<td><p>Predict classes for new instances using a fitted model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.predict_proba" title="MRCpy.LMRC.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<td><p>Conditional probabilities corresponding to each class for each unlabeled input instance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.score" title="MRCpy.LMRC.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
+<td><p>Return the mean accuracy on the given test data and labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.set_fit_request" title="MRCpy.LMRC.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, X_])</p></td>
+<td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.set_params" title="MRCpy.LMRC.set_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code></a>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.set_score_request" title="MRCpy.LMRC.set_score_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_score_request</span></code></a>(*[, sample_weight])</p></td>
+<td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_closed_form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.compute_features">
+<span class="sig-name descname"><span class="pre">compute_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the features (without one-hot encoding) corresponding
+to instances given for learning the classifiers (in case of
+training) and prediction (in case of testing).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Instances to be converted to features.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_transform</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Feature corresponding with each instance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.compute_lambda">
+<span class="sig-name descname"><span class="pre">compute_lambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_mat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_lambda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute deviation in the mean estimate tau
+using the given training instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features corresponding with the training instances
+<span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the training instances
+used only to compute the expectation estimates.</p>
+</dd>
+<dt><strong>tau_mat</strong><span class="classifier">array-like of shape (n_classes, n_features)</span></dt><dd><p>Mean estimates <span class="math notranslate nohighlight">\(oldsymbol{   au}\)</span> corresponding with
+the expectations of feature mappings.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>lambda_mat</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Deviation estimates <span class="math notranslate nohighlight">\(oldsymbol{\lambda}\)</span> that define the uncertainty
+set constraints. Shape matches tau_mat.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.compute_phi">
+<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the feature mapping corresponding to instances given
+for learning the classifiers (in case of training) and
+prediction (in case of testing).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Instances to be converted to features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.compute_tau">
+<span class="sig-name descname"><span class="pre">compute_tau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_tau" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mean estimate tau using the given training instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features corresponding with the training instances
+<span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the training instances
+used only to compute the expectation estimates.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>tau_mat</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Mean estimates <span class="math notranslate nohighlight">\(oldsymbol{   au}\)</span> of the feature mappings.
+Shape is (n_classes, n_features) for multi-class problems,
+or (1, n_features) for binary classification.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.error">
+<span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.error"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.error" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Return the error obtained for the given test</dt><dd><p>data and labels using the loss function given</p>
+</dd>
+</dl>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
+by the MRC model.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the testing instances
+used to compute the error in the prediction.</p>
+</dd>
+<dt><strong>mean: `Boolean`, defaults to `True`. If true, the method returns the mean error.</strong></dt><dd><p>If false, the method returns an array with all the errors.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>error</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a> (if mean is <a class="reference external" href="https://docs.python.org/3/library/constants.html#True" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a>)</span></dt><dd><p>Mean error of the learned MRC classifier</p>
+<p>OR</p>
+</dd>
+<dt>error: <a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>) (if mean is <a class="reference external" href="https://docs.python.org/3/library/constants.html#False" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>)</dt><dd><p>Array with the errors commited when classifying each instance</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the MRC model.</p>
+<p>Computes the parameters required for the minimax risk optimization
+and then calls the <code class="docutils literal notranslate"><span class="pre">minimax_risk</span></code> function to solve the optimization.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Training instances used in</p>
+<ul class="simple">
+<li><p>Calculating the expectation estimates
+that constrain the uncertainty set
+for the minimax risk classification</p></li>
+<li><p>Solving the minimax risk optimization problem.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of training samples and
+<code class="docutils literal notranslate"><span class="pre">n_dimensions</span></code> is the number of features.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the training instances
+used only to compute the expectation estimates.</p>
+</dd>
+<dt><strong>X_</strong><span class="classifier">array-like of shape (n_samples2, n_dimensions), default=None</span></dt><dd><p>These instances are optional and
+when given, will be used in the minimax risk optimization.
+These extra instances are generally a smaller set and
+give an advantage in training time.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self :</dt><dd><p>Fitted estimator</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.get_lower_bound">
+<span class="sig-name descname"><span class="pre">get_lower_bound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.get_lower_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.get_lower_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtains the lower bound on the expected loss for the fitted classifier.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Test instances for which the labels are to be predicted
+by the MRC model.</p>
+</dd>
+<dt><strong>Y</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, 1), default = <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></dt><dd><p>Labels corresponding to the testing instances
+used to compute the error in the prediction.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>lower_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Lower bound of the error for the fitted classifier.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.get_metadata_routing">
+<span class="sig-name descname"><span class="pre">get_metadata_routing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.get_metadata_routing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata routing of this object.</p>
+<p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>routing</strong><span class="classifier">MetadataRequest</span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
+routing information.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.get_params">
+<span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.get_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters for this estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>deep</strong><span class="classifier">bool, default=True</span></dt><dd><p>If True, will return the parameters for this estimator and
+contained subobjects that are estimators.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>params</strong><span class="classifier">dict</span></dt><dd><p>Parameter names mapped to their values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.get_upper_bound">
+<span class="sig-name descname"><span class="pre">get_upper_bound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.get_upper_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.get_upper_bound" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the upper bound on the expected loss for the fitted classifier.</p>
+<dl class="field-list">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl>
+<dt><strong>upper_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.minimax_risk">
+<span class="sig-name descname"><span class="pre">minimax_risk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.minimax_risk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.minimax_risk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves the minimax risk problem
+for different the given loss matrix
+The solution of the default L-MRC optimization
+gives the upper bound of the error.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
+the minimax risk optimization problem.</p>
+</dd>
+<dt><strong>tau_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> * <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Mean estimates
+for the expectations of feature mappings.</p>
+</dd>
+<dt><strong>lambda_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> * <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Variance in the mean estimates
+for the expectations of the feature mappings.</p>
+</dd>
+<dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of labels in the dataset.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>self :</dt><dd><p>Fitted estimator</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predict classes for new instances using a fitted model.</p>
+<p>Returns the predicted classes for the given instances in <code class="docutils literal notranslate"><span class="pre">X</span></code>
+using the probabilities given by the function <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>.
+This method overwrites the parent’s class method so that
+non-square loss matrices are allowed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
+by the MRC model.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.predict_proba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Conditional probabilities corresponding to each class
+for each unlabeled input instance</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
+the prediction probabilities are calculated for each class.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>hy_x</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code> of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Probabilities <span class="math notranslate nohighlight">\((p(y|x))\)</span> corresponding to the predictions
+for each class.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.score">
+<span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the mean accuracy on the given test data and labels.</p>
+<p>In multi-label classification, this is the subset accuracy
+which is a harsh metric since you require for each sample that
+each label set be correctly predicted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Test samples.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like of shape (n_samples,) or (n_samples, n_outputs)</span></dt><dd><p>True labels for <code class="xref py py-obj docutils literal notranslate"><span class="pre">X</span></code>.</p>
+</dd>
+<dt><strong>sample_weight</strong><span class="classifier">array-like of shape (n_samples,), default=None</span></dt><dd><p>Sample weights.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X_</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#MRCpy.LMRC" title="MRCpy.lmrc.LMRC"><span class="pre">MRCpy.lmrc.LMRC</span></a><a class="headerlink" href="#MRCpy.LMRC.set_fit_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X_</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">X_</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.set_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parameters of this estimator.</p>
+<p>The method works on simple estimators as well as on nested objects
+(such as <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>). The latter have
+parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
+possible to update each component of a nested object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>**params</strong><span class="classifier">dict</span></dt><dd><p>Estimator parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">estimator instance</span></dt><dd><p>Estimator instance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.LMRC.set_score_request">
+<span class="sig-name descname"><span class="pre">set_score_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="p"><span class="pre">,</span> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#MRCpy.LMRC" title="MRCpy.lmrc.LMRC"><span class="pre">MRCpy.lmrc.LMRC</span></a><a class="headerlink" href="#MRCpy.LMRC.set_score_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p>
+<p>Note that this method is only relevant if
+<code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please see <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">score</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.3.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method is only relevant if this estimator is used as a
+sub-estimator of a meta-estimator, e.g. used inside a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample_weight</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="MRCpy.LCMRC.html" class="btn btn-neutral float-right" title="MRCpy.LCMRC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="MRCpy.DWGCS.html" class="btn btn-neutral float-left" title="MRCpy.DWGCS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

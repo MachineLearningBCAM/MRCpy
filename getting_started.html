@@ -48,7 +48,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="MRCpy Package Contents" href="api.html" />
+    <link rel="next" title="Minimax Framework" href="minimax_framework.html" />
     <link rel="prev" title="MRCpy: A Library for Minimax Risk Classifiers" href="index.html" /> 
 </head>
 
@@ -118,6 +118,9 @@
 </li>
 </ul>
 </li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="minimax_framework.html">Minimax Framework</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api.html">MRCpy Package Contents</a></li>
@@ -196,7 +199,7 @@
 <div class="section" id="installation-and-setup">
 <h2>Installation and Setup<a class="headerlink" href="#installation-and-setup" title="Permalink to this headline">¶</a></h2>
 <p><strong>Installation</strong></p>
-<p>The latest built version of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code> can be installed using <code class="xref any docutils literal notranslate"><span class="pre">pip</span></code> as
+<p>The latest built version of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code> can be installed using <code class="xref py py-obj docutils literal notranslate"><span class="pre">pip</span></code> as
 <code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">MRCpy</span>
 <span class="pre">`</span></code></p>
@@ -209,20 +212,20 @@
 You may then use <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests</span></code> to run all the checks (you will need to have the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> package installed).</p>
 <p><strong>Dependencies</strong></p>
 <ul class="simple">
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">Python</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 3.6</p></li>
-<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v2.3)"><code class="xref any docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(==\)</span> 1.25.0</p></li>
-<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/index.html#module-scipy" title="(in SciPy v1.16.2)"><code class="xref any docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(==\)</span> 1.10.0</p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.2.2</p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">cvxpy</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.3.1</p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">pandas</span></code> <span class="math notranslate nohighlight">\(==\)</span> 2.2.0</p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">mosek</span></code></p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">pyarrow</span></code></p></li>
-<li><p><code class="xref any docutils literal notranslate"><span class="pre">gurobipy</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Python</span></code> <span class="math notranslate nohighlight">\(\geq\)</span> 3.6</p></li>
+<li><p><a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v2.4)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy</span></code></a> <span class="math notranslate nohighlight">\(==\)</span> 1.25.0</p></li>
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/index.html#module-scipy" title="(in SciPy v1.17.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy</span></code></a><span class="math notranslate nohighlight">\(==\)</span> 1.10.0</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">scikit-learn</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.2.2</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cvxpy</span></code> <span class="math notranslate nohighlight">\(==\)</span> 1.3.1</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas</span></code> <span class="math notranslate nohighlight">\(==\)</span> 2.2.0</p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mosek</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pyarrow</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gurobipy</span></code></p></li>
 </ul>
 </div>
 <div class="section" id="quick-start">
 <h2>Quick start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
-<p>This example loads the mammographic dataset, and trains the <a class="reference internal" href="generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref any py py-class docutils literal notranslate"><span class="pre">MRC</span></code></a> classifier
+<p>This example loads the mammographic dataset, and trains the <code class="xref py py-obj docutils literal notranslate"><span class="pre">MRC</span></code> classifier
 using 0-1 loss (i.e., the default loss).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span>
 <span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_mammographic</span>
@@ -251,7 +254,7 @@ using 0-1 loss (i.e., the default loss).</p>
 </div>
 <div class="section" id="dataset-loaders">
 <h2>Dataset Loaders<a class="headerlink" href="#dataset-loaders" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref any docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>. Note that the datasets <code class="docutils literal notranslate"><span class="pre">adult</span></code>, <code class="docutils literal notranslate"><span class="pre">magic</span></code>, <code class="docutils literal notranslate"><span class="pre">mnist</span></code>, <code class="docutils literal notranslate"><span class="pre">cats</span> <span class="pre">vs</span> <span class="pre">dogs</span></code> and <code class="docutils literal notranslate"><span class="pre">yearbook</span></code> are not available in the built version (installed through pip) of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code>.</p>
+<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library incorporates a variety of datasets, along with descriptions and convenient loader functions for each dataset. Next, we show the description of the functions you can find and import from <code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.datasets</span></code>. Note that the datasets <code class="docutils literal notranslate"><span class="pre">adult</span></code>, <code class="docutils literal notranslate"><span class="pre">magic</span></code>, <code class="docutils literal notranslate"><span class="pre">mnist</span></code>, <code class="docutils literal notranslate"><span class="pre">cats</span> <span class="pre">vs</span> <span class="pre">dogs</span></code> and <code class="docutils literal notranslate"><span class="pre">yearbook</span></code> are not available in the built version (installed through pip) of <code class="docutils literal notranslate"><span class="pre">MRCpy</span></code>.</p>
 <div class="section" id="normalizelabels-origy">
 <h3><code class="docutils literal notranslate"><span class="pre">normalizeLabels(origY)</span></code><a class="headerlink" href="#normalizelabels-origy" title="Permalink to this headline">¶</a></h3>
 <p>Normalize the labels of the instances in the range 0,…, r-1 for r classes.</p>
@@ -285,7 +288,7 @@ using 0-1 loss (i.e., the default loss).</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -327,7 +330,7 @@ and ‘filename’, the physical location of the dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -369,7 +372,7 @@ and ‘filename’, the physical location of the dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -413,7 +416,7 @@ and ‘filename’, the physical location of the dataset.</p>
 <h3>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h3>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 </div>
@@ -455,7 +458,7 @@ and ‘filename’, the physical location of the dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -497,7 +500,7 @@ and ‘filename’, the physical location of adult csv dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -539,7 +542,7 @@ and ‘filename’, the physical location of adult csv dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -581,7 +584,7 @@ and ‘filename’, the physical location of haberman csv dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -627,7 +630,7 @@ and ‘filename’, the physical location of mammographic csv dataset.</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -679,7 +682,7 @@ pretrained ResNet18 neural network (classification).</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 <dt>split<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns a dictionary instead of an array in the place of the
 data.</p>
@@ -691,11 +694,11 @@ data.</p>
 ‘data’, the data to learn, ‘target’, the classification targets,
 ‘DESCR’, the full description of the dataset,
 and ‘filename’, the physical location of MNIST ResNet18 features
-csv dataset. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is
-an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
+csv dataset. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">split=False</span></code>, data is
+an array. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
 splits.</p>
 </dd>
-<dt>(data, target)<span class="classifier">tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False. If <code class="xref any docutils literal notranslate"><span class="pre">split=False</span></code>, data is</span></dt><dd><p>an array. If <code class="xref any docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
+<dt>(data, target)<span class="classifier">tuple if <code class="docutils literal notranslate"><span class="pre">with_info</span></code> is False. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">split=False</span></code>, data is</span></dt><dd><p>an array. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">split=True</span></code> data is a dictionary with ‘train’ and ‘test’
 splits.</p>
 </dd>
 </dl>
@@ -730,7 +733,7 @@ pretrained ResNet18 neural network (classification).</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 </dl>
 <p><strong>Returns</strong></p>
@@ -774,7 +777,7 @@ pretrained ResNet18 neural network (classification).</p>
 <p><strong>Parameters</strong></p>
 <dl class="simple">
 <dt>with_info<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns <code class="docutils literal notranslate"><span class="pre">(data,</span> <span class="pre">target)</span></code> instead of a Bunch object.
-See below for more information about the <code class="xref any docutils literal notranslate"><span class="pre">data</span></code> and <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-target" title="(in scikit-learn v1.7)"><code class="xref any docutils literal notranslate"><span class="pre">target</span></code></a> object.</p>
+See below for more information about the <code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">target</span></code> object.</p>
 </dd>
 <dt>with_attributes<span class="classifier">boolean, default=False.</span></dt><dd><p>If True, returns an additional dictionary containing information of
 additional attributes: year, state, city, school of the portraits.
@@ -803,7 +806,7 @@ csv dataset.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="api.html" class="btn btn-neutral float-right" title="MRCpy Package Contents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="minimax_framework.html" class="btn btn-neutral float-right" title="Minimax Framework" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="index.html" class="btn btn-neutral float-left" title="MRCpy: A Library for Minimax Risk Classifiers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
