@@ -1,3 +1,11 @@
+"""
+Gurobi LP model construction for large-scale MRC.
+
+This module provides functions to build and solve the linear programming
+formulation of the Minimax Risk Classifier for large-scale problems using
+the Gurobi optimizer.
+"""
+
 import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
@@ -5,26 +13,95 @@ import random
 
 def mrc_lp_large_n_m_model_gurobi(F, b, tau_, lambda_, idx_cols, nu_init=None, warm_start=None):
 	"""
-	Function to build and return the linear model of MRC 0-1 loss using the given
-	constraint matrix and objective vector.
+	Build and solve the linear programming model for MRC with 0-1 loss using Gurobi.
 
-	Parameters:
-	-----------
-	F : array-like of shape (no_of_constraints, 2*(no_of_feature+1))
-		Constraint matrix.
+	This function constructs the primal formulation of the Minimax Risk Classifier
+	as a linear program and solves it using the Gurobi optimizer. The formulation
+	uses variable splitting (mu = mu_plus - mu_minus) to handle unrestricted
+	variables in the LP framework.
 
-	b : array-like of shape (no_of_constraints)
-		Right handside of the constraints.
+	The optimization problem is:
+	    minimize: sum_j [(tau_j - lambda_j) * mu_minus_j - (tau_j - lambda_j) * mu_plus_j
+	                     + (tau_j + lambda_j) * mu_minus_j + (tau_j + lambda_j) * mu_plus_j]
+	              + (nu_pos - nu_neg)
+	    subject to:
+	        - For each constraint i: F[i] @ (mu_minus - mu_plus) + (nu_pos - nu_neg) >= -b[i]
+	        - Objective constraint: tau @ (mu_minus - mu_plus) + lambda @ (mu_minus + mu_plus)
+	                                + (nu_pos - nu_neg) >= 0
+	        - All variables >= 0
 
-	index_colums: array-like
-		Selects the columns of the constraint matrix and objective vector.
+	Parameters
+	----------
+	F : numpy.ndarray of shape (n_constraints, n_features)
+		Constraint coefficient matrix. Each row represents a constraint and
+		each column represents a feature.
 
-	Return:
+	b : numpy.ndarray of shape (n_constraints,)
+		Right-hand side values for the constraints.
+
+	tau_ : numpy.ndarray of shape (n_classes * d,)
+		Flattened mean estimates for each feature across each class. This is
+		obtained by flattening tau_mat of shape (n_classes, d) in C-order.
+
+	lambda_ : numpy.ndarray of shape (n_classes * d,)
+		Flattened deviation estimates (uncertainty bounds) for each feature.
+		This is obtained by flattening lambda_mat of shape (n_classes, d) in
+		C-order.
+
+	idx_cols : list of int or None
+		Indices of features to include in the model. If None, all features
+		are included. This allows solving a restricted problem with a subset
+		of features.
+
+	nu_init : float, optional, default=None
+		Initial value for the nu parameter (intercept term). If provided,
+		used as a warm start for the optimization. The sign determines which
+		part (nu_pos or nu_neg) is initialized.
+
+	warm_start : numpy.ndarray, optional, default=None
+		Initial values for mu parameters corresponding to features in idx_cols.
+		If provided, used as a warm start for the optimization. The sign of
+		each value determines which part (mu_plus or mu_minus) is initialized.
+		Must have length equal to len(idx_cols).
+
+	Returns
 	-------
-	model : A model object of MOSEK
-		A solved MOSEK model of the MRC 0-1 linear model using the given constraints
-		and objective.
+	MRC_model : gurobipy.Model
+		Solved Gurobi optimization model. The model contains:
+		- Variables: mu_+_j, mu_-_j for each feature j in idx_cols, and nu_+, nu_-
+		- Constraints: Sample constraints and objective constraint
+		- Objective: Minimization of worst-case error bound
+		
+		Access solution values using:
+		- MRC_model.getVarByName("mu_+_<index>").x for feature coefficients
+		- MRC_model.objVal for the optimal objective value
 
+	Notes
+	-----
+	The function uses variable splitting to handle unrestricted variables:
+	- mu_j = mu_plus_j - mu_minus_j (actual coefficient)
+	- nu = nu_pos - nu_neg (actual intercept)
+	
+	Both mu_plus_j, mu_minus_j, nu_pos, and nu_neg are constrained to be >= 0.
+
+	The model is configured with:
+	- LogToConsole = 0 (suppress console output)
+	- OutputFlag = 0 (suppress all output)
+	- LPWarmStart = 1 (enable warm starting)
+	- TimeLimit = 3600 seconds (1 hour)
+
+	The function prints the shape of the input constraint matrix for debugging.
+
+	Examples
+	--------
+	>>> import numpy as np
+	>>> F = np.array([[1, 2, 3], [4, 5, 6]])
+	>>> b = np.array([1, 2])
+	>>> tau = np.array([0.5, 0.5, 0.5])
+	>>> lambda_ = np.array([0.1, 0.1, 0.1])
+	>>> idx_cols = [0, 1, 2]
+	>>> model = mrc_lp_large_n_m_model_gurobi(F, b, tau, lambda_, idx_cols)
+	>>> print(f"Optimal objective: {model.objVal:.4f}")
 	"""
 
 	if idx_cols is None:
@@ -37,8 +114,6 @@ def mrc_lp_large_n_m_model_gurobi(F, b, tau_, lambda_, idx_cols, nu_init=None, w
 	# MRC_model.setParam('Method', 0)
 	MRC_model.setParam('LPWarmStart', 1)
 	MRC_model.setParam('TimeLimit', 3600)
-
-	print('Shape of input matrix: ', F.shape)
 
 	# Define the variable.
 	mu_plus = []

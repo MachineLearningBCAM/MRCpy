@@ -62,7 +62,6 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 	# Generate the matrices for the linear optimization of 0-1 MRC
 	# from the feature mappings.
 
-	print('MRC-CG with n_max = ' + str(n_max) + ', k_max = ' + str(k_max) + ', epsilon = ' + str(eps))
 	R_k = []
 
 	N_constr = F.shape[0]
@@ -87,8 +86,6 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 	# Dual solution
 	alpha = [(MRC_model.getConstrByName("constr_" + str(i))).Pi for i in range(N_constr)]
 
-	print('The initial worst-case error probability : ', MRC_model.objVal)
-
 	mu_plus 	= np.asarray([(MRC_model.getVarByName("mu_+_" + str(i))).x for i in I])
 	mu_minus 	= np.asarray([(MRC_model.getVarByName("mu_-_" + str(i))).x for i in I])
 	nu_pos 		= MRC_model.getVarByName("nu_+").x
@@ -111,7 +108,6 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 		MRC_model.optimize()
 		alpha = np.asarray([(MRC_model.getConstrByName("constr_" + str(i))).Pi for i in range(N_constr)])
 		
-		print('The worst-case error probability at iteration ' + str(k) + ' is ', MRC_model.objVal)
 		R_k.append(MRC_model.objVal)
 
 		# Select the columns/features for the next iteration.
@@ -128,7 +124,5 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 	mu[I] 		= np.asarray(mu_plus) - np.asarray(mu_minus)
 	nu 			= nu_pos - nu_neg
 	R 			= MRC_model.objVal
-
-	print('###### The total number of features selected : ', len(I))
 
 	return mu, nu, R, I, R_k

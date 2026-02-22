@@ -1,0 +1,14 @@
+# Optional dependencies for advanced features
+
+# For LMRC classifier (requires compilation)
+pycddlib>=3.0.2
+
+# For libsvm support
+libsvm
+
+# Commercial solvers (require licenses)
+# mosek
+# gurobipy
+
+# Additional utilities
+pyarrow

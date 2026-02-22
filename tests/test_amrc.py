@@ -32,6 +32,7 @@ class TestAMRC(unittest.TestCase):
 
         clf = AMRC(n_classes=r, phi=phi, loss=loss)
 
+        print('Number of classes: ', r)
         mistakes = 0
         for i in range(n - 1):
             clf.fit(self.X[i, :], self.y[i])

@@ -37,32 +37,43 @@ from MRCpy.phi import \
 
 
 class CMRC(BaseMRC):
-    '''
+    r'''
     Constrained Minimax Risk Classifier
 
-    The class CMRC implements the method Minimimax Risk Classifiers
-    with fixed marginal distributions proposed in :ref:`[1] <ref1>`
-    using the additional marginals constraints on the instances.
-    It also implements two kinds of loss functions, namely 0-1 and log loss.
+    This class implements Minimax Risk Classifiers with fixed marginal
+    distributions (CMRC) proposed in [1]_ using additional marginals
+    constraints on the instances. It supports two loss functions:
+    0-1 loss and log-loss.
 
-    This is a subclass of the super class BaseMRC.
+    The classifier solves the minimax risk problem:
 
-    See :ref:`Examples of use` for futher applications of this class and
-    its methods.
+    .. math::
 
-    .. seealso:: For more information about CMRC, one can refer to the
-        following resources:
+        \mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}
+        \max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})
 
-                    [1] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
-                    Generalized Maximum
-                    Entropy for Supervised Classification.
-                    arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_
+    which finds the classifier :math:`\mathrm{h}` that minimizes the
+    worst-case expected loss over an uncertainty set
+    :math:`\mathcal{U}_2` of distributions.
 
-                    [2] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
-                    MRCpy: A Library for Minimax Risk Classifiers.
-                    arXiv preprint arXiv:2108.01952.
-                    <https://arxiv.org/abs/2108.01952>`_
+    The uncertainty set :math:`\mathcal{U}_2` is defined by fixing the
+    marginal distribution of features to the empirical marginal and
+    bounding the expectations of the feature mappings
+    :math:`\Phi(x, y)`:
+
+    .. math::
+
+        \mathcal{U}_2 = \left\{ \mathrm{p} : \mathrm{p}_x =
+        \hat{\mathrm{p}}_x, \;
+        \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]
+        - \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}
+
+    where :math:`\hat{\mathrm{p}}_x` is the empirical marginal
+    distribution of features, :math:`\boldsymbol{\tau}` are the empirical mean
+    estimates, and :math:`\boldsymbol{\lambda}` controls the size of the
+    uncertainty set based on the estimation accuracy.
+
+    See [1]_ for further details.
 
     Parameters
     ----------
@@ -74,16 +85,16 @@ class CMRC(BaseMRC):
 
     s : `float`, default = `0.3`
         Parameter that tunes the estimation of expected values
-        of feature mapping function. It is used to calculate :math:`\lambda`
+        of feature mapping function. It is used to calculate :math:`\boldsymbol{\lambda}`
         (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
         .. math::
-            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
+            \boldsymbol{\lambda} = s * \text{std}(\Phi(X,Y)) / \sqrt{\left| X \right|}
 
         where (X,Y) is the dataset of training samples and their labels
-        respectively and :math:`\\text{std}(\\phi(X,Y))` stands for
-        standard deviation of :math:`\\phi(X,Y)` in the supervised
+        respectively and :math:`\text{std}(\Phi(X,Y))` stands for
+        standard deviation of :math:`\Phi(X,Y)` in the supervised
         dataset (X,Y).
 
     deterministic : `bool`, default = `True`
@@ -109,7 +120,7 @@ class CMRC(BaseMRC):
             Solves the optimization problem using the CVXPY library.
             Obtains an accurate solution while requiring more time
             than the other methods. 
-            Note that the library uses the GUROBI solver in CVXpy for which
+            Note that the library uses the GUROBI solver in cvxpy for which
             one might need to request for a license.
             A free license can be requested `here 
             <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
@@ -197,14 +208,17 @@ class CMRC(BaseMRC):
     ----------
     is_fitted_ : `bool`
         Whether the classifier is fitted i.e., the parameters are learnt.
-    tau_ : `array`-like of shape (`n_features`) or `float`
-        Mean estimates
-        for the expectations of feature mappings.
-    lambda_ : `array`-like of shape (`n_features`) or `float`
+
+    tau_ : `array`-like of shape (`n_classes`, `n_features`)
+        Mean estimates for the expectations of feature mappings.
+
+    lambda_ : `array`-like of shape (`n_classes`, `n_features`)
         Variance in the mean estimates
         for the expectations of the feature mappings.
-    mu_ : `array`-like of shape (`n_features`) or `float`
+
+    mu_ : `array`-like of shape (`n_classes`, `n_features`)
         Parameters learnt by the optimization.
+
     params_ : `dict`
         Dictionary that stores the optimal points and best value of
         the function.
@@ -256,6 +270,16 @@ class CMRC(BaseMRC):
     >>> # (mean accuracy on the given test data and labels)
     >>> clf.score(X_test, Y_test)
     0.8247422680412371
+
+    See Also
+    --------
+    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints [1]_.
+
+    References
+    ----------
+    .. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
     '''
 
     # Redefining the init function
@@ -353,7 +377,7 @@ class CMRC(BaseMRC):
             super().fit(X, Y, X_)
         return self
 
-    def minimax_risk(self, X, tau_, lambda_, n_classes):
+    def minimax_risk(self, X, tau_mat, lambda_mat, n_classes):
         '''
         Solves the marginally constrained minimax risk
         optimization problem for
@@ -388,23 +412,21 @@ class CMRC(BaseMRC):
 
         # Set the parameters for the optimization
         self.n_classes = n_classes
-        self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
-        self.lambda_ = check_array(lambda_, accept_sparse=True,
+        self.tau_ = check_array(tau_mat.flatten(), accept_sparse=True, ensure_2d=False)
+        self.lambda_ = check_array(lambda_mat.flatten(), accept_sparse=True,
                                    ensure_2d=False)
+
         phi = self.compute_phi(X)
 
         # Constants
         n = phi.shape[0]
         m = phi.shape[2]
 
-        # Supress the depreciation warnings
-        warnings.simplefilter('ignore')
-
         # In case of 0-1 loss, learn constraints using the phi
         # These constraints are used in the optimization instead of phi
 
         if self.solver == 'cvx':
-            # Use CVXpy for the convex optimization of the MRC.
+            # Use cvxpy for the convex optimization of the MRC.
 
             # Variables
             mu = cvx.Variable(m)
@@ -517,7 +539,12 @@ class CMRC(BaseMRC):
                         # Use the subgradient approach for the convex optimization
                         # The subgradient of the psi subobjective
                         # for all the datapoints
-                        expPhi = np.exp(phi_mu)[:, np.newaxis, :]
+                        
+                        # Use log-sum-exp trick for numerical stability
+                        # phi_mu shape: (n_samples, n_classes)
+                        max_phi = np.max(phi_mu, axis=1, keepdims=True)
+                        expPhi = np.exp(phi_mu - max_phi)[:, np.newaxis, :]
+                        
                         psi_grad = (1 / n) *\
                                 (np.sum(((expPhi @ phi)[:, 0, :] /
                                          np.sum(expPhi, axis=2)).transpose(),
@@ -534,8 +561,10 @@ class CMRC(BaseMRC):
                     while i < batch_end_sample_id:
                         sample_id = i % n
 
-                        expPhi_xi = np.exp(phi[sample_id, :, :] @ mu
-                                        )[np.newaxis, np.newaxis, :]
+                        # Use log-sum-exp trick for numerical stability
+                        phi_mu_xi = phi[sample_id, :, :] @ mu
+                        max_phi_xi = np.max(phi_mu_xi)
+                        expPhi_xi = np.exp(phi_mu_xi - max_phi_xi)[np.newaxis, np.newaxis, :]
 
                         sumExpPhi_xi = \
                                 np.sum(((expPhi_xi @ phi[sample_id, :, :])
@@ -593,24 +622,24 @@ class CMRC(BaseMRC):
     def psi(self, phi_mu, phi):
         '''
         Function to compute the psi function in the objective
-        using the given solution mu and the feature mapping 
+        using the given solution mu and the feature mapping
         corresponding to a single instance.
 
-        Parameters:
-        -----------
-        mu : `array`-like of shape (n_features)
-            Solution.
+        Parameters
+        ----------
+        phi_mu : array-like of shape (n_features,)
+            Product of feature mapping and solution vector.
 
-        phi : `array`-like of shape (n_classes, n_features)
+        phi : array-like of shape (n_classes, n_features)
             Feature mapping corresponding to an instance and
             each class.
 
-        Returns:
-        --------
-        g : `array`-like of shape (n_features)
+        Returns
+        -------
+        g : array-like of shape (n_features,)
             Gradient of psi for a given solution and feature mapping.
 
-        psi_value : `int`
+        psi_value : float
             The value of psi for a given solution and feature mapping.
         '''
 
@@ -696,7 +725,9 @@ class CMRC(BaseMRC):
 
             v = np.dot(phi, self.mu_)
 
-            # Normalizing conditional probabilities
+            # Normalizing conditional probabilities using log-sum-exp trick
+            # For each class i, compute: 1 / sum_j(exp(v_j - v_i))
+            # This is numerically stable as we subtract v_i before exp
             hy_x = np.vstack(list(np.sum(np.exp(v - np.tile(v[:, i],
                              (self.n_classes, 1)).transpose()), axis=1)
                              for i in range(self.n_classes))).transpose()

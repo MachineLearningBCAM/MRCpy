@@ -1,11 +1,11 @@
 import numpy as np
 
-def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
+def nesterov_optimization_mrc(tau_mat, lambda_mat, f_, g_, max_iters):
     '''
     Solution of the MRC convex optimization (minimization)
     using the Nesterov accelerated approach.
     .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
-                        The Strength of Nesterov’s Extrapolation in
+                        The Strength of Nesterov's Extrapolation in
                         the Individual Convergence of Nonsmooth
                         Optimization. IEEE transactions on
                         neural networks and learning systems,
@@ -13,20 +13,21 @@ def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
                         <https://ieeexplore.ieee.org/document/8822632>`_
     Parameters
     ----------
-    m : `int`
-        Length of the feature mapping vector
+    tau_mat : `array`-like of shape (`n_features`, `n_classes`) or (`m`,)
+        Mean estimates for the expectations of feature mappings.
+    lambda_mat : `array`-like of shape (`n_features`, `n_classes`) or (`m`,)
+        Variance in the mean estimates for the expectations of the feature mappings.
     f_ : a lambda function of the form - f_(mu)
-        Lambda function
-        calculating a part of the objective function
-        depending on the type of loss function chosen
-        by taking the parameters (mu) of the optimization as input.
-    g_ : a lambda function of the form - g_(mu, idx)
-        Lambda function
-        calculating the part of the subgradient of the objective function
-        depending on the type of the loss function chosen.
-        It takes the as input: parameters (mu) of the optimization and
-        the index corresponding to the maximum value of data matrix
-        obtained from the instances.
+        Lambda function calculating a part of the objective function
+        depending on the type of loss function chosen.
+        For upper bound: returns (value, sample_idx, subset)
+        For lower bound: returns array of values
+    g_ : a lambda function of the form - g_(mu, idx) or g_(mu, idx, subset)
+        Lambda function calculating the part of the subgradient of the objective function.
+        For upper bound: g_(mu, idx, subset)
+        For lower bound: g_(mu, idx)
+    max_iters : `int`
+        Maximum number of iterations
     Returns
     -------
     new_params_ : `dict`
@@ -44,27 +45,36 @@ def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
     theta_k = 1
     theta_k_prev = 1
 
-    # Initial values for points
-    y_k = np.zeros(m, dtype=np.float64)
-    w_k = np.zeros(m, dtype=np.float64)
-    w_k_prev = np.zeros(m, dtype=np.float64)
-
+    # Upper bound case: tau_mat is (n_features, n_classes)
+    d = tau_mat.shape[0]
+    if tau_mat.shape[1] == 1:
+        # Binary classification
+        n_classes = 2
+        # Initial values for points
+        y_k = np.zeros((d, 1), dtype=np.float64)
+        w_k = np.zeros((d, 1), dtype=np.float64)
+        w_k_prev = np.zeros((d, 1), dtype=np.float64)
+    else:
+        n_classes = tau_mat.shape[1]
+        # Initial values for points
+        y_k = np.zeros((d, n_classes), dtype=np.float64)
+        w_k = np.zeros((d, n_classes), dtype=np.float64)
+        w_k_prev = np.zeros((d, n_classes), dtype=np.float64)
+    
     # Setting initial values for the objective function and other results
-    v = f_(y_k)
-    mnu = np.max(v)
-    f_best_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + mnu
+    # f_ returns (value, sample_idx, subset) for upper bound
+    mnu, sample_idx, subset = f_(y_k)
+    f_best_value = np.sum(lambda_mat * np.abs(y_k)) - np.sum(tau_mat * y_k) + mnu
     mu = y_k
     nu = -1 * mnu
 
-    # Iteration for finding the optimal values
-    # using Nesterov's extrapolation
+    # Iteration for finding the optimal values using Nesterov's extrapolation
     for k in range(1, (max_iters + 1)):
         y_k = w_k + theta_k * ((1 / theta_k_prev) - 1) * (w_k - w_k_prev)
 
         # Calculating the subgradient of the objective function at y_k
-        v = f_(y_k)
-        idx = np.argmax(v)
-        g_0 = lambda_ * np.sign(y_k) - tau_ + g_(y_k, idx)
+        mnu, sample_idx, subset = f_(y_k)
+        g_0 = lambda_mat * np.sign(y_k) - tau_mat + g_(y_k, sample_idx, subset)
 
         # Update the parameters
         theta_k_prev = theta_k
@@ -75,20 +85,16 @@ def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
         w_k_prev = w_k
         w_k = y_k - alpha_k * g_0
 
-        # Check if there is an improvement
-        # in the value of the objective function
-        mnu = v[idx]
-        f_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + mnu
+        # Check if there is an improvement in the value of the objective function
+        f_value = np.sum(lambda_mat * np.abs(y_k)) - np.sum(tau_mat * y_k) + mnu
         if f_value < f_best_value:
             f_best_value = f_value
             mu = y_k
             nu = -1 * mnu
 
-    # Check for possible improvement of the objective value
-    # for the last generated value of w_k
-    v = f_(w_k)
-    mnu = np.max(v)
-    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + mnu
+    # Check for possible improvement of the objective value for the last generated value of w_k
+    mnu, sample_idx, subset = f_(w_k)
+    f_value = np.sum(lambda_mat * np.abs(w_k)) - np.sum(tau_mat * w_k) + mnu
 
     if f_value < f_best_value:
         f_best_value = f_value
@@ -97,12 +103,12 @@ def nesterov_optimization_mrc(tau_, lambda_, m, f_, g_, max_iters):
 
     # Return the optimized values in a dictionary
     new_params_ = {'w_k': w_k,
-                   'w_k_prev': w_k_prev,
-                   'mu': mu,
-                   'nu': nu,
-                   'best_value': f_best_value,
-                   }
-
+                    'w_k_prev': w_k_prev,
+                    'mu': mu,
+                    'nu': nu,
+                    'best_value': f_best_value,
+                    }
+    
     return new_params_
 
 def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
@@ -111,7 +117,7 @@ def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
     using the Nesterov accelerated approach.
 
     .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
-                        The Strength of Nesterov’s Extrapolation
+                        The Strength of Nesterov's Extrapolation
                         in the Individual Convergence of Nonsmooth
                         Optimization. IEEE transactions on
                         neural networks and learning systems,

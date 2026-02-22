@@ -1,30 +1,126 @@
+"""
+Gurobi LP model construction for sparse binary MRC.
+
+This module provides functions to build and solve the linear programming
+formulation of the Minimax Risk Classifier for sparse binary features using
+the Gurobi optimizer.
+"""
+
 import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
 import random
 
-def mrc_lp_large_n_m_model_gurobi(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, nu_init=None, warm_start=None, is_sparse=False, dict_nnz={}):
+def mrc_lp_large_n_m_model_gurobi(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, nu_init=None, warm_start=None, dict_nnz={}):
 	"""
-	Function to build and return the linear model of MRC 0-1 loss using the given
-	constraint matrix and objective vector.
+	Build and solve the linear programming model for MRC with 0-1 loss using Gurobi.
 
-	Parameters:
-	-----------
-	F : array-like of shape (no_of_constraints, 2*(no_of_feature+1))
-		Constraint matrix.
+	This function constructs the primal formulation of the Minimax Risk Classifier
+	as a linear program and solves it using the Gurobi optimizer. The formulation
+	uses variable splitting (mu = mu_plus - mu_minus) to handle unrestricted
+	variables in the LP framework.
 
-	b : array-like of shape (no_of_constraints)
-		Right handside of the constraints.
+	The optimization problem is:
+	    minimize: sum_j [(tau_j - lambda_j) * mu_minus_j - (tau_j - lambda_j) * mu_plus_j
+	                     + (tau_j + lambda_j) * mu_minus_j + (tau_j + lambda_j) * mu_plus_j]
+	              + (nu_pos - nu_neg)
+	    subject to:
+	        - For positive samples i: -X[i] @ (mu_plus - mu_minus) + (nu_pos - nu_neg) >= 0
+	        - For negative samples i: X[i] @ (mu_plus - mu_minus) + (nu_pos - nu_neg) >= 0
+	        - Objective constraint: tau @ (mu_minus - mu_plus) + lambda @ (mu_minus + mu_plus)
+	                                + (nu_pos - nu_neg) >= 0
+	        - All variables >= 0
 
-	index_colums: array-like
-		Selects the columns of the constraint matrix and objective vector.
+	Parameters
+	----------
+	X : scipy.sparse matrix of shape (n_samples, n_features)
+		Sparse feature matrix containing binary features. Each row represents
+		a training sample and each column represents a feature.
 
-	Return:
+	idx_samples_plus_constr : list of int
+		Indices of samples with positive class constraints. These are samples
+		that should be classified as positive (y=+1).
+
+	idx_samples_minus_constr : list of int
+		Indices of samples with negative class constraints. These are samples
+		that should be classified as negative (y=-1).
+
+	tau_ : numpy.ndarray of shape (n_features,)
+		Mean estimates for each feature across the training distribution.
+		Used in the objective function and constraints.
+
+	lambda_ : numpy.ndarray of shape (n_features,)
+		Deviation estimates (uncertainty bounds) for each feature. Used in
+		the objective function and constraints.
+
+	idx_cols : list of int or None
+		Indices of features to include in the model. If None, all features
+		are included. This allows solving a restricted problem with a subset
+		of features.
+
+	nu_init : float, optional, default=None
+		Initial value for the nu parameter (intercept term). If provided,
+		used as a warm start for the optimization. The sign determines which
+		part (nu_pos or nu_neg) is initialized.
+
+	warm_start : numpy.ndarray, optional, default=None
+		Initial values for mu parameters corresponding to features in idx_cols.
+		If provided, used as a warm start for the optimization. The sign of
+		each value determines which part (mu_plus or mu_minus) is initialized.
+		Must have length equal to len(idx_cols).
+
+	dict_nnz : dict, default={}
+		Dictionary mapping sample indices (int) to lists of non-zero feature
+		indices (list of int) for efficient sparse matrix operations. Keys
+		are sample indices, values are lists of feature indices where the
+		sample has non-zero values.
+
+	Returns
 	-------
-	model : A model object of MOSEK
-		A solved MOSEK model of the MRC 0-1 linear model using the given constraints
-		and objective.
+	MRC_model : gurobipy.Model
+		Solved Gurobi optimization model. The model contains:
+		- Variables: mu_+_j, mu_-_j for each feature j in idx_cols, and nu_+, nu_-
+		- Constraints: Sample constraints and objective constraint
+		- Objective: Minimization of worst-case error bound
+		
+		Access solution values using:
+		- MRC_model.getVarByName("mu_+_<index>").x for feature coefficients
+		- MRC_model.objVal for the optimal objective value
 
+	Notes
+	-----
+	The function uses variable splitting to handle unrestricted variables:
+	- mu_j = mu_plus_j - mu_minus_j (actual coefficient)
+	- nu = nu_pos - nu_neg (actual intercept)
+	
+	Both mu_plus_j, mu_minus_j, nu_pos, and nu_neg are constrained to be >= 0.
+
+	The model is configured with:
+	- LogToConsole = 0 (suppress console output)
+	- OutputFlag = 0 (suppress all output)
+	- LPWarmStart = 1 (enable warm starting)
+	- TimeLimit = 3600 seconds (1 hour)
+
+	A constraint "constr_nu" ensures nu >= 0.5 to avoid trivial solutions.
+
+	The function efficiently handles sparse matrices by only including non-zero
+	feature coefficients in each constraint using dict_nnz.
+
+	Examples
+	--------
+	>>> import numpy as np
+	>>> from scipy.sparse import csr_matrix
+	>>> X = csr_matrix([[1, 0, 1], [0, 1, 1], [1, 1, 0]])
+	>>> tau = np.array([0.5, 0.5, 0.5])
+	>>> lambda_ = np.array([0.1, 0.1, 0.1])
+	>>> idx_cols = [0, 1, 2]
+	>>> idx_plus = [0]
+	>>> idx_minus = [1]
+	>>> dict_nnz = {0: [0, 2], 1: [1, 2], 2: [0, 1]}
+	>>> model = mrc_lp_large_n_m_model_gurobi(
+	...     X, idx_plus, idx_minus, tau, lambda_, idx_cols, dict_nnz=dict_nnz
+	... )
+	>>> print(f"Optimal objective: {model.objVal:.4f}")
 	"""
 
 	if idx_cols is None:
@@ -37,8 +133,6 @@ def mrc_lp_large_n_m_model_gurobi(X, idx_samples_plus_constr, idx_samples_minus_
 	# MRC_model.setParam('Method', 0)
 	MRC_model.setParam('LPWarmStart', 1)
 	MRC_model.setParam('TimeLimit', 3600)
-
-	print('Shape of input matrix: ', X.shape)
 
 	# Define the variable.
 	mu_plus = []

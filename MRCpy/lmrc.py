@@ -27,84 +27,84 @@ from MRCpy.solvers.cvx import *
 from MRCpy.solvers.cg import *
 
 class LMRC(BaseMRC):
-    '''
-    Cost Sensitive Minimax Risk Classifier
+    r'''
+    Cost Sensitive Minimax Risk Classifier.
 
-    The class LMRC implements the method Cost Sensitive Minimimax Risk Classifiers (MRC)
-    An MRC that can use any loss defined by a loss matrix.
+    The class LMRC implements Cost Sensitive Minimax Risk Classifiers (MRC),
+    an MRC that can use any loss defined by a loss matrix.
     It implements two kinds of prediction methods.
-
 
     Parameters
     ----------
-    n_classes : `int`
+    n_classes : int
         Number of different possible labels for an instance.
 
-    s : `float`, default = `0.3`
+    s : float, default=0.3
         Parameter that tunes the estimation of expected values
-        of feature mapping function. It is used to calculate :math:`\lambda`
+        of feature mapping function. It is used to calculate :math:`\boldsymbol{\lambda}`
         (variance in the mean estimates
         for the expectations of the feature mappings) in the following way
 
         .. math::
-            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
+            \boldsymbol{\lambda} = s \cdot \text{std}(\Phi(X,Y)) / \sqrt{|X|}
 
         where (X,Y) is the dataset of training samples and their
         labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
-        of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
+        :math:`\text{std}(\Phi(X,Y))` stands for standard deviation
+        of :math:`\Phi(X,Y)` in the supervised dataset (X,Y).
 
-    loss : `str` (0-1, ordinal, abstention, random, ordinal-squared) or
-            `array`-like of shape (`n_classes_classification`, `n_classes`)
-            If it's a string, it generates the loss matrix corresponding to the name.
-            If it's an array, it will use as the transposed loss maxtrix
+    loss : str or array-like of shape (n_classes_classification, n_classes)
+        If a string, one of ``'0-1'``, ``'ordinal'``, ``'abstention'``,
+        ``'random'``, ``'ordinal-squared'``. Generates the corresponding
+        loss matrix. If an array, it will be used as the transposed loss matrix.
 
-    alpha: `float`: penalty for abstention in that type of loss. Defaults to
-            abstention penalty (optional parameter). Defaults to 1/(n_classes+1)
+    alpha : float, optional
+        Penalty for abstention in that type of loss.
+        Defaults to ``1 / (n_classes + 1)``.
 
-    max_iters : `int`, default = `2000`
+    max_iters : int, default=2000
         Maximum number of iterations to use
         for finding the solution of optimization in
         the subgradient approach.
 
-    phi : `str` or `BasePhi` instance, default = 'linear'
+    phi : str or BasePhi instance, default='linear'
         Type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are
-        'fourier' and 'linear'.
+        The currently available feature mapping methods are
+        ``'fourier'`` and ``'linear'``.
         The users can also implement their own feature mapping object
-        (should be a `BasePhi` instance) and pass it to this argument.
-        Note that when using 'fourier' feature mapping,
+        (should be a ``BasePhi`` instance) and pass it to this argument.
+        Note that when using ``'fourier'`` feature mapping,
         training and testing instances are expected to be normalized.
         To implement a feature mapping, please go through the
         :ref:`Feature Mapping` section.
 
-        'linear'
+        ``'linear'``
             It uses the identity feature map referred to as Linear feature map.
-            See class `BasePhi`.
+            See class ``BasePhi``.
 
-        'fourier'
-            It uses Random Fourier Feature map. See class `RandomFourierPhi`.
+        ``'fourier'``
+            It uses Random Fourier Feature map. See class ``RandomFourierPhi``.
 
-    eps : `float`, default = `1e-4`
-        threshold comparing values. for instance, testing if two values are
-        different will be done as |value1-value2| < eps
-        instead of |value1-value2| == 0
+    eps : float, default=1e-4
+        Threshold for comparing values. For instance, testing if two values
+        are different is done as ``abs(value1 - value2) < eps``
+        instead of ``value1 == value2``.
 
-    use_closed_form: `bool`, default `False`
-        If true, and if the loss matrix is squared, then it will use the clossed
-        for method for classification.
+    use_closed_form : bool, default=False
+        If True, and if the loss matrix is squared, then it will use the
+        closed form method for classification.
 
     **phi_kwargs : Additional parameters for feature mappings.
-            Groups the multiple optional parameters
-            for the corresponding feature mappings(`phi`).
+        Groups the multiple optional parameters
+        for the corresponding feature mappings (``phi``).
 
-            For example in case of fourier features,
-            the number of features is given by `n_components`
-            parameter which can be passed as argument
-            `AMRC(phi='fourier', n_components=500)`
+        For example in case of fourier features,
+        the number of features is given by ``n_components``
+        parameter which can be passed as argument
+        ``LMRC(phi='fourier', n_components=500)``.
 
-            The list of arguments for each feature mappings class
-            can be found in the corresponding documentation.
+        The list of arguments for each feature mappings class
+        can be found in the corresponding documentation.
     '''
 
     def __generate_loss_matrix(self, loss, n, alpha=None, Beta=10):
@@ -226,6 +226,9 @@ class LMRC(BaseMRC):
                                   ensure_2d=False)
         phi = self.compute_phi(X)
 
+        self.tau_ = self.tau_.flatten()
+        self.lambda_ = self.lambda_.flatten()
+
         phi = np.unique(phi, axis=0)
 
         # Constants
@@ -255,7 +258,7 @@ class LMRC(BaseMRC):
 
         #Learing problem
 
-        #Define CVXpy problem
+        #Define cvxpy problem
         mu = cvx.Variable(m)
         eta = cvx.Variable(m)
         nu = cvx.Variable(1)
@@ -536,23 +539,23 @@ class LMRC(BaseMRC):
     # issues with non-squared loss matrices
     def predict(self, X):
         '''
-        Predicts classes for new instances using a fitted model.
+        Predict classes for new instances using a fitted model.
 
-        Returns the predicted classes for the given instances in `X`
-        using the probabilities given by the function `predict_proba`.
+        Returns the predicted classes for the given instances in ``X``
+        using the probabilities given by the function ``predict_proba``.
         This method overwrites the parent's class method so that
         non-square loss matrices are allowed.
+
         Parameters
         ----------
-        X : `array`-like of shape (`n_samples`, `n_dimensions`)
+        X : array-like of shape (n_samples, n_dimensions)
             Test instances for which the labels are to be predicted
             by the MRC model.
 
         Returns
         -------
-        y_pred : `array`-like of shape (`d_2`)
+        y_pred : array-like of shape (n_samples,)
             Predicted labels corresponding to the given instances.
-
         '''
 
         X = check_array(X, accept_sparse=True)

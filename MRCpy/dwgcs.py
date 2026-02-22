@@ -28,29 +28,69 @@ from MRCpy.phi import \
     ThresholdPhi
 
 class DWGCS(CMRC):
-    '''Double-Weighting General Covariate Shift
+    r'''
+    Double-Weighting for General Covariate Shift
 
-    The class DWGCS implements the method Double-Weighting for 
-    General Covariate Shift (DWGCS) proposed in :ref:`[1] <ref1>`. 
-    It is designed for supervised classification under covariate shift. 
+    This class implements the Double-Weighting for General Covariate Shift
+    (DW-GCS) method proposed in [1]_. It is designed for supervised
+    classification under covariate shift, where the marginal distributions
+    of instances at training :math:`\mathrm{p}_{\text{tr}}(x)` and testing
+    :math:`\mathrm{p}_{\text{te}}(x)` differ but the label conditionals
+    coincide.
 
-    DW-GCS provides adaptatition to covariate shift when a set of training samples
-    and a set of unlabeled samples from the testing distribution are available
-    at learning, without any prior knowledge about the supports of the training
-    and testing distribution.
-    
-    It implements 0-1 and log loss, and it can be used with multiple feature
-    mappings.
+    The classifier solves the minimax risk problem:
 
-    .. seealso:: For more information about DWGCS, one can refer to the
-        following paper:
+    .. math::
 
-                    [1] `Segovia-Martín, J.I., Mazuelas, S., Liu, A. (2023).
-                    Double-Weighting for Covariate Shift Adaptation.
-                    In Proceedings of the 40th 
-                    International Conference on Machine Learning, pp. 30439-30457.
-                    <https://proceedings.mlr.press/v202/
-                    segovia-martin23a/segovia-martin23a.pdf>`_
+        \mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}
+        \max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})
+
+    which finds the classifier :math:`\mathrm{h}` that minimizes the
+    worst-case expected loss over an uncertainty set
+    :math:`\mathcal{U}_2` of distributions.
+
+    The uncertainty set :math:`\mathcal{U}_2` is constructed using both
+    training weights :math:`\beta(x)` and testing weights
+    :math:`\alpha(x)`, with feature mappings weighted by
+    :math:`\alpha(x)` as
+    :math:`\Phi_\alpha(x,y) = \alpha(x) \Phi(x,y)`:
+
+    .. math::
+
+        \mathcal{U}_2 = \left\{ \mathrm{p} :
+        \mathrm{p}_x = \mathrm{p}_{\text{te}}(x), \;
+        \left| \mathbb{E}_{\mathrm{p}}[\Phi_\alpha(x,y)]
+        - \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}
+
+    where :math:`\boldsymbol{\tau}` is estimated using
+    :math:`\beta`-weighted training samples as
+    :math:`\boldsymbol{\tau} = \frac{1}{n} \sum_{i=1}^{n}
+    \beta(x_i) \Phi(x_i, y_i)`, and :math:`\boldsymbol{\lambda}`
+    is obtained by solving a convex optimization that ensures the
+    uncertainty set is non-empty.
+
+    The double-weighting approach avoids the limitations of the
+    reweighted methods (which only weight training samples by
+    :math:`\mathrm{p}_{\text{te}}/\mathrm{p}_{\text{tr}}`) and robust
+    methods (which only weight testing samples by
+    :math:`\mathrm{p}_{\text{tr}}/\mathrm{p}_{\text{te}}`). By using
+    both weights, DW-GCS can handle general covariate shift scenarios
+    where the supports of training and testing distributions do not
+    need to contain each other.
+
+    The weights :math:`\alpha(x)` and :math:`\beta(x)` are obtained
+    by solving a Double-Weighting Kernel Mean Matching (DW-KMM)
+    problem. The hyperparameter ``D`` controls the trade-off between
+    estimation error and prediction confidence: the estimation error
+    is of order :math:`\mathcal{O}(1/\sqrt{Dn})`, so larger ``D``
+    increases the effective sample size by a factor of ``D`` compared
+    with reweighted methods.
+
+    It implements 0-1 and log loss, and can be used with linear,
+    Random Fourier, and ReLU features.
+
+    See [1]_ for further details.
+
     Parameters
     ----------
     loss : `str` {'0-1', 'log'}, default = '0-1'
@@ -60,62 +100,73 @@ class DWGCS(CMRC):
         certain example for a certain rule.
 
     deterministic : `bool`, default = `True`
-       Whether the prediction of the labels
-       should be done in a deterministic way (given a fixed `random_state`
-       in the case of using random Fourier or random ReLU features).
+        Whether the prediction of the labels
+        should be done in a deterministic way (given a fixed `random_state`
+        in the case of using random Fourier or random ReLU features).
 
     random_state : `int`, RandomState instance, default = `None`
         Random seed used when 'fourier' and 'relu' options for feature mappings
         are used to produce the random weights.
 
     fit_intercept : `bool`, default = `False`
-            Whether to calculate the intercept for MRCs
-            If set to false, no intercept will be used in calculations
-            (i.e. data is expected to be already centered).
+        Whether to calculate the intercept for MRCs.
+        If set to false, no intercept will be used in calculations
+        (i.e. data is expected to be already centered).
 
-    D : `int`, default = 4
-        Hyperparameter that balances the trade-off between error in
+    D : `int`, default = `4`
+        Hyperparameter that controls the trade-off between error in
         expectation estimates and confidence of the classification.
+        The weights are computed using :math:`C = B / \sqrt{D}`.
+        Larger values of ``D`` reduce estimation error (effective sample
+        size increases by factor ``D``) but may reduce prediction
+        confidence for testing instances unlikely at training.
 
-    B : `int`, default = 1000
-        Parameter that bound the maximum value of the weights
-        beta associated to the training samples.
+        - ``D=1``: Only training weights :math:`\beta(x)` are used
+          (reweighted approach, :math:`\alpha(x) = 1`).
+        - ``D=inf``: Only testing weights :math:`\alpha(x)` are used
+          (robust approach, :math:`\beta(x) = 1`).
+        - ``1 < D < inf``: Both weights are used (double-weighting).
 
-    solver : {‘cvx’, 'grad', 'adam'}, default = ’adam’
-        Method to use in solving the optimization problem. 
-        Default is ‘cvx’. To choose a solver,
+    B : `int`, default = `1000`
+        Upper bound on the maximum value of the training weights
+        :math:`\beta(x)`. Used in the DW-KMM optimization to constrain
+        :math:`\beta(x) \leq B / \sqrt{D}`.
+
+    solver : {'cvx', 'grad', 'adam'}, default = 'adam'
+        Method to use in solving the optimization problem.
+        Default is 'adam'. To choose a solver,
         you might want to consider the following aspects:
 
-        ’cvx’
-            Solves the optimization problem using the CVXPY library.
+        'cvx'
+            Solves the optimization problem using the cvxpy library.
             Obtains an accurate solution while requiring more time
-            than the other methods. 
-            Note that the library uses the GUROBI solver in CVXpy for which
+            than the other methods.
+            Note that the library uses the GUROBI solver in cvxpy for which
             one might need to request for a license.
-            A free license can be requested `here 
+            A free license can be requested `here
             <https://www.gurobi.com/academia/academic-program-and-licenses/>`_
 
-        ’grad’
+        'grad'
             Solves the optimization using stochastic gradient descent.
-            The parameters `max_iters`, `stepsize` and `mini_batch_size`
+            The parameters ``max_iters``, ``stepsize`` and ``mini_batch_size``
             determine the number of iterations, the learning rate and
             the batch size for gradient computation respectively.
             Note that the implementation uses nesterov's gradient descent
             in case of ReLU and threshold features, and the above parameters
-            do no affect the optimization in this case.
+            do not affect the optimization in this case.
 
-        ’adam’
+        'adam'
             Solves the optimization using
             stochastic gradient descent with adam (adam optimizer).
-            The parameters `max_iters`, `alpha` and `mini_batch_size`
+            The parameters ``max_iters``, ``alpha`` and ``mini_batch_size``
             determine the number of iterations, the learning rate and
             the batch size for gradient computation respectively.
             Note that the implementation uses nesterov's gradient descent
             in case of ReLU and threshold features, and the above parameters
-            do no affect the optimization in this case.
-    
+            do not affect the optimization in this case.
+
     alpha : `float`, default = `0.001`
-        Learning rate for ’adam’ solver.
+        Learning rate for 'adam' solver.
 
     mini_batch_size : `int`, default = `1` or `32`
         The size of the batch to be used for computing the gradient
@@ -125,27 +176,25 @@ class DWGCS(CMRC):
 
     max_iters : `int`, default = `100000` or `5000` or `2000`
         The maximum number of iterations to use in case of
-        ’grad’ or ’adam’ solver.
+        'grad' or 'adam' solver.
         The default value is
-        100000 for ’grad’ solver and
-        5000 for ’adam’ solver and 
-        2000 for nesterov's gradient descent.  
+        100000 for 'grad' solver and
+        5000 for 'adam' solver and
+        2000 for nesterov's gradient descent.
 
     weights_alpha : `array`, default = `None`
-        The weights alpha(x) associated to each testing instance.
-        Note that if just weights_beta is given, 
-        method will assume they are obtained 
-        based on robust approach, and fix beta(x) = 1.
+        Pre-computed testing weights :math:`\alpha(x)` associated to
+        each testing instance. If only ``weights_alpha`` is given,
+        the method fixes :math:`\beta(x) = 1` (robust approach).
 
-    weights_beta : `beta`, default = `None`
-        Weights beta(x) associated to each training sample.
-        Note that if just weights_beta is given, 
-        method will assume they are obtained 
-        based on reweighted approach, and fix alpha(x) = 1. 
+    weights_beta : `array`, default = `None`
+        Pre-computed training weights :math:`\beta(x)` associated to
+        each training sample. If only ``weights_beta`` is given,
+        the method fixes :math:`\alpha(x) = 1` (reweighted approach).
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are
+        The currently available feature mapping methods are
         'fourier', 'relu', and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
@@ -167,15 +216,52 @@ class DWGCS(CMRC):
 
     **phi_kwargs : Additional parameters for feature mappings.
                 Groups the multiple optional parameters
-                for the corresponding feature mappings(`phi`).
+                for the corresponding feature mappings(``phi``).
 
                 For example in case of fourier features,
-                the number of features is given by `n_components`
-                parameter which can be passed as argument -
-                `DWGCS(loss='log', phi='fourier', n_components=300)`
+                the number of features is given by ``n_components``
+                parameter which can be passed as argument
+                ``DWGCS(loss='log', phi='fourier', n_components=300)``
 
                 The list of arguments for each feature mappings class
                 can be found in the corresponding documentation.
+
+    Attributes
+    ----------
+    is_fitted_ : `bool`
+        Whether the classifier is fitted i.e., the parameters are learnt.
+
+    beta_ : `array`-like of shape (`n_train_samples`, 1)
+        Training weights :math:`\beta(x)` obtained from the DW-KMM
+        optimization.
+
+    alpha_ : `array`-like of shape (`n_test_samples`, 1)
+        Testing weights :math:`\alpha(x)` obtained from the DW-KMM
+        optimization.
+
+    classes_ : `array`-like of shape (`n_classes`,)
+        Labels in the given dataset.
+
+    mu_ : `array`-like of shape (`n_features`,) or `float`
+        Parameters learnt by the optimization.
+
+    sigma_ : `float`
+        Kernel bandwidth parameter for the RBF kernel used in DW-KMM.
+
+    See Also
+    --------
+    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints [2]_.
+
+    References
+    ----------
+    .. [1] Segovia-Martín, J.I., Mazuelas, S., & Liu, A. (2023).
+           Double-Weighting for Covariate Shift Adaptation. In Proceedings
+           of the 40th International Conference on Machine Learning,
+           pp. 30439-30457.
+
+    .. [2] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
     '''
 
     def __init__(self,
@@ -326,25 +412,17 @@ class DWGCS(CMRC):
         Parameters
         ----------
         xTr : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Training instances used in
+            Training instances used for computing the training weights
+            beta and testing weights alpha.
 
-            - Computing the training weights beta and testing weights alpha.
-
-            `n_samples` is the number of training samples and
-            `n_dimensions` is the number of features.
-
-        xTr : `array`-like of shape (`n_samples`, `n_dimensions`)
-            Testing instances used in
-
-            - Computing the training weights beta and testing weights alpha.
-
-            `n_samples` is the number of training samples and
-            `n_dimensions` is the number of features.
+        xTe : `array`-like of shape (`n_samples`, `n_dimensions`)
+            Testing instances used for computing the training weights
+            beta and testing weights alpha.
 
         Returns
         -------
         self :
-            Weights self.beta_ and self.alpha_
+            Fitted estimator with ``beta_`` and ``alpha_`` attributes set.
         '''
 
         n = xTr.shape[0]
@@ -362,7 +440,7 @@ class DWGCS(CMRC):
             beta_ = cvx.Variable((n, 1))
             alpha_ = np.ones((t, 1))
             # Define the objetive function
-            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), K))
             # Define the constraints
             constraints = [ 
                 beta_ >= np.zeros((n, 1)),
@@ -380,7 +458,7 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
                                      'alpha and beta .... ' + \
                                      'The problem is ', problem.status)
 
@@ -395,7 +473,7 @@ class DWGCS(CMRC):
             alpha_ = cvx.Variable((t, 1))
             epsilon_ = 1 - 1 / (np.sqrt(t))
             # Define the objetive function
-            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), K))
             # Define the constraints
             constraints = [ 
                 alpha_ >= np.zeros((n, 1)),
@@ -413,7 +491,7 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
                                      'alpha and beta .... ' + \
                                      'The problem is ', problem.status)
 
@@ -426,7 +504,7 @@ class DWGCS(CMRC):
             beta_ = cvx.Variable((n, 1))
             alpha_ = cvx.Variable((t, 1))
             # Define the objective function
-            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), cvx.psd_wrap(K)))
+            objective = cvx.Minimize(cvx.quad_form(cvx.vstack([beta_/n, -alpha_/t]), K))
             # Define the constraints
             constraints = [ 
                 beta_ >= np.zeros((n, 1)),
@@ -447,7 +525,7 @@ class DWGCS(CMRC):
                     try:
                         problem.solve(solver = 'ECOS', feastol = 1e-6, reltol = 1e-3, abstol = 1e-6)
                     except cvx.error.SolverError:
-                        raise ValueError('CVXpy couldn\'t find a solution for ' + \
+                        raise ValueError('cvxpy couldn\'t find a solution for ' + \
                                      'alpha and beta .... ' + \
                                      'The problem is ', problem.status)
 
@@ -475,7 +553,7 @@ class DWGCS(CMRC):
 
         Returns
         -------
-        tau_ :
+        tau_ : array-like
             Mean expectation estimate
         '''
 
@@ -503,7 +581,7 @@ class DWGCS(CMRC):
         
         Returns
         -------
-        lambda_ :
+        lambda_ : array-like
             Confidence vector
         '''
         
@@ -557,7 +635,7 @@ class DWGCS(CMRC):
 
         Returns
         -------
-        phi_alpha :
+        phi_alpha : array-like
             Feature mapping weighted by alpha
         '''
 

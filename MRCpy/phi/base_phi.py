@@ -16,8 +16,8 @@ class BasePhi():
     used by the MRCs in the library. It corresponds
     to the usual identity feature map referred to as Linear feature map.
 
-    To see an example of how to extend the class `BasePhi` to implement
-    yout own feature mapping see :ref:`this example <ex_phi>`.
+    To see an example of how to extend the class ``BasePhi`` to implement
+    your own feature mapping see the Feature Mapping section.
 
 
 
@@ -137,7 +137,7 @@ class BasePhi():
         self.is_fitted_ = True
 
         # Defining the length of the phi
-        self.len_ = self.transform(X[0:1, :]).shape[1]
+        self.len_ = self.eval_xy(X[0:1, :], [0]).shape[1]
 
         return self
 
@@ -160,6 +160,7 @@ class BasePhi():
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, ["is_fitted_"])
 
+        n = X.shape[0]
         if self.fit_intercept:
             X_feat = np.hstack(([[1]] * n, X))
         else:
@@ -168,13 +169,13 @@ class BasePhi():
         return X_feat
 
     def eval_xy(self, X, Y):
-        '''
+        r'''
         Evaluates the one-hot encoded features of the given instances i.e.,
-        X, :math:`\phi(x,y)`, x
+        X, :math:`\Phi(x,y)`, x
         :math:`\in` X and y :math:`\in` Y.
         The encodings are calculated,
         corresponding to the given labels, which is used by the learning stage
-        for estimating the expectation of :math:`\phi(x,y)`.
+        for estimating the expectation of :math:`\Phi(x,y)`.
 
         Parameters
         ----------
@@ -186,8 +187,7 @@ class BasePhi():
 
         Returns
         -------
-        phi : `array`-like of shape
-              (`n_samples`, `n_features` * `n_classes`)
+        phi : array-like of shape (n_samples, n_features * n_classes)
             Matrix containing the one-hot encoding
             with respect to the labels given for all the instances.
 
@@ -213,9 +213,9 @@ class BasePhi():
         return phi
 
     def eval_x(self, X):
-        '''
+        r'''
         Evaluates the one-hot encoded features of the given instances i.e.,
-        X, :math:`\phi(x,y)`, x
+        X, :math:`\Phi(x,y)`, x
         :math:`\in` X and all the labels. The output is 3D matrix
         that is composed of 2D matrices corresponding to each of the instance.
         These 2D matrices are the one-hot encodings of the instances' features
@@ -228,8 +228,7 @@ class BasePhi():
 
         Returns
         -------
-        phi : `array`-like of shape
-                    (`n_samples`, `n_classes`, `n_features` * `n_classes`)
+        phi : array-like of shape (n_samples, n_classes, n_features * n_classes)
             Matrix containing the one-hot encoding for all the classes
             for each of the instances given.
 
@@ -248,8 +247,8 @@ class BasePhi():
         return phi
 
     def est_exp(self, X_transform, Y):
-        '''
-        Computes the average value of :math:`\phi(x,y)` to estimate :math:`{\tau}`
+        r'''
+        Computes the average value of :math:`\Phi(x,y)` to estimate :math:`\boldsymbol{\tau}`
         that defines the constraint of the uncertainty set of distribution.
 
         Parameters
@@ -263,9 +262,8 @@ class BasePhi():
 
         Returns
         -------
-        tau_ : `array`-like of shape (`n_classes`, `n_features`) for multiple classes and
-                 (`1`, `n_features`) for two classes.
-            Empirical mean of :math:`\phi(x,y)`.
+        tau_ : array-like of shape (n_classes, n_features) or (1, n_features)
+            Empirical mean of :math:`\Phi(x,y)`.
 
         '''
 
@@ -278,7 +276,7 @@ class BasePhi():
 
         # Compute tau efficiently without creating one-hot encoded phi matrix
         if self.n_classes > 2 or self.one_hot is True:
-            tau_mat = np.zeros((n_classes, feat_len))
+            tau_mat = np.zeros((self.n_classes, feat_len))
             for y_i in range(self.n_classes):
                 tau_mat[y_i, :] = np.sum(X_transform[Y == y_i, :], axis=0) * (1 / n)
 
@@ -291,10 +289,10 @@ class BasePhi():
         return tau_mat
 
     def est_std(self, X_transform, Y, tau_mat):
-        '''
-        Standard deviation of :math:`\phi(x,y)` 
-        that accounts for inaccuracies in the mean estimate :math:`{\tau}`.
-        It is used to estimate :math:`\lambda`
+        r'''
+        Standard deviation of :math:`\Phi(x,y)` 
+        that accounts for inaccuracies in the mean estimate :math:`\boldsymbol{\tau}`.
+        It is used to estimate :math:`\boldsymbol{\lambda}`
         defining the uncertainty set constraints.
 
         Parameters
@@ -308,9 +306,8 @@ class BasePhi():
 
         Returns
         -------
-        lambda_ : `array`-like of shape (`n_classes`, `n_features`) for multiple classes and
-                 (`1`, `n_features`) for two classes.
-            Standard deviation of :math:`\phi(x,y)`.
+        lambda_ : array-like of shape (n_classes, n_features) or (1, n_features)
+            Standard deviation of :math:`\Phi(x,y)`.
 
         '''
 
@@ -323,7 +320,7 @@ class BasePhi():
 
         # Compute the standard deviation of features corresponding with the mean tau_mat
         if self.n_classes > 2 or self.one_hot is True:
-            lambda_mat = np.zeros((n_classes, feat_len))
+            lambda_mat = np.zeros((self.n_classes, feat_len))
             for y_i in range(self.n_classes):
                 not_y_i = np.sum(Y != y_i)
                 lambda_mat[y_i, :] = np.sqrt((np.sum(np.square(X_transform[Y == y_i, :] - tau_mat[y_i, :]), axis=0) + \

@@ -1,45 +1,7 @@
 """
-PyTorch-based Marginally Constrained Minimax Risk Classifier.
+PyTorch-based minimax risk classification with alpha-losses.
 
-This module implements a PyTorch-based version of Minimax Risk Classifiers
-with marginally constrained generalized cross-entropy (MGCE) loss functions.
-It provides GPU-accelerated training and inference for deep neural networks
-with theoretical robustness guarantees.
-
-The implementation supports:
-- Custom MGCE loss functions with configurable beta parameters
-- GPU acceleration with CUDA support
-- Validation during training with model checkpointing
-- Integration with standard PyTorch training workflows
-- Comprehensive logging and progress tracking
-
-Classes
--------
-mgce_clf
-    Main classifier class for training and inference with MGCE loss.
-
-Examples
---------
-Basic usage:
-
->>> import torch
->>> import torch.nn as nn
->>> from torch.utils.data import DataLoader, TensorDataset
->>> from MRCpy.pytorch.mgce.classifier import mgce_clf
->>> 
->>> # Create model and data
->>> model = nn.Sequential(nn.Linear(10, 64), nn.ReLU(), nn.Linear(64, 3))
->>> optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
->>> 
->>> # Initialize classifier
->>> clf = mgce_clf(model=model, optimizer=optimizer, loss_parameter=1.4)
->>> 
->>> # Train the model
->>> results = clf.fit(train_loader, n_epochs=50, validate=True, val_dataloader=val_loader)
-"""
-"""
-Marginally constrained minimax risk classification using alpha loss functions. 
-Copyright (C) 2021 Kartheek Bondugula
+Copyright (C) 2026 Kartheek Bondugula
 
 This program is free software: you can redistribute it and/or modify it under the terms of the 
 GNU General Public License as published by the Free Software Foundation,
@@ -52,6 +14,7 @@ See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.
 If not, see https://www.gnu.org/licenses/.
 """
+
 import torch
 import numpy as np
 import copy
@@ -79,51 +42,106 @@ logger = logging.getLogger(__name__)
 
 
 class mgce_clf():
-    """
-    PyTorch-based Marginally Constrained Minimax Risk Classifier.
+    r"""
+    PyTorch-based Minimax Generalized Cross-Entropy (MGCE).
 
-    This class implements a PyTorch-based version of Minimax Risk Classifiers
-    with marginally constrained generalized cross-entropy (MGCE) loss functions.
-    It supports deep neural networks and provides GPU acceleration for training
-    and inference.
+    This class implements a PyTorch-based Minimax Risk Classifier (MRC)
+    using :math:`\alpha`-losses (:math:`\ell_\alpha`), a convex surrogate loss 
+    defined over classification margins.
 
-    The classifier uses a custom loss function that combines minimax risk
-    optimization with margin-based generalized cross-entropy, enabling robust
-    classification with theoretical guarantees.
+    The classifier solves the minimax risk problem:
+
+    .. math::
+
+        \mathrm{h}^{\mathcal{U}_2} \in \arg\min_{\mathrm{h}}
+        \max_{\mathrm{p} \in \mathcal{U}_2} \ell(\mathrm{h}, \mathrm{p})
+
+    which finds the classifier :math:`\mathrm{h}` that minimizes the
+    worst-case expected :math:`\ell`-loss over an uncertainty set
+    :math:`\mathcal{U}_2` of distributions. This provides theoretical
+    performance guarantees even when the true data distribution is
+    unknown.
+
+    The uncertainty set :math:`\mathcal{U}_2` is defined by fixing the
+    marginal distribution of features to the empirical marginal and
+    bounding the expectations of the feature mappings
+    :math:`\Phi(x, y)`:
+
+    .. math::
+
+        \mathcal{U}_2 = \left\{ \mathrm{p} : \mathrm{p}_x =
+        \hat{\mathrm{p}}_x, \;
+        \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]
+        - \boldsymbol{\tau} \right| \leq \boldsymbol{\lambda} \right\}
+
+    where :math:`\hat{\mathrm{p}}_x` is the empirical marginal
+    distribution of features, :math:`\boldsymbol{\tau}` are the empirical mean
+    estimates, and :math:`\boldsymbol{\lambda}` controls the size of the uncertainty
+    set based on the estimation accuracy.
+
+    The :math:`\alpha`-loss family, indexed by :math:`\alpha \geq 1`, smoothly
+    interpolates between well-known losses:
+
+    - :math:`\alpha = 1`: the **0-1 loss** :math:`\ell_1(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,
+      which directly measures classification error but is non-smooth.
+    - :math:`\alpha \to \infty`: the **log-loss**
+      :math:`\ell_\infty(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),
+      which is smooth and easy to optimize.
+
+    For intermediate :math:`\alpha > 1`:
+
+    .. math::
+
+        \ell_\alpha(\mathrm{h}(x), y) = \frac{\alpha}{\alpha - 1}
+        \left(1 - \mathrm{h}_y(x)^{(\alpha-1)/\alpha}\right)
+
+    Smaller :math:`\alpha` values stay closer to the 0-1 loss (more robust),
+    while larger values behave more like log-loss (smoother optimization).
+
+    See [1]_ for further details.
+    Following [1]_, the implementation uses the parameter
+    :math:`\beta = \alpha / (\alpha-1)`, so that :math:`\beta = 1`
+    corresponds to the 0-1 loss (:math:`\alpha \to \infty`) and
+    :math:`\beta \to \infty` corresponds to the log-loss
+    (:math:`\alpha = 1`). The ``loss_parameter`` argument
+    accepts :math:`\beta` values directly.
 
     Parameters
     ----------
-    loss_parameter : str or float, default='1.4'
-        Beta parameter for the generalized cross-entropy loss function.
-        When beta=1, it corresponds to 0-1 loss. When beta>1, it provides
-        a smooth approximation with better optimization properties.
-        
+    loss_parameter : float, default=1.4
+        The :math:`\beta = \alpha / (\alpha-1)` parameter for the
+        :math:`\alpha`-loss function. When beta=0 (alpha=1), it corresponds to
+        0-1 loss. Larger beta values provide smoother approximations
+        closer to log-loss (cross-entropy). Typical values are 
+        in the range [1.0, 11.0].
+
     lambda_ : float, default=1e-5
         L1 regularization strength applied to model parameters.
-        Higher values increase regularization and may improve generalization
-        but can reduce model capacity.
-        
+        In the minimax framework, large lambda implies bigger uncertainty sets
+        with better generalization. The implementation uses the same lambda
+        for all the model parameters (features).
+
     deterministic : bool, default=True
         Whether predictions should be deterministic. When True, uses argmax
         for prediction. When False, samples from the predicted probability
         distribution.
-        
+
     random_state : int or None, default=None
         Random seed for reproducible results. Used for weight initialization
         and stochastic operations.
-        
+
     optimizer : torch.optim.Optimizer or None, default=None
         PyTorch optimizer instance for training. If None, must be provided
         during training or set as an attribute before calling fit().
-        
+
     scheduler : torch.optim.lr_scheduler or None, default=None
         Learning rate scheduler for adaptive learning rate adjustment
         during training. Optional parameter.
-        
+
     model : torch.nn.Module or None, default=None
         PyTorch neural network model to be trained. Must be provided
         either during initialization or before calling fit().
-        
+
     device : str, default='cuda'
         Device for computation ('cuda' for GPU, 'cpu' for CPU).
         Automatically falls back to CPU if CUDA is not available.
@@ -132,19 +150,19 @@ class mgce_clf():
     ----------
     is_fitted_ : bool
         Whether the classifier has been fitted to training data.
-        
+
     loss_parameter : str or float
-        Beta parameter for the loss function.
-        
+        The :math:`\beta` parameter for the loss function.
+
     lambda_ : float
         L1 regularization strength.
-        
+
     model : torch.nn.Module
         The neural network model being trained.
-        
+
     optimizer : torch.optim.Optimizer
         Optimizer used for training.
-        
+
     device : str
         Device used for computation.
 
@@ -156,18 +174,18 @@ class mgce_clf():
     >>> import torch.nn as nn
     >>> from torch.utils.data import DataLoader, TensorDataset
     >>> from MRCpy.pytorch.mgce.classifier import mgce_clf
-    >>> 
+    >>>
     >>> # Create a simple model
     >>> model = nn.Sequential(
     ...     nn.Linear(10, 64),
     ...     nn.ReLU(),
     ...     nn.Linear(64, 3)
     ... )
-    >>> 
+    >>>
     >>> # Create optimizer
     >>> optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    >>> 
-    >>> # Initialize classifier
+    >>>
+    >>> # Initialize classifier with beta=1.4
     >>> clf = mgce_clf(
     ...     loss_parameter=1.4,
     ...     lambda_=1e-5,
@@ -175,28 +193,56 @@ class mgce_clf():
     ...     optimizer=optimizer,
     ...     device='cuda'
     ... )
-    >>> 
+    >>>
     >>> # Create dummy data
     >>> X = torch.randn(100, 10)
     >>> y = torch.randint(0, 3, (100,))
     >>> dataset = TensorDataset(X, y)
     >>> dataloader = DataLoader(dataset, batch_size=32)
-    >>> 
+    >>>
     >>> # Train the model
     >>> results = clf.fit(dataloader, n_epochs=10, verbose=True)
     >>> print(f"Final training accuracy: {results['train_acc'][-1]:.2f}%")
 
+    Training with validation:
+
+    >>> results = clf.fit(
+    ...     train_loader,
+    ...     validate=True,
+    ...     val_dataloader=val_loader,
+    ...     save_model_weights='best'
+    ... )
+    >>> print(f"Best validation accuracy: {max(results['val_acc']):.2f}%")
+
+    Compute probabilities for test samples:
+
+    >>> test_data = torch.randn(10, input_dim)
+    >>> probabilities = clf.predict_proba(test_data)
+    >>> print(f"Shape: {probabilities.shape}")  # (10, n_classes)
+    >>> print(f"First sample probabilities: {probabilities[0]}")
+
+    Deterministic predictions:
+
+    >>> predictions = clf.predict(test_data)
+    >>> print(f"Predicted classes: {predictions}")
+
+    Stochastic predictions:
+
+    >>> clf_stochastic = mgce_clf(deterministic=False, ...)
+    >>> clf_stochastic.fit(train_loader)
+    >>> pred1 = clf_stochastic.predict(test_data)
+    >>> pred2 = clf_stochastic.predict(test_data)  # May differ from pred1
+
     See Also
     --------
-    MRCpy.base_mrc.BaseMRC : Base class for MRC implementations
-    MRCpy.pytorch.mgce.loss.mgce_loss : Loss function used by this classifier
+    MRCpy.pytorch.mgce.loss.mgce_loss : :math:`\alpha`-loss function used by this classifier.
 
     References
     ----------
-    .. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum
-           Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
-    .. [2] Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library
-           for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.
+    .. [1] Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026).
+           Minimax Generalized Cross-Entropy. In Proceedings of the
+           International Conference on Artificial Intelligence and
+           Statistics (AISTATS).
     """
 
     def __init__(self,
@@ -208,40 +254,6 @@ class mgce_clf():
                  scheduler=None,
                  model=None,
                  device='cuda'):
-        """
-        Initialize the MGCE classifier.
-
-        Parameters
-        ----------
-        loss_parameter : str or float, default='1.4'
-            Beta parameter for the generalized cross-entropy loss function.
-            
-        lambda_ : float, default=1e-5
-            L1 regularization strength applied to model parameters.
-            
-        deterministic : bool, default=True
-            Whether predictions should be deterministic.
-            
-        random_state : int or None, default=None
-            Random seed for reproducible results.
-            
-        optimizer : torch.optim.Optimizer or None, default=None
-            PyTorch optimizer instance for training.
-            
-        scheduler : torch.optim.lr_scheduler or None, default=None
-            Learning rate scheduler for training.
-            
-        model : torch.nn.Module or None, default=None
-            PyTorch neural network model to be trained.
-            
-        device : str, default='cuda'
-            Device for computation ('cuda' for GPU, 'cpu' for CPU).
-
-        Raises
-        ------
-        ValueError
-            If invalid parameters are provided.
-        """
         self.loss_parameter = loss_parameter
         self.lambda_ = lambda_
         self.deterministic = deterministic
@@ -257,9 +269,9 @@ class mgce_clf():
         """
         Fit the MRC model using the provided training data.
 
-        This method trains the neural network using the marginally constrained
-        minimax risk optimization with generalized cross-entropy loss. It supports
-        both training-only and training-with-validation modes.
+        This method trains the neural network using the minimax risk
+        optimization corresponding with :math:`\alpha`-losses. It supports both training-only
+        and training-with-validation modes.
 
         Parameters
         ----------
@@ -327,20 +339,7 @@ class mgce_clf():
 
         Examples
         --------
-        Basic training without validation:
-
-        >>> results = clf.fit(train_loader, n_epochs=50, verbose=True)
-        >>> print(f"Final training accuracy: {results['train_acc'][-1]:.2f}%")
-
-        Training with validation:
-
-        >>> results = clf.fit(
-        ...     train_loader, 
-        ...     validate=True, 
-        ...     val_dataloader=val_loader,
-        ...     save_model_weights='best'
-        ... )
-        >>> print(f"Best validation accuracy: {max(results['val_acc']):.2f}%")
+        See class-level examples.
         """
         # Validate inputs
         if validate and val_dataloader is None:
@@ -352,7 +351,7 @@ class mgce_clf():
         if self.optimizer is None:
             raise RuntimeError("Optimizer must be provided before calling fit()")
 
-        # Initialize the MGCE loss function with the number of classes and beta parameter
+        # Initialize the alpha-loss function with the number of classes and beta parameter
         loss_function = mgce_loss(len(train_dataloader.dataset.classes), self.loss_parameter)
         
         # Initialize arrays to store training metrics for each epoch
@@ -397,13 +396,13 @@ class mgce_clf():
                 # Forward pass: compute model predictions
                 logits = self.model(inputs)
 
-                # Compute MGCE gradients and loss using the custom loss function
+                # Compute alpha-loss gradients and loss
                 grad, loss = loss_function.get_gradient(logits, labels)
                 
-                # Backward pass: compute gradients using the custom MGCE gradients
+                # Backward pass: compute gradients using the custom alpha-loss gradients
                 logits.backward(grad)
 
-                # Apply L1 regularization manually since MGCE loss requires custom regularization
+                # Apply L1 regularization manually since alpha-loss requires custom regularization
                 # Select appropriate parameters based on whether using pretrained model
                 if pretrained:
                     # For pretrained models, only regularize the final classification layer
@@ -491,7 +490,7 @@ class mgce_clf():
                         # Forward pass: compute model predictions
                         logits = self.model(inputs)
                         
-                        # Compute validation loss and probability predictions using MGCE loss
+                        # Compute validation loss and probability predictions using alpha-loss
                         loss, probs_batch_i = loss_function.get_loss_value(logits, labels, reg_val)
                         
                         # Store predictions and labels for ECE computation
@@ -546,14 +545,19 @@ class mgce_clf():
                     best_epoch = epoch
                     best_model_weights = copy.deepcopy(self.model.state_dict())
 
-            # Handle model weight saving based on the specified strategy
-            if save_model_weights == 'last':
-                # Save weights from the current (last) epoch
-                best_model_weights = copy.deepcopy(self.model.state_dict())
-            elif save_model_weights not in ['best', 'last', 'None', None]:
-                # Raise error for invalid save_model_weights options
-                raise ValueError(f"Invalid value for saving model weights: {save_model_weights}. "
-                               "Valid options are: 'best', 'last', 'None'")
+        # Handle model weight saving based on the specified strategy
+        if save_model_weights == 'last':
+            # Save weights from the current (last) epoch
+            best_model_weights = copy.deepcopy(self.model.state_dict())
+        elif save_model_weights == 'best' and validate is False:
+            # Save weights from the current (last) epoch since validation set is not available
+            print('Validation set is not provided for best model weights. \
+                   Saving the last model weights')
+            best_model_weights = copy.deepcopy(self.model_state.dict())
+        elif save_model_weights not in ['best', 'last', 'None', None]:
+            # Raise error for invalid save_model_weights options
+            raise ValueError(f"Invalid value for saving model weights: {save_model_weights}. "
+                            "Valid options are: 'best', 'last', 'None'")
 
         # Save model weights to file if a saving strategy is specified
         if save_model_weights in ['best', 'last'] and best_model_weights is not None:
@@ -595,8 +599,8 @@ class mgce_clf():
 
         This method computes the conditional probabilities p(y|x) for each
         class given the input features. The probabilities are computed using
-        the trained model and the marginally constrained minimax risk framework
-        via the MGCE loss function's get_probs method.
+        the trained model and the minimax risk framework with :math:`\alpha`-losses
+        via the loss function's get_probs method.
 
         Parameters
         ----------
@@ -609,7 +613,8 @@ class mgce_clf():
         probabilities : ndarray of shape (n_samples, n_classes)
             Class probabilities for each input sample. Each row sums to 1.0
             and represents the probability distribution over all classes
-            for the corresponding input sample, computed using the MGCE framework.
+            for the corresponding input sample, computed using the :math:`\alpha`-loss
+            framework.
 
         Raises
         ------
@@ -623,22 +628,11 @@ class mgce_clf():
 
         Examples
         --------
-        Compute probabilities for test samples:
-
-        >>> # Assuming clf is a fitted mgce_clf instance
-        >>> test_data = torch.randn(10, input_dim)
-        >>> probabilities = clf.predict_proba(test_data)
-        >>> print(f"Shape: {probabilities.shape}")  # (10, n_classes)
-        >>> print(f"First sample probabilities: {probabilities[0]}")
-
-        Get the most likely class for each sample:
-
-        >>> predicted_classes = np.argmax(probabilities, axis=1)
-        >>> confidence_scores = np.max(probabilities, axis=1)
+        See class-level examples.
 
         Notes
         -----
-        This method uses the MGCE framework's get_probs function to compute
+        This method uses the :math:`\alpha`-loss framework's get_probs function to compute
         probabilities, ensuring consistency with the training loss function
         rather than using standard softmax normalization.
         """
@@ -658,16 +652,79 @@ class mgce_clf():
         with torch.no_grad():
             logits = self.model(X)
             
-            # Initialize the MGCE loss function to use get_probs
+            # Initialize the alpha-loss function to use get_probs
             # We need to determine the number of classes from the logits
             num_classes = logits.shape[1]
             loss_function = mgce_loss(num_classes, self.loss_parameter)
             
-            # Use MGCE framework to compute probabilities
+            # Use alpha-loss framework to compute probabilities
             probabilities = loss_function.get_probs(logits)
             
         # Convert back to numpy and return
         return probabilities.cpu().numpy()
+
+    def get_worst_case_probs(self, X):
+        r"""
+        Compute worst-case class probabilities.
+
+        This method computes the worst-case probability distribution
+        :math:`\mathrm{p}^*` corresponding to the minimax solution.
+        Given the prediction probabilities :math:`\mathrm{h}(x)` from
+        :meth:`predict_proba`, the worst-case probabilities are:
+
+        .. math::
+
+            \mathrm{p}^*_y(x) = \frac{\mathrm{h}_y(x)^{(\beta-1)/\beta}}
+            {\sum_{y'} \mathrm{h}_{y'}(x)^{(\beta-1)/\beta}}
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Input samples for which to compute worst-case probabilities.
+            Should be preprocessed in the same way as the training data.
+
+        Returns
+        -------
+        worst_case_probs : ndarray of shape (n_samples, n_classes)
+            Worst-case class probabilities for each input sample.
+            Each row sums to 1.0.
+
+        Raises
+        ------
+        NotFittedError
+            If the classifier has not been fitted yet.
+
+        ValueError
+            If the input data format is invalid or incompatible with the
+            trained model.
+
+        See Also
+        --------
+        predict_proba : Compute prediction probabilities :math:`\mathrm{h}(x)`.
+
+        Notes
+        -----
+        The figure below illustrates the relationship between worst-case
+        and prediction probabilities for different :math:`\beta` values.
+
+        .. figure:: /_static/worst_case_probs_relation.png
+           :alt: Relationship between worst-case and prediction probabilities
+           :width: 400px
+           :align: center
+        """
+        # Get prediction probabilities
+        h = self.predict_proba(X)
+        h = torch.tensor(h, dtype=torch.float32)
+
+        # Compute h^{(beta-1)/beta}
+        exponent = (self.loss_parameter - 1) / self.loss_parameter
+        h_pow = h.pow(exponent)
+
+        # Normalize
+        worst_case_probs = h_pow / h_pow.sum(dim=1, keepdim=True)
+
+        return worst_case_probs.numpy()
+
 
     def predict(self, X):
         """
@@ -704,23 +761,7 @@ class mgce_clf():
 
         Examples
         --------
-        Deterministic predictions (default behavior):
-
-        >>> # Assuming clf is a fitted mgce_clf instance with deterministic=True
-        >>> test_data = torch.randn(10, input_dim)
-        >>> predictions = clf.predict(test_data)
-        >>> print(f"Predicted classes: {predictions}")
-        >>> print(f"Predictions shape: {predictions.shape}")  # (10,)
-
-        Stochastic predictions:
-
-        >>> # Initialize with deterministic=False
-        >>> clf_stochastic = mgce_clf(deterministic=False, ...)
-        >>> clf_stochastic.fit(train_loader)
-        >>> 
-        >>> # Predictions will vary between calls due to sampling
-        >>> pred1 = clf_stochastic.predict(test_data)
-        >>> pred2 = clf_stochastic.predict(test_data)  # May differ from pred1
+        See class-level examples.
 
         See Also
         --------
@@ -762,18 +803,30 @@ class mgce_clf():
         Compute phi features for the minimax risk framework.
 
         This method computes the phi feature representation used in the
-        minimax risk classification framework. These features are used
-        internally for the optimization process.
+        minimax risk classification framework by performing a forward pass
+        through the neural network model. The output logits serve as the
+        phi features in the MRC optimization.
 
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
             Input samples for which to compute phi features.
+            Should be preprocessed in the same way as the training data.
 
         Returns
         -------
-        phi_features : ndarray of shape (n_samples, n_phi_features)
-            Computed phi features for each input sample.
+        phi_features : ndarray of shape (n_samples, n_classes)
+            Model logits for each input sample, used as phi features
+            in the minimax risk classification framework.
+
+        Raises
+        ------
+        NotFittedError
+            If the classifier has not been fitted yet.
+
+        ValueError
+            If the input data format is invalid or incompatible with the
+            trained model.
 
         Notes
         -----

@@ -12,7 +12,7 @@
 #
 import os
 import sys
-# sys.path.insert(0, os.path.abspath('../MRCpy/'))
+sys.path.insert(0, os.path.abspath('..'))
 import sphinx_rtd_theme
 from sphinx_gallery.sorting import FileNameSortKey
 
@@ -63,8 +63,10 @@ exclude_patterns = ['_build']
 # generate autosummary even if no references
 autosummary_generate = True
 
-# Option to only need single backticks to refer to symbols
-default_role = 'any'
+# Use 'obj' as default role so single backticks render as inline code
+# rather than trying to resolve as cross-references (which causes
+# many warnings for shape parameters like `n_samples`, `n_classes`, etc.)
+default_role = 'obj'
 
 # Option to hide doctests comments in the documentation (like # doctest:
 # +NORMALIZE_WHITESPACE for instance)

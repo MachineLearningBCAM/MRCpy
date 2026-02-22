@@ -1,3 +1,11 @@
+"""
+Main entry point for CCG solver for sparse binary MRC with large datasets.
+
+This module provides the main function for learning Minimax Risk Classifiers
+on sparse binary datasets with large numbers of samples and features. It
+coordinates the initialization phase and the iterative CCG algorithm.
+"""
+
 from .ccg import mrc_ccg_large_n_m_sparse_binary
 import time
 import numpy as np
@@ -7,157 +15,183 @@ import scipy as sp
 
 from .cg_large_m.cg import alg1
 
-def main_large_n_m_sparse_binary(X, y, fit_intercept, s, n_max, k_max, eps_1, eps_2, is_sparse=True, dict_nnz={}, max_iters=150):
+def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1, eps_2, dict_nnz={}, max_iters=150):
 	"""
-	Efficient learning of 0-1 MRCs for sparse binary datasets with large number of samples and features.
+	Efficient learning of 0-1 MRCs for sparse binary datasets with large number 
+	of samples and features.
+
+	This function implements a two-phase approach for learning Minimax Risk
+	Classifiers on high-dimensional sparse binary data:
+	
+	1. **Initialization Phase**: Uses a column generation algorithm to identify
+	   an initial set of important features based on feature statistics (tau_).
+	   
+	2. **CCG Phase**: Applies the full column and constraint generation algorithm
+	   to iteratively refine the solution by adding both features and sample
+	   constraints.
+
+	The algorithm is specifically optimized for sparse binary classification
+	problems where both the number of samples (n) and features (m) are large,
+	and the feature matrix is sparse.
 
 	Parameters
 	----------
-	X : `array`-like of shape (`n_samples`, `n_features`)
-		Training instances used in
+	X_transform : scipy.sparse matrix of shape (n_samples, n_features)
+		Training instances in sparse format (typically scipy.sparse.csr_matrix).
+		Each row represents a training sample and each column represents a
+		binary feature. The matrix should contain mostly zeros with binary
+		(0 or 1) non-zero values.
 
-		`n_samples` is the number of training samples and
-		`n_features` is the number of features.
+	tau_ : numpy.ndarray of shape (n_features,)
+		Mean estimates for each feature across the training distribution.
+		These represent the expected value of each feature and are used to
+		define the uncertainty set in the MRC formulation.
 
-	y : `array`-like of shape (`n_samples`, 1), default = `None`
-		Labels corresponding to the training instances
-		used only to compute the expectation estimates.
+	lambda_ : numpy.ndarray of shape (n_features,)
+		Deviation estimates (uncertainty bounds) for each feature. These
+		represent the maximum deviation from tau_ allowed in the uncertainty
+		set. Larger values indicate more uncertainty about the feature.
 
-	phi_ob : `BasePhi` instance
-		This is an instance of the `BasePhi` 
-		feature mapping class of MRCs. Any feature
-		mapping object derived from BasePhi can be used
-		to provide a new interpretation to the input data `X`.
+	n_max : int
+		Maximum number of constraints (samples) to add per iteration during
+		the CCG phase. Controls the rate at which sample constraints are
+		added to the model. Typical values: 100-500.
 
-	s : `float`, default = `0.3`
-		Parameter that tunes the estimation of expected values
-		of feature mapping function. It is used to calculate :math:`\lambda`
-        (variance in the mean estimates
-        for the expectations of the feature mappings) in the following way
+	k_max : int
+		Maximum number of features (columns) to add per iteration during
+		the CCG phase. Controls the rate at which features are added to
+		the model. Typical values: 100-500.
 
-        .. math::
-            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
+	eps_1 : float
+		Constraint violation threshold for primal constraints. Constraints
+		violated by more than this amount will be added to the model during
+		the CCG phase. Smaller values lead to tighter solutions but more
+		constraints. Typical values: 1e-3 to 1e-1.
 
-        where (X,Y) is the dataset of training samples and their
-        labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
-        of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
+	eps_2 : float
+		Feature violation threshold for dual constraints. Features with
+		dual violations exceeding this amount will be added to the model
+		during the CCG phase. Smaller values lead to more features being
+		considered. Typical values: 1e-6 to 1e-4.
 
-	n_max : `int`, default=`100`
-		Maximum number of features selected in each iteration of the algorithm.
+	dict_nnz : dict, default={}
+		Dictionary mapping sample indices (int) to lists of non-zero feature
+		indices (list of int) for efficient sparse matrix operations. If
+		empty, will be computed as needed. Pre-computing this can improve
+		performance for very large datasets.
+		
+		Example: {0: [1, 5, 10], 1: [2, 5, 8], ...}
 
-	k_max : `int`, default=`20`
-		Maximum number of iterations allowed for termination of the algorithm.
-
-	eps : `float`, default=`1e-4`
-		Constraints' threshold. Maximum violation allowed in the constraints.
+	max_iters : int, default=150
+		Maximum number of column and constraint generation iterations in
+		the CCG phase. The algorithm terminates when either no violations
+		remain or this limit is reached. Typical values: 50-200.
 
 	Returns
 	-------
-	mu : `array`-like of shape (`n_features`) or `float`
-		Parameters learnt by the algorithm.
+	mu : numpy.ndarray of shape (n_features,)
+		Learned parameter vector of the MRC classifier. This is a sparse
+		vector where most entries are zero. Non-zero entries correspond
+		to selected features and their learned weights.
 
-	nu : `float`
-		Parameter learnt by the algorithm.
+	nu : float
+		Learned intercept parameter of the MRC classifier. This is the
+		bias term in the linear decision function.
 
-	R : `float`
-		Optimized upper bound of the MRC classifier.
+	R : float
+		Optimized upper bound on the worst-case error probability of the
+		MRC classifier. This represents the maximum error rate over all
+		distributions in the uncertainty set. Lower values indicate better
+		worst-case performance.
 
-	I : `list`
-		List of indices of the features selected
+	R_k : list of float
+		List of worst-case error probabilities obtained at each iteration
+		of the CCG algorithm. Useful for analyzing convergence behavior.
+		The length equals the number of iterations performed.
 
-	R_k : `list` of shape (no_of_iterations)
-		List of worst-case error probabilites
-		obtained for the subproblems at each iteration.
+	Notes
+	-----
+	The algorithm uses a two-phase approach:
+	
+	**Phase 1 - Initialization**:
+	- Constructs an initial constraint matrix based on feature means (tau_)
+	- Uses column generation (alg1) to select an initial set of ~1000 features
+	- Adds a centroid sample to initialize the constraint set
+	
+	**Phase 2 - CCG Iterations**:
+	- Iteratively solves the restricted optimization problem
+	- Identifies and adds violated dual constraints (features)
+	- Identifies and adds violated primal constraints (samples)
+	- Continues until convergence or max_iters is reached
 
-	totalTime : `float`
-		Total time taken by the algorithm.
+	The algorithm requires Gurobi as the LP solver. Ensure Gurobi is properly
+	installed and licensed before using this function.
 
-	initTime : `float`
-		Time taken for the initialization to the algorithm.
+	The function is designed for binary classification problems. For multi-class
+	problems, use the appropriate multi-class variant.
+
+	Examples
+	--------
+	>>> import numpy as np
+	>>> from scipy.sparse import csr_matrix
+	>>> # Create sparse binary feature matrix (1000 samples, 5000 features)
+	>>> X = csr_matrix(np.random.binomial(1, 0.01, (1000, 5000)))
+	>>> # Compute feature statistics
+	>>> tau = np.array(X.mean(axis=0)).flatten()
+	>>> lambda_ = np.array(X.std(axis=0)).flatten()
+	>>> # Build non-zero index dictionary
+	>>> dict_nnz = {i: X[i].nonzero()[1].tolist() for i in range(X.shape[0])}
+	>>> # Run the algorithm
+	>>> mu, nu, R, R_k = main_large_n_m_sparse_binary(
+	...     X, tau, lambda_,
+	...     n_max=200, k_max=200,
+	...     eps_1=1e-2, eps_2=1e-5,
+	...     dict_nnz=dict_nnz, max_iters=100
+	... )
+	>>> print(f"Worst-case error bound: {R:.4f}")
+	>>> print(f"Number of selected features: {np.sum(mu != 0)}")
+
+	References
+	----------
+	The algorithm is based on column and constraint generation techniques
+	for large-scale robust optimization. See the MRCpy documentation for
+	more details on the theoretical foundation.
 	"""
 
-	n = X.shape[0]
-
-	# Transformed features
-	if fit_intercept is True:
-		X_transformed = sp.sparse.hstack([sp.sparse.csr_matrix([[1]]*n), X]).tocsr()
-		for sample_idx, nnz_arr in dict_nnz.items():
-			nnz_arr_numpy = np.asarray(nnz_arr) + 1
-			nnz_arr_intercept = [0]
-			nnz_arr_intercept.extend(nnz_arr_numpy.tolist())
-			dict_nnz[sample_idx] = nnz_arr_intercept
-
-	# Compute the mean vector estimate
-	tau_0 = X_transformed[y == 0, :].sum(axis=0)
-	tau_1 = (-1) * X_transformed[y == 1, :].sum(axis=0)
-	tau_ = (tau_0 + tau_1) / n
-
-	# Compute the standard deviation
-	std_mat = X_transformed.copy()
-	std_mat.data **=2
-	lambda_ = np.sqrt(std_mat.sum(axis=0) / n - np.square(tau_))
-
-	# Reshape for compatibility with upcoming computations
-	tau_ = np.reshape(np.asarray(tau_), (tau_.shape[1],))
-	lambda_ = s * np.reshape(np.asarray(lambda_), (lambda_.shape[1],))
-
-	# Calculate the time
-	# Total time taken.
-	totalTime = time.time()
-
-	init_time_1 = time.time()
 	#-> Initialization.
-
+	n = X_transform.shape[0]
 	n_classes = 2
-	y_unique, count_y = np.unique(y, return_counts=True)
 
 	# Initialization changes based on binary or multiclass classification due to one-hot encoding.
 	idx_cols = []
-	if is_sparse:
-		#---> Reduce n by using centroids
-		# Obtain the centroid of each class for initialization.
-		centroid_0 = sp.sparse.csr_matrix(X[y == y_unique[0], :].sum(axis=0) * (1 / count_y[0]))
-		centroid_1 = sp.sparse.csr_matrix(X[y == y_unique[1], :].sum(axis=0) * (1 / count_y[1]))
+	#---> Reduce n by using mean vector tau_
+	phi_1 = tau_
+	n_init = phi_1.shape[0]
+	F_init = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
+							for numVals in range(1, n_classes + 1)
+							for S in it.combinations(np.arange(n_classes), numVals)))
 
-		if fit_intercept:
-			centroid_0 = sp.sparse.hstack([sp.sparse.csr_matrix([[1]]), centroid_0]).tocsr()
-			centroid_1 = sp.sparse.hstack([sp.sparse.csr_matrix([[1]]), centroid_1]).tocsr()
+	cardS = np.arange(1, n_classes + 1). \
+		repeat([n_init * scs.comb(n_classes, numVals)
+				for numVals in np.arange(1, n_classes + 1)])
 
-		# Create the constraint matrix for initialization using constraint generation
-		centroid_0_arr = centroid_0.toarray()
-		centroid_1_arr = centroid_1.toarray()
-		phi_1 = np.asarray(
-			[[centroid_0_arr[0], -1 * centroid_0_arr[0]], [centroid_1_arr[0], -1 * centroid_1_arr[0]]])
+	# Constraint coefficient matrix for obtaining initial set of features.
+	F_init = F_init / (cardS[:, np.newaxis])
 
-		F_init = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
-								for numVals in range(1, n_classes + 1)
-								for S in it.combinations(np.arange(n_classes), numVals)))
+	# Coefficient vector of constraints for obtaining initial set of features.
+	b_init = (1 / cardS) - 1
 
-		cardS = np.arange(1, n_classes + 1). \
-			repeat([n_classes * scs.comb(n_classes, numVals)
-					for numVals in np.arange(1, n_classes + 1)])
+	# Add the samples corresponding with centroids
+	X_full = sp.sparse.vstack([X_transform, tau_])
 
-		# Constraint coefficient matrix for obtaining initial set of features.
-		F_init = F_init / (cardS[:, np.newaxis])
+	dict_nnz[n] = tau_.nonzero()[1].tolist()
+	idx_samples_plus_constr = [n]
+	idx_samples_minus_constr = [n]
 
-		# Coefficient vector of constraints for obtaining initial set of features.
-		b_init = (1 / cardS) - 1
-
-		# Add the samples corresponding with centroids
-		X_full = sp.sparse.vstack([X_transformed, centroid_0, centroid_1])
-
-		dict_nnz[n] = centroid_0.nonzero()[1].tolist()
-		dict_nnz[n+1] = centroid_1.nonzero()[1].tolist()
-		idx_samples_plus_constr = [n, n+1]
-		idx_samples_minus_constr = [n, n+1]
-
-
-		# #---> Now reduce m by using standard deviation among the taus across different classes.
-		idx_cols = np.argsort(tau_)[:1000]
+	# #---> Now reduce m by using standard deviation among the taus across different classes.
+	idx_cols = np.argsort(tau_)[:1000]
 
 	#---> Find the corresponding intial set of features.
-	print('Obtaining initial set of features using method in Bondugula et al. with time limit of 1 hr')
 	mu, nu, R, idx_cols, R_k = alg1(F_init.copy(),
 									b_init.copy(),
 									tau_,
@@ -166,30 +200,23 @@ def main_large_n_m_sparse_binary(X, y, fit_intercept, s, n_max, k_max, eps_1, ep
 									k_max=50,
 									eps=0)
 
-	init_time_1 = time.time() - init_time_1
 
 	idx_cols = np.asarray(idx_cols)
 
-	print('\n\n')
-
 	#-> Run the CCG code.
 	# Note that the input F_1 matrix should be of full size to be selected by idx_cols
-	mu, nu, R, R_k, solver_times_gurobi, solver_times, idx_samples_plus_constr, idx_samples_minus_constr, idx_cols, initTime = mrc_ccg_large_n_m_sparse_binary(X_full,
-																																							   idx_samples_plus_constr,
-																																							   idx_samples_minus_constr,
-																																							   tau_,
-																																							   lambda_,
-																																							   idx_cols,
-																																							   n_max,
-																																							   k_max,
-																																							   nu_init=nu,
-																																							   mu_init=mu,
-																																							   eps_1=eps_1,
-																																							   eps_2=eps_2,
-																																							   is_sparse=is_sparse,
-																																							   dict_nnz=dict_nnz,
-																																							   max_iters=max_iters)
-	totalTime = time.time() - totalTime
-	solver_times[0] = solver_times[0] + init_time_1
-
-	return mu, nu, R, R_k, solver_times_gurobi, solver_times, idx_cols, totalTime, initTime + init_time_1
+	mu, nu, R, R_k, idx_samples_plus_constr, idx_samples_minus_constr, idx_cols = mrc_ccg_large_n_m_sparse_binary(X_full,
+																												idx_samples_plus_constr,
+																												idx_samples_minus_constr,
+																												tau_,
+																												lambda_,
+																												idx_cols,
+																												n_max,
+																												k_max,
+																												nu_init=nu,
+																												mu_init=mu,
+																												eps_1=eps_1,
+																												eps_2=eps_2,
+																												dict_nnz=dict_nnz,
+																												max_iters=max_iters)
+	return mu, nu, R, R_k

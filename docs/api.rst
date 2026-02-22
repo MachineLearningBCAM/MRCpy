@@ -13,6 +13,18 @@ Minimax Risk Classifiers
    MRCpy.CMRC
    MRCpy.AMRC
    MRCpy.DWGCS
+   MRCpy.LMRC
+   MRCpy.LCMRC
+
+PyTorch-based Classifiers
+-------------------------
+
+.. autosummary::
+   :toctree: generated/
+   :template: class.rst
+
+   MRCpy.pytorch.mgce.classifier.mgce_clf
+   MRCpy.pytorch.mgce.loss.mgce_loss
 
 .. _Feature Mapping:
 

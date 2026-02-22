@@ -310,7 +310,3 @@ class TestPyTorchMGCE(unittest.TestCase):
         pred1 = clf.predict(self.X_test[:5])
         pred2 = clf.predict(self.X_test[:5])
         np.testing.assert_array_equal(pred1, pred2)
-
-
-if __name__ == '__main__':
-    unittest.main()

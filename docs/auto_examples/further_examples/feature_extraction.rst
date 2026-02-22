@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        :ref:`Go to the end <sphx_glr_download_auto_examples_further_examples_feature_extraction.py>`
+        Click :ref:`here <sphx_glr_download_auto_examples_further_examples_feature_extraction.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -316,20 +316,23 @@ is available in the `dataset` folder of the MRCpy library.
 
 .. _sphx_glr_download_auto_examples_further_examples_feature_extraction.py:
 
-.. only:: html
 
-  .. container:: sphx-glr-footer sphx-glr-footer-example
+.. only :: html
+
+ .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
 
 
 
+  .. container:: sphx-glr-download sphx-glr-download-python
 
-    .. container:: sphx-glr-download sphx-glr-download-python
+     :download:`Download Python source code: feature_extraction.py <feature_extraction.py>`
 
-      :download:`Download Python source code: feature_extraction.py <feature_extraction.py>`
 
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-      :download:`Download Jupyter notebook: feature_extraction.ipynb <feature_extraction.ipynb>`
+  .. container:: sphx-glr-download sphx-glr-download-jupyter
+
+     :download:`Download Jupyter notebook: feature_extraction.ipynb <feature_extraction.ipynb>`
 
 
 .. only:: html

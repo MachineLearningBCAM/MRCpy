@@ -1,15 +1,27 @@
-
 """Create instructions to build the MRC package."""
 
 import os
-import runpy
 from setuptools import find_packages, setup
+# import runpy
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-MRCpy = runpy.run_path(os.path.join
-                                          (base_dir,
-                                           'MRCpy',
-                                           '__init__.py'))
+# MRCpy = runpy.run_path(os.path.join
+#                                           (base_dir,
+#                                            'MRCpy',
+#                                            '__init__.py'))
+
+
+# Read version without importing the module (to avoid dependency issues)
+version = None
+init_file = os.path.join(base_dir, 'MRCpy', '__init__.py')
+with open(init_file, 'r') as f:
+    for line in f:
+        if line.startswith('__version__'):
+            version = line.split('=')[1].strip().strip('"').strip("'")
+            break
+
+if version is None:
+    raise RuntimeError("Unable to find version string in MRCpy/__init__.py")
 
 
 def parse_requirements_file(filename):
@@ -25,8 +37,24 @@ def parse_requirements_file(filename):
     -------
         Array of lines of the requirements file.
     """
-    with open(filename) as input_file:
-        return input_file.read().splitlines()
+    # Make path relative to setup.py location
+    filepath = os.path.join(base_dir, filename)
+    with open(filepath) as input_file:
+        lines = input_file.read().splitlines()
+    
+    # Filter out comments, empty lines, and lines starting with #
+    requirements = []
+    for line in lines:
+        line = line.strip()
+        # Skip empty lines and comments
+        if line and not line.startswith('#'):
+            # Remove inline comments
+            if '#' in line:
+                line = line.split('#')[0].strip()
+            if line:  # Check again after removing inline comments
+                requirements.append(line)
+    
+    return requirements
 
 
 if __name__ == '__main__':
@@ -38,13 +66,38 @@ if __name__ == '__main__':
     for requirement in requirements:
         install_requires.append(requirement)
 
-    with open("README.md", "r", encoding="utf-8") as fh:
+    # Define optional dependencies
+    extras_require = {
+        'pytorch': [
+            'torch>=1.9.0',
+            'tqdm>=4.50.0',
+        ],
+        'lmrc': [
+            'pycddlib>=3.0.2',
+        ],
+        'solvers': [
+            'gurobipy',
+            'mosek',
+        ],
+        'all': [
+            'torch>=1.9.0',
+            'tqdm>=4.50.0',
+            'pycddlib>=3.0.2',
+            'pyarrow',
+        ]
+    }
+
+    # Read README
+    readme_path = os.path.join(base_dir, "README.md")
+    with open(readme_path, "r", encoding="utf-8") as fh:
         long_description = fh.read()
 
     setup(
         name="MRCpy",
-        version=MRCpy['__version__'],
+        # version=MRCpy['__version__'],
+        version=version,
         install_requires=install_requires,
+        extras_require=extras_require,
         description="Minimax Risk Classification",
         long_description=long_description,
         long_description_content_type="text/markdown",

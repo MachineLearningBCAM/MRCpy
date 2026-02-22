@@ -129,4 +129,8 @@ dmypy.json
 # Mac
 *.DS_Store
 
+# ignore any additional data sources
+data/
+checkpoints/
+
 # End of https://www.gitignore.io/api/python,jupyternotebooks

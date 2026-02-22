@@ -409,7 +409,7 @@ bunch : Bunch
 
 
 ``load_yearbook_features_resnet18(with_info=False, with_attributes=False)``
-----------------------------------------------------
+---------------------------------------------------------------------------
 Load and return the Yearbook Data Set features extracted using a
 pretrained ResNet18 neural network (classification).
 

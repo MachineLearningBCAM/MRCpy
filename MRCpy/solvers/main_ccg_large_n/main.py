@@ -1,167 +1,175 @@
+"""
+Main entry point for CG solver for large-sample MRC.
+
+This module provides the main function for learning Minimax Risk Classifiers
+on datasets with large numbers of samples. It coordinates the initialization
+phase and the iterative constraint generation algorithm.
+"""
+
 from .cg import mrc_ccg_large_n
-import time
 import numpy as np
 import itertools as it
 import scipy.special as scs
 
-def main_large_n(X, y, phi_ob, s, n_max, k_max, eps):
+def main_large_n(phi, phi_ob, tau_mat, lambda_mat, n_max, max_iters, eps):
 	"""
-	Efficient learning of 0-1 MRCs for large number of samples. 
-	This version should handle multi-class but is preferable to use 
-	the efficient implementation provided in the other folder.
+	Efficient learning of 0-1 MRCs for large numbers of samples.
+
+	This function implements a constraint generation approach for learning
+	Minimax Risk Classifiers on datasets with large numbers of samples. It
+	uses a dual formulation and iteratively adds violated constraints to
+	solve the MRC optimization problem efficiently.
+
+	Note: This version handles multiclass problems but for better performance
+	on multiclass problems, consider using the specialized implementation in
+	main_ccg_large_n_multiclass.
 
 	Parameters
 	----------
-	X : `array`-like of shape (`n_samples`, `n_features`)
-		Training instances used in
+	phi : numpy.ndarray of shape (n_samples, n_classes, n_features)
+		Feature mapping matrix for all samples. For each sample, phi[i] is a
+		matrix of shape (n_classes, n_features) where each row represents the
+		feature vector for one class. This should be pre-computed using a
+		feature mapping function.
 
-		`n_samples` is the number of training samples and
-		`n_features` is the number of features.
+	tau_mat : numpy.ndarray of shape (n_classes, d)
+		Mean estimates for each feature across each class. Each row corresponds
+		to a class, and each column corresponds to a feature. For binary
+		classification, shape is (1, d).
 
-	y : `array`-like of shape (`n_samples`, 1), default = `None`
-		Labels corresponding to the training instances
-		used only to compute the expectation estimates.
+	lambda_mat : numpy.ndarray of shape (n_classes, d)
+		Deviation estimates (uncertainty bounds) for each feature across each
+		class. Represents the maximum deviation from tau_mat allowed in the
+		uncertainty set. Shape matches tau_mat.
 
-	phi_ob : `BasePhi` instance
-		This is an instance of the `BasePhi` 
-		feature mapping class of MRCs. Any feature
-		mapping object derived from BasePhi can be used
-		to provide a new interpretation to the input data `X`.
+	n_max : int
+		Maximum number of constraints to add per iteration. Controls the rate
+		at which the constraint set grows. Larger values may speed up
+		convergence but increase memory usage. Typical values: 100-500.
 
-	s : `float`, default = `0.3`
-		Parameter that tunes the estimation of expected values
-		of feature mapping function. It is used to calculate :math:`\lambda`
-        (variance in the mean estimates
-        for the expectations of the feature mappings) in the following way
+	max_iters : int
+		Maximum number of constraint generation iterations. The algorithm
+		terminates when either no violations remain or this limit is reached.
+		Typical values: 20-100.
 
-        .. math::
-            \\lambda = s * \\text{std}(\\phi(X,Y)) / \\sqrt{\\left| X \\right|}
-
-        where (X,Y) is the dataset of training samples and their
-        labels respectively and
-        :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
-        of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
-
-	n_max : `int`, default=`100`
-		Maximum number of features selected in each iteration of the algorithm.
-
-	k_max : `int`, default=`20`
-		Maximum number of iterations allowed for termination of the algorithm.
-
-	eps : `float`, default=`1e-4`
-		Constraints' threshold. Maximum violation allowed in the constraints.
+	eps : float
+		Constraint violation threshold. Constraints violated by more than this
+		amount will be added to the model. Smaller values lead to more
+		constraints being added and tighter solutions. Typical values: 1e-3
+		to 1e-1.
 
 	Returns
 	-------
-	mu : `array`-like of shape (`n_features`) or `float`
-		Parameters learnt by the algorithm.
+	mu : numpy.ndarray of shape (n_features,)
+		Learned feature coefficients. These are the optimal weights for
+		features obtained from the dual solution.
 
-	nu : `float`
-		Parameter learnt by the algorithm.
+	nu : float
+		Learned intercept parameter. This is the bias term in the linear
+		classifier obtained from the dual solution.
 
-	R : `float`
-		Optimized upper bound of the MRC classifier.
+	R : float
+		Final objective value representing the optimized upper bound on the
+		worst-case error probability.
 
-	I : `list`
-		List of indices of the features selected
+	R_k : list of float
+		Objective values at each iteration, tracking convergence. The length
+		equals the number of iterations performed plus one (for the initial
+		solution).
 
-	R_k : `list` of shape (no_of_iterations)
-		List of worst-case error probabilites
-		obtained for the subproblems at each iteration.
+	Notes
+	-----
+	The algorithm uses a two-phase approach:
+	
+	**Phase 1 - Initialization**:
+	- Constructs initial constraint matrix based on class centroids (tau_mat)
+	- Generates constraints for all possible class subsets from centroids
+	- This avoids empty uncertainty set at initialization
+	
+	**Phase 2 - CG Iterations**:
+	- Iteratively solves the restricted dual optimization problem
+	- Identifies and adds violated primal constraints (samples)
+	- Removes redundant constraints to keep model size manageable
+	- Continues until convergence or max_iters is reached
 
-	totalTime : `float`
-		Total time taken by the algorithm.
+	The algorithm requires Gurobi as the LP solver. Ensure Gurobi is properly
+	installed and licensed before using this function.
 
-	initTime : `float`
-		Time taken for the initialization to the algorithm.
+	For binary classification (n_classes=2), the algorithm handles the feature
+	mapping differently than for multiclass problems.
+
+	The function uses a dual formulation, so the primal solution (mu, nu) is
+	recovered from the dual constraints' Pi values.
+
+	Examples
+	--------
+	>>> import numpy as np
+	>>> from MRCpy import BasePhi
+	>>> # Create feature mapping for 1000 samples, 3 classes, 50 features
+	>>> X = np.random.randn(1000, 50)
+	>>> y = np.random.randint(0, 3, 1000)
+	>>> phi_obj = BasePhi(n_classes=3)
+	>>> phi = phi_obj.eval_x(X)  # Shape: (1000, 3, 150) with one-hot
+	>>> # Compute feature statistics per class
+	>>> tau_mat = np.array([X[y==i].mean(axis=0) for i in range(3)])  # Shape: (3, 50)
+	>>> lambda_mat = np.array([X[y==i].std(axis=0) for i in range(3)])  # Shape: (3, 50)
+	>>> # Run CG algorithm
+	>>> mu, nu, R, R_k = main_large_n(
+	...     phi, tau_mat, lambda_mat,
+	...     n_max=200, max_iters=50, eps=1e-2
+	... )
+	>>> print(f"Worst-case error bound: {R:.4f}")
+	>>> print(f"Converged in {len(R_k)} iterations")
+
+	References
+	----------
+	The algorithm is based on constraint generation techniques for large-scale
+	optimization problems. See Mazumdar et al. for theoretical details on MRC
+	and constraint generation methods.
 	"""
 
-	n = X.shape[0]
+	n = phi.shape[0]
 
-	phi_ = phi_ob.eval_x(X)
-	tau_ = phi_ob.est_exp(X, y)
-	lambda_ = s * (phi_ob.est_std(X, y))
-
-	print('Shape of phi: ', phi_.shape)
-
-	# Calculate the time
-	# Total time taken.
-	totalTime = time.time()
-
-	init_time_1 = time.time()
 	#-> Initialization.
 	# 1. Using the constraints of the centroids as the initial points.
-	# 	 This initialization works well and does not lead to empty uncertainty sets.
-	#	 The drawback with such initialization is that it grows exponentially.
-
-	# 2. Adding the centroids to the constraint matrix and
-	# 	 using the subset of the centroid constraints as initialization.
-	# 	 This initialization grows |Y|^2 and works with objective >= 0 constraint
-	n_classes = phi_ob.n_classes
-	y_unique, count_y = np.unique(y, return_counts=True)
-
-	# Initialization changes based on binary or multiclass classification
-	# as in multiclass, the number of constraints increase exponentially.
-	if phi_ob.one_hot is False:
-
-		# Obtain the centroid of each class for initialization.
-		X_transformed = phi_ob.transform(X)
-		tau_mat = np.zeros((n_classes, X_transformed.shape[1]))
-		tau_mat[0, :] = np.sum(X_transformed[y == y_unique[0], :], axis=0) * (1 / count_y[0])
-		tau_mat[1, :] = np.sum(X_transformed[y == y_unique[1], :], axis=0) * (1 / count_y[1])
-
-		# Generate all the constraints using the centroids as instances (6 constraints for binary)
-		phi_1 = phi_ob.eval_x(tau_mat)
-		n = n_classes
-		F_ = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
-							for numVals in range(1, n_classes + 1)
-							for S in it.combinations(np.arange(n_classes), numVals)))
-
-		cardS = np.arange(1, n_classes + 1). \
-			repeat([n * scs.comb(n_classes, numVals)
-					for numVals in np.arange(1, n_classes + 1)])
-
-		# Constraint coefficient matrix
-		F_ = F_ / (cardS[:, np.newaxis])
-
-		# The bounds on the constraints
-		b_ = (1 / cardS) - 1
+	# 	 This initialization avoids empty uncertainty set.
+	if tau_mat.shape[0] == 1:
+		# Binary classification
+		n_classes = 2
 	else:
-		# Obtain the centroid of each class for initialization.
-		tau_mat = np.reshape(tau_.copy(), (n_classes, int(tau_.shape[0] / n_classes)))
-		for i in range(n_classes):
-			tau_mat[i, :] = tau_mat[i, :] * (y.shape[0] / count_y[i])
+		n_classes = tau_mat.shape[0]
 
-		# Add some of the constraints corresponding to centroids as initialization
-		# and all the centroids as instances to be checked for constraint violation.
-		# Adding the centroids enables faster convergence and doesnot affect the solution.
-		# Note that we cannot add all the constraints corresponding to the centroids
-		# as the number of constraints grows exponentially with the number of classes.
-		# Therefore, we only add the linear constraints of the centroids as the initiallization,
-		# that is, adding |Y|^2 constraints.
-		n = n_classes
-		fit_intercept = phi_ob.fit_intercept
-		phi_ob.fit_intercept = False
-		phi_1 = phi_ob.eval_x(tau_mat)
-		F_ = np.reshape(phi_1, (n * phi_.shape[1], phi_.shape[2]))
-		b_ = np.tile(np.zeros(phi_ob.n_classes), n)
-		phi_ = np.vstack((phi_1, phi_))
+	#-> Initialization.
+	# Generate all the constraints using the tau_mat as instance
+	# This will avoid the empty uncertainty set condition at the start.
+	fit_intercept = phi_ob.fit_intercept
+	phi_ob.fit_intercept = False
+	phi_1 = phi_ob.eval_x(tau_mat)
+	n_init = phi_1.shape[0]
+	F = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
+						for numVals in range(1, n_classes + 1)
+						for S in it.combinations(np.arange(n_classes), numVals)))
 
-		phi_ob.fit_intercept = fit_intercept
+	cardS = np.arange(1, n_classes + 1). \
+		repeat([n_init * scs.comb(n_classes, numVals)
+				for numVals in np.arange(1, n_classes + 1)])
 
-	init_time_1 = time.time() - init_time_1
+	# Constraint coefficient matrix
+	F = F / (cardS[:, np.newaxis])
+
+	# The bounds on the constraints
+	b = (1 / cardS) - 1
+	phi_ob.fit_intercept = fit_intercept
+	
 	#-> Run the CG code.
-	mu, nu, R, R_k, solver_times, initTime = mrc_ccg_large_n(F_,
-															 b_,
-															 phi_,
-															 tau_,
-															 lambda_,
-															 n_max,
-															 k_max,
-															 None,
-															 eps)
+	mu, nu, R, R_k = mrc_ccg_large_n(F,
+									b,
+									phi,
+									tau_mat.flatten(),
+									lambda_mat.flatten(),
+									n_max,
+									max_iters,
+									None,
+									eps)
 
-	totalTime = time.time() - totalTime
-	solver_times[0] = solver_times[0] + init_time_1
-
-	return mu, nu, R, R_k, totalTime, solver_times, initTime + init_time_1
+	return mu, nu, R, R_k

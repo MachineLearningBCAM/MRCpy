@@ -26,38 +26,61 @@ from MRCpy.phi import BasePhi, RandomFourierPhi
 
 
 class AMRC(BaseMRC):
-    '''
-    Adaptative Minimax Risk Classifier
+    r'''
+    Adaptive Minimax Risk Classifier
 
-    The class AMRC implements the method Adaptative Minimimax Risk
-    Classificafiers (AMRCs) proposed in :ref:`[1] <ref1>`. It is designed for
-    online learning with streaming data. Training samples
-    are fed sequentially and the classification rule is
-    updated every time a new sample is provided.
+    This class implements Adaptive Minimax Risk Classifiers (AMRCs)
+    proposed in [1]_ for online learning with streaming data. Training
+    samples are fed sequentially and the classification rule is updated
+    every time a new sample is provided.
 
-    AMRC provides adaptation to concept drift (change in the
-    underlying distribution of the data). Such concept drift is common
-    in multiple applications including electricity price prediction,
-    spam mail filtering, and credit card fraud detection. AMRC accounts
-    for multidimensional time changes by means of a
-    multivariate and high-order tracking of the time-varying
-    underlying distribution. In addition, differently
-    from conventional techniques, AMRCs
-    can provide computable tight performance guarantees at learning.
+    At each time step :math:`t`, the classifier solves the minimax risk
+    problem:
 
-    It implements 0-1 loss function and it can be used with linear and
+    .. math::
+
+        \mathrm{h}_t^{\mathcal{U}_t} \in \arg\min_{\mathrm{h}}
+        \max_{\mathrm{p} \in \mathcal{U}_t} \ell(\mathrm{h}, \mathrm{p})
+
+    which finds the classifier :math:`\mathrm{h}_t` that minimizes the
+    worst-case expected 0-1 loss over a time-varying uncertainty set
+    :math:`\mathcal{U}_t` of distributions.
+
+    The uncertainty set :math:`\mathcal{U}_t` follows the same form as
+    :math:`\mathcal{U}_1` (no marginal constraint), with time-varying
+    parameters:
+
+    .. math::
+
+        \mathcal{U}_t = \left\{ \mathrm{p} :
+        \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)]
+        - \boldsymbol{\tau}_t \right| \leq \boldsymbol{\lambda}_t \right\}
+
+    where :math:`\boldsymbol{\tau}_t` and :math:`\boldsymbol{\lambda}_t`
+    are updated at each time step via Kalman filtering to track the
+    time-varying underlying distribution.
+
+    AMRC provides adaptation to concept drift (change in the underlying
+    distribution of the data) by means of a multivariate and high-order
+    tracking of the distribution. The mean vector estimates
+    :math:`\boldsymbol{\tau}_t` and confidence vectors
+    :math:`\boldsymbol{\lambda}_t` are obtained from a linear dynamical
+    system model with Kalman filter recursions. The kinematic model
+    order (controlled by the ``order`` parameter) determines the
+    complexity of the tracking: order 0 corresponds to a zero-order
+    model, order 1 to white noise acceleration, and order 2 to Wiener
+    process acceleration.
+
+    AMRC provides computable tight performance guarantees at learning.
+    The instantaneous error probability satisfies
+    :math:`R(\mathrm{h}_t) \leq R(\mathcal{U}_t) + \alpha_t`, and
+    the accumulated mistakes are bounded using the sum of minimax risks
+    and a confidence term controlled by the ``delta`` parameter.
+
+    It implements the 0-1 loss function and can be used with linear and
     Random Fourier features.
 
-    .. seealso:: For more information about AMRC, one can refer to the
-        following paper:
-
-                    [1] `Álvarez, V., Mazuelas, S., Lozano, J.A. (2022).
-                    Minimax Classification under Concept Drift with
-                    Multidimensional Adaptation and Performance Guarantees.
-                    In Proceedings of the 39th 
-                    International Conference on Machine Learning, pp. 486-499.
-                    <https://proceedings.mlr.press/v162/alvarez22a/alvarez22a.pdf>`_
-
+    See [1]_ for further.
 
     Parameters
     ----------
@@ -65,42 +88,52 @@ class AMRC(BaseMRC):
         Number of different possible labels for an instance.
 
     deterministic : `bool`, default = `True`
-       Whether the prediction of the labels
-       should be done in a deterministic way (given a fixed `random_state`
-       in the case of using random Fourier or random ReLU features).
+        Whether the prediction of the labels
+        should be done in a deterministic way (given a fixed `random_state`
+        in the case of using random Fourier features).
 
     loss : `str` {'0-1'}, default = '0-1'
         Type of loss function to use for the risk minimization.
-        AMRC supports 0-1 loss.
+        AMRC supports 0-1 loss only.
         0-1 loss quantifies the probability of classification error at
         a certain example for a certain rule.
 
-    unidimensional : `bool`, default = False
+    unidimensional : `bool`, default = `False`
         Whether to model change in the variables unidimensionally or not.
+        When ``True``, the kinematic model order is forced to 0 and
+        tracking is performed independently per dimension.
         Available for comparison purposes.
 
-    delta : `float`, default = 0.05
-        Significance of the upper bound on the accumulated mistakes.
-        Lower values will produce higher values for bounds.
+    delta : `float`, default = `0.05`
+        Significance level for the upper bound on accumulated mistakes.
+        Lower values produce higher (more conservative) bounds.
 
-    order : `int`, default = 1
-        Order of the subgradients used in optimization.
+    order : `int`, default = `1`
+        Order of the kinematic model used for tracking the time-varying
+        distribution. Controls the complexity of the Kalman filter:
 
-    W : `int`, default = 200
-        Window size. The model uses the last `W` samples for fitting the model.
+        - ``0``: Zero-order model (constant state).
+        - ``1``: White noise acceleration model.
+        - ``2``: Wiener process acceleration model.
 
-    N : `int`, default = 100
-        Number of subgradients used for optimization.
+        Ignored when ``unidimensional=True`` (forced to 0).
+
+    W : `int`, default = `200`
+        Window size for estimating label probabilities. The model uses
+        the last ``W`` samples for sliding-window probability estimation.
+
+    N : `int`, default = `100`
+        Maximum number of subgradients retained for the local
+        approximation of :math:`\varphi(\cdot)` in the optimization.
 
     max_iters : `int`, default = `2000`
-        Maximum number of iterations to use
-        for finding the solution of optimization in
-        the subgradient approach.
+        Maximum number of iterations for the accelerated subgradient
+        method used to solve the minimax risk optimization.
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
-        The currenlty available feature mapping methods are
-        'fourier', 'relu', 'threshold' and 'linear'.
+        The currently available feature mapping methods are
+        'fourier' and 'linear'.
         The users can also implement their own feature mapping object
         (should be a `BasePhi` instance) and pass it to this argument.
         Note that when using 'fourier' feature mapping,
@@ -119,22 +152,60 @@ class AMRC(BaseMRC):
         Random seed used when using 'fourier' for feature mappings
         to produce the random weights.
 
-    fit_intercept : `bool`, default = `True`
-        Whether to calculate the intercept for MRCs
+    fit_intercept : `bool`, default = `False`
+        Whether to calculate the intercept for MRCs.
         If set to false, no intercept will be used in calculations
         (i.e. data is expected to be already centered).
 
     **phi_kwargs : Additional parameters for feature mappings.
             Groups the multiple optional parameters
-            for the corresponding feature mappings(`phi`).
+            for the corresponding feature mappings(``phi``).
 
             For example in case of fourier features,
-            the number of features is given by `n_components`
+            the number of features is given by ``n_components``
             parameter which can be passed as argument
-            `AMRC(phi='fourier', n_components=500)`
+            ``AMRC(n_classes=2, phi='fourier', n_components=500)``
 
             The list of arguments for each feature mappings class
             can be found in the corresponding documentation.
+
+    Attributes
+    ----------
+    is_fitted_ : `bool`
+        Whether the classifier is fitted i.e., the parameters are learnt.
+
+    mu : `array`-like of shape (`m`, 1)
+        Classifier parameters learnt by the minimax risk optimization.
+
+    varphi : `float`
+        Value of the :math:`\varphi` function at the current solution.
+
+    sample_counter : `int`
+        Number of samples processed so far.
+
+    params_ : `dict`
+        Dictionary storing optimization state including Kalman filter
+        parameters, subgradient approximation matrices, and upper bounds.
+
+    See Also
+    --------
+    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints [2]_.
+    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints [3]_.
+
+    References
+    ----------
+    .. [1] Álvarez, V., Mazuelas, S., & Lozano, J.A. (2022). Minimax
+           Classification under Concept Drift with Multidimensional
+           Adaptation and Performance Guarantees. In Proceedings of the
+           39th International Conference on Machine Learning, pp. 486-499.
+
+    .. [2] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax
+           Classification with 0-1 Loss and Performance Guarantees.
+           Advances in Neural Information Processing Systems, 33, 302-312.
+
+    .. [3] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
     '''
 
     def __init__(self, n_classes, loss='0-1',
@@ -175,41 +246,41 @@ class AMRC(BaseMRC):
 
     def tracking(self, feature, y, p, s):
         '''
-        Tracking uncertainty sets
+        Track uncertainty sets over time.
 
         This function obtains mean vector estimates and confidence vectors
+        by updating the Kalman filter state with a new observation.
 
-        Input
-        -----
+        Parameters
+        ----------
+        feature : `array`-like of shape (1, `m`)
+            Feature vector for the current sample.
 
-        feature: feature vector
+        y : `int`
+            Label of the current sample.
 
-        y: new label
+        p : `array`-like of shape (`n_classes`,)
+            Estimated class probabilities from the sliding window.
 
-        p: `float`
-            Probability
+        s : `array`-like of shape (`n_classes`,)
+            Standard deviation of the class probability estimates.
 
-        s: `float`
-            Standard deviation
+        Returns
+        -------
+        tau_ : `array`-like of shape (`m`, 1)
+            Updated mean vector estimate.
 
-        Output
-        ------
+        lambda_ : `array`-like of shape (`m`, 1)
+            Updated confidence vector.
 
-        tau_: mean vector estimate
+        params_ : `dict`
+            Updated optimization parameters containing:
 
-        lambda_: confidence vector
-
-        params_: `dict`
-            Optimization parameters
-
-                eta: updated mean vector estimate
-
-                Sigma: updated mean quadratic error matrix
-
-                eta0, Sigma0, epsilon: parameters required to update variances
-                of noise processes
-
-                Q, R: variances of noise processes
+            - ``Ht`` : Transition matrix
+            - ``eta`` : Updated state vectors
+            - ``Sigma`` : Updated mean squared error matrices
+            - ``eta0``, ``Sigma0``, ``epsilon`` : Parameters for noise variance updates
+            - ``Q``, ``R`` : Variances of noise processes
         '''
         Ht = self.params_['Ht']
         eta = self.params_['eta']
@@ -309,34 +380,29 @@ class AMRC(BaseMRC):
 
     def initialize_tracking(self, m):
         '''
-        Initialize tracking stage
+        Initialize the tracking stage.
 
         This function initializes mean vector estimates, confidence vectors,
         and defines matrices and vectors that are used to update mean vector
-        estimates and confidence vectors.
+        estimates and confidence vectors via Kalman filtering.
 
-        Attributes
+        Parameters
         ----------
+        m : `int`
+            Length of the feature vector (dimensionality of the state).
 
-        m: length of mean vector estimate
+        Returns
+        -------
+        params_ : `dict`
+            Initialized optimization parameters containing:
 
-        Output
-        ------
-        params_: `dict`
-            Optimization parameters
-                Ht: transition matrix
-
-                e1: vector with 1 in the first component and 0 in the
-                remainning components
-
-                eta: state vectors
-
-                Sigma: mean squared error matrices
-
-                eta0, Sigma0, epsilon: parameters required to obtain variances
-                of noise processes
-
-                Q, R: variances of noise processes
+            - ``Ht`` : Transition matrix of shape (`order+1`, `order+1`)
+            - ``eta`` : State vectors of shape (`order+1`, `m`)
+            - ``Sigma`` : Mean squared error matrices of shape (`m`, `order+1`, `order+1`)
+            - ``eta0``, ``Sigma0`` : Prior state and covariance estimates
+            - ``epsilon`` : Innovation residuals of shape (`m`, 1)
+            - ``Q`` : Process noise covariance of shape (`m`, `order+1`, `order+1`)
+            - ``R`` : Observation noise variance of shape (`m`, 1)
         '''
 
         e1 = np.ones((1, self.order + 1))
@@ -378,33 +444,32 @@ class AMRC(BaseMRC):
 
     def minimax_risk(self, x, tau_, lambda_, n_classes):
         '''
-        Learning
+        Learn classifier parameters via minimax risk optimization.
 
-        This function efficiently learns classifier parameters
+        This function efficiently learns classifier parameters by solving
+        the minimax risk optimization problem using a subgradient approach.
 
-        Input
-        -----
-
-        X : `array`-like
-            Training instances used for solving
+        Parameters
+        ----------
+        x : `array`-like of shape (`n_dimensions`,)
+            Training instance used for solving
             the minimax risk optimization problem.
 
-        tau_ : `array`-like
-            Mean estimates
-            for the expectations of feature mappings.
+        tau_ : `array`-like of shape (`m`, 1)
+            Mean estimates for the expectations of feature mappings.
 
-        lambda_ : `array`-like
+        lambda_ : `array`-like of shape (`m`, 1)
             Variance in the mean estimates
             for the expectations of the feature mappings.
 
         n_classes : `int`
             Number of labels in the dataset.
 
-        Output
-        ------
-
+        Returns
+        -------
         self :
-            Fitted estimator
+            Fitted estimator with updated ``mu``, ``is_fitted_``,
+            ``varphi``, and ``params_`` attributes.
         '''
         self.n_classes = n_classes
         self.tau_ = check_array(tau_, accept_sparse=True, ensure_2d=False)
@@ -511,24 +576,24 @@ class AMRC(BaseMRC):
 
         Computes the parameters required for the minimax risk optimization
         and then calls the `minimax_risk` function to solve the optimization.
+        Designed for online learning where samples are fed sequentially.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_features`)
-            Training instances used in
+        x : `array`-like of shape (`n_dimensions`,)
+            Training instance used in
 
             - Calculating the expectation estimates
               that constrain the uncertainty set
               for the minimax risk classification
             - Solving the minimax risk optimization problem.
 
-
-        Y : `int`, default = `None`
+        y : `int`
             Label corresponding to the training instance
             used only to compute the expectation estimates.
 
         X_ : None
-            Unused in AMRC
+            Unused in AMRC. Kept for API compatibility with BaseMRC.
 
         Returns
         -------
@@ -568,10 +633,10 @@ class AMRC(BaseMRC):
             self.params_['R_Ut'] = 0
             self.params_['sum_R_Ut'] = 0
 
-            # Initialize mean vector estimate
             params_ = self.initialize_tracking(m)
             self.params_ = {**self.params_, **params_}
 
+        # Initialize mean vector estimate
         # Estimating probabilities
         sample_idx = self.sample_counter % self.W
         self.Y[sample_idx] = y
@@ -605,20 +670,20 @@ class AMRC(BaseMRC):
 
     def predict(self, X):
         '''
-        Predicts classes for new instances using a fitted model.
+        Predict the class for a new instance using the fitted model.
 
-        Returns the predicted classes for the given instances in `X`
+        Returns the predicted class for the given instance in `X`
         using the probabilities given by the function `predict_proba`.
 
         Parameters
         ----------
-        X : `array`-like of shape (`n_features`)
-            Test instance for to predict by the AMRC model.
+        X : `array`-like of shape (`n_dimensions`,)
+            Test instance to predict by the AMRC model.
 
         Returns
         -------
         y_pred : `int`
-            Predicted labels corresponding to the given instances.
+            Predicted label corresponding to the given instance.
         '''
 
         X = check_array(X, accept_sparse=True, ensure_2d=False)
@@ -643,21 +708,19 @@ class AMRC(BaseMRC):
 
     def predict_proba(self, x):
         '''
-        Conditional probabilities corresponding to each class
-        for each unlabeled input instance
+        Compute conditional probabilities for each class.
 
         Parameters
         ----------
-        x : `array`-like of shape (`n_dimensions`)
+        x : `array`-like of shape (`n_dimensions`,)
             Testing instance for which
             the prediction probabilities are calculated for each class.
 
         Returns
         -------
-        h : `ndarray` of shape (`n_classes`)
-            Probabilities :math:`(p(y|x))` corresponding to the predictions
-            for each class.
-
+        h : `ndarray` of shape (`n_classes`,)
+            Conditional probabilities :math:`p(y|x)` corresponding to
+            the predictions for each class.
         '''
 
         M = np.zeros((self.n_classes, len(self.mu)))

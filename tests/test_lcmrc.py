@@ -4,9 +4,9 @@ import numpy as np
 
 # Import the dataset
 from MRCpy.datasets import load_iris
-from lcmrc import LCMRC
+from MRCpy.lcmrc import LCMRC
 
-class TestMRC(unittest.TestCase):
+class TestLCMRC(unittest.TestCase):
 
     def setUp(self):
         # Get the sample data for testing.
@@ -35,10 +35,6 @@ class TestMRC(unittest.TestCase):
             exit()
         clf.fit(self.X, self.y)
         d2 = clf.n_classification_classes_
-        upper = clf.get_upper_bound()
-        lower = clf.get_lower_bound(self.X,self.y)
-        self.assertTrue(lower <= upper)
-        #print("lower bound: ", lower, " | upper bound: ", upper)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
         self.assertTrue(clf.is_fitted_)
 

@@ -4,81 +4,169 @@ import itertools as it
 import scipy.special as scs
 import scipy as sp
 from .mrc_lp_large_n_m import mrc_lp_large_n_m_model_gurobi
-import time
 
-def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, is_sparse=True, dict_nnz={}, max_iters=150):
+def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, dict_nnz={}, max_iters=150):
 	"""
-	Constraint generation algorithm for Minimax Risk Classifiers.
+	Column and constraint generation algorithm for Minimax Risk Classifiers
+	with sparse binary features and large sample sizes.
 
-	Parameters:
-	-----------
-	F : `array`-like of shape (no_of_constraints, 2*(no_of_feature+1))
-		Constraint matrix.
+	This function implements a dual approach that iteratively adds both
+	features (columns) and constraints (rows) to solve the MRC optimization
+	problem efficiently for high-dimensional sparse data.
 
-	b : `array`-like of shape (no_of_constraints)
-		Right handside of the constraints.
+	The algorithm alternates between:
+	1. Solving the current restricted optimization problem
+	2. Identifying violated dual constraints (features to add)
+	3. Identifying violated primal constraints (samples to add)
+	4. Adding the most violated features and constraints to the model
 
-	tau_ : `array`-like of shape (no_of_features)
-		Mean estimates.
+	This process continues until no significant violations remain or the
+	maximum iteration limit is reached.
 
-	lambda_ : `array`-like of shape (no_of_features)
-		Standard deviation of the estimates.
+	Parameters
+	----------
+	X : scipy.sparse matrix of shape (n_samples, n_features)
+		Sparse feature matrix containing binary features (typically 
+		scipy.sparse.csr_matrix). Each row represents a training sample
+		and each column represents a feature.
 
-	I : `list`
-		List of feature indices corresponding to features in matrix M.
-		This is the initialization for the constraint generation method.
+	idx_samples_plus_constr : list of int
+		Indices of samples with positive class constraints already added
+		to the model. This list is modified in-place as new constraints
+		are added during the algorithm.
 
-	n_max : `int`, default=`100`
-		Maximum number of features selected in each iteration of the algorithm
+	idx_samples_minus_constr : list of int
+		Indices of samples with negative class constraints already added
+		to the model. This list is modified in-place as new constraints
+		are added during the algorithm.
 
-	m_max : `int`, default=`20`
-		Maximum number of iterations allowed for termination of the algorithm
+	tau_ : numpy.ndarray of shape (n_features,)
+		Mean estimates for each feature across the training distribution.
+		Used to define the uncertainty set in the MRC formulation.
 
-	warm_start : `list`, default=`None`
-		Coefficients corresponding to features in I as a warm start
-		for the initial problem.
+	lambda_ : numpy.ndarray of shape (n_features,)
+		Deviation estimates (uncertainty bounds) for each feature.
+		Represents the maximum deviation from tau_ allowed in the
+		uncertainty set.
 
-	nu_init : `int`, default=`None`
-		Coefficient nu corresponding to the warm start (mu)
+	idx_cols : array-like of int
+		Initial list of feature indices to include in the optimization.
+		These features form the starting working set. Will be converted
+		to a list and extended during the algorithm.
 
-	eps : `float`, default=`1e-4`
-		Constraints' threshold. Maximum violation allowed in the constraints.
+	n_max : int, default=400
+		Maximum number of constraints (samples) to add per iteration.
+		Controls the rate at which the constraint set grows. Larger
+		values may speed up convergence but increase memory usage.
 
-	Return:
+	m_max : int, default=400
+		Maximum number of features (columns) to add per iteration.
+		Controls the rate at which the feature set grows. Larger
+		values may speed up convergence but increase computational cost.
+
+	nu_init : float, optional, default=None
+		Initial value for the nu parameter (intercept term). If provided,
+		used as a warm start for the optimization. If None, the solver
+		determines the initial value.
+
+	mu_init : numpy.ndarray, optional, default=None
+		Initial values for mu parameters corresponding to features
+		in idx_cols. If provided, used as a warm start for the optimization.
+		Must have length equal to len(idx_cols).
+
+	eps_1 : float, default=1e-2
+		Constraint violation threshold for primal constraints. Constraints
+		violated by more than this amount will be added to the model.
+		Smaller values lead to more constraints being added and tighter
+		solutions.
+
+	eps_2 : float, default=1e-5
+		Feature violation threshold for dual constraints. Features with
+		dual violations exceeding this amount will be added to the model.
+		Smaller values lead to more features being added and potentially
+		better solutions.
+
+	dict_nnz : dict, default={}
+		Dictionary mapping sample indices (int) to lists of non-zero feature
+		indices (list of int) for efficient sparse matrix operations. Keys
+		are sample indices, values are lists of feature indices where the
+		sample has non-zero values. If empty, will be computed as needed.
+
+	max_iters : int, default=150
+		Maximum number of column/constraint generation iterations. The
+		algorithm terminates when either no violations remain or this
+		limit is reached.
+
+	Returns
 	-------
-	mu : `array`-like of shape (`n_features`) or `float`
-		Parameters learnt by the algorithm.
+	mu : numpy.ndarray of shape (len(idx_cols),)
+		Learned feature coefficients for the selected features. These
+		are the optimal weights for features in the final working set.
 
-	nu : `float`
-		Parameter learnt by the algorithm.
+	nu : float
+		Learned intercept parameter. This is the bias term in the
+		linear classifier.
 
-	R : `float`
-		Optimized upper bound of the MRC classifier.
+	R : float
+		Final objective value representing the optimized upper bound
+		on the worst-case error probability.
 
-	I : `list`
-		List of indices of the features selected
+	R_k : list of float
+		Objective values at each iteration, tracking convergence.
+		The length equals the number of iterations performed plus one
+		(for the initial solution).
 
-	R_k : `list` of shape (no_of_iterations)
-		List of worst-case error probabilites
-		obtained for the subproblems at each iteration.
+	idx_samples_plus_constr : list of int
+		Final list of sample indices with positive class constraints.
+		This is the input list extended with newly added constraints.
+
+	idx_samples_minus_constr : list of int
+		Final list of sample indices with negative class constraints.
+		This is the input list extended with newly added constraints.
+
+	idx_cols : list of int
+		Final list of selected feature indices. This is the input list
+		extended with newly added features.
+
+	Notes
+	-----
+	The algorithm modifies the input lists `idx_samples_plus_constr`,
+	`idx_samples_minus_constr`, and `idx_cols` in-place by extending them
+	with newly added constraints and features.
+
+	The stopping criteria are:
+	- No features violate dual constraints by more than eps_2, AND
+	- No samples violate primal constraints by more than eps_1, OR
+	- Maximum iterations (max_iters) is reached
+
+	The algorithm uses Gurobi as the LP solver. Ensure Gurobi is properly
+	installed and licensed.
+
+	Examples
+	--------
+	>>> import numpy as np
+	>>> from scipy.sparse import csr_matrix
+	>>> # Create sparse binary feature matrix
+	>>> X = csr_matrix([[1, 0, 1], [0, 1, 1], [1, 1, 0]])
+	>>> tau = np.array([0.5, 0.5, 0.5])
+	>>> lambda_ = np.array([0.1, 0.1, 0.1])
+	>>> idx_cols = [0, 1]  # Start with first two features
+	>>> idx_plus = [0]  # Initial positive constraint
+	>>> idx_minus = [1]  # Initial negative constraint
+	>>> dict_nnz = {0: [0, 2], 1: [1, 2], 2: [0, 1]}
+	>>> mu, nu, R, R_k, idx_plus, idx_minus, idx_cols = \\
+	...     mrc_ccg_large_n_m_sparse_binary(
+	...         X, idx_plus, idx_minus, tau, lambda_, idx_cols,
+	...         dict_nnz=dict_nnz, max_iters=50
+	...     )
 	"""
-
-	# Generate the matrices for the linear optimization of 0-1 MRC
-	# from the feature mappings.
-
-	print('MRC-CCG with n_max = ' + str(n_max) + ', m_max = ' + str(m_max) + ', eps_1 = ' + str(eps_1) + ', eps_2 = ' + str(eps_2))
-	
-	solver_initTime = time.time()
-
 	# Initialization
 	R_k = []
 	idx_cols = idx_cols.tolist()
-	solver_times = []
-	solver_times_gurobi = []
+
 	# Indices of variables not selected
 	not_idx_cols = list(set(np.arange(tau_.shape[0])) - set(idx_cols))
 
-	initTime = time.time()
 	# Solve the initial optimization.
 	MRC_model = mrc_lp_large_n_m_model_gurobi(X,
 											  idx_samples_plus_constr,
@@ -91,11 +179,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 											  is_sparse,
 											  dict_nnz)
 
-	initTime = time.time() - initTime
 	R_k.append(MRC_model.objVal)
-	print('The initial worst-case error probability : ', MRC_model.objVal)
-
-	solver_times.append(time.time() - solver_initTime)
 
 	# Obtain the primal solutions to generate the constraints.
 	mu_plus = np.asarray([(MRC_model.getVarByName("mu_+_" + str(i))) for i in idx_cols])
@@ -174,12 +258,8 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 	while(n_features_generated + n_constr_generated > 0 and k < max_iters):
 
 		# Solve the updated optimization and get the dual solution.
-		time_solving_1 = time.time()
 		MRC_model.optimize()
-		solver_times_gurobi.append(time.time() - time_solving_1)
-		solver_times.append(time.time() - solver_initTime)
 
-		print('The worst-case error probability at iteration ' + str(k) + ' is ', MRC_model.objVal)
 		R_k.append(MRC_model.objVal)
 		
 		# Obtain the primal solutions to generate the constraints.
@@ -261,7 +341,6 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 
 	# Obtain the final primal solution.
 	if k == max_iters:
-		time_solving_1 = time.time()
 		MRC_model.optimize()
 		mu_plus = np.asarray([(MRC_model.getVarByName("mu_+_" + str(i))) for i in idx_cols])
 		mu_minus = np.asarray([(MRC_model.getVarByName("mu_-_" + str(i))) for i in idx_cols])
@@ -270,8 +349,6 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 		mu = np.asarray([mu_plus_i.x for mu_plus_i in mu_plus]) - np.asarray([mu_minus_i.x for mu_minus_i in mu_minus])
 		nu = nu_pos.x - nu_neg.x
 		R_k.append(MRC_model.objVal)
-		solver_times_gurobi.append(time.time() - time_solving_1)
-		solver_times.append(time.time() - solver_initTime)
 
 	R 			= R_k[-1]
 
@@ -280,4 +357,4 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 		if c.Slack < 1e-6:
 			n_active_constr = n_active_constr + 1
 
-	return mu, nu, R, R_k, solver_times_gurobi, solver_times, idx_samples_plus_constr, idx_samples_minus_constr, idx_cols, initTime
+	return mu, nu, R, R_k, idx_samples_plus_constr, idx_samples_minus_constr, idx_cols

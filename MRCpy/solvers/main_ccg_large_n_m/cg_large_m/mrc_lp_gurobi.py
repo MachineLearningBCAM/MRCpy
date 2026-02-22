@@ -31,8 +31,6 @@ def mrc_lp_model_gurobi(F, b, tau_, lambda_, index_columns=None, nu_init=None, w
 		index_columns = np.arange(F.shape[1])
 
 	time_limit = 3600
-	print('\n\nUsing time limit for generating initial features: ', time_limit)
-	print('\n\n')
 
 	# Define the MRC 0-1 linear model (primal).
 	MRC_model = gp.Model("MRC_0_1_primal")

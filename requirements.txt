@@ -2,7 +2,17 @@ numpy>=1.19
 scipy>=1.4.1
 scikit-learn>=0.22
 cvxpy>=1.1
-mosek
 pandas>=1.0
 pyarrow
-gurobipy
+
+# Optional dependencies - install separately if needed
+pycddlib>=3.0.2  # Required only for LMRC - install with: pip install pycddlib
+# mosek            # Requires license - install separately if needed
+gurobipy         # Requires license - install separately if needed
+
+# PyTorch dependencies (optional - for PyTorch MGCE classifier)
+torch>=1.9.0
+tqdm>=4.50.0
+
+# libsvm is optional - uncomment if needed
+libsvm

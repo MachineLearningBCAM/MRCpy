@@ -1,45 +1,106 @@
+"""
+Utility functions for Constraint Generation in multiclass large-sample MRC.
+
+This module provides helper functions for the multiclass constraint generation
+algorithm:
+- select: Identifies and adds violated constraints while removing redundant ones
+- add_var: Adds dual variables (constraints) to the Gurobi optimization model
+- constr_check_x: Checks constraint violations for a given sample
+
+These functions work together to incrementally build the dual optimization model
+by adding the most violated constraints at each iteration for multiclass problems.
+"""
+
 import gurobipy as gp
 import numpy as np
 
 def select(MRC_model, X_full, constr_dict, constr_var_dict, n_max, mu, nu, eps, last_checked):
-
 	"""
-	Function to randomly select constraints with violation at the current solution.
+	Select and add violated constraints while removing redundant ones for
+	multiclass problems.
 
-	Parameters:
-	-----------
-	MRC_model : A MOSEK model object
-		MRC model to be updated.
+	This function identifies sample constraints that are violated by the current
+	primal solution and adds them to the dual model. It also removes over-satisfied
+	constraints (those with non-zero slack) to keep the model size manageable.
 
-	F : `array`-like
-		A vector of coefficients to update the constraint matrix.
+	Parameters
+	----------
+	MRC_model : gurobipy.Model
+		The Gurobi dual optimization model to update. This model will be
+		modified in-place by adding new variables (dual constraints) and
+		removing redundant ones.
 
-	tau_ : `array`-like of shape (no_of_features)
-		Mean estimates.
+	X_full : numpy.ndarray of shape (n_samples, n_features)
+		Full feature matrix including both training samples and artificial
+		centroid samples. Each row represents a sample.
 
-	lambda_ : `array`-like of shape (no_of_features)
-		Standard deviation of the estimates.
+	constr_dict : dict
+		Dictionary mapping sample indices (int) to lists of class subsets
+		(list of lists). Each subset represents a constraint that has been
+		added for that sample. Will be modified in-place.
 
-	I : `list`
-		Current list of feature indices corresponding to features in matrix M.
+	constr_var_dict : dict
+		Dictionary mapping sample indices (int) to lists of Gurobi variable
+		objects. Tracks which dual variables correspond to which samples for
+		efficient constraint removal. Will be modified in-place.
 
-	alpha : `array`-like
-		Dual solution corresponding to the current set of features.
+	n_max : int
+		Maximum number of constraints to add. If more than n_max constraints
+		are violated, only the first n_max encountered are added.
 
-	eps : `float`, default=`1e-4`
-		Constraints' threshold. Maximum violation allowed in the constraints.
+	mu : numpy.ndarray of shape (n_classes, n_features)
+		Current feature coefficients from the primal solution. Used to compute
+		constraint violations. Each row corresponds to one class.
 
-	n_max : `int`, default=`100`
-		Maximum number of features selected in each iteration of the algorithm.
+	nu : float
+		Current intercept parameter from the primal solution. Used to compute
+		constraint violations.
 
-	Returns:
-	--------
-	MRC_model : A MOSEK model
-		Updated MRC model object.
+	eps : float
+		Violation threshold for adding constraints. Only constraints violated
+		by more than this amount are considered for addition.
 
-	J : `list`
-		Selected list of features.
+	last_checked : int
+		Index of the last sample checked in the previous iteration. Used to
+		cycle through samples fairly across iterations.
 
+	Returns
+	-------
+	MRC_model : gurobipy.Model
+		Updated Gurobi model with new variables added and redundant ones
+		removed. This is the same object as the input, modified in-place.
+
+	constr_dict : dict
+		Updated constraint dictionary after removing redundant constraints
+		and adding new ones.
+
+	constr_var_dict : dict
+		Updated variable dictionary after removing redundant variables and
+		adding new ones.
+
+	nconstr : int
+		Number of constraints actually added. This is at most n_max.
+
+	last_checked : int
+		Updated index of the last sample checked. Used in the next iteration
+		to continue cycling through samples.
+
+	Notes
+	-----
+	The function performs two main operations:
+	1. **Redundancy removal**: Identifies constraints with non-zero slack
+	   and removes them from the model and dictionaries.
+	2. **Constraint addition**: Cycles through samples starting from
+	   `last_checked` and adds violated constraints.
+
+	The function modifies MRC_model, constr_dict, and constr_var_dict in-place.
+
+	After calling this function, you should call MRC_model.update() to
+	integrate the changes into the model.
+
+	The slack for a constraint is computed as:
+	    slack = |((sum of scores for subset) / |subset|) + 1 - nu|
+	where scores are computed as X[i] @ mu[class, :].T
 	"""
 
 	N_constr_dual = mu.shape[0] * mu.shape[1]
@@ -100,30 +161,63 @@ def select(MRC_model, X_full, constr_dict, constr_var_dict, n_max, mu, nu, eps, 
 
 def add_var(MRC_model, x, subset, N_constr):
 	"""
-	Function to add new variable to the MRC GUROBI LP model
+	Add a dual variable (primal constraint) to the MRC dual LP model for
+	multiclass problems.
 
-	Parameters:
-	-----------
-	MRC_model : A MOSEK model object
-		MRC model to be updated.
+	This function adds a new dual variable to the Gurobi model, which
+	corresponds to adding a new constraint in the primal formulation. The
+	variable is added along with its coefficients in all existing dual
+	constraints.
 
-	F : `array`-like
-		A vector of coefficients to update the constraint matrix.
+	Parameters
+	----------
+	MRC_model : gurobipy.Model
+		The Gurobi dual optimization model to update. This model will be
+		modified in-place by adding a new variable.
 
-	tau_ : `array`-like of shape (no_of_features)
-		Mean estimates.
+	x : numpy.ndarray of shape (n_features,)
+		Feature vector for the sample. This is the feature representation
+		of the sample for which a constraint is being added.
 
-	lambda_ : `array`-like of shape (no_of_features)
-		Standard deviation of the estimates.
+	subset : list of int
+		List of class indices that form the subset for this constraint.
+		For example, [0, 2] means this constraint involves classes 0 and 2.
+		The constraint enforces that the average score over this subset
+		should satisfy certain bounds.
 
-	col_ind : `int`
-		Variable index to be added
+	N_constr : int
+		Total number of primal constraints (equals n_features * n_classes).
+		Used to determine which dual constraints need to be updated.
 
-	Returns:
-	--------
-	MRC_model : A MOSEK model
-		Updated MRC model object.
+	Returns
+	-------
+	MRC_model : gurobipy.Model
+		Updated Gurobi model with the new variable added. This is the same
+		object as the input, modified in-place.
 
+	alpha_i : gurobipy.Var
+		The newly added dual variable (Gurobi variable object). This can be
+		used to track or remove the variable later.
+
+	Notes
+	-----
+	This function modifies the MRC_model in-place by adding a variable.
+	After calling this function, you should call MRC_model.update() to
+	integrate the new variable into the model.
+
+	The new dual variable alpha_i is added with:
+	- Objective coefficient: -((1/|subset|) - 1) for maximization in dual
+	- Column coefficients: [-F_i, F_i, 1] corresponding to constraints for
+	  mu_plus, mu_minus, and nu respectively
+	- Lower bound: 0 (dual variables are non-negative)
+	- Initial value: 0 (PStart for warm starting)
+
+	The feature vector is distributed across classes in the subset:
+	    F_i[y, :] = x / |subset| for y in subset
+	    F_i[y, :] = 0 for y not in subset
+
+	The function uses Gurobi's column-wise model building, where the variable
+	is added along with its coefficients in all existing constraints.
 	"""
 
 	d = x.shape[0]
@@ -162,19 +256,72 @@ def add_var(MRC_model, x, subset, N_constr):
 
 def constr_check_x(x, mu, nu, inds):
 	"""
+	Check constraint violations for a given sample in multiclass problems.
+
+	This function evaluates whether any constraints are violated for a given
+	sample by computing the maximum violation across all possible subsets of
+	classes. It implements an efficient greedy algorithm that iterates through
+	class subsets in order of decreasing score.
+
 	Parameters
 	----------
-	phi_x : array`-like of shape (n_samples, n_features)
-		A matrix of features vectors for each class of an instance.
+	x : numpy.ndarray of shape (n_features,)
+		Feature vector for a single sample. This is the feature representation
+		of the sample being checked for constraint violations.
 
-	mu : solution obtained by the primal to compute the constraints
-		 and check violation.
-	
-	nu : solution obtained by the primal to used to check the violation.
+	mu : numpy.ndarray of shape (n_classes, n_features)
+		Current feature coefficients from the primal solution. Each row
+		corresponds to one class. Used to compute scores for each class.
+
+	nu : float
+		Current intercept parameter from the primal solution. This is the bias
+		term in the linear classifier.
+
+	inds : tuple of numpy.ndarray
+		Tuple of boolean arrays indicating which features are non-zero in mu
+		for each class. inds[i] is a boolean array of length n_features
+		indicating non-zero features for class i. Used to efficiently compute
+		scores by only considering non-zero features.
 
 	Returns
 	-------
+	subset : list of int or None
+		List of class indices that form the most violated constraint. For
+		example, [0, 2, 3] means the constraint involving classes 0, 2, and 3
+		has the maximum violation. Returns None if no constraint is violated.
 
+	psi : float or None
+		Maximum violation value. This is the maximum value of the constraint
+		function over all subsets. Returns None if no constraint is violated.
+
+	Notes
+	-----
+	The algorithm iterates through subsets of classes in order of decreasing
+	score v[i] = mu[i, inds[i]] @ x[inds[i]]. For each subset size k, it
+	computes:
+	    psi_k = (sum of top k scores) / k - 1
+
+	The function returns the subset that produces the maximum psi value,
+	provided that (psi + 1 - nu) > 0 (indicating a violation).
+
+	If no constraint is violated (psi + 1 - nu <= 0), the function returns
+	(None, None).
+
+	The greedy algorithm runs in O(n_classes) time, making it efficient even
+	for problems with many classes.
+
+	The function uses a fixed random seed (42) for reproducibility when
+	sorting classes by score.
+
+	Examples
+	--------
+	>>> x = np.array([1.0, 2.0, 3.0])
+	>>> mu = np.array([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]])
+	>>> nu = 0.5
+	>>> inds = (np.array([True, True, True]), 
+	...         np.array([True, True, True]),
+	...         np.array([True, True, True]))
+	>>> subset, psi = constr_check_x(x, mu, nu, inds)
 	"""
 	d = x.shape[0]
 	n_classes = mu.shape[0]

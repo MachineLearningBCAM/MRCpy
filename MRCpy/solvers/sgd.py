@@ -2,7 +2,7 @@
 
 import numpy as np
 
-def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batch_size=1):
+def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batch_size=1, return_fn_vals=False):
     '''
     Solution of the CMRC convex optimization(minimization)
     using SGD approach.
@@ -37,9 +37,11 @@ def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batc
     '''
 
     # Initial values for points
-    if n_classes > 2:
+    # Infer number of classes from tau_ shape
+    if len(tau_.shape) > 1:
+        n_classes = tau_.shape[0]
         w_k = np.zeros((n_classes, tau_.shape[1]), dtype=np.float64)
-    elif 
+    else:
         w_k = np.zeros(tau_.shape[0], dtype=np.float64)
 
     w_k_sum = w_k
@@ -66,10 +68,11 @@ def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batc
         w_k = w_k - stepsize_ * g_0
         w_k_sum = w_k_sum + w_k
 
-        batch_end_sample_id = batch_end_sample_id % n
-        batch_start_sample_id = batch_end_sample_id
+        batch_start_sample_id = batch_end_sample_id % n
         batch_end_sample_id = batch_start_sample_id + mini_batch_size
-        epoch_id += batch_end_sample_id // n
+        if batch_end_sample_id > n:
+            batch_end_sample_id = n
+            epoch_id += 1
 
     w_k = w_k_sum / k
     psi, _ = f_(w_k)

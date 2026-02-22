@@ -4,7 +4,7 @@ import numpy as np
 def try_solvers(objective, constraints, mu, cvx_solvers):
     '''
     Solves the MRC problem
-    using different types of solvers available in CVXpy
+    using different types of solvers available in cvxpy
 
     Parameters
     ----------
@@ -68,7 +68,7 @@ def try_solvers(objective, constraints, mu, cvx_solvers):
 
     # If no solution can be found for the optimization.
     if mu_ is None:
-        raise ValueError('CVXpy solver couldn\'t find a solution .... ' +
+        raise ValueError('cvxpy solver couldn\'t find a solution .... ' +
                          'The problem is ', prob.status)
 
     objective_value = prob.value

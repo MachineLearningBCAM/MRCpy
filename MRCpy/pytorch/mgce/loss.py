@@ -1,51 +1,45 @@
 """
-Marginally Constrained Generalized Cross-Entropy Loss Implementation.
+PyTorch-based alpha-loss for minimax risk classification.
 
-This module implements the MGCE loss function for PyTorch-based minimax risk
-classifiers. The loss function provides theoretical guarantees for robust
-classification and supports both 0-1 loss and smooth approximations.
+Copyright (C) 2026 Kartheek Bondugula
 
-Classes
--------
-mgce_loss
-    Main loss function class implementing MGCE loss computation and gradients.
+This program is free software: you can redistribute it and/or modify it under the terms of the 
+GNU General Public License as published by the Free Software Foundation,
+either version 3 of the License, or (at your option) any later version.
 
-Examples
---------
-Basic usage:
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
 
->>> from MRCpy.pytorch.mgce.loss import mgce_loss
->>> import torch
->>> 
->>> # Initialize loss function
->>> loss_fn = mgce_loss(num_classes=3, beta=1.4)
->>> 
->>> # Compute gradients for training
->>> logits = torch.randn(32, 3, requires_grad=True)
->>> labels = torch.randint(0, 3, (32,))
->>> gradients, loss = loss_fn.get_gradient(logits, labels)
->>> logits.backward(gradients)
->>> 
->>> # Compute probabilities for inference
->>> probabilities = loss_fn.get_probs(logits, labels)
->>> predictions = torch.argmax(probabilities, dim=1)
+You should have received a copy of the GNU General Public License along with this program.
+If not, see https://www.gnu.org/licenses/.
 """
 import math
 import torch
 import torch.nn.functional as F
 
 class mgce_loss():
-    """
-    Marginally Constrained Generalized Cross-Entropy Loss Function.
+    r"""
+    Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
+    See :class:`~MRCpy.pytorch.mgce.classifier.mgce_clf` for the full
+    :math:`\alpha`-loss definition and the minimax framework.
 
-    This class implements the margin-based minimax generalized cross-entropy (MGCE)
-    loss function for robust classification. The loss function provides theoretical
-    guarantees and can handle both 0-1 loss (when beta=1) and smooth approximations
-    (when beta>1) for better optimization properties.
+    This class implements the :math:`\alpha`-loss (:math:`\ell_\beta`) used in the
+    Minimax Generalized Cross-Entropy (MGCE) framework. The class provides a
+    parametric family of loss functions indexed by :math:`\beta \geq 1` 
+    such that :math:`\beta = \alpha / (\alpha-1)` generalize the standard cross-entropy 
+    (log-loss):
 
-    The MGCE loss is designed to work with the minimax risk classification framework,
-    providing gradients and loss values that can be directly integrated with PyTorch
-    training loops.
+    - :math:`\beta = 1`: the convex 0-1 loss (see [2]_)
+    - :math:`\beta \to \infty`: the log-loss (cross-entropy)
+
+    The name "generalized cross-entropy" reflects that the :math:`\alpha`-loss
+    family extends the standard cross-entropy by allowing the practitioner
+    to tune :math:`\beta` to control the trade-off between robustness
+    (low :math:`\beta`) and smoothness (high :math:`\beta`).
+
+    This class computes gradients and loss values that can be directly
+    integrated with PyTorch training loops.
 
     Parameters
     ----------
@@ -53,10 +47,14 @@ class mgce_loss():
         Number of classes in the classification problem. Must be >= 2.
         
     beta : float, default=1.02
-        Beta parameter controlling the loss function behavior:
-        - beta = 1.0: Corresponds to 0-1 loss (non-smooth)
-        - beta > 1.0: Smooth approximation with better optimization properties
-        - Typical values are in the range [1.0, 2.0]
+        The :math:`\beta` parameter controlling the loss behavior.
+        Values in the range :math:`[1, 11]` sufficiently interpolate
+        between all possible loss functions:
+
+        - ``beta = 1.0``: 0-1 loss (non-smooth).
+        - ``beta ≈ 11``: approximately the log-loss (cross-entropy).
+        - Intermediate values smoothly trade off between robustness
+          (low :math:`\beta`) and smoothness (high :math:`\beta`).
 
     Attributes
     ----------
@@ -64,18 +62,7 @@ class mgce_loss():
         Number of classes in the classification problem.
         
     beta : float
-        Beta parameter for the loss function.
-
-    Methods
-    -------
-    get_gradient(logits, labels)
-        Compute gradients for backpropagation.
-        
-    get_loss_value(logits, labels, reg_val)
-        Compute loss value and probability predictions.
-        
-    get_probs(logits, labels)
-        Compute class probabilities without loss computation.
+        The parameter for the loss function.
 
     Examples
     --------
@@ -84,7 +71,7 @@ class mgce_loss():
     >>> import torch
     >>> from MRCpy.pytorch.mgce.loss import mgce_loss
     >>> 
-    >>> # Initialize loss function
+    >>> # Initialize with beta=1.4
     >>> loss_fn = mgce_loss(num_classes=3, beta=1.4)
     >>> 
     >>> # In training loop
@@ -105,37 +92,26 @@ class mgce_loss():
 
     References
     ----------
-    .. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2020). Generalized Maximum
-           Entropy for Supervised Classification. arXiv preprint arXiv:2007.05447.
+    .. [1] Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026).
+           Minimax Generalized Cross-Entropy. In Proceedings of the
+           International Conference on Artificial Intelligence and
+           Statistics (AISTATS).
+    .. [2] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
+    
     """
     def __init__(self, num_classes, beta=1.02):
-        """
-        Initialize the MGCE loss function.
-
-        Parameters
-        ----------
-        num_classes : int
-            Number of classes in the classification problem. Must be >= 2.
-            
-        beta : float, default=1.02
-            Beta parameter controlling the loss function behavior.
-            Values > 1.0 provide smooth approximations for better optimization.
-
-        Raises
-        ------
-        ValueError
-            If num_classes < 2 or beta <= 0.
-        """
         self.num_classes = num_classes
         self.beta = beta
 
     def get_gradient(self, logits, labels):
         """
-        Compute gradients for the MGCE loss function.
+        Compute gradients for the :math:`\alpha`-loss function.
 
         This method computes the gradients with respect to the logits for
         backpropagation. The gradients are computed using either the 0-1 loss
-        formulation (when beta=1) or the smooth beta-loss approximation.
+        formulation (when beta=1) or the smooth :math:`\alpha`-loss approximation.
 
         Parameters
         ----------
@@ -172,7 +148,7 @@ class mgce_loss():
         if self.beta != 1:
 
             # Step 1: compute nu for the whole batch (using batched bisection solver)
-            nu_batch, _ = self.bisection_solver_batched(logits)
+            nu_batch, _ = self._bisection_solver_batched(logits)
 
             # Step 2: compute psi_beta with clamp
             psi_beta = F.relu((logits + nu_batch.unsqueeze(1)) / self.beta + 1.0)  # [B, C]
@@ -196,7 +172,7 @@ class mgce_loss():
         else:
 
             # Step 1: compute psi values and used indices
-            nu_batch, used_mask, sorted_indices = self.psi_batched_with_indices(logits)
+            nu_batch, used_mask, sorted_indices = self._psi_batched_with_indices(logits)
             # used_mask: [B, C] in sorted order
 
             device = logits.device
@@ -231,8 +207,8 @@ class mgce_loss():
         """
         Compute loss value and probability predictions.
 
-        This method computes the MGCE loss value and the corresponding
-        probability predictions. It's typically used during validation
+        This method computes the :math:`\alpha`-loss value and the corresponding
+        probability predictions. It is typically used during validation
         or when you need both the loss and the predicted probabilities.
 
         Parameters
@@ -274,12 +250,12 @@ class mgce_loss():
 
         if self.beta == 1:
             # Obtain the nu solution corresponding with 0-1 loss
-            nu_batch, used_mask, sorted_indices = self.psi_batched_with_indices(logits)
+            nu_batch, used_mask, sorted_indices = self._psi_batched_with_indices(logits)
             total_loss += nu_batch.mean()
             hy_x = torch.clamp(1.0 + logits + nu_batch.unsqueeze(1), min=0.0)
         else:
             # Obtain the nu solutions corresponding with beta loss using bisection method
-            nu_batch, _ = self.bisection_solver_batched(logits)
+            nu_batch, _ = self._bisection_solver_batched(logits)
             # Computation corresponding with beta loss
             total_loss += - nu_batch.mean()
             psi_beta = torch.clamp((logits + nu_batch.unsqueeze(1)) / self.beta + 1.0, min=0.0)
@@ -303,85 +279,51 @@ class mgce_loss():
     
     def get_probs(self, logits):
         """
-        Compute class probabilities using the MGCE framework.
+        Compute class probabilities using the :math:`\alpha`-loss framework.
 
-        This method computes the class probabilities for given logits and labels
-        using the marginally constrained minimax risk framework. Unlike get_loss_value,
-        this method only returns probabilities without computing the loss value,
-        making it more efficient for inference scenarios where only predictions
-        are needed.
+        This method computes class probabilities for given logits without
+        computing the loss value, making it efficient for inference.
 
-        The probabilities are computed using either the 0-1 loss formulation
-        (when beta=1) or the smooth beta-loss approximation (when beta>1),
-        following the same mathematical framework as the MGCE loss function.
+        For beta=1 (0-1 loss case), uses the psi function with batched
+        computation. For beta>1 (smooth approximation), uses the bisection
+        solver to find optimal nu values.
 
         Parameters
         ----------
         logits : torch.Tensor of shape (batch_size, num_classes)
             Raw model outputs (logits) before applying softmax or other
-            activation functions. These represent the unnormalized class scores
-            for each input sample.
-            
-        labels : torch.Tensor of shape (batch_size,)
-            True class labels as integer indices in range [0, num_classes-1].
-            These are used in the MGCE probability computation framework.
+            activation functions.
 
         Returns
         -------
         probabilities : torch.Tensor of shape (batch_size, num_classes)
-            Predicted class probabilities for each input sample. Each row sums
-            to 1.0 and represents the probability distribution over all classes
-            for the corresponding sample. The probabilities are computed using
-            the MGCE framework rather than standard softmax.
-
-        Notes
-        -----
-        This method implements the probability computation component of the MGCE
-        loss function without computing the actual loss value. The probabilities
-        are derived from the minimax risk optimization framework and provide
-        theoretical robustness guarantees.
-
-        For beta=1 (0-1 loss case), the method uses the psi function with
-        batched computation for efficiency. For beta>1 (smooth approximation),
-        it uses the bisection solver to find optimal nu values.
+            Predicted class probabilities for each input sample. Each row
+            sums to 1.0. Probabilities are computed using the :math:`\alpha`-loss
+            framework rather than standard softmax.
 
         Examples
         --------
-        Compute probabilities for inference:
-
         >>> loss_fn = mgce_loss(num_classes=3, beta=1.4)
         >>> logits = torch.randn(32, 3)
-        >>> labels = torch.randint(0, 3, (32,))
         >>> 
-        >>> probabilities = loss_fn.get_probs(logits, labels)
+        >>> probabilities = loss_fn.get_probs(logits)
         >>> predicted_classes = torch.argmax(probabilities, dim=1)
         >>> confidence_scores = torch.max(probabilities, dim=1)[0]
 
-        Compare with get_loss_value for training vs inference:
-
-        >>> # For training (need both loss and probabilities)
-        >>> loss_val, probs_train = loss_fn.get_loss_value(logits, labels, reg_val=0.01)
-        >>> 
-        >>> # For inference (only need probabilities)
-        >>> probs_inference = loss_fn.get_probs(logits, labels)
-        >>> 
-        >>> # Both probability outputs should be identical
-        >>> assert torch.allclose(probs_train, probs_inference)
-
         See Also
         --------
-        get_loss_value : Compute both loss value and probabilities
-        get_gradient : Compute gradients for backpropagation
+        get_loss_value : Compute both loss value and probabilities.
+        get_gradient : Compute gradients for backpropagation.
         """
         n_samples = logits.shape[0]
 
         if self.beta == 1:
             # Obtain the nu solution corresponding with 0-1 loss
-            nu_batch, used_mask, sorted_indices = self.psi_batched_with_indices(logits)
+            nu_batch, used_mask, sorted_indices = self._psi_batched_with_indices(logits)
             hy_x = torch.clamp(1.0 + logits + nu_batch.unsqueeze(1), min=0.0)
         else:
             # Obtain the nu solutions corresponding with beta loss using bisection method
-            nu_batch, _ = self.bisection_solver_batched(logits)
+            nu_batch, _ = self._bisection_solver_batched(logits)
             # Computation corresponding with beta loss
             psi_beta = torch.clamp((logits + nu_batch.unsqueeze(1)) / self.beta + 1.0, min=0.0)
             # Raise to the power of beta
@@ -402,7 +344,7 @@ class mgce_loss():
 
         return hy_x
 
-    def psi_batched_with_indices(self, phi_mu):
+    def _psi_batched_with_indices(self, phi_mu):
         """
         Batched psi function computation with index tracking.
 
@@ -454,11 +396,11 @@ class mgce_loss():
         return psi_values, used_mask, sorted_indices
 
 
-    def bisection_solver_batched(self, phi_mu, tolerance=1e-4, max_iters=1000):
+    def _bisection_solver_batched(self, phi_mu, tolerance=1e-4, max_iters=1000):
         """
-        Batched bisection method solver for beta-loss optimization.
+        Batched bisection method solver for alpha-loss optimization.
 
-        This method solves the optimization problem for the beta-loss case
+        This method solves the optimization problem for the alpha-loss case
         (when beta != 1) using a batched bisection method. It finds the
         optimal nu values for each sample in the batch simultaneously.
 
@@ -491,10 +433,10 @@ class mgce_loss():
 
         Notes
         -----
-        This method is used internally for the beta-loss case (beta > 1)
+        This method is used internally for the alpha-loss case (beta > 1)
         and implements a batched bisection algorithm for computational efficiency.
         The method solves the equation f(nu) = 0 where f is defined based on
-        the beta-loss formulation.
+        the alpha-loss formulation.
         """
 
         def f_batched(nu, phi_mu, beta):

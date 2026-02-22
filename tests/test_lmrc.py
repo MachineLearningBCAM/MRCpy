@@ -4,7 +4,7 @@ import numpy as np
 
 # Import the dataset
 from MRCpy.datasets import load_iris
-from lmrc import LMRC
+from MRCpy.lmrc import LMRC
 
 class TestMRC(unittest.TestCase):
 

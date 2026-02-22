@@ -21,23 +21,25 @@ class ThresholdPhi(BasePhi):
     This class obtains the thresholds fitting multiple one-dimensional
     decision stumps on the training data.
 
-    .. seealso:: For more information about MRC, one can refer to the
-    following resources:
+    .. seealso::
 
-                    [1] `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
-                    Minimax Classification with 0-1 Loss and Performance
-                    Guarantees. Advances in Neural Information Processing
-                    Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
+        For more information about MRC, one can refer to the
+        following resources:
 
-                    [2] `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
-                    Generalized Maximum Entropy for Supervised Classification.
-                    arXiv preprint arXiv:2007.05447.
-                    <https://arxiv.org/abs/2007.05447>`_
+        - `Mazuelas, S., Zanoni, A., & Pérez, A. (2020).
+          Minimax Classification with 0-1 Loss and Performance
+          Guarantees. Advances in Neural Information Processing
+          Systems, 33, 302-312. <https://arxiv.org/abs/2010.07964>`_
 
-                    [3] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
-                    MRCpy: A Library for Minimax Risk Classifiers.
-                    arXiv preprint arXiv:2108.01952.
-                    <https://arxiv.org/abs/2108.01952>`_
+        - `Mazuelas, S., Shen, Y., & Pérez, A. (2020).
+          Generalized Maximum Entropy for Supervised Classification.
+          arXiv preprint arXiv:2007.05447.
+          <https://arxiv.org/abs/2007.05447>`_
+
+        - `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
+          MRCpy: A Library for Minimax Risk Classifiers.
+          arXiv preprint arXiv:2108.01952.
+          <https://arxiv.org/abs/2108.01952>`_
 
     Parameters
     ----------
