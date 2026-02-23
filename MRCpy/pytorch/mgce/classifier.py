@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 class mgce_clf():
     r"""
-    PyTorch-based Minimax Generalized Cross-Entropy (MGCE).
+    Minimax Generalized Cross-Entropy (MGCE).
 
     This class implements a PyTorch-based Minimax Risk Classifier (MRC)
     using :math:`\alpha`-losses (:math:`\ell_\alpha`), a convex surrogate loss 
@@ -266,7 +266,7 @@ class mgce_clf():
     def fit(self, train_dataloader, pretrained=False, grad_bound=5.0, n_epochs=100,
             verbose=True, validate=False, val_dataloader=None,
             compute_ece=True, bins=15, save_model_weights='best', path="./"):
-        """
+        r"""
         Fit the MRC model using the provided training data.
 
         This method trains the neural network using the minimax risk
@@ -594,7 +594,7 @@ class mgce_clf():
         return results
         
     def predict_proba(self, X):
-        """
+        r"""
         Compute class probabilities for the given input samples.
 
         This method computes the conditional probabilities p(y|x) for each

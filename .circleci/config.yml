@@ -25,8 +25,10 @@ jobs:
 
       - run:
           name: upload CodeCov.io data
-          command: bash <(curl -s https://codecov.io/bash)
-          # Uploads code coverage results, on successful run of previous commands
+          command: |
+            curl -Os https://cli.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov upload-process --fail-on-error -t ${CODECOV_TOKEN}
           when: on_success
 
 

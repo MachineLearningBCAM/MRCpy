@@ -22,15 +22,26 @@ You may then use ``pytest tests`` to run all the checks (you will need to have t
 
 **Dependencies**
 
-- `Python` :math:`\geq` 3.6
-- `numpy` :math:`==` 1.25.0 
-- `scipy`:math:`==` 1.10.0
-- `scikit-learn` :math:`==` 1.2.2
-- `cvxpy` :math:`==` 1.3.1
-- `pandas` :math:`==` 2.2.0
-- `mosek`
-- `pyarrow`
-- `gurobipy`
+- ``Python`` >= 3.9
+- ``numpy`` >= 1.19
+- ``scipy`` >= 1.4.1
+- ``scikit-learn`` >= 0.22
+- ``cvxpy`` >= 1.1
+- ``pandas`` >= 1.0
+- ``pyarrow``
+- ``gurobipy`` (requires license)
+- ``pycddlib`` >= 3.0.2 (required only for LMRC)
+
+.. note::
+   Installing ``pycddlib`` requires the GMP library, and ``pip install pycddlib``
+   alone may not be sufficient. See the
+   `pycddlib installation guide <https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation>`_
+   for details on installing GMP and other dependencies.
+
+Optional (for PyTorch MGCE classifier):
+
+- ``torch`` >= 1.9.0
+- ``tqdm`` >= 4.50.0
 
 Quick start
 ===========

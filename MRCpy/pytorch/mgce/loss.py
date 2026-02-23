@@ -20,7 +20,7 @@ import torch.nn.functional as F
 
 class mgce_loss():
     r"""
-    Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
+    Margin Loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
     See :class:`~MRCpy.pytorch.mgce.classifier.mgce_clf` for the full
     :math:`\alpha`-loss definition and the minimax framework.
 
@@ -106,7 +106,7 @@ class mgce_loss():
         self.beta = beta
 
     def get_gradient(self, logits, labels):
-        """
+        r"""
         Compute gradients for the :math:`\alpha`-loss function.
 
         This method computes the gradients with respect to the logits for
@@ -204,7 +204,7 @@ class mgce_loss():
         return phi_mu_grad, total_loss
 
     def get_loss_value(self, logits, labels, reg_val):
-        """
+        r"""
         Compute loss value and probability predictions.
 
         This method computes the :math:`\alpha`-loss value and the corresponding
@@ -278,7 +278,7 @@ class mgce_loss():
         return total_loss, hy_x
     
     def get_probs(self, logits):
-        """
+        r"""
         Compute class probabilities using the :math:`\alpha`-loss framework.
 
         This method computes class probabilities for given logits without

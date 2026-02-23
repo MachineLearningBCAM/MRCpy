@@ -3,7 +3,7 @@ MRCpy Package Contents
 
 
 Numpy-based Classifiers
----------------------------------------------------
+-----------------------
 
 .. autosummary::
    :toctree: generated/
