@@ -20,6 +20,11 @@ python3 setup.py install
 ```
 You may then use ``pytest tests`` to run all the checks (you will need to have the ``pytest`` package installed).
 
+.. note::
+   The solver based on cvxpy in the library uses the GUROBI optimizer which requires a license.
+   You can get a free academic license from
+   `here <https://portal.gurobi.com/iam/login/?target=https%3A%2F%2Fportal.gurobi.com%2Fiam%2Flicenses%2Flist>`_.
+
 **Dependencies**
 
 - ``Python`` >= 3.9
