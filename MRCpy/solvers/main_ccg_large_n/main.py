@@ -124,7 +124,7 @@ def main_large_n(phi, phi_ob, tau_mat, lambda_mat, n_max, max_iters, eps):
 	References
 	----------
 	The algorithm is based on constraint generation techniques for large-scale
-	optimization problems. See Mazumdar et al. for theoretical details on MRC
+	optimization problems. See Bondugula et al. (2025) for theoretical details on MRC
 	and constraint generation methods.
 	"""
 
@@ -140,11 +140,11 @@ def main_large_n(phi, phi_ob, tau_mat, lambda_mat, n_max, max_iters, eps):
 		n_classes = tau_mat.shape[0]
 
 	#-> Initialization.
-	# Generate all the constraints using the tau_mat as instance
-	# This will avoid the empty uncertainty set condition at the start.
-	fit_intercept = phi_ob.fit_intercept
-	phi_ob.fit_intercept = False
-	phi_1 = phi_ob.eval_x(tau_mat)
+	# Build feature mapping for binary case directly from tau_mat
+	# (tau_mat is already in the transformed feature space, so we
+	# skip eval_x which would apply the transformation again).
+	# For binary: phi_1[i] = [[features], [-features]]
+	phi_1 = np.stack([tau_mat, -tau_mat], axis=1)
 	n_init = phi_1.shape[0]
 	F = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
 						for numVals in range(1, n_classes + 1)
@@ -159,7 +159,6 @@ def main_large_n(phi, phi_ob, tau_mat, lambda_mat, n_max, max_iters, eps):
 
 	# The bounds on the constraints
 	b = (1 / cardS) - 1
-	phi_ob.fit_intercept = fit_intercept
 	
 	#-> Run the CG code.
 	mu, nu, R, R_k = mrc_ccg_large_n(F,

@@ -160,14 +160,19 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 
 	# Initialization changes based on binary or multiclass classification due to one-hot encoding.
 # ---> Reduce n by using centroids
-	# Add some of the constraints corresponding to tau_ (mean vector) 
-	# for each class as initialization
-	# and all the tau_'s as instances to be checked for constraint violation.
-	# Adding the tau_'s enables faster convergence and doesnot affect the solution.
+	# Add some of the constraints corresponding to representative samples
+	# for each class as initialization.
+	# Adding these enables faster convergence and does not affect the solution.
 	fit_intercept = phi_ob.fit_intercept
 	phi_ob.fit_intercept = False
-	phi_1 = phi_ob.eval_x(tau_mat)
-	n_init = phi_1.shape[0]
+	# Build feature mapping directly from tau_mat (already in transformed
+	# feature space) to avoid double transformation via eval_x.
+	# Use one-hot encoding: phi_1[i, y, :] = kron(e_y, tau_mat[i, :])
+	n_init = tau_mat.shape[0]
+	phi_1 = np.zeros((n_init, n_classes, d * n_classes))
+	for i in range(n_init):
+		for y in range(n_classes):
+			phi_1[i, y, :] = np.kron(np.eye(n_classes)[y], tau_mat[i, :])
 	F_init = np.reshape(phi_1, (n_init * n_classes, phi_ob.len_))
 	b_init = np.tile(np.zeros(phi_ob.n_classes), n_init)
 
