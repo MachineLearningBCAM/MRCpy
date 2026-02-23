@@ -102,7 +102,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#numpy-based-classifiers">Numpy-based Classifiers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.MRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.MRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.CMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.CMRC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.AMRC.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy</span></code>.AMRC</a></li>
@@ -267,18 +267,6 @@ can be found in the corresponding documentation.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_features" title="MRCpy.LMRC.compute_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code></a>(X)</p></td>
-<td><p>Compute the features (without one-hot encoding) corresponding to instances given for learning the classifiers (in case of training) and prediction (in case of testing).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_lambda" title="MRCpy.LMRC.compute_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_lambda</span></code></a>(X_transform, Y, tau_mat)</p></td>
-<td><p>Compute deviation in the mean estimate tau using the given training instances.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_phi" title="MRCpy.LMRC.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
-<td><p>Compute the feature mapping corresponding to instances given for learning the classifiers (in case of training) and prediction (in case of testing).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.LMRC.compute_tau" title="MRCpy.LMRC.compute_tau"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_tau</span></code></a>(X_transform, Y)</p></td>
-<td><p>Compute mean estimate tau using the given training instances.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.LMRC.error" title="MRCpy.LMRC.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a>(X, Y[, mean])</p></td>
 <td><p>Return the error obtained for the given test</p></td>
 </tr>
@@ -324,99 +312,6 @@ can be found in the corresponding documentation.</p>
 <dt class="sig sig-object py" id="MRCpy.LMRC.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_closed_form</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/lmrc.html#LMRC.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.LMRC.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.LMRC.compute_features">
-<span class="sig-name descname"><span class="pre">compute_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_features" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the features (without one-hot encoding) corresponding
-to instances given for learning the classifiers (in case of
-training) and prediction (in case of testing).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Instances to be converted to features.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>X_transform</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Feature corresponding with each instance.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.LMRC.compute_lambda">
-<span class="sig-name descname"><span class="pre">compute_lambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_mat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_lambda" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute deviation in the mean estimate tau
-using the given training instances.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features corresponding with the training instances
-<span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the training instances
-used only to compute the expectation estimates.</p>
-</dd>
-<dt><strong>tau_mat</strong><span class="classifier">array-like of shape (n_classes, n_features)</span></dt><dd><p>Mean estimates <span class="math notranslate nohighlight">\(oldsymbol{   au}\)</span> corresponding with
-the expectations of feature mappings.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>lambda_mat</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Deviation estimates <span class="math notranslate nohighlight">\(oldsymbol{\lambda}\)</span> that define the uncertainty
-set constraints. Shape matches tau_mat.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.LMRC.compute_phi">
-<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_phi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the feature mapping corresponding to instances given
-for learning the classifiers (in case of training) and
-prediction (in case of testing).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Instances to be converted to features.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.LMRC.compute_tau">
-<span class="sig-name descname"><span class="pre">compute_tau</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.LMRC.compute_tau" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute mean estimate tau using the given training instances.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features corresponding with the training instances
-<span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
-</dd>
-<dt><strong>Y</strong><span class="classifier">array-like of shape (n_samples, 1), default=None</span></dt><dd><p>Labels corresponding to the training instances
-used only to compute the expectation estimates.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>tau_mat</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Mean estimates <span class="math notranslate nohighlight">\(oldsymbol{   au}\)</span> of the feature mappings.
-Shape is (n_classes, n_features) for multi-class problems,
-or (1, n_features) for binary classification.</p>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">

@@ -102,7 +102,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#numpy-based-classifiers">Numpy-based Classifiers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.pytorch.mgce.classifier.mgce_clf.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</a></li>
@@ -189,7 +189,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.pytorch.mgce.loss.</span></span><span class="sig-name descname"><span class="pre">mgce_loss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.02</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
+<dd><p>Margin Loss for Minimax Generalized Cross-Entropy (MGCE) Classification.
 See <a class="reference internal" href="MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf" title="MRCpy.pytorch.mgce.classifier.mgce_clf"><code class="xref py py-class docutils literal notranslate"><span class="pre">mgce_clf</span></code></a> for the full
 <span class="math notranslate nohighlight">\(\alpha\)</span>-loss definition and the minimax framework.</p>
 <p>This class implements the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss (<span class="math notranslate nohighlight">\(\ell_\beta\)</span>) used in the
@@ -282,13 +282,13 @@ on Information Theory, 68(4), 2530-2550.</p>
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a>(logits, labels)</p></td>
-<td><p>Compute gradients for the <span class="math notranslate nohighlight">\(lpha\)</span>-loss function.</p></td>
+<td><p>Compute gradients for the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_loss_value</span></code></a>(logits, labels, reg_val)</p></td>
 <td><p>Compute loss value and probability predictions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_probs" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_probs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_probs</span></code></a>(logits)</p></td>
-<td><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework.</p></td>
+<td><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss framework.</p></td>
 </tr>
 </tbody>
 </table>
@@ -301,10 +301,10 @@ on Information Theory, 68(4), 2530-2550.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient">
 <span class="sig-name descname"><span class="pre">get_gradient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_gradient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute gradients for the <span class="math notranslate nohighlight">\(lpha\)</span>-loss function.</p>
+<dd><p>Compute gradients for the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss function.</p>
 <p>This method computes the gradients with respect to the logits for
 backpropagation. The gradients are computed using either the 0-1 loss
-formulation (when beta=1) or the smooth <span class="math notranslate nohighlight">\(lpha\)</span>-loss approximation.</p>
+formulation (when beta=1) or the smooth <span class="math notranslate nohighlight">\(\alpha\)</span>-loss approximation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -340,7 +340,7 @@ with logits.backward(gradients) for backpropagation.</p>
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value">
 <span class="sig-name descname"><span class="pre">get_loss_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_loss_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute loss value and probability predictions.</p>
-<p>This method computes the <span class="math notranslate nohighlight">\(lpha\)</span>-loss value and the corresponding
+<p>This method computes the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss value and the corresponding
 probability predictions. It is typically used during validation
 or when you need both the loss and the predicted probabilities.</p>
 <dl class="field-list simple">
@@ -380,7 +380,7 @@ the probability distribution over classes for the corresponding sample.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss.get_probs">
 <span class="sig-name descname"><span class="pre">get_probs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/loss.html#mgce_loss.get_probs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_probs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework.</p>
+<dd><p>Compute class probabilities using the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss framework.</p>
 <p>This method computes class probabilities for given logits without
 computing the loss value, making it efficient for inference.</p>
 <p>For beta=1 (0-1 loss case), uses the psi function with batched
@@ -397,7 +397,7 @@ activation functions.</p>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>probabilities</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Predicted class probabilities for each input sample. Each row
-sums to 1.0. Probabilities are computed using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss
+sums to 1.0. Probabilities are computed using the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss
 framework rather than standard softmax.</p>
 </dd>
 </dl>

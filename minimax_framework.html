@@ -181,11 +181,11 @@
             
   <div class="section" id="minimax-framework">
 <h1>Minimax Framework<a class="headerlink" href="#minimax-framework" title="Permalink to this headline">¶</a></h1>
-<p>MRCpy <a class="footnote-reference brackets" href="#id17" id="id1">8</a> implements minimax risk classifiers (MRCs) that obtain
+<p>MRCpy <a class="footnote-reference brackets" href="#id7" id="id1">3</a> implements minimax risk classifiers (MRCs) that obtain
 classification rules by minimizing the worst-case expected loss over an
 uncertainty set of distributions. This section provides a general overview
 of the framework underlying all methods in the library, following the
-formulation in <a class="footnote-reference brackets" href="#id18" id="id2">9</a>.</p>
+formulation in <a class="footnote-reference brackets" href="#id8" id="id2">4</a>.</p>
 <div class="section" id="minimax-risk-classification">
 <h2>Minimax Risk Classification<a class="headerlink" href="#minimax-risk-classification" title="Permalink to this headline">¶</a></h2>
 <p>Given a loss function <span class="math notranslate nohighlight">\(\ell\)</span>, an MRC obtains a classification rule
@@ -208,9 +208,7 @@ bound the expectations of a feature mapping <span class="math notranslate nohigh
 \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)] - \boldsymbol{\tau} \right|
 \leq \boldsymbol{\lambda} \right\}\]</div>
 <p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_1\)</span> (the <code class="docutils literal notranslate"><span class="pre">MRC</span></code> class) provide upper and
-lower bounds on the expected loss <a class="footnote-reference brackets" href="#id12" id="id3">3</a>. Efficient learning algorithms
-for high-dimensional settings are available via column generation <a class="footnote-reference brackets" href="#id13" id="id4">4</a>
-and constraint generation <a class="footnote-reference brackets" href="#id11" id="id5">2</a>.</p>
+lower bounds on the expected loss <a class="footnote-reference brackets" href="#id5" id="id3">1</a>.</p>
 </li>
 <li><p><strong>Uncertainty set</strong> <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span>: Adds an additional constraint
 that fixes the instances’ marginal distribution to coincide with the
@@ -222,24 +220,22 @@ empirical marginal:</p>
 \leq \boldsymbol{\lambda} \right\}\]</div>
 <p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> (the <code class="docutils literal notranslate"><span class="pre">CMRC</span></code> class) correspond to
 popular techniques such as L1-regularized logistic regression, zero-one
-adversarial classifiers, and maximum entropy machines <a class="footnote-reference brackets" href="#id15" id="id6">6</a>.</p>
+adversarial classifiers, and maximum entropy machines <a class="footnote-reference brackets" href="#id6" id="id4">2</a>.</p>
 </li>
 </ul>
 <p>In both cases, <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> denotes the empirical mean estimates of the
 feature mappings and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> controls the size of the uncertainty
 set based on the estimation accuracy.</p>
-<p>The library also provides methods for adaptation to concept drift <a class="footnote-reference brackets" href="#id16" id="id7">7</a> and
-covariate shift <a class="footnote-reference brackets" href="#id14" id="id8">5</a> within the minimax risk classification framework.</p>
 </div>
 <div class="section" id="feature-mappings">
 <h2>Feature Mappings<a class="headerlink" href="#feature-mappings" title="Permalink to this headline">¶</a></h2>
 <p>MRCs use feature mappings to represent instance-label pairs as real vectors.
 MRCpy implements several feature mappings:</p>
 <ul class="simple">
-<li><p><strong>Linear (identity)</strong>: Direct use of input features.</p></li>
-<li><p><strong>Random Fourier features</strong>: Approximation of kernel methods via random projections.</p></li>
-<li><p><strong>Random ReLU features</strong>: Non-linear random features using ReLU activations.</p></li>
-<li><p><strong>Threshold features</strong>: Binary features based on thresholding input dimensions.</p></li>
+<li><p><strong>Linear (identity)</strong>: Direct use of input features. See <a class="reference internal" href="generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi" title="MRCpy.phi.BasePhi"><code class="xref py py-class docutils literal notranslate"><span class="pre">BasePhi</span></code></a>.</p></li>
+<li><p><strong>Random Fourier features</strong>: Approximation of kernel methods via random projections. See <a class="reference internal" href="generated/MRCpy.phi.RandomFourierPhi.html#MRCpy.phi.RandomFourierPhi" title="MRCpy.phi.RandomFourierPhi"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomFourierPhi</span></code></a>.</p></li>
+<li><p><strong>Random ReLU features</strong>: Non-linear random features using ReLU activations. See <a class="reference internal" href="generated/MRCpy.phi.RandomReLUPhi.html#MRCpy.phi.RandomReLUPhi" title="MRCpy.phi.RandomReLUPhi"><code class="xref py py-class docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a>.</p></li>
+<li><p><strong>Threshold features</strong>: Binary features based on thresholding input dimensions. See <a class="reference internal" href="generated/MRCpy.phi.ThresholdPhi.html#MRCpy.phi.ThresholdPhi" title="MRCpy.phi.ThresholdPhi"><code class="xref py py-class docutils literal notranslate"><span class="pre">ThresholdPhi</span></code></a>.</p></li>
 </ul>
 <p>All feature mappings can be combined with any MRC variant.</p>
 </div>
@@ -253,59 +249,27 @@ the 0-1 loss directly.</p></li>
 <li><p><strong>Log-loss</strong>: Quantifies the negative log-likelihood for a classification
 rule (cross-entropy).</p></li>
 </ul>
-<p>The PyTorch MGCE module extends this framework by supporting the full
-alpha-loss family (<span class="math notranslate nohighlight">\(\ell_\alpha\)</span>) <a class="footnote-reference brackets" href="#id10" id="id9">1</a>, which smoothly interpolates
-between 0-1 loss (<span class="math notranslate nohighlight">\(\alpha = 1\)</span>) and log-loss
-(<span class="math notranslate nohighlight">\(\alpha \to \infty\)</span>) through the parameter <span class="math notranslate nohighlight">\(\alpha\)</span>.
-See <code class="xref py py-obj docutils literal notranslate"><span class="pre">mgce_clf</span></code> in the API reference for details.</p>
 <p>The library implements multiple techniques within the minimax risk
 classification framework; see the references below for details.</p>
 </div>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <dl class="footnote brackets">
-<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id9">1</a></span></dt>
-<dd><p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026). Minimax
-Generalized Cross-Entropy. In Proceedings of the International
-Conference on Artificial Intelligence and Statistics (AISTATS).</p>
-</dd>
-<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id5">2</a></span></dt>
-<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient
-Large-Scale Learning of Minimax Risk Classifiers. IEEE International
-Conference on Data Mining (ICDM).</p>
-</dd>
-<dt class="label" id="id12"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
 <dd><p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
 Classifiers with 0-1 Loss. Journal of Machine Learning Research,
 24(208), 1-48.</p>
 </dd>
-<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
-<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient Learning
-of Minimax Risk Classifiers in High Dimensions. The 39th Conference
-on Uncertainty in Artificial Intelligence (UAI), 206-215.</p>
-</dd>
-<dt class="label" id="id14"><span class="brackets"><a class="fn-backref" href="#id8">5</a></span></dt>
-<dd><p>Segovia-Martín, J.I., Mazuelas, S., &amp; Liu, A. (2023).
-Double-Weighting for Covariate Shift Adaptation. In Proceedings of
-the 40th International Conference on Machine Learning (ICML),
-pp. 30439-30457.</p>
-</dd>
-<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id6">6</a></span></dt>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
 <dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized Maximum
 Entropy for Supervised Classification. IEEE Transactions on
 Information Theory, 68(4), 2530-2550.</p>
 </dd>
-<dt class="label" id="id16"><span class="brackets"><a class="fn-backref" href="#id7">7</a></span></dt>
-<dd><p>Álvarez, V., Mazuelas, S., &amp; Lozano, J.A. (2022). Minimax
-Classification under Concept Drift with Multidimensional Adaptation
-and Performance Guarantees. In Proceedings of the 39th International
-Conference on Machine Learning (ICML), pp. 486-499.</p>
-</dd>
-<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id1">8</a></span></dt>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">3</a></span></dt>
 <dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2021). MRCpy: A Library
 for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</p>
 </dd>
-<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id2">9</a></span></dt>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">4</a></span></dt>
 <dd><p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification
 with 0-1 Loss and Performance Guarantees. Advances in Neural
 Information Processing Systems, 33, 302-312.</p>

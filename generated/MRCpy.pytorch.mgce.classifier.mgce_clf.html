@@ -102,7 +102,7 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">MRCpy Package Contents</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../api.html#minimax-risk-classifiers">Minimax Risk Classifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#numpy-based-classifiers">Numpy-based Classifiers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.classifier</span></code>.mgce_clf</a></li>
 <li class="toctree-l3"><a class="reference internal" href="MRCpy.pytorch.mgce.loss.mgce_loss.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss</a></li>
@@ -189,7 +189,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.pytorch.mgce.classifier.</span></span><span class="sig-name descname"><span class="pre">mgce_clf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1.4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cuda'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf" title="Permalink to this definition">¶</a></dt>
-<dd><p>PyTorch-based Minimax Generalized Cross-Entropy (MGCE).</p>
+<dd><p>Minimax Generalized Cross-Entropy (MGCE).</p>
 <p>This class implements a PyTorch-based Minimax Risk Classifier (MRC)
 using <span class="math notranslate nohighlight">\(\alpha\)</span>-losses (<span class="math notranslate nohighlight">\(\ell_\alpha\)</span>), a convex surrogate loss 
 defined over classification margins.</p>
@@ -380,19 +380,16 @@ Statistics (AISTATS).</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi" title="MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_phi</span></code></a>(X)</p></td>
-<td><p>Compute phi features for the minimax risk framework.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.fit" title="MRCpy.pytorch.mgce.classifier.mgce_clf.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(train_dataloader[, pretrained, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.fit" title="MRCpy.pytorch.mgce.classifier.mgce_clf.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(train_dataloader[, pretrained, …])</p></td>
 <td><p>Fit the MRC model using the provided training data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs" title="MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_worst_case_probs</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs" title="MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_worst_case_probs</span></code></a>(X)</p></td>
 <td><p>Compute worst-case class probabilities.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code></a>(X)</p></td>
 <td><p>Predict class labels for the given input samples.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba" title="MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
 <td><p>Compute class probabilities for the given input samples.</p></td>
 </tr>
 </tbody>
@@ -404,49 +401,11 @@ Statistics (AISTATS).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi">
-<span class="sig-name descname"><span class="pre">compute_phi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.compute_phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute phi features for the minimax risk framework.</p>
-<p>This method computes the phi feature representation used in the
-minimax risk classification framework by performing a forward pass
-through the neural network model. The output logits serve as the
-phi features in the MRC optimization.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Input samples for which to compute phi features.
-Should be preprocessed in the same way as the training data.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>phi_features</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>Model logits for each input sample, used as phi features
-in the minimax risk classification framework.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises</dt>
-<dd class="field-odd"><dl class="simple">
-<dt>NotFittedError</dt><dd><p>If the classifier has not been fitted yet.</p>
-</dd>
-<dt>ValueError</dt><dd><p>If the input data format is invalid or incompatible with the
-trained model.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This method is primarily used internally by the MRC framework
-and may not be needed for typical usage scenarios.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.classifier.mgce_clf.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataloader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pretrained</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataloader</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_ece</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_model_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'best'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'./'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/pytorch/mgce/classifier.html#mgce_clf.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.pytorch.mgce.classifier.mgce_clf.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the MRC model using the provided training data.</p>
 <p>This method trains the neural network using the minimax risk
-optimization corresponding with <span class="math notranslate nohighlight">\(lpha\)</span>-losses. It supports both training-only
+optimization corresponding with <span class="math notranslate nohighlight">\(\alpha\)</span>-losses. It supports both training-only
 and training-with-validation modes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -615,7 +574,7 @@ trained model.</p>
 <dd><p>Compute class probabilities for the given input samples.</p>
 <p>This method computes the conditional probabilities p(y|x) for each
 class given the input features. The probabilities are computed using
-the trained model and the minimax risk framework with <span class="math notranslate nohighlight">\(lpha\)</span>-losses
+the trained model and the minimax risk framework with <span class="math notranslate nohighlight">\(\alpha\)</span>-losses
 via the loss function’s get_probs method.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -629,7 +588,7 @@ Should be preprocessed in the same way as the training data.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>probabilities</strong><span class="classifier">ndarray of shape (n_samples, n_classes)</span></dt><dd><p>Class probabilities for each input sample. Each row sums to 1.0
 and represents the probability distribution over all classes
-for the corresponding input sample, computed using the <span class="math notranslate nohighlight">\(lpha\)</span>-loss
+for the corresponding input sample, computed using the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss
 framework.</p>
 </dd>
 </dl>
@@ -646,7 +605,7 @@ trained model.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This method uses the <span class="math notranslate nohighlight">\(lpha\)</span>-loss framework’s get_probs function to compute
+<p>This method uses the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss framework’s get_probs function to compute
 probabilities, ensuring consistency with the training loss function
 rather than using standard softmax normalization.</p>
 <p class="rubric">Examples</p>

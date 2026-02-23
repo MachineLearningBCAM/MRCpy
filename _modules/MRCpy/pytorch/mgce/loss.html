@@ -190,7 +190,7 @@
 
 <div class="viewcode-block" id="mgce_loss"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss">[docs]</a><span class="k">class</span> <span class="nc">mgce_loss</span><span class="p">():</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Alpha-loss for Minimax Generalized Cross-Entropy (MGCE) Classification.</span>
+<span class="sd">    Margin Loss for Minimax Generalized Cross-Entropy (MGCE) Classification.</span>
 <span class="sd">    See :class:`~MRCpy.pytorch.mgce.classifier.mgce_clf` for the full</span>
 <span class="sd">    :math:`\alpha`-loss definition and the minimax framework.</span>
 
@@ -276,7 +276,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span></div>
 
 <div class="viewcode-block" id="mgce_loss.get_gradient"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient">[docs]</a>    <span class="k">def</span> <span class="nf">get_gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute gradients for the :math:`\alpha`-loss function.</span>
 
 <span class="sd">        This method computes the gradients with respect to the logits for</span>
@@ -374,7 +374,7 @@
         <span class="k">return</span> <span class="n">phi_mu_grad</span><span class="p">,</span> <span class="n">total_loss</span></div>
 
 <div class="viewcode-block" id="mgce_loss.get_loss_value"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss.get_loss_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_loss_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">reg_val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute loss value and probability predictions.</span>
 
 <span class="sd">        This method computes the :math:`\alpha`-loss value and the corresponding</span>
@@ -448,7 +448,7 @@
         <span class="k">return</span> <span class="n">total_loss</span><span class="p">,</span> <span class="n">hy_x</span></div>
     
 <div class="viewcode-block" id="mgce_loss.get_probs"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.loss.mgce_loss.html#MRCpy.pytorch.mgce.loss.mgce_loss.get_probs">[docs]</a>    <span class="k">def</span> <span class="nf">get_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logits</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute class probabilities using the :math:`\alpha`-loss framework.</span>
 
 <span class="sd">        This method computes class probabilities for given logits without</span>

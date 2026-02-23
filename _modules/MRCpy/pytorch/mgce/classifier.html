@@ -213,7 +213,7 @@
 
 <div class="viewcode-block" id="mgce_clf"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf">[docs]</a><span class="k">class</span> <span class="nc">mgce_clf</span><span class="p">():</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    PyTorch-based Minimax Generalized Cross-Entropy (MGCE).</span>
+<span class="sd">    Minimax Generalized Cross-Entropy (MGCE).</span>
 
 <span class="sd">    This class implements a PyTorch-based Minimax Risk Classifier (MRC)</span>
 <span class="sd">    using :math:`\alpha`-losses (:math:`\ell_\alpha`), a convex surrogate loss </span>
@@ -436,7 +436,7 @@
 <div class="viewcode-block" id="mgce_clf.fit"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grad_bound</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">compute_ece</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">save_model_weights</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fit the MRC model using the provided training data.</span>
 
 <span class="sd">        This method trains the neural network using the minimax risk</span>
@@ -723,7 +723,7 @@
             <span class="c1"># Save weights from the current (last) epoch since validation set is not available</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set is not provided for best model weights. </span><span class="se">\</span>
 <span class="s1">                   Saving the last model weights&#39;</span><span class="p">)</span>
-            <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_state</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+            <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
         <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
             <span class="c1"># Raise error for invalid save_model_weights options</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for saving model weights: </span><span class="si">{</span><span class="n">save_model_weights</span><span class="si">}</span><span class="s2">. &quot;</span>
@@ -764,7 +764,7 @@
         <span class="k">return</span> <span class="n">results</span></div>
         
 <div class="viewcode-block" id="mgce_clf.predict_proba"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute class probabilities for the given input samples.</span>
 
 <span class="sd">        This method computes the conditional probabilities p(y|x) for each</span>
@@ -968,7 +968,7 @@
                 <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prob</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="mgce_clf.compute_phi"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.compute_phi">[docs]</a>    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute phi features for the minimax risk framework.</span>
 
@@ -1020,7 +1020,7 @@
             <span class="n">phi_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
             
         <span class="c1"># Convert back to numpy and return</span>
-        <span class="k">return</span> <span class="n">phi_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div></div>
+        <span class="k">return</span> <span class="n">phi_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
 </pre></div>
 
            </div>
