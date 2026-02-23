@@ -96,8 +96,9 @@ References
        Entropy for Supervised Classification. IEEE Transactions on
        Information Theory, 68(4), 2530-2550.
 
-.. [3] Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library
-       for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.
+.. [3] Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A.,
+       & Mazuelas, S. (2021). MRCpy: A Library for Minimax Risk Classifiers.
+       arXiv preprint arXiv:2108.01952.
 
 .. [4] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification
        with 0-1 Loss and Performance Guarantees. Advances in Neural
