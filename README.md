@@ -48,9 +48,9 @@ See the [MRCpy documentation page](https://machinelearningbcam.github.io/MRCpy/)
 
 If you use MRCpy in a scientific publication, we would appreciate citations to the relevant papers:
 
-- [1] [Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. AISTATS.](https://arxiv.org/abs/2411.07789)
+- [1] [Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. AISTATS.]()
 
-- [2] [Bondugula, K., Mazuelas, S., & Pérez, A. (2025). Efficient Large-Scale Learning of Minimax Risk Classifiers. IEEE ICDM.](https://arxiv.org/abs/2406.11684)
+- [2] [Bondugula, K., Mazuelas, S., & Pérez, A. (2025). Efficient Large-Scale Learning of Minimax Risk Classifiers. IEEE ICDM.](https://arxiv.org/abs/2511.17626)
 
 - [3] [Mazuelas, S., Romero, M., & Grunwald, P. (2023). Minimax Risk Classifiers with 0-1 Loss. JMLR, 24(208), 1-48.](https://jmlr.org/papers/volume24/22-0339/22-0339.pdf)
 
@@ -62,7 +62,7 @@ If you use MRCpy in a scientific publication, we would appreciate citations to t
 
 - [7] [Álvarez, V., Mazuelas, S., & Lozano, J.A. (2022). Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees. ICML, 486-499.](https://proceedings.mlr.press/v162/alvarez22a.html)
 
-- [8] [Bondugula, K., Mazuelas, S., & Pérez, A. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv:2108.01952.](https://arxiv.org/abs/2108.01952)
+- [8] [Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A., & Mazuelas, S. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv:2108.01952.](https://arxiv.org/abs/2108.01952)
 
 - [9] [Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. NeurIPS, 33, 302-312.](https://proceedings.neurips.cc/paper_files/paper/2020/file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf)
 
@@ -130,7 +130,7 @@ If you use MRCpy in a scientific publication, we would appreciate citations to t
 
 @article{bondugula2021mrcpy,
   title={MRCpy: A Library for Minimax Risk Classifiers},
-  author={Bondugula, Kartheek and Mazuelas, Santiago and P{\'e}rez, Aritz},
+  author={Bondugula, Kartheek and {\'A}lvarez, Ver{\'o}nica and Segovia-Mart{\'i}n, Jos{\'e} I. and P{\'e}rez, Aritz and Mazuelas, Santiago},
   journal={arXiv preprint arXiv:2108.01952},
   year={2021}
 }

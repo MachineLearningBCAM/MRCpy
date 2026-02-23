@@ -59,9 +59,9 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
           Journal of Machine Learning Research, 24(208), 1-48.
           <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
 
-        - `Bondugula, K., Mazuelas, S., & Pérez,
-          A. (2021). MRCpy: A Library for Minimax Risk Classifiers.
-          arXiv preprint arXiv:2108.01952.
+        - `Bondugula, K., Álvarez, V., Segovia-Martín, J.I.,
+          Pérez, A., & Mazuelas, S. (2021). MRCpy: A Library for
+          Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.
           <https://arxiv.org/abs/2108.01952>`_
 
     Parameters

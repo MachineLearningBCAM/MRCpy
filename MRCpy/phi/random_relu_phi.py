@@ -54,8 +54,9 @@ class RandomReLUPhi(BasePhi):
                         arXiv preprint arXiv:2007.05447.
                         <https://arxiv.org/abs/2007.05447>`_
 
-                        [4] `Bondugula, K., Mazuelas, S., & Pérez, A. (2021).
-                        MRCpy: A Library for Minimax Risk Classifiers.
+                        [4] `Bondugula, K., Álvarez, V.,
+                        Segovia-Martín, J.I., Pérez, A., & Mazuelas, S.
+                        (2021). MRCpy: A Library for Minimax Risk Classifiers.
                         arXiv preprint arXiv:2108.01952.
                         <https://arxiv.org/abs/2108.01952>`_
 
