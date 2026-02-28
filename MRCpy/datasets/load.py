@@ -14,6 +14,8 @@ import pandas as pd
 from sklearn.impute import SimpleImputer
 from sklearn.utils import Bunch
 
+from MRCpy.datasets._download import ensure_data_file
+
 
 def normalizeLabels(origY):
     """
@@ -1192,21 +1194,14 @@ def load_mnist_features_resnet18(with_info=False, split=False):
     with open(fdescr_name) as f:
         descr_text = f.read()
 
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'mnist_features_resnet18_1.csv.zip'))
-    df1 = pd.read_csv(zf.open('mnist_features_resnet18_1.csv'), header=None)
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'mnist_features_resnet18_2.csv.zip'))
-    df2 = pd.read_csv(zf.open('mnist_features_resnet18_2.csv'), header=None)
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'mnist_features_resnet18_3.csv.zip'))
-    df3 = pd.read_csv(zf.open('mnist_features_resnet18_3.csv'), header=None)
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'mnist_features_resnet18_4.csv.zip'))
-    df4 = pd.read_csv(zf.open('mnist_features_resnet18_4.csv'), header=None)
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'mnist_features_resnet18_5.csv.zip'))
-    df5 = pd.read_csv(zf.open('mnist_features_resnet18_5.csv'), header=None)
+    dfs = []
+    for i in range(1, 6):
+        fname = f'mnist_features_resnet18_{i}.csv.zip'
+        fpath = ensure_data_file(fname)
+        zf = zipfile.ZipFile(fpath)
+        dfs.append(pd.read_csv(
+            zf.open(f'mnist_features_resnet18_{i}.csv'), header=None))
+    df1, df2, df3, df4, df5 = dfs
 
     dataset = np.array(pd.concat([df1, df2, df3, df4, df5]))
     data = dataset[:, :-1]
@@ -1271,11 +1266,11 @@ def load_catsvsdogs_features_resnet18(with_info=False):
     with open(fdescr_name) as f:
         descr_text = f.read()
 
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'catsvsdogs_features_resnet18_1.csv.zip'))
+    fpath1 = ensure_data_file('catsvsdogs_features_resnet18_1.csv.zip')
+    zf = zipfile.ZipFile(fpath1)
     df1 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_1.csv'))
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'catsvsdogs_features_resnet18_2.csv.zip'))
+    fpath2 = ensure_data_file('catsvsdogs_features_resnet18_2.csv.zip')
+    zf = zipfile.ZipFile(fpath2)
     df2 = pd.read_csv(zf.open('catsvsdogs_features_resnet18_2.csv'))
 
     dataset = np.array(pd.concat([df1, df2]))
@@ -1335,11 +1330,11 @@ def load_yearbook_features_resnet18(with_info=False, with_attributes=False):
     with open(fdescr_name) as f:
         descr_text = f.read()
 
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'yearbook_features_resnet18_1.csv.zip'))
+    fpath1 = ensure_data_file('yearbook_features_resnet18_1.csv.zip')
+    zf = zipfile.ZipFile(fpath1)
     df1 = pd.read_csv(zf.open('yearbook_features_resnet18_1.csv'), header=None)
-    zf = zipfile.ZipFile(join(module_path, 'data',
-                              'yearbook_features_resnet18_2.csv.zip'))
+    fpath2 = ensure_data_file('yearbook_features_resnet18_2.csv.zip')
+    zf = zipfile.ZipFile(fpath2)
     df2 = pd.read_csv(zf.open('yearbook_features_resnet18_2.csv'), header=None)
 
     dataset = np.array(pd.concat([df1, df2]))
@@ -1350,8 +1345,8 @@ def load_yearbook_features_resnet18(with_info=False, with_attributes=False):
     data = trans.fit_transform(data)
 
     if with_attributes:
-        attr = pd.read_csv(join(module_path, 'data',
-                                'yearbook_attributes.csv'))
+        attr_path = ensure_data_file('yearbook_attributes.csv')
+        attr = pd.read_csv(attr_path)
         attr_labels = attr.columns.values
         attr_val = attr.values
         attr = {'attr_labels': attr_labels, 'attr_data': attr_val}
@@ -1403,8 +1398,7 @@ def load_comp_vs_sci(with_info=False):
     """
     module_path = dirname(__file__)
 
-    with open(join(module_path, 'data',
-                   'comp-vs-sci_Train.csv')) as csv_file:
+    with open(ensure_data_file('comp-vs-sci_Train.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Train = int(temp[0])
@@ -1417,8 +1411,7 @@ def load_comp_vs_sci(with_info=False):
             dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
             targetTrain[i] = np.asarray(ir[-1], dtype=int)
             
-    with open(join(module_path, 'data',
-                   'comp-vs-sci_Test.csv')) as csv_file:
+    with open(ensure_data_file('comp-vs-sci_Test.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Test = int(temp[0])
@@ -1478,8 +1471,7 @@ def load_comp_vs_talk(with_info=False):
     """
     module_path = dirname(__file__)
 
-    with open(join(module_path, 'data',
-                   'comp-vs-talk_Train.csv')) as csv_file:
+    with open(ensure_data_file('comp-vs-talk_Train.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Train = int(temp[0])
@@ -1492,8 +1484,7 @@ def load_comp_vs_talk(with_info=False):
             dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
             targetTrain[i] = np.asarray(ir[-1], dtype=int)
             
-    with open(join(module_path, 'data',
-                   'comp-vs-talk_Test.csv')) as csv_file:
+    with open(ensure_data_file('comp-vs-talk_Test.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Test = int(temp[0])
@@ -1553,8 +1544,7 @@ def load_rec_vs_sci(with_info=False):
     """
     module_path = dirname(__file__)
 
-    with open(join(module_path, 'data',
-                   'rec-vs-sci_Train.csv')) as csv_file:
+    with open(ensure_data_file('rec-vs-sci_Train.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Train = int(temp[0])
@@ -1567,8 +1557,7 @@ def load_rec_vs_sci(with_info=False):
             dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
             targetTrain[i] = np.asarray(ir[-1], dtype=int)
             
-    with open(join(module_path, 'data',
-                   'rec-vs-sci_Test.csv')) as csv_file:
+    with open(ensure_data_file('rec-vs-sci_Test.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Test = int(temp[0])
@@ -1628,8 +1617,7 @@ def load_rec_vs_talk(with_info=False):
     """
     module_path = dirname(__file__)
 
-    with open(join(module_path, 'data',
-                   'rec-vs-talk_Train.csv')) as csv_file:
+    with open(ensure_data_file('rec-vs-talk_Train.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Train = int(temp[0])
@@ -1642,8 +1630,7 @@ def load_rec_vs_talk(with_info=False):
             dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
             targetTrain[i] = np.asarray(ir[-1], dtype=int)
             
-    with open(join(module_path, 'data',
-                   'rec-vs-talk_Test.csv')) as csv_file:
+    with open(ensure_data_file('rec-vs-talk_Test.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Test = int(temp[0])
@@ -1703,8 +1690,7 @@ def load_sci_vs_talk(with_info=False):
     """
     module_path = dirname(__file__)
 
-    with open(join(module_path, 'data',
-                   'sci-vs-talk_Train.csv')) as csv_file:
+    with open(ensure_data_file('sci-vs-talk_Train.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Train = int(temp[0])
@@ -1717,8 +1703,7 @@ def load_sci_vs_talk(with_info=False):
             dataTrain[i] = np.asarray(ir[:-1], dtype=np.float64)
             targetTrain[i] = np.asarray(ir[-1], dtype=int)
             
-    with open(join(module_path, 'data',
-                   'sci-vs-talk_Test.csv')) as csv_file:
+    with open(ensure_data_file('sci-vs-talk_Test.csv')) as csv_file:
         data_file = csv.reader(csv_file)
         temp = next(data_file)
         n_samples_Test = int(temp[0])

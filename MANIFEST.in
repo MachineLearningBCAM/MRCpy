@@ -1,0 +1,21 @@
+include requirements.txt
+include README.md
+include COPYING.md
+recursive-include MRCpy/datasets/descr *
+include MRCpy/datasets/data/adult.csv
+include MRCpy/datasets/data/credit.csv
+include MRCpy/datasets/data/diabetes.csv
+include MRCpy/datasets/data/ecoli.csv
+include MRCpy/datasets/data/glass.csv
+include MRCpy/datasets/data/haberman.csv
+include MRCpy/datasets/data/indianLiverPatient.csv
+include MRCpy/datasets/data/iris.csv
+include MRCpy/datasets/data/letter-recognition.csv
+include MRCpy/datasets/data/mammographic.csv
+include MRCpy/datasets/data/optdigits.csv
+include MRCpy/datasets/data/redwine.csv
+include MRCpy/datasets/data/satellite.csv
+include MRCpy/datasets/data/segment.csv
+include MRCpy/datasets/data/usenet2.csv
+include MRCpy/datasets/data/comp-vs-sci_shortTrain.csv
+include MRCpy/datasets/data/comp-vs-sci_shortTest.csv
