@@ -14,13 +14,11 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see https://www.gnu.org/licenses/.
 """
 import sys
-import cdd
 import numpy as np
 from cvxpy.utilities.key_utils import to_str
 from scipy.spatial import ConvexHull, convex_hull_plot_2d, Delaunay, distance
 
 from sklearn.utils import check_array
-from libsvm.svmutil import *
 from sklearn.utils.validation import check_is_fitted
 from sklearn.preprocessing import normalize
 # Import the MRC super class
@@ -483,6 +481,14 @@ class LCMRC(BaseMRC):
         # It also adds new restriction to encode that ||h||=1
         # CP = |unos(|T|) zeros(|Y|)|
         # |-L^T      -Id(|Y|) |
+        try:
+            import cdd
+        except ImportError:
+            raise ImportError(
+                "pycddlib is required for LCMRC. "
+                "See installation guide: "
+                "https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation"
+            )
         d_1 = LT.shape[0]  # |Y|
         d_2 = LT.shape[1]  # |T|
         CP = np.hstack((-LT, -np.identity(d_1)))

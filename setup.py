@@ -68,22 +68,11 @@ if __name__ == '__main__':
 
     # Define optional dependencies
     extras_require = {
-        'pytorch': [
-            'torch>=1.9.0',
-            'tqdm>=4.50.0',
-        ],
         'lmrc': [
             'pycddlib>=3.0.2',
         ],
-        'solvers': [
-            'gurobipy',
-            'mosek',
-        ],
         'all': [
-            'torch>=1.9.0',
-            'tqdm>=4.50.0',
             'pycddlib>=3.0.2',
-            'pyarrow',
         ]
     }
 
