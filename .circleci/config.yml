@@ -15,7 +15,8 @@ jobs:
             /usr/local/bin/python -m pip install --upgrade pip &&
             pip install -r requirements.txt &&
             pip install -r dev-requirements.txt &&
-            pip install -r ci-requirements.txt
+            pip install -r ci-requirements.txt &&
+            pip install pycddlib
       
       - run:
           name: Check code styling and run tests
