@@ -183,22 +183,22 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="c1"># Import the feature mapping</span>
-<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> \
     <span class="n">BasePhi</span><span class="p">,</span> \
     <span class="n">RandomFourierPhi</span><span class="p">,</span> \
     <span class="n">RandomReLUPhi</span><span class="p">,</span> \
     <span class="n">ThresholdPhi</span>
 
 
-<div class="viewcode-block" id="BaseMRC"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC">[docs]</a><span class="k">class</span> <span class="nc">BaseMRC</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">BaseMRC</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Base class for different minimax risk classifiers</span>
 
 <span class="sd">    This class is a parent class for different MRCs</span>
@@ -331,7 +331,7 @@
 <span class="sd">        then this array is None.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="BaseMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="BaseMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -351,8 +351,8 @@
         <span class="c1"># Solver list for cvxpy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -459,8 +459,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-    <span class="k">def</span> <span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the features (without one-hot encoding) corresponding</span>
 <span class="sd">        to instances given for learning the classifiers (in case of</span>
 <span class="sd">        training) and prediction (in case of testing).</span>
@@ -478,8 +478,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute mean estimate tau using the given training instances.</span>
 
 <span class="sd">        Parameters</span>
@@ -502,8 +502,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_exp</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute deviation in the mean estimate tau</span>
 <span class="sd">        using the given training instances.</span>
 
@@ -530,8 +530,8 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">est_std</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-<div class="viewcode-block" id="BaseMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.minimax_risk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Abstract function for sub-classes implementing</span>
 <span class="sd">        the different MRCs.</span>
 
@@ -572,8 +572,8 @@
                                   <span class="s1">&#39; by a sub-class implementing a MRC.&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="BaseMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Abstract function for sub-classes implementing</span>
 <span class="sd">        the different MRCs.</span>
 
@@ -602,8 +602,8 @@
                                   <span class="s1">&#39; This functions needs to be implemented&#39;</span> <span class="o">+</span>
                                   <span class="s1">&#39; by a sub-class implementing a MRC.&#39;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the feature mapping corresponding to instances given</span>
 <span class="sd">        for learning the classifiers (in case of training) and</span>
 <span class="sd">        prediction (in case of testing).</span>
@@ -616,8 +616,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Predicts classes for new instances using a fitted model.</span>
 
 <span class="sd">        Returns the predicted classes for the given instances in ``X``</span>
@@ -657,8 +657,8 @@
 
         <span class="k">return</span> <span class="n">y_pred</span></div>
 
-<div class="viewcode-block" id="BaseMRC.error"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BaseMRC.error"><a class="viewcode-back" href="../../generated/MRCpy.BaseMRC.html#MRCpy.BaseMRC.error">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Return the mean error obtained for the given test data and labels.</span>
 
 <span class="sd">        Parameters</span>

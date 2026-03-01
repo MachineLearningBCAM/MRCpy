@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Example: Use of CMRC with different settings &mdash; MRCpy 0.1.0 documentation</title>
@@ -187,8 +188,8 @@
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-2-example-cmrc-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="example-use-of-cmrc-with-different-settings">
+</aside>
+<section class="sphx-glr-example-title" id="example-use-of-cmrc-with-different-settings">
 <span id="ex2"></span><span id="sphx-glr-auto-examples-plot-2-example-cmrc-py"></span><h1>Example: Use of CMRC with different settings<a class="headerlink" href="#example-use-of-cmrc-with-different-settings" title="Permalink to this headline">¶</a></h1>
 <p>Example of using CMRC with some of the common classification datasets with
 different losses and feature mappings settings. We load the different datasets
@@ -200,16 +201,16 @@ the classification error. We also calculate the mean training time.</p>
 and random fourier feature mapping this means that we will use Stochastic
 Gradient Descent (SGD) approach to perform the optimization.</p>
 <p>You can check a more elaborated example in <a class="reference internal" href="further_examples/plot_3_comparison.html#ex-comp"><span class="std std-ref">Example: Comparison to other methods</span></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">StratifiedKFold</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMRC</span>
 <span class="c1"># Import the datasets</span>
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Data sets</span>
 <a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">loaders</span></a> <span class="o">=</span> <span class="p">[</span><span class="n">load_mammographic</span><span class="p">,</span> <span class="n">load_haberman</span><span class="p">,</span> <span class="n">load_indian_liver</span><span class="p">,</span>
@@ -218,7 +219,7 @@ Gradient Descent (SGD) approach to perform the optimization.</p>
            <span class="s2">&quot;diabetes&quot;</span><span class="p">,</span> <span class="s2">&quot;credit&quot;</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">runCMRC</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">loss</span><span class="p">):</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
 
     <span class="c1"># We fix the random seed to that the stratified kfold performed</span>
@@ -459,7 +460,7 @@ Gradient Descent (SGD) approach to perform the optimization.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
+</section>
 
 
            </div>

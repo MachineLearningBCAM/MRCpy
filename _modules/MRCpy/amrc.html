@@ -183,20 +183,20 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">itertools</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="c1"># Import the AMRC super class</span>
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">BaseMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> <span class="n">BasePhi</span><span class="p">,</span> <span class="n">RandomFourierPhi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePhi</span><span class="p">,</span> <span class="n">RandomFourierPhi</span>
 
 
-<div class="viewcode-block" id="AMRC"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC">[docs]</a><span class="k">class</span> <span class="nc">AMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Adaptive Minimax Risk Classifier</span>
 
 <span class="sd">    This class implements Adaptive Minimax Risk Classifiers (AMRCs)</span>
@@ -378,7 +378,7 @@
 <span class="sd">           on Information Theory, 68(4), 2530-2550.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="AMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="AMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
@@ -414,8 +414,8 @@
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">feature</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Track uncertainty sets over time.</span>
 
 <span class="sd">        This function obtains mean vector estimates and confidence vectors</span>
@@ -548,8 +548,8 @@
 
         <span class="k">return</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">params_</span>
 
-    <span class="k">def</span> <span class="nf">initialize_tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">initialize_tracking</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Initialize the tracking stage.</span>
 
 <span class="sd">        This function initializes mean vector estimates, confidence vectors,</span>
@@ -612,8 +612,8 @@
                        <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="n">R</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">params_</span>
 
-<div class="viewcode-block" id="AMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.minimax_risk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Learn classifier parameters via minimax risk optimization.</span>
 
 <span class="sd">        This function efficiently learns classifier parameters by solving</span>
@@ -740,8 +740,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;h&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="AMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the AMRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -838,8 +838,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="AMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict">[docs]</a>    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Predict the class for a new instance using the fitted model.</span>
 
 <span class="sd">        Returns the predicted class for the given instance in `X`</span>
@@ -876,8 +876,8 @@
 
         <span class="k">return</span> <span class="n">y_pred</span></div>
 
-<div class="viewcode-block" id="AMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute conditional probabilities for each class.</span>
 
 <span class="sd">        Parameters</span>
@@ -908,8 +908,8 @@
                 <span class="n">h</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">/</span> <span class="n">cx</span>
         <span class="k">return</span> <span class="n">h</span></div>
 
-<div class="viewcode-block" id="AMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
@@ -920,8 +920,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params_</span><span class="p">[</span><span class="s1">&#39;R_Ut&#39;</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="AMRC.get_upper_bound_accumulated"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound_accumulated">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound_accumulated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="AMRC.get_upper_bound_accumulated"><a class="viewcode-back" href="../../generated/MRCpy.AMRC.html#MRCpy.AMRC.get_upper_bound_accumulated">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound_accumulated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the accumulated mistakes </span>
 <span class="sd">        of the fitted classifier.</span>
 

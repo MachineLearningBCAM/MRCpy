@@ -183,22 +183,22 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
-<span class="kn">import</span> <span class="nn">sklearn</span> <span class="k">as</span> <span class="nn">sk</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_X_y</span><span class="p">,</span> <span class="n">check_array</span>
 
 <span class="c1"># Import the DWGCS super class</span>
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> \
     <span class="n">BasePhi</span><span class="p">,</span> \
     <span class="n">RandomFourierPhi</span><span class="p">,</span> \
     <span class="n">RandomReLUPhi</span><span class="p">,</span> \
     <span class="n">ThresholdPhi</span>
 
-<div class="viewcode-block" id="DWGCS"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS">[docs]</a><span class="k">class</span> <span class="nc">DWGCS</span><span class="p">(</span><span class="n">CMRC</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="DWGCS"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DWGCS</span><span class="p">(</span><span class="n">CMRC</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Double-Weighting for General Covariate Shift</span>
 
 <span class="sd">    This class implements the Double-Weighting for General Covariate Shift</span>
@@ -434,7 +434,7 @@
 <span class="sd">           on Information Theory, 68(4), 2530-2550.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="DWGCS.__init__"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="DWGCS.__init__"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -469,8 +469,8 @@
                          <span class="n">phi</span><span class="p">,</span>
                          <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="DWGCS.fit"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">,</span> <span class="n">xTe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="DWGCS.fit"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">,</span> <span class="n">xTe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -572,8 +572,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
     
-<div class="viewcode-block" id="DWGCS.DWKMM"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.DWKMM">[docs]</a>    <span class="k">def</span> <span class="nf">DWKMM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="DWGCS.DWKMM"><a class="viewcode-back" href="../../generated/MRCpy.DWGCS.html#MRCpy.DWGCS.DWKMM">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">DWKMM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">xTr</span><span class="p">,</span><span class="n">xTe</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Obtain training and testing weights.</span>
 
 <span class="sd">        Computes the weights associated to the</span>
@@ -716,8 +716,8 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-    <span class="k">def</span> <span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTr</span><span class="p">,</span> <span class="n">yTr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute mean estimate tau using the given training instances.</span>
 
 <span class="sd">        Parameters</span>
@@ -742,8 +742,8 @@
 
         <span class="k">return</span> <span class="n">tau_</span>
     
-    <span class="k">def</span> <span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTe</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xTe</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute deviation in the mean estimate tau</span>
 <span class="sd">        using the given testing instances.</span>
 
@@ -803,8 +803,8 @@
 
         <span class="k">return</span> <span class="n">lambda_</span>
     
-    <span class="k">def</span> <span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Compute the feature mapping corresponding to instances given</span>
 <span class="sd">        for learning the classifiers and prediction.</span>
 

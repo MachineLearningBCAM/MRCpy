@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Example: Comparison to other methods &mdash; MRCpy 0.1.0 documentation</title>
@@ -195,8 +196,8 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-plot-3-comparison-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="example-comparison-to-other-methods">
+</aside>
+<section class="sphx-glr-example-title" id="example-comparison-to-other-methods">
 <span id="ex-comp"></span><span id="sphx-glr-auto-examples-further-examples-plot-3-comparison-py"></span><h1>Example: Comparison to other methods<a class="headerlink" href="#example-comparison-to-other-methods" title="Permalink to this headline">¶</a></h1>
 <p>We are training and testing both MRC and CMRC methods with
 a variety of different settings and comparing their performance both
@@ -225,26 +226,26 @@ Stochastic Gradient Descent (SGD) approach for linear and random fourier
 feature mappings and nesterov subgradient approach for the rest of feature
 mappings.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
-<span class="kn">from</span> <span class="nn">sklearn.neural_network</span> <span class="kn">import</span> <span class="n">MLPClassifier</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neural_network</span><span class="w"> </span><span class="kn">import</span> <span class="n">MLPClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_credit</span><span class="p">,</span> <span class="n">load_haberman</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_credit</span><span class="p">,</span> <span class="n">load_haberman</span>
 
 
 <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">kf</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">KFOLDS</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="mrc-and-cmrc-methods">
+<section id="mrc-and-cmrc-methods">
 <h2>MRC and CMRC methods<a class="headerlink" href="#mrc-and-cmrc-methods" title="Permalink to this headline">¶</a></h2>
 <p>We are training and testing both MRC and CMRC methods with
 a variety of different settings; using 0-1 loss and logarithmic loss, using
@@ -252,7 +253,7 @@ all the default feature mappings available (Linear, Random Fourier, ReLU,
 Threshold) and using both the non-deterministic and deterministic
 approach which uses or not,
 respectively probability estimates in the prediction stage.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runMRC</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">runMRC</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
     <span class="n">df_mrc</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
                           <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MRC&#39;</span><span class="p">,</span> <span class="s1">&#39;MRC time&#39;</span><span class="p">,</span> <span class="s1">&#39;CMRC&#39;</span><span class="p">,</span> <span class="s1">&#39;CMRC time&#39;</span><span class="p">],</span>
                           <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;loss 0-1, phi linear&#39;</span><span class="p">,</span>
@@ -603,8 +604,8 @@ with Upper and                                          Lower bounds</caption>
 
 </div>
 <br />
-<br /></div>
-<div class="section" id="svm-neural-networks-mlp-classifier-random-forest-classifier">
+<br /></section>
+<section id="svm-neural-networks-mlp-classifier-random-forest-classifier">
 <h2>SVM, Neural Networks: MLP Classifier, Random Forest Classifier<a class="headerlink" href="#svm-neural-networks-mlp-classifier-random-forest-classifier" title="Permalink to this headline">¶</a></h2>
 <p>Now, let’s try other usual supervised classification algorithms and compare
 the results.
@@ -616,7 +617,7 @@ method <span class="xref std std-ref">Multi-layer Perceptron classifier</span>
 and a <span class="xref std std-ref">Random Forest
 Classifier</span>.
 All of them from the library <code class="xref py py-obj docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runComparisonMethods</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">runComparisonMethods</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a><span class="p">):</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Method&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">,</span> <span class="s1">&#39;Time&#39;</span><span class="p">])</span>
 
     <span class="n">error_svm</span> <span class="o">=</span> <span class="mi">0</span>
@@ -759,8 +760,8 @@ All of them from the library <code class="xref py py-obj docutils literal notran
 
 </div>
 <br />
-<br /></div>
-<div class="section" id="comparison-of-mrcs-to-other-methods">
+<br /></section>
+<section id="comparison-of-mrcs-to-other-methods">
 <h2>Comparison of MRCs to other methods<a class="headerlink" href="#comparison-of-mrcs-to-other-methods" title="Permalink to this headline">¶</a></h2>
 <p>In the deterministic case we can see that the performance of MRC and CMRC
 methods in the
@@ -775,17 +776,17 @@ is still  similar to the time it would take to use the MLPClassifier.</p>
 the options of MRC with loss = <code class="xref py py-obj docutils literal notranslate"><span class="pre">0-1</span></code> use an optimized version of Nesterov
 optimization algorithm, improving the runtime of these options.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Graph plotting</span>
-<span class="k">def</span> <span class="nf">major_formatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">major_formatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
     <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">label</span>
 
 
-<span class="k">def</span> <span class="nf">major_formatter1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">major_formatter1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
     <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.16</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.3f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">label</span>
 
 
-<span class="k">def</span> <span class="nf">major_formatter2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">major_formatter2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
     <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%0.2g</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">x</span>
     <span class="k">return</span> <span class="n">label</span>
 
@@ -897,8 +898,8 @@ axis represents the error (proportion of incorrectly predicted labels).</p>
 <p>Above: MRCs runtime for different parameter settings
 compared to other techniques for the dataset Haberman. The ordinate
 represents the runtime measured in seconds.</p>
-</div>
-<div class="section" id="upper-and-lower-bounds-provided-by-mrcs">
+</section>
+<section id="upper-and-lower-bounds-provided-by-mrcs">
 <h2>Upper and Lower bounds provided by MRCs<a class="headerlink" href="#upper-and-lower-bounds-provided-by-mrcs" title="Permalink to this headline">¶</a></h2>
 <p>Furthermore, when using a non-deterministic approach and <code class="xref py py-obj docutils literal notranslate"><span class="pre">loss</span> <span class="pre">=</span> <span class="pre">0-1</span></code>, the
 MRC method provides us with Upper and Lower theoretical bounds for the
@@ -920,8 +921,8 @@ is pretty similar.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

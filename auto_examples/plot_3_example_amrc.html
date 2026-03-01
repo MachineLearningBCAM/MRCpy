@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Example: Use of AMRC (Adaptative MRC) for Online Learning &mdash; MRCpy 0.1.0 documentation</title>
@@ -188,13 +189,14 @@
 <p class="admonition-title">Note</p>
 <p><a class="reference internal" href="#sphx-glr-download-auto-examples-plot-3-example-amrc-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="example-use-of-amrc-adaptative-mrc-for-online-learning">
+</aside>
+<section class="sphx-glr-example-title" id="example-use-of-amrc-adaptative-mrc-for-online-learning">
 <span id="ex-amrc"></span><span id="sphx-glr-auto-examples-plot-3-example-amrc-py"></span><h1>Example: Use of AMRC (Adaptative MRC) for Online Learning<a class="headerlink" href="#example-use-of-amrc-adaptative-mrc-for-online-learning" title="Permalink to this headline">¶</a></h1>
 <p>Example of using AMRC with dataset usenet2. We load the dataset, train the
 AMRC model one instance at a time and predict the next instance in each time
 instant.</p>
-<a class="reference internal image-reference" href="../_images/amrc.png"><img alt="AMRC diagram" class="align-center" src="../_images/amrc.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="../_images/amrc.png"><img alt="AMRC diagram" class="align-center" src="../_images/amrc.png" width="500" />
+</a>
 <p>From left to right in the diagram above we can check what happens in every
 time moment. We have the optimization parameter from the previous time moment
 <span class="math notranslate nohighlight">\(\mu_{t-1}\)</span> and the learning parameters from the previous time moment
@@ -215,13 +217,13 @@ predict a label with probabilities determined by the model. Note that the
 upper bound for the accumulated mistakes per time is the same for both
 settings.</p>
 <p>You can check more technical details of the documentation class <span class="xref std std-ref">amrc</span>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinMaxScaler</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">AMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_usenet2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_usenet2</span>
 
 <span class="c1"># Import data</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_usenet2</span><span class="p">()</span>
@@ -373,7 +375,7 @@ settings.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>MRCpy.pytorch.mgce.loss.mgce_loss &mdash; MRCpy 0.1.0 documentation</title>
@@ -184,7 +185,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="mrcpy-pytorch-mgce-loss-mgce-loss">
+  <section id="mrcpy-pytorch-mgce-loss-mgce-loss">
 <h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">MRCpy.pytorch.mgce.loss</span></code>.mgce_loss<a class="headerlink" href="#mrcpy-pytorch-mgce-loss-mgce-loss" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="MRCpy.pytorch.mgce.loss.mgce_loss">
@@ -198,7 +199,7 @@ parametric family of loss functions indexed by <span class="math notranslate noh
 such that <span class="math notranslate nohighlight">\(\beta = \alpha / (\alpha-1)\)</span> generalize the standard cross-entropy 
 (log-loss):</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\beta = 1\)</span>: the convex 0-1 loss (see <a class="reference internal" href="#rce87d5c1552e-2" id="id1">[2]</a>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta = 1\)</span>: the convex 0-1 loss (see <a class="reference internal" href="#rce87d5c1552e-2" id="citation-reference-1">[2]</a>)</p></li>
 <li><p><span class="math notranslate nohighlight">\(\beta \to \infty\)</span>: the log-loss (cross-entropy)</p></li>
 </ul>
 <p>The name “generalized cross-entropy” reflects that the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss
@@ -208,7 +209,7 @@ to tune <span class="math notranslate nohighlight">\(\beta\)</span> to control t
 <p>This class computes gradients and loss values that can be directly
 integrated with PyTorch training loops.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>num_classes</strong><span class="classifier">int</span></dt><dd><p>Number of classes in the classification problem. Must be &gt;= 2.</p>
 </dd>
@@ -226,23 +227,25 @@ between all possible loss functions:</p>
 </dd>
 </dl>
 <p class="rubric">References</p>
-<dl class="citation">
-<dt class="label" id="rce87d5c1552e-1"><span class="brackets">1</span></dt>
-<dd><p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026).
+<div role="list" class="citation-list">
+<div class="citation" id="rce87d5c1552e-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026).
 Minimax Generalized Cross-Entropy. In Proceedings of the
 International Conference on Artificial Intelligence and
 Statistics (AISTATS).</p>
-</dd>
-<dt class="label" id="rce87d5c1552e-2"><span class="brackets"><a class="fn-backref" href="#id1">2</a></span></dt>
-<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
+</div>
+<div class="citation" id="rce87d5c1552e-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">2</a><span class="fn-bracket">]</span></span>
+<p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
 Maximum Entropy for Supervised Classification. IEEE Transactions
 on Information Theory, 68(4), 2530-2550.</p>
-</dd>
-</dl>
+</div>
+</div>
 <p class="rubric">Examples</p>
 <p>Basic usage in a training loop:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">MRCpy.pytorch.mgce.loss</span> <span class="kn">import</span> <span class="n">mgce_loss</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.pytorch.mgce.loss</span><span class="w"> </span><span class="kn">import</span> <span class="n">mgce_loss</span>
 <span class="gp">&gt;&gt;&gt; </span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Initialize with beta=1.4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
@@ -265,7 +268,7 @@ on Information Theory, 68(4), 2530-2550.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>num_classes</strong><span class="classifier">int</span></dt><dd><p>Number of classes in the classification problem.</p>
 </dd>
@@ -276,10 +279,6 @@ on Information Theory, 68(4), 2530-2550.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a>(logits, labels)</p></td>
 <td><p>Compute gradients for the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss function.</p></td>
@@ -306,7 +305,7 @@ on Information Theory, 68(4), 2530-2550.</p>
 backpropagation. The gradients are computed using either the 0-1 loss
 formulation (when beta=1) or the smooth <span class="math notranslate nohighlight">\(\alpha\)</span>-loss approximation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax or other
 activation functions.</p>
@@ -315,7 +314,7 @@ activation functions.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>gradients</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Gradients with respect to the input logits. Can be used directly
 with logits.backward(gradients) for backpropagation.</p>
@@ -344,7 +343,7 @@ with logits.backward(gradients) for backpropagation.</p>
 probability predictions. It is typically used during validation
 or when you need both the loss and the predicted probabilities.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax.</p>
 </dd>
@@ -355,7 +354,7 @@ regularization term from the model parameters.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>total_loss</strong><span class="classifier">torch.Tensor (scalar)</span></dt><dd><p>The computed loss value including regularization.</p>
 </dd>
@@ -387,14 +386,14 @@ computing the loss value, making it efficient for inference.</p>
 computation. For beta&gt;1 (smooth approximation), uses the bisection
 solver to find optimal nu values.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>logits</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Raw model outputs (logits) before applying softmax or other
 activation functions.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>probabilities</strong><span class="classifier">torch.Tensor of shape (batch_size, num_classes)</span></dt><dd><p>Predicted class probabilities for each input sample. Each row
 sums to 1.0. Probabilities are computed using the <span class="math notranslate nohighlight">\(\alpha\)</span>-loss
@@ -411,7 +410,7 @@ framework rather than standard softmax.</p>
 <dt><a class="reference internal" href="#MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient" title="MRCpy.pytorch.mgce.loss.mgce_loss.get_gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_gradient</span></code></a></dt><dd><p>Compute gradients for backpropagation.</p>
 </dd>
 </dl>
-</div>
+</aside>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">logits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -425,7 +424,7 @@ framework rather than standard softmax.</p>
 
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div style='clear:both'></div></section>
 
 
            </div>

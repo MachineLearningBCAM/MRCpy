@@ -183,31 +183,31 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">it</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="c1"># Import the MRC super class</span>
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">BaseMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.cvx</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.adam</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.sgd</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.nesterov</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.phi</span> <span class="kn">import</span> \
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cvx</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.adam</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.sgd</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.nesterov</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> \
     <span class="n">BasePhi</span><span class="p">,</span> \
     <span class="n">RandomFourierPhi</span><span class="p">,</span> \
     <span class="n">RandomReLUPhi</span><span class="p">,</span> \
     <span class="n">ThresholdPhi</span>
 
 
-<div class="viewcode-block" id="CMRC"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC">[docs]</a><span class="k">class</span> <span class="nc">CMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">CMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Constrained Minimax Risk Classifier</span>
 
 <span class="sd">    This class implements Minimax Risk Classifiers with fixed marginal</span>
@@ -456,7 +456,7 @@
     <span class="c1"># to reduce the default number for maximum iterations.</span>
     <span class="c1"># In case of CMRC, the convergence is observed to be fast</span>
     <span class="c1"># and hence less iterations should be sufficient</span>
-<div class="viewcode-block" id="CMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="CMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -501,8 +501,8 @@
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -547,8 +547,8 @@
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="CMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.minimax_risk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Solves the marginally constrained minimax risk</span>
 <span class="sd">        optimization problem for</span>
 <span class="sd">        different types of loss (0-1 and log loss).</span>
@@ -652,7 +652,7 @@
                 <span class="c1"># In addition the function returns subgradient</span>
                 <span class="c1"># of the expected value psi</span>
                 <span class="c1"># to be used by nesterov optimization.</span>
-                <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
                     <span class="c1"># First we calculate the all possible values of psi</span>
                     <span class="c1"># for all the points.</span>
 
@@ -674,7 +674,7 @@
 
                 <span class="c1"># When using SGD for the convex optimization</span>
                 <span class="c1"># To compute the subgradient of the subobjective at one point</span>
-                <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                     <span class="n">i</span> <span class="o">=</span> <span class="n">batch_start_sample_id</span>
                     <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">psi_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -696,7 +696,7 @@
                 <span class="c1"># the gradient for the log loss function.</span>
 
                 <span class="c1"># The psi subobjective for all the datapoints</span>
-                <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
                     <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span>
                     <span class="n">psi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span>\
                             <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">scs</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">((</span><span class="n">phi_mu</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
@@ -724,7 +724,7 @@
 
                 <span class="c1"># Use SGD for the convex optimization in general.</span>
                 <span class="c1"># Gradient of the subobjective (psi) at an instance.</span>
-                <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                     <span class="n">i</span> <span class="o">=</span> <span class="n">batch_start_sample_id</span>
                     <span class="n">expPhi</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_end_sample_id</span> <span class="o">-</span> <span class="n">batch_start_sample_id</span>
@@ -789,8 +789,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="CMRC.psi"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.psi">[docs]</a>    <span class="k">def</span> <span class="nf">psi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC.psi"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.psi">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">psi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Function to compute the psi function in the objective</span>
 <span class="sd">        using the given solution mu and the feature mapping</span>
 <span class="sd">        corresponding to a single instance.</span>
@@ -827,8 +827,8 @@
 
         <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.get_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.get_upper_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
@@ -839,8 +839,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span></div>
 
-<div class="viewcode-block" id="CMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="CMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Computes conditional probabilities corresponding</span>
 <span class="sd">        to each class for the given unlabeled instances.</span>
 

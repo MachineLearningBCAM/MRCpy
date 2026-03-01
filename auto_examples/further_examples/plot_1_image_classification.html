@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>MRCs with Deep Neural Networks: Part II &mdash; MRCpy 0.1.0 documentation</title>
@@ -194,26 +195,26 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-plot-1-image-classification-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-ii">
+</aside>
+<section class="sphx-glr-example-title" id="mrcs-with-deep-neural-networks-part-ii">
 <span id="feature-mrc"></span><span id="sphx-glr-auto-examples-further-examples-plot-1-image-classification-py"></span><h1>MRCs with Deep Neural Networks: Part II<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-ii" title="Permalink to this headline">¶</a></h1>
 <p>In this example we will use a features extracted from different sets of images
 using pretrained neural networks, as explained in <a class="reference internal" href="feature_extraction.html#featureextraction"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a>.</p>
 <p>We will use image features correponding to a set of training images to train an
 MRC model to then predict the class of a set of test images using their
 correponding extracted features.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">ConfusionMatrixDisplay</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">MRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">MRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">load_catsvsdogs_features_resnet18</span><span class="p">,</span>
     <span class="n">load_mnist_features_resnet18</span><span class="p">,</span>
     <span class="n">load_yearbook_features_resnet18</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="section" id="mnist-dataset-digit-recognizer">
+<section id="mnist-dataset-digit-recognizer">
 <h2>MNIST Dataset: Digit Recognizer<a class="headerlink" href="#mnist-dataset-digit-recognizer" title="Permalink to this headline">¶</a></h2>
 <p>The MNIST database of handwritten digits, available from
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
@@ -257,8 +258,8 @@ MNIST raw data and obtain accuracy of 98.71%.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>MNIST Binary Classification (6 vs. 8) accuracy error: 99.48%
 </pre></div>
 </div>
-</div>
-<div class="section" id="cats-vs-dogs-dataset">
+</section>
+<section id="cats-vs-dogs-dataset">
 <h2>Cats vs Dogs Dataset<a class="headerlink" href="#cats-vs-dogs-dataset" title="Permalink to this headline">¶</a></h2>
 <p>Cats vs dogs dataset is a database of 23262 RGB cats
 and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
@@ -287,8 +288,8 @@ neural layers.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Cats vs Dogs accuracy error: 97.99%
 </pre></div>
 </div>
-</div>
-<div class="section" id="yearbook-dataset">
+</section>
+<section id="yearbook-dataset">
 <h2>Yearbook Dataset<a class="headerlink" href="#yearbook-dataset" title="Permalink to this headline">¶</a></h2>
 <p>The Yearbook dataset which is a publicly-available dataset
 of 37,921 frontal-facing American high school yearbook portraits taken from
@@ -315,7 +316,7 @@ the IEEE International Conference on Computer Vision Workshops
 Understanding self-training for gradual domain adaptation.
 In International Conference on Machine Learning
 (pp. 5468-5479). PMLR.</p>
-</div>
+</aside>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">Y</span></a> <span class="o">=</span> <span class="n">load_yearbook_features_resnet18</span><span class="p">()</span>
 
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_train</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">[:</span><span class="mi">2000</span><span class="p">,</span> <span class="p">:]</span>
@@ -366,8 +367,8 @@ Yearbook prediction accuracy (16000 training instances): 85.95%
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

@@ -170,14 +170,14 @@
   <h1>Source code for MRCpy.phi.base_phi</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;Super class for the feature mapping functions.&#39;&#39;&#39;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 
-<div class="viewcode-block" id="BasePhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi">[docs]</a><span class="k">class</span> <span class="nc">BasePhi</span><span class="p">():</span>
+<div class="viewcode-block" id="BasePhi"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">BasePhi</span><span class="p">():</span>
 
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Base class for feature mappings</span>
 
 <span class="sd">    The class provides a base for different feature mapping functions</span>
@@ -261,14 +261,14 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="BasePhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="BasePhi.__init__"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">fit_intercept</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="o">=</span> <span class="n">fit_intercept</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">one_hot</span> <span class="o">=</span> <span class="n">one_hot</span></div>
 
-<div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.fit"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Performs training stage.</span>
 
 <span class="sd">        Learns the required hyperparameters</span>
@@ -312,8 +312,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="BasePhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.transform"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Transform the given instances to the features and return a copy.</span>
 
 <span class="sd">        Parameters</span>
@@ -339,8 +339,8 @@
 
         <span class="k">return</span> <span class="n">X_feat</span></div>
 
-<div class="viewcode-block" id="BasePhi.eval_xy"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_xy">[docs]</a>    <span class="k">def</span> <span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.eval_xy"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_xy">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eval_xy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
 <span class="sd">        X, :math:`\Phi(x,y)`, x</span>
 <span class="sd">        :math:`\in` X and y :math:`\in` Y.</span>
@@ -383,8 +383,8 @@
 
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="BasePhi.eval_x"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_x">[docs]</a>    <span class="k">def</span> <span class="nf">eval_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.eval_x"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.eval_x">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">eval_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Evaluates the one-hot encoded features of the given instances i.e.,</span>
 <span class="sd">        X, :math:`\Phi(x,y)`, x</span>
 <span class="sd">        :math:`\in` X and all the labels. The output is 3D matrix</span>
@@ -417,8 +417,8 @@
 
         <span class="k">return</span> <span class="n">phi</span></div>
 
-<div class="viewcode-block" id="BasePhi.est_exp"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_exp">[docs]</a>    <span class="k">def</span> <span class="nf">est_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.est_exp"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_exp">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">est_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Computes the average value of :math:`\Phi(x,y)` to estimate :math:`\boldsymbol{\tau}`</span>
 <span class="sd">        that defines the constraint of the uncertainty set of distribution.</span>
 
@@ -459,8 +459,8 @@
 
         <span class="k">return</span> <span class="n">tau_mat</span></div>
 
-<div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span> <span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="BasePhi.est_std"><a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.est_std">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">est_std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Standard deviation of :math:`\Phi(x,y)` </span>
 <span class="sd">        that accounts for inaccuracies in the mean estimate :math:`\boldsymbol{\tau}`.</span>
 <span class="sd">        It is used to estimate :math:`\boldsymbol{\lambda}`</span>

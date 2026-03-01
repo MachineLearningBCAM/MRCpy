@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>MRCs with Deep Neural Networks: Part I &mdash; MRCpy 0.1.0 documentation</title>
@@ -195,8 +196,8 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="mrcs-with-deep-neural-networks-part-i">
+</aside>
+<section class="sphx-glr-example-title" id="mrcs-with-deep-neural-networks-part-i">
 <span id="featureextraction"></span><span id="sphx-glr-auto-examples-further-examples-feature-extraction-py"></span><h1>MRCs with Deep Neural Networks: Part I<a class="headerlink" href="#mrcs-with-deep-neural-networks-part-i" title="Permalink to this headline">¶</a></h1>
 <p>In this example we will use a pretrained neural network to extract features
 of images in a dataset to train and test MRCs with these features in
@@ -214,8 +215,8 @@ different classes.</p>
 Deep residual learning for image recognition.
 In Proceedings of the IEEE conference on computer
 vision and pattern recognition (pp. 770-778).</p>
-</div>
-<div class="section" id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
+</aside>
+<section id="introduction-to-pretrained-models-transfer-learning-and-feature-extraction">
 <h2>Introduction to Pretrained models, Transfer Learning and Feature Extraction<a class="headerlink" href="#introduction-to-pretrained-models-transfer-learning-and-feature-extraction" title="Permalink to this headline">¶</a></h2>
 <p>Deep convolutional neural network models may take days or even weeks
 to train on very large datasets. A way to short-cut this process is
@@ -229,8 +230,8 @@ on one problem is used in some way on a second related problem.
 Alternately, the pretrained models may be used as feature extraction models.
 Here, the output of the model from a layer prior to the output layer
 of the model is used as input to a new classifier model.</p>
-</div>
-<div class="section" id="load-pretrained-model-and-preprocess-images">
+</section>
+<section id="load-pretrained-model-and-preprocess-images">
 <h2>Load pretrained model and preprocess images<a class="headerlink" href="#load-pretrained-model-and-preprocess-images" title="Permalink to this headline">¶</a></h2>
 <p>Firstly, we load the pretrained model <code class="xref py py-obj docutils literal notranslate"><span class="pre">torchvision.models.ResNet18</span></code> and
 we take out the last layer in order to obtain the features. We call this
@@ -256,18 +257,18 @@ this transform will normalize each channel i.e.,
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">output[channel]</span> <span class="pre">=</span> <span class="pre">(input[channel]</span> <span class="pre">-</span> <span class="pre">mean[channel])</span> <span class="pre">/</span> <span class="pre">std[channel]</span></code>
 You can check more about <code class="xref py py-obj docutils literal notranslate"><span class="pre">torchvision.transforms</span></code> in
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">pytorch</span> <span class="pre">docummentation</span></code>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">os.path</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">join</span></a>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">tensorflow_datasets</span> <span class="k">as</span> <span class="nn">tfds</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">import</span> <span class="nn">torchvision.models</span> <span class="k">as</span> <span class="nn">models</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tensorflow_datasets</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tfds</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision.models</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">models</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">transforms</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy.datasets</span> <span class="kn">import</span> <span class="n">load_yearbook_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_yearbook_path</span>
 
 <span class="n">resnet18</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet18</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">features_resnet18</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">resnet18</span><span class="o">.</span><span class="n">children</span><span class="p">())[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
@@ -281,10 +282,10 @@ You can check more about <code class="xref py py-obj docutils literal notranslat
                           <span class="n">std</span><span class="o">=</span><span class="p">[</span><span class="mf">0.229</span><span class="p">,</span> <span class="mf">0.224</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])])</span>       <span class="c1"># [6]</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="using-tensorflow-datasets-mnist-cats-vs-dogs">
+</section>
+<section id="using-tensorflow-datasets-mnist-cats-vs-dogs">
 <h2>Using tensorflow datasets: MNIST &amp; Cats vs Dogs<a class="headerlink" href="#using-tensorflow-datasets-mnist-cats-vs-dogs" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="mnist">
+<section id="mnist">
 <h3>MNIST<a class="headerlink" href="#mnist" title="Permalink to this headline">¶</a></h3>
 <p>The MNIST database of handwritten digits, available from
 <code class="xref py py-obj docutils literal notranslate"><span class="pre">this</span> <span class="pre">page</span></code>,
@@ -342,8 +343,8 @@ the latter containing the info associated with the builder.</p>
            <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="cats-vs-dogs">
+</section>
+<section id="cats-vs-dogs">
 <h3>Cats vs Dogs<a class="headerlink" href="#cats-vs-dogs" title="Permalink to this headline">¶</a></h3>
 <p>Cats vs dogs dataset is a database of 23262 RGB cats
 and dogs images released by Microsoft for the Asirra captcha (<a class="reference external" href="https://www.microsoft.com/en-us/download/details.aspx?id=54765">homepage</a>).
@@ -372,9 +373,9 @@ It is available in tensorflow datasets, you can check the details <a class="refe
            <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="using-a-local-dataset-yearbook-dataset">
+</section>
+</section>
+<section id="using-a-local-dataset-yearbook-dataset">
 <h2>Using a local dataset: Yearbook Dataset<a class="headerlink" href="#using-a-local-dataset-yearbook-dataset" title="Permalink to this headline">¶</a></h2>
 <p>In this example, we are going to extract the features from a local dataset.
 We will be using the Yearbook dataset which is a publicly-available dataset
@@ -394,7 +395,7 @@ the IEEE International Conference on Computer Vision Workshops
 Understanding self-training for gradual domain adaptation.
 In International Conference on Machine Learning
 (pp. 5468-5479). PMLR.</p>
-</div>
+</aside>
 <p>We take paths and names from images from F (female) and M (male)
 folder and merge them in a dataset ordered by date
 (as images name start by the year of the photo). We convert the labels into
@@ -445,8 +446,8 @@ is available in the <code class="xref py py-obj docutils literal notranslate"><s
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

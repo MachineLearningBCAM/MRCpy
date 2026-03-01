@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Example: Predicting COVID-19 patients outcome using MRCs &mdash; MRCpy 0.1.0 documentation</title>
@@ -193,8 +194,8 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
-</div>
-<div class="sphx-glr-example-title section" id="example-predicting-covid-19-patients-outcome-using-mrcs">
+</aside>
+<section class="sphx-glr-example-title" id="example-predicting-covid-19-patients-outcome-using-mrcs">
 <span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this headline">¶</a></h1>
 <p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
 of a COVID-19 positive patient at the moment of hospital triage. This example
@@ -214,7 +215,7 @@ risk indicator using Logistic regression refer to:</p>
 COVID-19 Mortality Risk Indicator Using a Multistart Framework”
 , in <em>2021 IEEE International Conference on Bioinformatics and
 Biomedicine (BIBM)</em>, 2021, pp. 2179–2186.</p>
-</div>
+</aside>
 <p>First we will see how to deal with class imbalance when training a model using
 syntethic minority over-sampling (SMOTE) techniques. Furthermore, we will
 comparetwo MRC with two state of the art machine learning models probability
@@ -223,27 +224,27 @@ estimation . The selected models are <code class="xref py py-mod docutils litera
 MRCs and Logistic Regression (LR) &amp; C-Support Vector Classifier(SVC) with the
 implementation from <code class="xref py py-obj docutils literal notranslate"><span class="pre">Scikit-Learn</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import needed modules</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTENC</span>
-<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
-<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.over_sampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">SMOTENC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">classification_report</span><span class="p">,</span>
     <span class="n">confusion_matrix</span><span class="p">,</span>
     <span class="n">ConfusionMatrixDisplay</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.svm</span><span class="w"> </span><span class="kn">import</span> <span class="n">SVC</span>
 
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMRC</span><span class="p">,</span> <span class="n">MRC</span>
 </pre></div>
 </div>
-<div class="section" id="covid-dataset-loader">
+<section id="covid-dataset-loader">
 <h2>COVID dataset Loader:<a class="headerlink" href="#covid-dataset-loader" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_covid</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">data_consensus</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/data_consensus.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
     <span class="c1"># rename variables</span>
     <span class="n">variable_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -298,8 +299,8 @@ implementation from <code class="xref py py-obj docutils literal notranslate"><s
     <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="addressing-dataset-imbalance-with-smote">
+</section>
+<section id="addressing-dataset-imbalance-with-smote">
 <h2>Addressing dataset imbalance with SMOTE<a class="headerlink" href="#addressing-dataset-imbalance-with-smote" title="Permalink to this headline">¶</a></h2>
 <p>The COVID dataset has a significant problem of class imbalance where the
 positive outcome has a prevalence of 85% (1522) whilst the negative outcome
@@ -363,7 +364,7 @@ We will use the method <code class="xref py py-obj docutils literal notranslate"
 W. P. (2002). SMOTE: synthetic minority over-sampling
 technique. Journal of artificial intelligence research,
 16, 321-357.</p>
-</div>
+</aside>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We fit the data to the oversampler</span>
 <span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTENC</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -626,8 +627,8 @@ the creation of the synthetic cases through 5 nearest neighbors.</p>
 </div>
 </div>
 <br />
-<br /></div>
-<div class="section" id="probability-estimation">
+<br /></section>
+<section id="probability-estimation">
 <h2>Probability estimation<a class="headerlink" href="#probability-estimation" title="Permalink to this headline">¶</a></h2>
 <p>In this section we will estimate the conditional probabilities and analyse
 the distribution of the probabilities depending on the real outcome . The
@@ -635,13 +636,13 @@ probability estimation is better when using <code class="xref py py-mod docutils
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">CMRC(phi</span> <span class="pre">=</span> <span class="pre">'threshold',</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log')</span></code> and
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">MRC(phi</span> <span class="pre">=</span> <span class="pre">'fourier'</span> <span class="pre">,</span> <span class="pre">loss</span> <span class="pre">=</span> <span class="pre">'log'</span></code>. We will then compare these MRCs
 with SVC and LR with default parameters.</p>
-<div class="section" id="load-classification-function">
+<section id="load-classification-function">
 <h3>Load classification function:<a class="headerlink" href="#load-classification-function" title="Permalink to this headline">¶</a></h3>
 <p>These function classify each of the cases in their correspondent
 confusion matrix’s category. It also allows to set the desired cut-off
 for the predictions.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">defDataFrame</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes x,y test and train and a fitted model and</span>
 <span class="sd">    computes the probabilities to then classify in TP,TN , FP , FN.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -677,8 +678,8 @@ for the predictions.</p>
     <span class="k">return</span> <span class="n">df</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="train-models">
+</section>
+<section id="train-models">
 <h3>Train models:<a class="headerlink" href="#train-models" title="Permalink to this headline">¶</a></h3>
 <p>We will train the models with 80% of the data and then test with the other
 20% selected randomly.</p>
@@ -807,8 +808,8 @@ positives (FP). It is important to consider that in this classification
 problem the missclassification of a patient with fatal outcome (FN) is
 considered a much more serious error.</p>
 </div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">scatterPlot</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and creates a boxplot of</span>
 <span class="sd">    different classification by mortal probability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -847,8 +848,8 @@ considered a much more serious error.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">plotHisto</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plotHisto</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes DF created with defDataFrame and plots histograms based on the</span>
 <span class="sd">    probability of mortality by real Status at a selected @threshold.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -905,7 +906,8 @@ considered a much more serious error.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_001.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_001.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/COVID_001.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_001.png" width="600" />
+</a>
 <blockquote>
 <div><p>0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
 model shows a distribution where most of the cases are grouped around 0 and 1
@@ -947,7 +949,8 @@ decease probabilities.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_002.png"><img alt="Confusion Matrices" class="align-center" src="../../_images/COVID_002.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/COVID_002.png"><img alt="Confusion Matrices" class="align-center" src="../../_images/COVID_002.png" width="600" />
+</a>
 <hr class="docutils" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">classification_report</span><span class="p">(</span>
@@ -1224,8 +1227,8 @@ level0 row3" >support</th>
 <div><p>We can see in the classification reports and the confusion matrices the
 outperformance of CMRC.</p>
 </div></blockquote>
-</div>
-<div class="section" id="setting-the-cut-off-point-for-binary-classification">
+</section>
+<section id="setting-the-cut-off-point-for-binary-classification">
 <h3>Setting the cut-off point for binary classification:<a class="headerlink" href="#setting-the-cut-off-point-for-binary-classification" title="Permalink to this headline">¶</a></h3>
 <p>In this section we will use beeswarm-boxplot to select the cut-off point
 to optimise the tradeoff between false positives and false negatives. The
@@ -1252,7 +1255,8 @@ are located near the cut-off point and the true guesses are located near the
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_003.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_003.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../_images/COVID_003.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_003.png" width="600" />
+</a>
 <p>We see in the CMRC that the correct cases have a very good
 conditional probability estimation with around 75% of the cases very close to
 the extreme values. The most problematic cases are those with a low mortality
@@ -1429,9 +1433,9 @@ class.</p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>

@@ -183,27 +183,27 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">itertools</span> <span class="k">as</span> <span class="nn">it</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">it</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">cvxpy</span> <span class="k">as</span> <span class="nn">cvx</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">scipy.special</span> <span class="k">as</span> <span class="nn">scs</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="kn">import</span> <span class="n">check_array</span>
-<span class="kn">from</span> <span class="nn">sklearn.utils.validation</span> <span class="kn">import</span> <span class="n">check_is_fitted</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">sparse</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">sparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
 <span class="c1"># Import the MRC super class</span>
-<span class="kn">from</span> <span class="nn">MRCpy</span> <span class="kn">import</span> <span class="n">BaseMRC</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.cvx</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.nesterov</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">MRCpy.solvers.cg</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cvx</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.nesterov</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cg</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<div class="viewcode-block" id="MRC"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC">[docs]</a><span class="k">class</span> <span class="nc">MRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">MRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Minimax Risk Classifier</span>
 
 <span class="sd">    This class implements Minimax Risk Classifiers (MRC) proposed in</span>
@@ -490,7 +490,7 @@
 
 <span class="sd">    &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="MRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="MRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;0-1&#39;</span><span class="p">,</span>
                  <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -546,8 +546,8 @@
                          <span class="n">fit_intercept</span><span class="o">=</span><span class="n">fit_intercept</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="MRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC.fit"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Fit the MRC model.</span>
 
 <span class="sd">        Computes the parameters required for the minimax risk optimization</span>
@@ -646,8 +646,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="MRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>    <span class="k">def</span> <span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Solves the minimax risk problem</span>
 <span class="sd">        for different types of loss (0-1 and log loss).</span>
 <span class="sd">        The solution of the default MRC optimization</span>
@@ -713,7 +713,7 @@
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;0-1&#39;</span><span class="p">:</span>
                 <span class="c1"># Compute the varphi function for 0-1 loss</span>
-                <span class="k">def</span> <span class="nf">neg_nu</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">neg_nu</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span>
                         <span class="k">return</span> <span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span>
@@ -740,7 +740,7 @@
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
                 <span class="n">numConstr</span> <span class="o">=</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-                <span class="k">def</span> <span class="nf">neg_nu</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">neg_nu</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="k">return</span> <span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span>
                                     <span class="n">cvx</span><span class="o">.</span><span class="n">log_sum_exp</span><span class="p">([</span><span class="n">X_transform</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> 
@@ -810,8 +810,8 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Define the subobjective function and</span>
                     <span class="c1"># its gradient for the 0-1 loss function.                    </span>
-                    <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
-                        <span class="sd">&quot;&quot;&quot;</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+<span class="w">                        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                        mu: (n_classes, n_features)</span>
 <span class="sd">                        X_transform: (n_samples, n_features)</span>
 <span class="sd">                        &quot;&quot;&quot;</span>
@@ -837,8 +837,8 @@
 
                         <span class="k">return</span> <span class="n">exprs</span><span class="p">[</span><span class="n">set_idx</span><span class="p">],</span> <span class="n">sample_idx</span><span class="p">,</span> <span class="n">S</span>
                     
-                    <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
-                        <span class="sd">&quot;&quot;&quot;</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
+<span class="w">                        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                        mu: (n_classes, n_features)</span>
 <span class="sd">                        idx: sample index</span>
 <span class="sd">                        subset: tuple of class indices</span>
@@ -863,7 +863,7 @@
 
                 <span class="c1"># Define the subobjective function and</span>
                 <span class="c1"># its gradient for the log loss function.                </span>
-                <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
                     <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">phi_mu</span><span class="p">,</span> <span class="o">-</span><span class="n">phi_mu</span><span class="p">])</span>
@@ -877,7 +877,7 @@
 
                     <span class="k">return</span> <span class="n">log_sum_exp</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">],</span> <span class="n">sample_idx</span><span class="p">,</span> <span class="n">subset</span>
 
-                <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
                     <span class="n">X_idx</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
                     <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">X_idx</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -1016,7 +1016,7 @@
             <span class="c1"># Perform constraint generation approach for large number</span>
             <span class="c1"># of samples.</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">MRCpy.solvers.main_ccg_large_n.main</span> <span class="kn">import</span> <span class="p">(</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                         <span class="n">main_large_n</span>
                     <span class="p">)</span>
 
@@ -1034,7 +1034,7 @@
                     <span class="p">)</span>
 
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">MRCpy.solvers.main_ccg_large_n_multiclass.main</span> <span class="kn">import</span> <span class="p">(</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_multiclass.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                         <span class="n">main_large_n_efficient_multiclass</span>
                     <span class="p">)</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">,</span> 
@@ -1050,7 +1050,7 @@
             <span class="c1"># Perform a combination of constraint and column generation approach</span>
             <span class="c1"># for large number of samples and features.</span>
                 <span class="k">if</span> <span class="n">is_sparse</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="kn">from</span> <span class="nn">MRCpy.solvers.main_ccg_large_n_m_sparse_binary.main</span> <span class="kn">import</span> <span class="p">(</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_m_sparse_binary.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                         <span class="n">main_large_n_m_sparse_binary</span>
                     <span class="p">)</span>
 
@@ -1073,7 +1073,7 @@
                     <span class="c1">#TODO: Implement this solver more efficiently</span>
                     <span class="c1">#      Current implementation in the folder </span>
                     <span class="c1">#      solvers/main_ccg_large_n_m is inefficient.</span>
-                    <span class="kn">from</span> <span class="nn">MRCpy.solvers.main_ccg_large_n_m.main</span> <span class="kn">import</span> <span class="p">(</span>
+                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_m.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                         <span class="n">main_large_n_m</span>
                     <span class="p">)</span>
                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="n">R_k</span><span class="p">,</span>
@@ -1103,8 +1103,8 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="MRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_upper_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_upper_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
@@ -1152,8 +1152,8 @@
                                          <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span></div>
 
-<div class="viewcode-block" id="MRC.get_lower_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_lower_bound">[docs]</a>    <span class="k">def</span> <span class="nf">get_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC.get_lower_bound"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.get_lower_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Obtains the lower bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
@@ -1239,8 +1239,8 @@
                 <span class="c1"># Use the subgradient approach for the convex optimization of MRC</span>
 
                 <span class="c1"># Defining the partial objective and its gradient.</span>
-                <span class="k">def</span> <span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
-                    <span class="sd">&quot;&quot;&quot;</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                    mu: (n_classes, n_features)</span>
 <span class="sd">                    X_transform: (n_samples, n_features)</span>
 <span class="sd">                    &quot;&quot;&quot;</span>
@@ -1254,8 +1254,8 @@
                     <span class="n">sample_idx</span><span class="p">,</span> <span class="n">label_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">varphi_lower</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
                     <span class="k">return</span> <span class="n">varphi_lower</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="n">label_idx</span><span class="p">],</span> <span class="n">sample_idx</span><span class="p">,</span>  <span class="p">[</span><span class="n">label_idx</span><span class="p">]</span>
 
-                <span class="k">def</span> <span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
-                    <span class="sd">&quot;&quot;&quot;</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
+<span class="w">                    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">                    mu: (n_classes, n_features)</span>
 <span class="sd">                    idx: sample index</span>
 <span class="sd">                    subset: tuple of class indices</span>
@@ -1317,8 +1317,8 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span></div>
 
-<div class="viewcode-block" id="MRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.predict_proba">[docs]</a>    <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="MRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Conditional probabilities corresponding to each class</span>
 <span class="sd">        for each unlabeled input instance</span>
 
