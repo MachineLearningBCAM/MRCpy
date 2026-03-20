@@ -1,0 +1,17 @@
+version: 2
+
+jobs:
+  skip:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "Skipping CI on gh-pages branch"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - skip:
+          filters:
+            branches:
+              only: gh-pages
