@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
@@ -194,7 +195,7 @@
 <p class="admonition-title">Note</p>
 <p>Click <a class="reference internal" href="#sphx-glr-download-auto-examples-further-examples-z-covid-py"><span class="std std-ref">here</span></a>
 to download the full example code</p>
-</aside>
+</div>
 <section class="sphx-glr-example-title" id="example-predicting-covid-19-patients-outcome-using-mrcs">
 <span id="ex-covid"></span><span id="sphx-glr-auto-examples-further-examples-z-covid-py"></span><h1>Example: Predicting COVID-19 patients outcome using MRCs<a class="headerlink" href="#example-predicting-covid-19-patients-outcome-using-mrcs" title="Permalink to this headline">¶</a></h1>
 <p>In this example we will use <a class="reference internal" href="../../generated/MRCpy.MRC.html#MRCpy.MRC" title="MRCpy.MRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code></a> and <a class="reference internal" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a> to predict the outcome
@@ -215,7 +216,7 @@ risk indicator using Logistic regression refer to:</p>
 COVID-19 Mortality Risk Indicator Using a Multistart Framework”
 , in <em>2021 IEEE International Conference on Bioinformatics and
 Biomedicine (BIBM)</em>, 2021, pp. 2179–2186.</p>
-</aside>
+</div>
 <p>First we will see how to deal with class imbalance when training a model using
 syntethic minority over-sampling (SMOTE) techniques. Furthermore, we will
 comparetwo MRC with two state of the art machine learning models probability
@@ -364,7 +365,7 @@ We will use the method <code class="xref py py-obj docutils literal notranslate"
 W. P. (2002). SMOTE: synthetic minority over-sampling
 technique. Journal of artificial intelligence research,
 16, 321-357.</p>
-</aside>
+</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We fit the data to the oversampler</span>
 <span class="n">smotefit</span> <span class="o">=</span> <span class="n">SMOTENC</span><span class="p">(</span><span class="n">sampling_strategy</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">categorical_features</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
 <span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">smotefit</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -906,8 +907,7 @@ considered a much more serious error.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_001.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_001.png" width="600" />
-</a>
+<a class="reference internal image-reference" href="../../_images/COVID_001.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_001.png" style="width: 600px;" /></a>
 <blockquote>
 <div><p>0.25 to 0.75. This estimation is very sensible to cut-off changes. The CMRC
 model shows a distribution where most of the cases are grouped around 0 and 1
@@ -949,8 +949,7 @@ decease probabilities.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_002.png"><img alt="Confusion Matrices" class="align-center" src="../../_images/COVID_002.png" width="600" />
-</a>
+<a class="reference internal image-reference" href="../../_images/COVID_002.png"><img alt="Confusion Matrices" class="align-center" src="../../_images/COVID_002.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
     <span class="n">classification_report</span><span class="p">(</span>
@@ -1255,8 +1254,7 @@ are located near the cut-off point and the true guesses are located near the
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/COVID_003.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_003.png" width="600" />
-</a>
+<a class="reference internal image-reference" href="../../_images/COVID_003.png"><img alt="Imagen de prueba" class="align-center" src="../../_images/COVID_003.png" style="width: 600px;" /></a>
 <p>We see in the CMRC that the correct cases have a very good
 conditional probability estimation with around 75% of the cases very close to
 the extreme values. The most problematic cases are those with a low mortality

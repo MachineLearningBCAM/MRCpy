@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
@@ -199,7 +200,7 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">MRCpy.</span></span><span class="sig-name descname"><span class="pre">MRC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0-1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deterministic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'subgrad'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">phi_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/mrc.html#MRC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.MRC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Minimax Risk Classifier</p>
 <p>This class implements Minimax Risk Classifiers (MRC) proposed in
-<a class="reference internal" href="#r5b93aed459d1-1" id="citation-reference-1">[1]</a> using the default constraints. It supports two loss functions:
+<a class="reference internal" href="#r5b93aed459d1-1" id="id1">[1]</a> using the default constraints. It supports two loss functions:
 0-1 loss and log-loss.</p>
 <p>The classifier solves the minimax risk problem:</p>
 <div class="math notranslate nohighlight">
@@ -218,10 +219,10 @@ the expectations of the feature mappings <span class="math notranslate nohighlig
 and <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span> controls the size of the uncertainty
 set based on the estimation accuracy.</p>
 <p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_1\)</span> provide upper and lower bounds
-on the expected loss. See <a class="reference internal" href="#r5b93aed459d1-1" id="citation-reference-2">[1]</a> and <a class="reference internal" href="#r5b93aed459d1-3" id="citation-reference-3">[3]</a> for the detailed
+on the expected loss. See <a class="reference internal" href="#r5b93aed459d1-1" id="id2">[1]</a> and <a class="reference internal" href="#r5b93aed459d1-3" id="id3">[3]</a> for the detailed
 mathematical framework.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>loss</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> {‘0-1’, ‘log’}, default = ‘0-1’</span></dt><dd><p>Type of loss function to use for the risk minimization. 0-1 loss
 quantifies the probability of classification error at a certain example
@@ -278,8 +279,8 @@ also affects the computational complexity.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For more information about the constraint generation 
-algorithm for 0-1 MRC, see <a class="reference internal" href="#r5b93aed459d1-4" id="citation-reference-4">[4]</a></p>
-</aside>
+algorithm for 0-1 MRC, see <a class="reference internal" href="#r5b93aed459d1-4" id="id4">[4]</a></p>
+</div>
 <dl class="simple">
 <dt>’ccg’</dt><dd><p>Efficient learning algorithm for large number of samples
 and features based on constraint generation. Efficiently
@@ -294,8 +295,8 @@ These hyperparameters also affect the comptutional complexity.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For more information about the constraint generation 
-algorithm for 0-1 MRC, see <a class="reference internal" href="#r5b93aed459d1-5" id="citation-reference-5">[5]</a></p>
-</aside>
+algorithm for 0-1 MRC, see <a class="reference internal" href="#r5b93aed459d1-5" id="id5">[5]</a></p>
+</div>
 </dd>
 <dt><strong>max_iters</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>, default = <code class="xref py py-obj docutils literal notranslate"><span class="pre">10000</span></code></span></dt><dd><p>Maximum number of iterations to use
 for finding the solution of optimization when
@@ -346,45 +347,39 @@ can be found in the corresponding documentation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a></dt><dd><p>CMRC using uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> with additional marginal constraints <a class="reference internal" href="#r5b93aed459d1-2" id="citation-reference-6">[2]</a>.</p>
+<dt><a class="reference internal" href="MRCpy.CMRC.html#MRCpy.CMRC" title="MRCpy.CMRC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a></dt><dd><p>CMRC using uncertainty set <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> with additional marginal constraints.</p>
 </dd>
 </dl>
-</aside>
+</div>
 <p class="rubric">References</p>
-<div role="list" class="citation-list">
-<div class="citation" id="r5b93aed459d1-1" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#citation-reference-1">1</a>,<a role="doc-backlink" href="#citation-reference-2">2</a>)</span>
-<p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax
+<dl class="citation">
+<dt class="label" id="r5b93aed459d1-1"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax
 Classification with 0-1 Loss and Performance Guarantees.
 Advances in Neural Information Processing Systems, 33, 302-312.</p>
-</div>
-<div class="citation" id="r5b93aed459d1-2" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-6">2</a><span class="fn-bracket">]</span></span>
-<p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
+</dd>
+<dt class="label" id="r5b93aed459d1-2"><span class="brackets">2</span></dt>
+<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized
 Maximum Entropy for Supervised Classification. IEEE Transactions
 on Information Theory, 68(4), 2530-2550.</p>
-</div>
-<div class="citation" id="r5b93aed459d1-3" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-3">3</a><span class="fn-bracket">]</span></span>
-<p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
+</dd>
+<dt class="label" id="r5b93aed459d1-3"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
 Classifiers with 0-1 Loss. Journal of Machine Learning Research,
 24(208), 1-48.</p>
-</div>
-<div class="citation" id="r5b93aed459d1-4" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-4">4</a><span class="fn-bracket">]</span></span>
-<p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient
+</dd>
+<dt class="label" id="r5b93aed459d1-4"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient
 Learning of Minimax Risk Classifiers in High Dimensions. The
 39th Conference on Uncertainty in Artificial Intelligence (UAI),
 206-215.</p>
-</div>
-<div class="citation" id="r5b93aed459d1-5" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-5">5</a><span class="fn-bracket">]</span></span>
-<p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient
+</dd>
+<dt class="label" id="r5b93aed459d1-5"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
+<dd><p>Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient
 Large-Scale Learning of Minimax Risk Classifiers. IEEE
 International Conference on Data Mining (ICDM).</p>
-</div>
-</div>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <p>Simple example of using MRC with default seetings: 0-1 loss and linear
 feature mapping.
@@ -432,7 +427,7 @@ using <a class="reference internal" href="#MRCpy.MRC.score" title="MRCpy.MRC.sco
 </pre></div>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl>
 <dt><strong>is_fitted_</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a></span></dt><dd><p>Whether the classifier is fitted i.e., the parameters are learnt
 or not.</p>
@@ -464,6 +459,10 @@ for the lower bound of the function.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.MRC.error" title="MRCpy.MRC.error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">error</span></code></a>(X, Y)</p></td>
 <td><p>Return the mean error obtained for the given test data and labels.</p></td>
@@ -517,7 +516,7 @@ for the lower bound of the function.</p>
 <span class="sig-name descname"><span class="pre">error</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the mean error obtained for the given test data and labels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
@@ -527,7 +526,7 @@ used to compute the error in the prediction.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>error</strong><span class="classifier">float</span></dt><dd><p>Mean error of the learned MRC classifier</p>
 </dd>
@@ -543,7 +542,7 @@ used to compute the error in the prediction.</p>
 <p>Computes the parameters required for the minimax risk optimization
 and then calls the <a class="reference internal" href="#MRCpy.MRC.minimax_risk" title="MRCpy.MRC.minimax_risk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimax_risk</span></code></a> function to solve the optimization.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used in</p>
 <ul class="simple">
@@ -565,7 +564,7 @@ give an advantage in training time.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>self :</dt><dd><p>Fitted estimator</p>
 </dd>
@@ -579,7 +578,7 @@ give an advantage in training time.</p>
 <span class="sig-name descname"><span class="pre">get_lower_bound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/mrc.html#MRC.get_lower_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.MRC.get_lower_bound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtains the lower bound on the expected loss for the fitted classifier.</p>
 <dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl>
 <dt><strong>lower_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Lower bound of the error for the fitted classifier.</p>
 </dd>
@@ -595,7 +594,7 @@ give an advantage in training time.</p>
 <p>Please check <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
 mechanism works.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>routing</strong><span class="classifier">MetadataRequest</span></dt><dd><p>A <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.utils.metadata_routing.MetadataRequest.html#sklearn.utils.metadata_routing.MetadataRequest" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">MetadataRequest</span></code></a> encapsulating
 routing information.</p>
@@ -610,14 +609,14 @@ routing information.</p>
 <span class="sig-name descname"><span class="pre">get_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.MRC.get_params" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get parameters for this estimator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>deep</strong><span class="classifier">bool, default=True</span></dt><dd><p>If True, will return the parameters for this estimator and
 contained subobjects that are estimators.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>params</strong><span class="classifier">dict</span></dt><dd><p>Parameter names mapped to their values.</p>
 </dd>
@@ -631,7 +630,7 @@ contained subobjects that are estimators.</p>
 <span class="sig-name descname"><span class="pre">get_upper_bound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/mrc.html#MRC.get_upper_bound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.MRC.get_upper_bound" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the upper bound on the expected loss for the fitted classifier.</p>
 <dl class="field-list">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><dl>
 <dt><strong>upper_bound</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code></a></span></dt><dd><p>Upper bound of the expected loss for the fitted classifier.</p>
 </dd>
@@ -648,7 +647,7 @@ for different types of loss (0-1 and log loss).
 The solution of the default MRC optimization
 gives the upper bound of the error.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Training instances used for solving
 the minimax risk optimization problem.</p>
@@ -663,7 +662,7 @@ for the expectations of the feature mappings.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>self :</dt><dd><p>Fitted estimator</p>
 </dd>
@@ -679,14 +678,14 @@ for the expectations of the feature mappings.</p>
 <p>Returns the predicted classes for the given instances in <code class="docutils literal notranslate"><span class="pre">X</span></code>
 using the probabilities given by the function <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_dimensions)</span></dt><dd><p>Test instances for which the labels are to be predicted
 by the MRC model.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>y_pred</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>Predicted labels corresponding to the given instances.</p>
 </dd>
@@ -701,14 +700,14 @@ by the MRC model.</p>
 <dd><p>Conditional probabilities corresponding to each class
 for each unlabeled input instance</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Testing instances for which
 the prediction probabilities are calculated for each class.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
 <dt><strong>hy_x</strong><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray</span></code> of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_classes</span></code>)</span></dt><dd><p>Probabilities <span class="math notranslate nohighlight">\((p(y|x))\)</span> corresponding to the predictions
 for each class.</p>
@@ -726,7 +725,7 @@ for each class.</p>
 which is a harsh metric since you require for each sample that
 each label set be correctly predicted.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Test samples.</p>
 </dd>
@@ -736,7 +735,7 @@ each label set be correctly predicted.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code>.</p>
 </dd>
@@ -771,15 +770,15 @@ parameters and not others.</p>
 <p>This method is only relevant if this estimator is used as a
 sub-estimator of a meta-estimator, e.g. used inside a
 <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
-</aside>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>X_</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">X_</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
 </dd>
@@ -797,13 +796,13 @@ sub-estimator of a meta-estimator, e.g. used inside a
 parameters of the form <code class="docutils literal notranslate"><span class="pre">&lt;component&gt;__&lt;parameter&gt;</span></code> so that it’s
 possible to update each component of a nested object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>**params</strong><span class="classifier">dict</span></dt><dd><p>Estimator parameters.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>self</strong><span class="classifier">estimator instance</span></dt><dd><p>Estimator instance.</p>
 </dd>
@@ -838,15 +837,15 @@ parameters and not others.</p>
 <p>This method is only relevant if this estimator is used as a
 sub-estimator of a meta-estimator, e.g. used inside a
 <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>. Otherwise it has no effect.</p>
-</aside>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sample_weight</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sample_weight</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">score</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
 </dd>
@@ -859,10 +858,10 @@ sub-estimator of a meta-estimator, e.g. used inside a
 
 <section id="examples-using-mrcpy-mrc">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.MRC</span></code><a class="headerlink" href="#examples-using-mrcpy-mrc" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit..."><figure class="align-default" id="figure-1">
+<div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit..."><figure class="align-default" id="id11">
 <img alt="Example: Predicting COVID-19 patients outcome using MRCs" src="../_images/sphx_glr_z_COVID_thumb.png" />
 <figcaption>
-<p><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/z_COVID.html#sphx-glr-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Example: Predicting COVID-19 patients outcome using MRCs</span></a></span><a class="headerlink" href="#figure-1" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text"><a class="reference internal" href="../auto_examples/further_examples/z_COVID.html#sphx-glr-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Example: Predicting COVID-19 patients outcome using MRCs</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </div><div style='clear:both'></div></section>

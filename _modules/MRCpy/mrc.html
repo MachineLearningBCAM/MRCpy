@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
@@ -411,6 +412,33 @@
 <span class="sd">        for the lower bound of the function.</span>
 
 
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with additional marginal constraints.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax</span>
+<span class="sd">           Classification with 0-1 Loss and Performance Guarantees.</span>
+<span class="sd">           Advances in Neural Information Processing Systems, 33, 302-312.</span>
+
+<span class="sd">    .. [2] Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized</span>
+<span class="sd">           Maximum Entropy for Supervised Classification. IEEE Transactions</span>
+<span class="sd">           on Information Theory, 68(4), 2530-2550.</span>
+
+<span class="sd">    .. [3] Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk</span>
+<span class="sd">           Classifiers with 0-1 Loss. Journal of Machine Learning Research,</span>
+<span class="sd">           24(208), 1-48.</span>
+
+<span class="sd">    .. [4] Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient</span>
+<span class="sd">           Learning of Minimax Risk Classifiers in High Dimensions. The</span>
+<span class="sd">           39th Conference on Uncertainty in Artificial Intelligence (UAI),</span>
+<span class="sd">           206-215.</span>
+
+<span class="sd">    .. [5] Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient</span>
+<span class="sd">           Large-Scale Learning of Minimax Risk Classifiers. IEEE</span>
+<span class="sd">           International Conference on Data Mining (ICDM).</span>
+
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
@@ -459,35 +487,6 @@
 <span class="sd">    &gt;&gt;&gt; # (mean accuracy on the given test data and labels)</span>
 <span class="sd">    &gt;&gt;&gt; clf.score(X_test, Y_test)</span>
 <span class="sd">    0.7731958762886598</span>
-
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with additional marginal constraints [2]_.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    .. [1] Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax</span>
-<span class="sd">           Classification with 0-1 Loss and Performance Guarantees.</span>
-<span class="sd">           Advances in Neural Information Processing Systems, 33, 302-312.</span>
-
-<span class="sd">    .. [2] Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized</span>
-<span class="sd">           Maximum Entropy for Supervised Classification. IEEE Transactions</span>
-<span class="sd">           on Information Theory, 68(4), 2530-2550.</span>
-
-<span class="sd">    .. [3] Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk</span>
-<span class="sd">           Classifiers with 0-1 Loss. Journal of Machine Learning Research,</span>
-<span class="sd">           24(208), 1-48.</span>
-
-<span class="sd">    .. [4] Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient</span>
-<span class="sd">           Learning of Minimax Risk Classifiers in High Dimensions. The</span>
-<span class="sd">           39th Conference on Uncertainty in Artificial Intelligence (UAI),</span>
-<span class="sd">           206-215.</span>
-
-<span class="sd">    .. [5] Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient</span>
-<span class="sd">           Large-Scale Learning of Minimax Risk Classifiers. IEEE</span>
-<span class="sd">           International Conference on Data Mining (ICDM).</span>
-
 <span class="sd">    &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="MRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>

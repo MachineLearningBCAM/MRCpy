@@ -1,0 +1,9 @@
+/* Hide the (1,2,3) back-reference links next to citation labels,
+   but keep the [N] label visible for singly-cited references.
+   Multi-cited refs use <span class="fn-backref">(1,2)</span>.
+   Single-cited refs use <a class="fn-backref">N</a> inside <span class="brackets">. */
+.citation dt span.fn-backref {
+    display: inline-block;
+    width: 0;
+    overflow: hidden;
+}

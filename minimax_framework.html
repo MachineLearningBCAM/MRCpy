@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
@@ -182,11 +183,11 @@
             
   <section id="minimax-framework">
 <h1>Minimax Framework<a class="headerlink" href="#minimax-framework" title="Permalink to this headline">¶</a></h1>
-<p>MRCpy <a class="brackets" href="#footnote-3" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> implements minimax risk classifiers (MRCs) that obtain
+<p>MRCpy <a class="footnote-reference brackets" href="#id7" id="id1">3</a> implements minimax risk classifiers (MRCs) that obtain
 classification rules by minimizing the worst-case expected loss over an
 uncertainty set of distributions. This section provides a general overview
 of the framework underlying all methods in the library, following the
-formulation in <a class="brackets" href="#footnote-4" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>.</p>
+formulation in <a class="footnote-reference brackets" href="#id8" id="id2">4</a>.</p>
 <section id="minimax-risk-classification">
 <h2>Minimax Risk Classification<a class="headerlink" href="#minimax-risk-classification" title="Permalink to this headline">¶</a></h2>
 <p>Given a loss function <span class="math notranslate nohighlight">\(\ell\)</span>, an MRC obtains a classification rule
@@ -209,7 +210,7 @@ bound the expectations of a feature mapping <span class="math notranslate nohigh
 \left| \mathbb{E}_{\mathrm{p}}[\Phi(x,y)] - \boldsymbol{\tau} \right|
 \leq \boldsymbol{\lambda} \right\}\]</div>
 <p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_1\)</span> (the <code class="docutils literal notranslate"><span class="pre">MRC</span></code> class) provide upper and
-lower bounds on the expected loss <a class="brackets" href="#footnote-1" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+lower bounds on the expected loss <a class="footnote-reference brackets" href="#id5" id="id3">1</a>.</p>
 </li>
 <li><p><strong>Uncertainty set</strong> <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span>: Adds an additional constraint
 that fixes the instances’ marginal distribution to coincide with the
@@ -221,7 +222,7 @@ empirical marginal:</p>
 \leq \boldsymbol{\lambda} \right\}\]</div>
 <p>MRCs using <span class="math notranslate nohighlight">\(\mathcal{U}_2\)</span> (the <code class="docutils literal notranslate"><span class="pre">CMRC</span></code> class) correspond to
 popular techniques such as L1-regularized logistic regression, zero-one
-adversarial classifiers, and maximum entropy machines <a class="brackets" href="#footnote-2" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+adversarial classifiers, and maximum entropy machines <a class="footnote-reference brackets" href="#id6" id="id4">2</a>.</p>
 </li>
 </ul>
 <p>In both cases, <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> denotes the empirical mean estimates of the
@@ -255,32 +256,28 @@ classification framework; see the references below for details.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="footnote-1" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">1</a><span class="fn-bracket">]</span></span>
-<p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id3">1</a></span></dt>
+<dd><p>Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk
 Classifiers with 0-1 Loss. Journal of Machine Learning Research,
 24(208), 1-48.</p>
-</aside>
-<aside class="footnote brackets" id="footnote-2" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">2</a><span class="fn-bracket">]</span></span>
-<p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized Maximum
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dd><p>Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized Maximum
 Entropy for Supervised Classification. IEEE Transactions on
 Information Theory, 68(4), 2530-2550.</p>
-</aside>
-<aside class="footnote brackets" id="footnote-3" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">3</a><span class="fn-bracket">]</span></span>
-<p>Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A.,
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">3</a></span></dt>
+<dd><p>Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A.,
 &amp; Mazuelas, S. (2021). MRCpy: A Library for Minimax Risk Classifiers.
 arXiv preprint arXiv:2108.01952.</p>
-</aside>
-<aside class="footnote brackets" id="footnote-4" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">4</a><span class="fn-bracket">]</span></span>
-<p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id2">4</a></span></dt>
+<dd><p>Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification
 with 0-1 Loss and Performance Guarantees. Advances in Neural
 Information Processing Systems, 33, 302-312.</p>
-</aside>
-</aside>
+</dd>
+</dl>
 </section>
 </section>
 

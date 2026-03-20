@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
@@ -204,7 +205,7 @@ You may then use <code class="docutils literal notranslate"><span class="pre">py
 <p>The solver based on cvxpy in the library uses the GUROBI optimizer which requires a license.
 You can get a free academic license from
 <a class="reference external" href="https://portal.gurobi.com/iam/login/?target=https%3A%2F%2Fportal.gurobi.com%2Fiam%2Flicenses%2Flist">here</a>.</p>
-</aside>
+</div>
 <p><strong>Dependencies</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Python</span></code> &gt;= 3.9</p></li>
@@ -223,7 +224,7 @@ You can get a free academic license from
 alone may not be sufficient. See the
 <a class="reference external" href="https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation">pycddlib installation guide</a>
 for details on installing GMP and other dependencies.</p>
-</aside>
+</div>
 <p>Optional (for PyTorch MGCE classifier):</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">torch</span></code> &gt;= 1.9.0</p></li>
@@ -277,12 +278,12 @@ using 0-1 loss (i.e., the default loss).</p>
 </section>
 <section id="available-datasets">
 <h3>Available Datasets<a class="headerlink" href="#available-datasets" title="Permalink to this headline">¶</a></h3>
-<table class="docutils align-default">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col style="width: 50.0%" />
-<col style="width: 16.7%" />
-<col style="width: 16.7%" />
-<col style="width: 16.7%" />
+<col style="width: 50%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Loader</p></th>
@@ -389,12 +390,12 @@ using 0-1 loss (i.e., the default loss).</p>
 <h3>Pre-extracted Feature Datasets<a class="headerlink" href="#pre-extracted-feature-datasets" title="Permalink to this headline">¶</a></h3>
 <p>These datasets provide features extracted using a pretrained ResNet18 neural network.
 They are not available in the pip-installed version.</p>
-<table class="docutils align-default">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col style="width: 57.1%" />
-<col style="width: 14.3%" />
-<col style="width: 14.3%" />
-<col style="width: 14.3%" />
+<col style="width: 57%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Loader</p></th>
@@ -427,11 +428,11 @@ They are not available in the pip-installed version.</p>
 <h3>Newsgroup Text Datasets<a class="headerlink" href="#newsgroup-text-datasets" title="Permalink to this headline">¶</a></h3>
 <p>Binary text classification datasets derived from the 20 Newsgroups corpus,
 with TF-IDF features (1000 dimensions).</p>
-<table class="docutils align-default">
+<table class="colwidths-given docutils align-default">
 <colgroup>
-<col style="width: 66.7%" />
-<col style="width: 16.7%" />
-<col style="width: 16.7%" />
+<col style="width: 67%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Loader</p></th>

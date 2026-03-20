@@ -4,7 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
   <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
@@ -216,9 +217,9 @@ Pérez, A., &amp; Mazuelas, S. (2021).
 MRCpy: A Library for Minimax Risk Classifiers.
 arXiv preprint arXiv:2108.01952.</a></p></li>
 </ul>
-</aside>
+</div>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>n_classes</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a></span></dt><dd><p>Number of classes in the dataset</p>
 </dd>
@@ -237,7 +238,7 @@ for each dimension.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dt class="field-even">Attributes</dt>
 <dd class="field-even"><dl>
 <dt><strong>self.thrsVal</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Threshold values learned from the training data.</p>
 </dd>
@@ -254,6 +255,10 @@ and the length of the feature mapping is set.</p>
 </dl>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="MRCpy.phi.ThresholdPhi.d_tree_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_tree_split</span></code></a>(X, Y[, n_thresholds])</p></td>
 <td><p>Learn the univariate thresholds by using the split points of decision trees for each dimension of data.</p></td>
@@ -291,7 +296,7 @@ and the length of the feature mapping is set.</p>
 by using the split points of decision trees
 for each dimension of data.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled instances.</p>
 </dd>
@@ -301,7 +306,7 @@ for each dimension of data.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
 <dt><strong>prodThrsDim</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_thresholds</span></code>)</span></dt><dd><p>Dimension in which the thresholds are defined.</p>
 </dd>
@@ -318,7 +323,7 @@ for each dimension of data.</p>
 <dd><p>Computes the average value of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span> to estimate <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>
 that defines the constraint of the uncertainty set of distribution.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features corresponding with the training instances 
 <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
@@ -327,7 +332,7 @@ that defines the constraint of the uncertainty set of distribution.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>tau_</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Empirical mean of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>.</p>
 </dd>
@@ -344,7 +349,7 @@ that accounts for inaccuracies in the mean estimate <span class="math notranslat
 It is used to estimate <span class="math notranslate nohighlight">\(\boldsymbol{\lambda}\)</span>
 defining the uncertainty set constraints.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features corresponding with the training instances 
 <span class="math notranslate nohighlight">\(\psi(x)\)</span>.</p>
@@ -353,7 +358,7 @@ defining the uncertainty set constraints.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>lambda_</strong><span class="classifier">array-like of shape (n_classes, n_features) or (1, n_features)</span></dt><dd><p>Standard deviation of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>.</p>
 </dd>
@@ -372,13 +377,13 @@ that is composed of 2D matrices corresponding to each of the instance.
 These 2D matrices are the one-hot encodings of the instances’ features
 corresponding to all the possible labels in the data.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>phi</strong><span class="classifier">array-like of shape (n_samples, n_classes, n_features * n_classes)</span></dt><dd><p>Matrix containing the one-hot encoding for all the classes
 for each of the instances given.</p>
@@ -398,7 +403,7 @@ The encodings are calculated,
 corresponding to the given labels, which is used by the learning stage
 for estimating the expectation of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances for developing the feature matrix</p>
 </dd>
@@ -406,7 +411,7 @@ for estimating the expectation of <span class="math notranslate nohighlight">\(\
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>phi</strong><span class="classifier">array-like of shape (n_samples, n_features * n_classes)</span></dt><dd><p>Matrix containing the one-hot encoding
 with respect to the labels given for all the instances.</p>
@@ -422,7 +427,7 @@ with respect to the labels given for all the instances.</p>
 <dd><p>Learns the set of thresholds using one-dimensional decision stumps
 obtained from the dataset.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances
 used to learn the feature configurations.</p>
@@ -432,7 +437,7 @@ used for finding the thresholds from the dataset.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>self :</dt><dd><p>Fitted estimator</p>
 </dd>
@@ -447,13 +452,13 @@ used for finding the thresholds from the dataset.</p>
 <dd><p>Compute the threshold features (0/1)
 by comparing with the thresholds obtained in each dimension.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
 <dt><strong>X</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_dimensions</span></code>)</span></dt><dd><p>Unlabeled training instances.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><dl>
 <dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Transformed features from the given instances.</p>
 </dd>
