@@ -189,8 +189,8 @@ class AMRC(BaseMRC):
 
     See Also
     --------
-    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints [2]_.
-    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints [3]_.
+    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints.
+    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints.
 
     References
     ----------

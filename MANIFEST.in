@@ -19,3 +19,18 @@ include MRCpy/datasets/data/segment.csv
 include MRCpy/datasets/data/usenet2.csv
 include MRCpy/datasets/data/comp-vs-sci_shortTrain.csv
 include MRCpy/datasets/data/comp-vs-sci_shortTest.csv
+include MRCpy/datasets/_download.py
+
+# Exclude large dataset files (downloaded on demand via _download.py)
+recursive-exclude MRCpy/datasets/data *.zip
+exclude MRCpy/datasets/data/yearbook_attributes.csv
+exclude MRCpy/datasets/data/comp-vs-sci_Train.csv
+exclude MRCpy/datasets/data/comp-vs-sci_Test.csv
+exclude MRCpy/datasets/data/comp-vs-talk_Train.csv
+exclude MRCpy/datasets/data/comp-vs-talk_Test.csv
+exclude MRCpy/datasets/data/rec-vs-sci_Train.csv
+exclude MRCpy/datasets/data/rec-vs-sci_Test.csv
+exclude MRCpy/datasets/data/rec-vs-talk_Train.csv
+exclude MRCpy/datasets/data/rec-vs-talk_Test.csv
+exclude MRCpy/datasets/data/sci-vs-talk_Train.csv
+exclude MRCpy/datasets/data/sci-vs-talk_Test.csv

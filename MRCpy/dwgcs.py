@@ -250,7 +250,7 @@ class DWGCS(CMRC):
 
     See Also
     --------
-    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints [2]_.
+    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with marginal constraints.
 
     References
     ----------

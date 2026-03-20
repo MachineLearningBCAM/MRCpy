@@ -109,9 +109,9 @@ if __name__ == '__main__':
             "README.md"
         ],
         test_suite='tests',
-        include_package_data=True,
-        package_data={'': ['datasets/descr/*'],
-                      'MRCpy': ['datasets/data/adult.csv',
+        include_package_data=False,
+        package_data={'MRCpy': ['datasets/descr/*',
+                                'datasets/data/adult.csv',
                                 'datasets/data/credit.csv',
                                 'datasets/data/diabetes.csv',
                                 'datasets/data/ecoli.csv',

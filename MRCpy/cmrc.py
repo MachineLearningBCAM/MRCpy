@@ -223,6 +223,16 @@ class CMRC(BaseMRC):
         Dictionary that stores the optimal points and best value of
         the function.
 
+    See Also
+    --------
+    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints.
+
+    References
+    ----------
+    .. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
+
     Examples
     --------
 
@@ -270,16 +280,6 @@ class CMRC(BaseMRC):
     >>> # (mean accuracy on the given test data and labels)
     >>> clf.score(X_test, Y_test)
     0.8247422680412371
-
-    See Also
-    --------
-    MRCpy.MRC : MRC using uncertainty set :math:`\mathcal{U}_1` without marginal constraints [1]_.
-
-    References
-    ----------
-    .. [1] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
-           Maximum Entropy for Supervised Classification. IEEE Transactions
-           on Information Theory, 68(4), 2530-2550.
     '''
 
     # Redefining the init function

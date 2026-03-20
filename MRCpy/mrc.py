@@ -241,6 +241,33 @@ class MRC(BaseMRC):
         for the lower bound of the function.
 
 
+    See Also
+    --------
+    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with additional marginal constraints.
+
+    References
+    ----------
+    .. [1] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax
+           Classification with 0-1 Loss and Performance Guarantees.
+           Advances in Neural Information Processing Systems, 33, 302-312.
+
+    .. [2] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
+           Maximum Entropy for Supervised Classification. IEEE Transactions
+           on Information Theory, 68(4), 2530-2550.
+
+    .. [3] Mazuelas, S., Romero, M., & Grunwald, P. (2023). Minimax Risk
+           Classifiers with 0-1 Loss. Journal of Machine Learning Research,
+           24(208), 1-48.
+
+    .. [4] Bondugula, K., Mazuelas, S., & Pérez, A. (2023). Efficient
+           Learning of Minimax Risk Classifiers in High Dimensions. The
+           39th Conference on Uncertainty in Artificial Intelligence (UAI),
+           206-215.
+
+    .. [5] Bondugula, K., Mazuelas, S., & Pérez, A. (2025). Efficient
+           Large-Scale Learning of Minimax Risk Classifiers. IEEE
+           International Conference on Data Mining (ICDM).
+
     Examples
     --------
 
@@ -289,35 +316,6 @@ class MRC(BaseMRC):
     >>> # (mean accuracy on the given test data and labels)
     >>> clf.score(X_test, Y_test)
     0.7731958762886598
-
-
-    See Also
-    --------
-    MRCpy.CMRC : CMRC using uncertainty set :math:`\mathcal{U}_2` with additional marginal constraints [2]_.
-
-    References
-    ----------
-    .. [1] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax
-           Classification with 0-1 Loss and Performance Guarantees.
-           Advances in Neural Information Processing Systems, 33, 302-312.
-
-    .. [2] Mazuelas, S., Shen, Y., & Pérez, A. (2022). Generalized
-           Maximum Entropy for Supervised Classification. IEEE Transactions
-           on Information Theory, 68(4), 2530-2550.
-
-    .. [3] Mazuelas, S., Romero, M., & Grunwald, P. (2023). Minimax Risk
-           Classifiers with 0-1 Loss. Journal of Machine Learning Research,
-           24(208), 1-48.
-
-    .. [4] Bondugula, K., Mazuelas, S., & Pérez, A. (2023). Efficient
-           Learning of Minimax Risk Classifiers in High Dimensions. The
-           39th Conference on Uncertainty in Artificial Intelligence (UAI),
-           206-215.
-
-    .. [5] Bondugula, K., Mazuelas, S., & Pérez, A. (2025). Efficient
-           Large-Scale Learning of Minimax Risk Classifiers. IEEE
-           International Conference on Data Mining (ICDM).
-
     '''
 
     def __init__(self,

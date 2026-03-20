@@ -118,5 +118,5 @@ htmlhelp_basename = 'MRCpydoc'
 def setup(app):
     app.add_js_file('js/copybutton.js')
     app.add_css_file("basic.css")
-    # app.add_css_file("my-styles.css")
+    app.add_css_file("custom.css")
 
