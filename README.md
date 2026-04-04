@@ -4,7 +4,7 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 
-MRCpy implements recently proposed supervised classification techniques called minimax risk classifiers (MRCs). MRCs are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries using techniques based on empirical risk minimization and surrogate losses. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss, enable efficient learning in high dimensions, and adapt to distribution shifts. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
+MRCpy implements recently proposed supervised classification techniques called minimax risk classifiers (MRCs). MRCs are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries using techniques based on empirical risk minimization and surrogate losses. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
 
 
 ## Installation
@@ -48,7 +48,7 @@ See the [MRCpy documentation page](https://machinelearningbcam.github.io/MRCpy/)
 
 If you use MRCpy in a scientific publication, we would appreciate citations to the relevant papers:
 
-- [1] [Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. AISTATS.]()
+- [1] [Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. AISTATS.](https://arxiv.org/abs/2603.19874)
 
 - [2] [Bondugula, K., Mazuelas, S., & Pérez, A. (2025). Efficient Large-Scale Learning of Minimax Risk Classifiers. IEEE ICDM.](https://arxiv.org/abs/2511.17626)
 
