@@ -49,7 +49,7 @@ References
 
 For more information about the methods available in MRCpy library, one can refer to the following resources:
 
-[1] `Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. In Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS). <https://arxiv.org/abs/2411.07789>`_
+[1] `Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026). Minimax Generalized Cross-Entropy. In Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS). <https://arxiv.org/abs/2603.19874>`_
 
 ::
 
