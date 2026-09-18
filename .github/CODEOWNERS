@@ -1,0 +1,4 @@
+# This file defines code owners for MRCpy.
+# Every pull request must be approved by a code owner before it can be merged
+# (enforced by the "main-protection" ruleset on the `main` branch).
+* @KARTHEEKCIC
