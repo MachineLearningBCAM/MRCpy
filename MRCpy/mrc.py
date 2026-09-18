@@ -560,7 +560,7 @@ class MRC(BaseMRC):
                     for r in range(1, self.n_classes + 1):
                         for S in combinations(range(self.n_classes), r):
                             scores = cvx.sum(phi_mu[:, S], axis=1)
-                            exprs.append(cvx.max((scores - 1 )/ r) + 1)
+                            exprs.append(cvx.max((scores - 1) / r) + 1)
 
                     return cvx.max(cvx.hstack(exprs))
 
@@ -655,7 +655,7 @@ class MRC(BaseMRC):
                                 scores = phi_mu[:, S].sum(axis=1)   # (n_samples,)
                                 idx = np.argmax(scores)
                                 subset_sample_sets.append((idx, S))
-                                exprs.append(scores[idx] + 1 - 1 / r)
+                                exprs.append((scores[idx] - 1) / r + 1)
 
                         set_idx = np.argmax(exprs)
 
@@ -672,11 +672,12 @@ class MRC(BaseMRC):
                         subset: tuple of class indices
                         """
 
-                        # Not accounting for binary case 
+                        # Not accounting for binary case
                         # since this implementation is only for multiclass
                         # Construct the corresponding gradient and return
+                        r = len(subset)
                         grad_ = np.zeros((self.n_classes, d))
-                        grad_[subset, :] = X_transform[idx, :].reshape(1, -1)
+                        grad_[subset, :] = X_transform[idx, :].reshape(1, -1) / r
 
                         return grad_
 
