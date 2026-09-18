@@ -560,7 +560,7 @@ class MRC(BaseMRC):
                     for r in range(1, self.n_classes + 1):
                         for S in combinations(range(self.n_classes), r):
                             scores = cvx.sum(phi_mu[:, S], axis=1)
-                            exprs.append(cvx.max(scores + 1 - 1 / r))
+                            exprs.append(cvx.max((scores - 1 )/ r) + 1)
 
                     return cvx.max(cvx.hstack(exprs))
 
