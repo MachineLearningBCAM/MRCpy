@@ -37,7 +37,10 @@ class TestMRC(unittest.TestCase):
         d2 = clf.n_classification_classes_
         upper = clf.get_upper_bound()
         lower = clf.get_lower_bound(self.X,self.y)
-        self.assertTrue(lower <= upper)
+        # lower and upper can be numerically equal (up to solver tolerance);
+        # allow a small epsilon so tiny floating-point noise from the cvxpy
+        # solver doesn't flip a mathematically tight bound into a failure.
+        self.assertTrue(np.all(lower <= upper + 1e-6))
         #print("lower bound: ", lower, " | upper bound: ", upper)
         self.assertTrue(hasattr(clf, 'is_fitted_'))
         self.assertTrue(clf.is_fitted_)
