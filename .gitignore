@@ -133,4 +133,8 @@ dmypy.json
 data/
 checkpoints/
 
+# PyTorch model checkpoints (e.g. saved during test_pytorch_mgce.py runs)
+*.pt
+*.pth
+
 # End of https://www.gitignore.io/api/python,jupyternotebooks
