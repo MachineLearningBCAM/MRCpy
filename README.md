@@ -4,7 +4,9 @@
 [![Coverage Status](https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy)](https://codecov.io/gh/MachineLearningBCAM/MRCpy)
 
 
-MRCpy implements recently proposed supervised classification techniques called minimax risk classifiers (MRCs). MRCs are based on robust risk minimization and can utilize 0-1 loss, in contrast to existing libraries using techniques based on empirical risk minimization and surrogate losses. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. This library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines.
+MRCpy implements Minimax Risk Classifiers (MRCs), which are based on the robust risk minimization (RRM) framework. Unlike empirical risk minimization (ERM), RRM accounts for uncertainty in the underlying data distribution by optimizing the worst-case risk over a set of plausible distributions. These techniques give rise to a broad family of classification methods that provide guarantees in terms of an upper bound on the classification error at training.
+
+MRCpy provides a unified interface for different variants of MRCs, following the design standards of popular Python machine learning libraries. The library includes efficient implementations of MRC-based methods designed to scale to large datasets and high-dimensional problems. It also provides implementations of established techniques that can be formulated as MRCs, including L1-regularized logistic regression, zero-one adversarial classification, and maximum entropy machines. In addition, MRCpy includes PyTorch-based classifiers that enable the integration of MRC objectives with deep neural networks, allowing users to train DNNs using minimax risk-based learning objectives.
 
 
 ## Installation
