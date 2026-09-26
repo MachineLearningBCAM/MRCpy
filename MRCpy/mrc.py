@@ -539,10 +539,13 @@ class MRC(BaseMRC):
             else:
                 mu = cvx.Variable((self.n_classes, d))
 
+            constraints = None
+            nu_var = None
+
             if self.loss == '0-1':
                 # Compute the varphi function for 0-1 loss
-                def neg_nu(mu):
-                    if self.n_classes == 2:
+                if self.n_classes == 2:
+                    def neg_nu(mu):
                         phi_mu = X_transform @ mu.T
                         return cvx.max(
                             cvx.hstack([
@@ -551,19 +554,21 @@ class MRC(BaseMRC):
                                 0.5
                             ])
                         )
-
-                    # Efficient approach for multi-class case
-                    # Precompute once
-                    phi_mu = X_transform @ mu.T   # shape: (n_samples, n_classes)
-
-                    exprs = []
-                    for r in range(1, self.n_classes + 1):
-                        for S in combinations(range(self.n_classes), r):
-                            scores = cvx.sum(phi_mu[:, S], axis=1)
-                            exprs.append(cvx.max((scores - 1) / r) + 1)
-
-                    return cvx.max(cvx.hstack(exprs))
-
+                else:
+                    # Exact vectorized encoding of the epigraph variable
+                    # neg_nu(mu) = 1 + max_i varphi_i(mu), avoiding the
+                    # naive per-sample enumeration of all 2^n_classes - 1
+                    # class subsets. Follows from the hinge
+                    # characterization varphi_i(mu) <= nu  <=>
+                    # sum_j pos(z_ij - nu) <= 1, applied to every row of
+                    # the score matrix z_ij = phi_mu at once, with
+                    # nu := nu_var - 1 so that nu_var plugs directly into
+                    # the objective/nu_ in place of neg_nu(mu) below.
+                    phi_mu = X_transform @ mu.T   # (n_samples, n_classes)
+                    nu_var = cvx.Variable()
+                    constraints = [
+                        cvx.sum(cvx.pos(phi_mu - nu_var + 1), axis=1) <= 1
+                    ]
 
             elif self.loss == 'log':
                 numConstr = X_transform.shape[0]
@@ -584,18 +589,22 @@ class MRC(BaseMRC):
                                  'for this classifier')
 
             # Objective function
+            epigraph_term = nu_var if nu_var is not None else neg_nu(mu)
             objective = cvx.Minimize(cvx.sum(cvx.multiply(self.lambda_mat, cvx.abs(mu))) -
                                      cvx.sum(cvx.multiply(self.tau_mat, mu)) +
-                                     neg_nu(mu))
+                                     epigraph_term)
 
             self.mu_, self.upper_ = try_solvers(objective,
-                                                None,
+                                                constraints,
                                                 mu,
                                                 self.cvx_solvers)
             # Flatten mu_ for binary case to match expected shape (d,)
             if self.n_classes == 2:
                 self.mu_ = self.mu_.flatten()
-            self.nu_ = np.atleast_1d((-1) * (neg_nu(self.mu_).value))
+            if nu_var is not None:
+                self.nu_ = np.atleast_1d((-1) * nu_var.value)
+            else:
+                self.nu_ = np.atleast_1d((-1) * (neg_nu(self.mu_).value))
 
         elif self.solver == 'subgrad':
             # Use the subgradient approach for the convex optimization of MRC

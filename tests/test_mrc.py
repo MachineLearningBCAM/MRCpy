@@ -112,6 +112,18 @@ class TestMRC(unittest.TestCase):
         self.assertTrue(y_pred.shape == (X_binary.shape[0], ))
         self.assertTrue(np.all(np.isin(y_pred, [0, 1])))
 
+    # Test binary classification with the cvx solver
+    def test_MRC_binary_cvx(self):
+        X_binary = self.X[self.y != 2]
+        y_binary = self.y[self.y != 2]
+
+        clf = MRC(phi='linear', loss='0-1', solver='cvx')
+        clf.fit(X_binary, y_binary)
+        self.assertTrue(clf.is_fitted_)
+        y_pred = clf.predict(X_binary)
+        self.assertTrue(y_pred.shape == (X_binary.shape[0], ))
+        self.assertTrue(np.all(np.isin(y_pred, [0, 1])))
+
     # Test with fit_intercept=False
     def test_MRC_no_intercept(self):
         clf = MRC(phi='linear', loss='0-1', solver='subgrad', fit_intercept=False)
