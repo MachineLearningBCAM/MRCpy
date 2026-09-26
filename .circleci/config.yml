@@ -92,6 +92,21 @@ jobs:
             # this job now) in case anything else depends on it.
             - "7CwbvSLgF40WdMkC7Fa/Mh0WO6NPK2xdDLz5tIySigA"
       - run:
+          name: Remove stale read-only checkout key from agent
+          command: |
+            # This project's default CircleCI checkout key is a read-only
+            # GitHub deploy key (id 143621667), and CircleCI loads it into
+            # the same ssh-agent as the write-enabled key added above.
+            # ssh-agent offers keys in load order and stops at the first
+            # one that authenticates -- since SSH auth itself doesn't care
+            # about read/write permission, the read-only key authenticates
+            # first and is used for the actual git push, which GitHub then
+            # rejects with "key has been marked as read only". Removing
+            # its identity from this job's agent (by its public key, safe
+            # to keep inline) leaves only the write-enabled deploy key.
+            echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICvIMv2QhD0rxpvzOw6Qlj6Q15A1vwCy5OhkQGZd/30G old-readonly" > /tmp/old_readonly_key.pub
+            ssh-add -d /tmp/old_readonly_key.pub
+      - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
 
