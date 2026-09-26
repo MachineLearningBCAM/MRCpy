@@ -84,7 +84,13 @@ jobs:
             git config user.name "KARTHEEKCIC"
       - add_ssh_keys:
           fingerprints:
-            - "KMUmTqt5D/K6TBDEx51PkTAQYfe6cyThl9qDayCZGpk"
+            # Write-enabled deploy key (GitHub deploy key id 164542813,
+            # "CircleCI docs-deploy (write)"). The old fingerprint here
+            # pointed at a read-only deploy key, which made every deploy
+            # fail with "key has been marked as read only" -- see PR
+            # history. The old key is left in place on GitHub (unused by
+            # this job now) in case anything else depends on it.
+            - "7CwbvSLgF40WdMkC7Fa/Mh0WO6NPK2xdDLz5tIySigA"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
