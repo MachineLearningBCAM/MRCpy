@@ -13,7 +13,6 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
-import sphinx_rtd_theme
 from sphinx_gallery.sorting import FileNameSortKey
 
 # -- Project information -----------------------------------------------------
@@ -36,14 +35,14 @@ language = 'en'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
-    'sphinx_rtd_theme',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
     'sphinx.ext.mathjax',
     'numpydoc',
     'sphinx_gallery.gen_gallery',
     'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx'
+    'sphinx.ext.intersphinx',
+    'sphinx_design',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -97,26 +96,35 @@ sphinx_gallery_conf = {
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'pydata_sphinx_theme'
 
-# Switch to old behavior with html4, for a good display of references,
-# as described in https://github.com/sphinx-doc/sphinx/issues/6705
-# html4_writer = True
+html_title = 'MRCpy'
+
+html_theme_options = {
+    "github_url": "https://github.com/MachineLearningBCAM/MRCpy",
+    "navigation_with_keys": True,
+    "show_prev_next": False,
+    "navbar_align": "left",
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],
+    "secondary_sidebar_items": ["page-toc"],
+    "footer_start": ["copyright"],
+    "footer_end": [],
+    "logo": {
+        "text": "MRCpy",
+    },
+}
+
+html_context = {
+    "default_mode": "auto",
+}
+
+html_show_sourcelink = False
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+html_css_files = ['custom.css']
+html_js_files = ['js/copybutton.js']
 htmlhelp_basename = 'MRCpydoc'
-
-# Temporary work-around for spacing problem between parameter and parameter
-# type in the doc, see https://github.com/numpy/numpydoc/issues/215. The bug
-# has been fixed in sphinx (https://github.com/sphinx-doc/sphinx/pull/5976) but
-# through a change in sphinx basic.css except rtd_theme does not use basic.css.
-# In an ideal world, this would get fixed in this PR:
-# https://github.com/readthedocs/sphinx_rtd_theme/pull/747/files
-def setup(app):
-    app.add_js_file('js/copybutton.js')
-    app.add_css_file("basic.css")
-    app.add_css_file("custom.css")
 
