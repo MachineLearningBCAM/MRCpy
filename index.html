@@ -1,392 +1,548 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>MRCpy: A Library for Minimax Risk Classifiers &mdash; MRCpy 0.1.0 documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/basic.css" type="text/css" />
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery-rendered-html.css" type="text/css" />
+<html lang="en" data-content_root="./" data-theme="auto">
 
-  
-  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <title>MRCpy: A Library for Minimax Risk Classifiers &#8212; MRCpy</title>
   
   
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
 
+    </style>
+  </noscript>
   
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=84d19390" />
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/js/copybutton.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    
+    <script src="_static/documentation_options.js?v=38b66d78"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script src="_static/js/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting started" href="getting_started.html" /> 
-</head>
+    <link rel="next" title="Getting started" href="getting_started.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
-<body class="wy-body-for-nav">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-   
-  <div class="wy-grid-for-nav">
+  
+  <dialog id="pst-search-dialog">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-            <a href="#" class="icon icon-home"> MRCpy
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
-          
-        </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MRCpy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
           
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="mrcpy-a-library-for-minimax-risk-classifiers">
+<h1>MRCpy: A Library for Minimax Risk Classifiers<a class="headerlink" href="#mrcpy-a-library-for-minimax-risk-classifiers" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://circleci.com/gh/MachineLearningBCAM/MRCpy"><img alt="Travis-CI Build Status" src="https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield" /></a> <a class="reference external" href="https://codecov.io/gh/MachineLearningBCAM/MRCpy"><img alt="Code coverage" src="https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy" /></a></p>
+<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> implements Minimax
+Risk Classifiers (MRCs), which are based on the robust risk minimization
+(RRM) framework. Unlike empirical risk minimization (ERM), RRM accounts for
+uncertainty in the underlying data distribution by optimizing the worst-case
+risk over a set of plausible distributions. These techniques give rise to a
+broad family of classification methods that provide guarantees in terms of
+an upper bound on the classification error at training.</p>
+<p>MRCpy provides a unified interface for different variants of MRCs, following
+the design standards of popular Python machine learning libraries. The
+library includes efficient implementations of MRC-based methods designed to
+scale to large datasets and high-dimensional problems. It also provides
+implementations of established techniques that can be formulated as MRCs,
+including L1-regularized logistic regression, zero-one adversarial
+classification, and maximum entropy machines. In addition, MRCpy includes
+PyTorch-based classifiers that enable the integration of MRC objectives with
+deep neural networks, allowing users to train DNNs using minimax risk-based
+learning objectives.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>MRCpy
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">MRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_mammographic</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_mammographic</span><span class="p">(</span><span class="n">with_info</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="n">clf</span> <span class="o">=</span> <span class="n">MRC</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">lower_error</span><span class="p">,</span> <span class="n">upper_error</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_lower_bound</span><span class="p">(),</span> <span class="n">clf</span><span class="o">.</span><span class="n">get_upper_bound</span><span class="p">()</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-4 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Getting Started</div>
+<p class="sd-card-text">Installation, dependencies, and a quick-start example.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started.html"><span class="doc">Getting started</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+User Guide</div>
+<p class="sd-card-text">The minimax risk framework behind MRCpy’s classifiers.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="minimax_framework.html"><span class="doc">Minimax Framework</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+API Reference</div>
+<p class="sd-card-text">Detailed description of every class and function in MRCpy.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="api.html"><span class="doc">MRCpy Package Contents</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Examples</div>
+<p class="sd-card-text">Worked examples of MRCpy applied to real datasets.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="auto_examples/index.html"><span class="doc">Gallery of examples</span></a></div>
+</div>
+</div>
+</div>
+<p>If you use MRCpy in your research, please see <a class="reference internal" href="citing.html"><span class="doc">Citing MRCpy</span></a> for the relevant
+references and BibTeX entries.</p>
+<div class="toctree-wrapper compound">
+</div>
+<section id="funding">
+<h2>Funding<a class="headerlink" href="#funding" title="Link to this heading">#</a></h2>
+<p>Funding in direct support of this work has been provided through different research projects by the following institutions.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-3 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/fund_logo.png"><img alt="Spanish Ministry of Science and Innovation logo" src="_images/fund_logo.png" style="width: 150px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Spanish Ministry of Science and Innovation through the project
+<strong>PID2019-105058GA-I00</strong> funded by <strong>MCIN/AEI/10.13039/501100011033</strong>.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/axalogo.png"><img alt="AXA Research Fund logo" src="_images/axalogo.png" style="width: 150px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">AXA Research Fund through the project <strong>“Early Prognosis of
+COVID-19 Infections via Machine Learning”</strong> funded in the
+Exceptional Flash Call <strong>“Mitigating risk in the wake of the
+COVID-19 pandemic”</strong>.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+<div class="sd-col sd-d-flex-column docutils">
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/logogobiernovasco.png"><img alt="Basque Government logo" src="_images/logogobiernovasco.png" style="width: 150px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Basque Government through the project <strong>“Mathematical Modeling
+Applied to Health”</strong>, and through the <strong>“ELKARTEK Program”</strong>.</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
             
             
               
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#funding">Funding</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="minimax_framework.html">Minimax Framework</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">MRCpy Package Contents</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a></li>
-</ul>
-
-            
-          
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">MRCpy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>MRCpy: A Library for Minimax Risk Classifiers</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
-  <section id="mrcpy-a-library-for-minimax-risk-classifiers">
-<h1>MRCpy: A Library for Minimax Risk Classifiers<a class="headerlink" href="#mrcpy-a-library-for-minimax-risk-classifiers" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://circleci.com/gh/MachineLearningBCAM/MRCpy"><img alt="Travis-CI Build Status" src="https://circleci.com/gh/MachineLearningBCAM/MRCpy.svg?style=shield" /></a> <a class="reference external" href="https://codecov.io/gh/MachineLearningBCAM/MRCpy"><img alt="Code coverage" src="https://img.shields.io/codecov/c/github/MachineLearningBCAM/MRCpy" /></a></p>
-<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> library implements minimax risk classifiers (MRCs) that are based on robust risk minimization and can utilize 0-1-loss. Such techniques give rise to a manifold of classification methods that can provide tight bounds on the expected loss. MRCpy provides a unified interface for different variants of MRCs and follows the standards of popular Python libraries. The presented library also provides implementation for popular techniques that can be seen as MRCs such as L1-regularized logistic regression, zero-one adversarial, and maximum entropy machines. In addition, MRCpy implements recent feature mappings such as Fourier, ReLU, and threshold features.</p>
-<p><a class="reference external" href="https://github.com/MachineLearningBCAM/MRCpy">MRCpy</a> also includes a variety of datasets with convenient loader functions. See the <a class="reference internal" href="getting_started.html"><span class="doc">Getting started</span></a> guide for the full list of available datasets and usage examples.</p>
-<section id="documentation-outline">
-<h2>Documentation outline<a class="headerlink" href="#documentation-outline" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#installation-and-setup">Installation and Setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#quick-start">Quick start</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started.html#dataset-loaders">Dataset Loaders</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="minimax_framework.html">Minimax Framework</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="minimax_framework.html#minimax-risk-classification">Minimax Risk Classification</a></li>
-<li class="toctree-l2"><a class="reference internal" href="minimax_framework.html#uncertainty-sets">Uncertainty Sets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="minimax_framework.html#feature-mappings">Feature Mappings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="minimax_framework.html#loss-functions">Loss Functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="minimax_framework.html#references">References</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api.html">MRCpy Package Contents</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api.html#numpy-based-classifiers">Numpy-based Classifiers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#pytorch-based-classifiers">PyTorch-based Classifiers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#feature-mappings">Feature Mappings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api.html#extended-functionalities">Extended Functionalities</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Gallery of examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#basic-examples">Basic Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="auto_examples/index.html#further-applications">Further applications</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<p>For more information about the methods available in MRCpy library, one can refer to the following resources:</p>
-<p>[1] <a class="reference external" href="https://arxiv.org/abs/2603.19874">Bondugula, K., Mazuelas, S., Pérez, A., &amp; Liu, A. (2026). Minimax Generalized Cross-Entropy. In Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS).</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">BonMazPerLiu</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Minimax</span> <span class="n">Generalized</span> <span class="n">Cross</span><span class="o">-</span><span class="n">Entropy</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Bondugula</span><span class="p">,</span> <span class="n">Kartheek</span> <span class="ow">and</span> <span class="n">Mazuelas</span><span class="p">,</span> <span class="n">Santiago</span> <span class="ow">and</span> <span class="n">P</span><span class="p">{</span>\<span class="s1">&#39;e}rez, Aritz and Liu, Anqi},</span>
-   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Artificial</span> <span class="n">Intelligence</span> <span class="ow">and</span> <span class="n">Statistics</span> <span class="p">(</span><span class="n">AISTATS</span><span class="p">)},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2026</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[2] <a class="reference external" href="https://arxiv.org/abs/2511.17626">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2025). Efficient Large-Scale Learning of Minimax Risk Classifiers. IEEE International Conference on Data Mining (ICDM).</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">BonMazPer</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Efficient</span> <span class="n">Large</span><span class="o">-</span><span class="n">Scale</span> <span class="n">Learning</span> <span class="n">of</span> <span class="n">Minimax</span> <span class="n">Risk</span> <span class="n">Classifiers</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Bondugula</span><span class="p">,</span> <span class="n">Kartheek</span> <span class="ow">and</span> <span class="n">Mazuelas</span><span class="p">,</span> <span class="n">Santiago</span> <span class="ow">and</span> <span class="n">P</span><span class="p">{</span>\<span class="s1">&#39;e}rez, Aritz},</span>
-   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">IEEE</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Data</span> <span class="n">Mining</span> <span class="p">(</span><span class="n">ICDM</span><span class="p">)},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2025</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[3] <a class="reference external" href="https://jmlr.org/papers/volume24/22-0339/22-0339.pdf">Mazuelas, S., Romero, M., &amp; Grunwald, P. (2023). Minimax Risk Classifiers with 0-1 Loss. Journal of Machine Learning Research, 24(208), 1-48.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">MazRomGrun</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
-   <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Mazuelas</span><span class="p">,</span> <span class="n">Santiago</span> <span class="ow">and</span> <span class="n">Romero</span><span class="p">,</span> <span class="n">Mauricio</span> <span class="ow">and</span> <span class="n">Grunwald</span><span class="p">,</span> <span class="n">Peter</span><span class="p">},</span>
-   <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">Minimax</span> <span class="n">Risk</span> <span class="n">Classifiers</span> <span class="k">with</span> <span class="mi">0</span><span class="o">-</span><span class="mi">1</span> <span class="n">Loss</span><span class="p">},</span>
-   <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">Journal</span> <span class="n">of</span> <span class="n">Machine</span> <span class="n">Learning</span> <span class="n">Research</span><span class="p">},</span>
-   <span class="n">volume</span> <span class="o">=</span> <span class="p">{</span><span class="mi">24</span><span class="p">},</span>
-   <span class="n">number</span> <span class="o">=</span> <span class="p">{</span><span class="mi">208</span><span class="p">},</span>
-   <span class="n">pages</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="o">--</span><span class="mi">48</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[4] <a class="reference external" href="https://proceedings.mlr.press/v216/bondugula23a.html">Bondugula, K., Mazuelas, S., &amp; Pérez, A. (2023). Efficient Learning of Minimax Risk Classifiers in High Dimensions. The 39th Conference on Uncertainty in Artificial Intelligence (UAI), 206-215.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">BonMazPer</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Efficient</span> <span class="n">Learning</span> <span class="n">of</span> <span class="n">Minimax</span> <span class="n">Risk</span> <span class="n">Classifiers</span> <span class="ow">in</span> <span class="n">High</span> <span class="n">Dimensions</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Bondugula</span><span class="p">,</span> <span class="n">Kartheek</span> <span class="ow">and</span> <span class="n">Mazuelas</span><span class="p">,</span> <span class="n">Santiago</span> <span class="ow">and</span> <span class="n">P</span><span class="p">{</span>\<span class="s1">&#39;e}rez, Aritz},</span>
-   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">The</span> <span class="mi">39</span><span class="n">th</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Uncertainty</span> <span class="ow">in</span> <span class="n">Artificial</span> <span class="n">Intelligence</span> <span class="p">(</span><span class="n">UAI</span><span class="p">)},</span>
-   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">206</span><span class="o">--</span><span class="mi">215</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[5] <a class="reference external" href="https://proceedings.mlr.press/v202/segovia-martin23a.html">Segovia-Martín, J.I., Mazuelas, S., &amp; Liu, A. (2023). Double-Weighting for Covariate Shift Adaptation. In Proceedings of the 40th International Conference on Machine Learning (ICML), pp. 30439-30457.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">SegMazLiu</span><span class="p">:</span><span class="mi">23</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Double</span><span class="o">-</span><span class="n">Weighting</span> <span class="k">for</span> <span class="n">Covariate</span> <span class="n">Shift</span> <span class="n">Adaptation</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Segovia</span><span class="o">-</span><span class="n">Mart</span><span class="p">{</span>\<span class="s1">&#39;i}n, Jos{</span><span class="se">\&#39;</span><span class="s1">e} I. and Mazuelas, Santiago and Liu, Anqi},</span>
-   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">40</span><span class="n">th</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Machine</span> <span class="n">Learning</span> <span class="p">(</span><span class="n">ICML</span><span class="p">)},</span>
-   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">30439</span><span class="o">--</span><span class="mi">30457</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2023</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[6] <a class="reference external" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9682746">Mazuelas, S., Shen, Y., &amp; Pérez, A. (2022). Generalized Maximum Entropy for Supervised Classification. IEEE Transactions on Information Theory, 68(4), 2530-2550.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">MazShePer</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span>
-   <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">Santiago</span> <span class="n">Mazuelas</span> <span class="ow">and</span> <span class="n">Yuan</span> <span class="n">Shen</span> <span class="ow">and</span> <span class="n">Aritz</span> <span class="n">P</span>\<span class="s1">&#39;</span><span class="si">{e}</span><span class="s1">rez},</span>
-   <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">Generalized</span> <span class="n">Maximum</span> <span class="n">Entropy</span> <span class="k">for</span> <span class="n">Supervised</span> <span class="n">Classification</span><span class="p">},</span>
-   <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">IEEE</span> <span class="n">Transactions</span> <span class="n">on</span> <span class="n">Information</span> <span class="n">Theory</span><span class="p">},</span>
-   <span class="n">volume</span> <span class="o">=</span> <span class="p">{</span><span class="mi">68</span><span class="p">},</span>
-   <span class="n">number</span> <span class="o">=</span> <span class="p">{</span><span class="mi">4</span><span class="p">},</span>
-   <span class="n">pages</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2530</span><span class="o">-</span><span class="mi">2550</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2022</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[7] <a class="reference external" href="https://proceedings.mlr.press/v162/alvarez22a.html">Álvarez, V., Mazuelas, S., &amp; Lozano, J.A. (2022). Minimax Classification under Concept Drift with Multidimensional Adaptation and Performance Guarantees. In Proceedings of the 39th International Conference on Machine Learning (ICML), pp. 486-499.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@inproceedings</span><span class="p">{</span><span class="n">AlvMazLoz</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Minimax</span> <span class="n">Classification</span> <span class="n">under</span> <span class="n">Concept</span> <span class="n">Drift</span> <span class="k">with</span> <span class="n">Multidimensional</span> <span class="n">Adaptation</span> <span class="ow">and</span> <span class="n">Performance</span> <span class="n">Guarantees</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{{</span>\<span class="s1">&#39;A}lvarez, Ver{</span><span class="se">\&#39;</span><span class="s1">o}nica and Mazuelas, Santiago and Lozano, Jos{</span><span class="se">\&#39;</span><span class="s1">e} A.},</span>
-   <span class="n">booktitle</span><span class="o">=</span><span class="p">{</span><span class="n">Proceedings</span> <span class="n">of</span> <span class="n">the</span> <span class="mi">39</span><span class="n">th</span> <span class="n">International</span> <span class="n">Conference</span> <span class="n">on</span> <span class="n">Machine</span> <span class="n">Learning</span> <span class="p">(</span><span class="n">ICML</span><span class="p">)},</span>
-   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">486</span><span class="o">--</span><span class="mi">499</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2022</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[8] <a class="reference external" href="https://arxiv.org/abs/2108.01952">Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A., &amp; Mazuelas, S. (2021). MRCpy: A Library for Minimax Risk Classifiers. arXiv preprint arXiv:2108.01952.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">bondugula2021mrcpy</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">MRCpy</span><span class="p">:</span> <span class="n">A</span> <span class="n">Library</span> <span class="k">for</span> <span class="n">Minimax</span> <span class="n">Risk</span> <span class="n">Classifiers</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Bondugula</span><span class="p">,</span> <span class="n">Kartheek</span> <span class="ow">and</span> <span class="p">{</span>\<span class="s1">&#39;A}lvarez, Ver{</span><span class="se">\&#39;</span><span class="s1">o}nica and Segovia-Mart{</span><span class="se">\&#39;</span><span class="s1">i}n, Jos{</span><span class="se">\&#39;</span><span class="s1">e} I. and P{</span><span class="se">\&#39;</span><span class="s1">e}rez, Aritz and Mazuelas, Santiago},</span>
-   <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">arXiv</span> <span class="n">preprint</span> <span class="n">arXiv</span><span class="p">:</span><span class="mf">2108.01952</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2021</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>[9] <a class="reference external" href="https://proceedings.neurips.cc/paper_files/paper/2020/file/02f657d55eaf1c4840ce8d66fcdaf90c-Paper.pdf">Mazuelas, S., Zanoni, A., &amp; Pérez, A. (2020). Minimax Classification with 0-1 Loss and Performance Guarantees. Advances in Neural Information Processing Systems, 33, 302-312.</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">mazuelas2020minimax</span><span class="p">,</span>
-   <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">Minimax</span> <span class="n">Classification</span> <span class="k">with</span> <span class="mi">0</span><span class="o">-</span><span class="mi">1</span> <span class="n">Loss</span> <span class="ow">and</span> <span class="n">Performance</span> <span class="n">Guarantees</span><span class="p">},</span>
-   <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Mazuelas</span><span class="p">,</span> <span class="n">Santiago</span> <span class="ow">and</span> <span class="n">Zanoni</span><span class="p">,</span> <span class="n">Andrea</span> <span class="ow">and</span> <span class="n">P</span><span class="p">{</span>\<span class="s1">&#39;e}rez, Aritz},</span>
-   <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">Advances</span> <span class="ow">in</span> <span class="n">Neural</span> <span class="n">Information</span> <span class="n">Processing</span> <span class="n">Systems</span><span class="p">},</span>
-   <span class="n">volume</span><span class="o">=</span><span class="p">{</span><span class="mi">33</span><span class="p">},</span>
-   <span class="n">pages</span><span class="o">=</span><span class="p">{</span><span class="mi">302</span><span class="o">--</span><span class="mi">312</span><span class="p">},</span>
-   <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2020</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="funding">
-<h3>Funding<a class="headerlink" href="#funding" title="Permalink to this headline">¶</a></h3>
-<p>Funding in direct support of this work has been provided through different research projects by the following institutions.</p>
-<figure class="align-center" id="id2">
-<a class="reference internal image-reference" href="_images/fund_logo.png"><img alt="Spanish Ministry of Science and Innovation logo" src="_images/fund_logo.png" style="width: 150px;" /></a>
-<figcaption>
-<p><span class="caption-text">Spanish Ministry of Science and Innovation through the project <strong>PID2019-105058GA-I00</strong> funded by <strong>MCIN/AEI/10.13039/501100011033</strong>.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id3">
-<a class="reference internal image-reference" href="_images/axalogo.png"><img alt="AXA Research Fund logo" src="_images/axalogo.png" style="width: 150px;" /></a>
-<figcaption>
-<p><span class="caption-text">AXA Research Fund through the project <strong>“Early Prognosis of COVID-19 Infections via Machine Learning”</strong> funded in the Exceptional Flash Call <strong>“Mitigating risk in the wake of the COVID-19 pandemic”</strong>.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id4">
-<a class="reference internal image-reference" href="_images/logogobiernovasco.png"><img alt="Basque Government logo" src="_images/logogobiernovasco.png" style="width: 150px;" /></a>
-<figcaption>
-<p><span class="caption-text">Basque Government through the project <strong>“Mathematical Modeling Applied to Health”</strong>, and through the <strong>“ELKARTEK Program”</strong>.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</section>
-</section>
-</section>
-
-
-           </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-        </div>
-      </div>
-
-    </section>
-
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
 
-  
-  
+  <p class="copyright">
     
-   
+      © Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

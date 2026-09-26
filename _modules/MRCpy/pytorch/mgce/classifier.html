@@ -1,175 +1,384 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>MRCpy.pytorch.mgce.classifier &mdash; MRCpy 0.1.0 documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/gallery-rendered-html.css" type="text/css" />
 
-  
-  
+<html lang="en" data-content_root="../../../../" data-theme="auto">
 
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MRCpy.pytorch.mgce.classifier &#8212; MRCpy</title>
   
   
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
 
+    </style>
+  </noscript>
   
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=84d19390" />
   
-  <!--[if lt IE 9]>
-    <script src="../../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/js/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    
+    <script src="../../../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/MRCpy/pytorch/mgce/classifier';</script>
+    <script src="../../../../_static/js/copybutton.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
-<body class="wy-body-for-nav">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-   
-  <div class="wy-grid-for-nav">
+  
+  <dialog id="pst-search-dialog">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-            <a href="../../../../index.html" class="icon icon-home"> MRCpy
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
-          
-        </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
 
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MRCpy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
         
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started.html">Getting started</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../minimax_framework.html">Minimax Framework</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">MRCpy Package Contents</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../auto_examples/index.html">Gallery of examples</a></li>
-</ul>
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
 
-            
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
           
-        </div>
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
         
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
+    
+    
+    
+      <div class="sidebar-header-items__end">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">MRCpy</a>
-        
-      </nav>
+          <div class="navbar-item">
 
-
-      <div class="wy-nav-content">
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-        <div class="rst-content">
-        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>MRCpy.pytorch.mgce.classifier</li>
+      </div>
     
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
-
+  </div>
   
-  <hr/>
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MRCpy.pytorch.mgce.classifier</span></li>
+  </ul>
+</nav>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <h1>Source code for MRCpy.pytorch.mgce.classifier</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">PyTorch-based minimax risk classification with alpha-losses.</span>
 
 <span class="sd">Copyright (C) 2026 Kartheek Bondugula</span>
@@ -184,7 +393,7 @@
 
 <span class="sd">You should have received a copy of the GNU General Public License along with this program.</span>
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -212,8 +421,10 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="mgce_clf"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">mgce_clf</span><span class="p">():</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="mgce_clf">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">mgce_clf</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Minimax Generalized Cross-Entropy (MGCE).</span>
 
 <span class="sd">    This class implements a PyTorch-based Minimax Risk Classifier (MRC)</span>
@@ -313,8 +524,8 @@
 <span class="sd">        PyTorch neural network model to be trained. Must be provided</span>
 <span class="sd">        either during initialization or before calling fit().</span>
 
-<span class="sd">    device : str, default=&#39;cuda&#39;</span>
-<span class="sd">        Device for computation (&#39;cuda&#39; for GPU, &#39;cpu&#39; for CPU).</span>
+<span class="sd">    device : str, default='cuda'</span>
+<span class="sd">        Device for computation ('cuda' for GPU, 'cpu' for CPU).</span>
 <span class="sd">        Automatically falls back to CPU if CUDA is not available.</span>
 
 <span class="sd">    Attributes</span>
@@ -362,7 +573,7 @@
 <span class="sd">    ...     lambda_=1e-5,</span>
 <span class="sd">    ...     model=model,</span>
 <span class="sd">    ...     optimizer=optimizer,</span>
-<span class="sd">    ...     device=&#39;cuda&#39;</span>
+<span class="sd">    ...     device='cuda'</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; # Create dummy data</span>
@@ -373,7 +584,7 @@
 <span class="sd">    &gt;&gt;&gt;</span>
 <span class="sd">    &gt;&gt;&gt; # Train the model</span>
 <span class="sd">    &gt;&gt;&gt; results = clf.fit(dataloader, n_epochs=10, verbose=True)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Final training accuracy: {results[&#39;train_acc&#39;][-1]:.2f}%&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f"Final training accuracy: {results['train_acc'][-1]:.2f}%")</span>
 
 <span class="sd">    Training with validation:</span>
 
@@ -381,21 +592,21 @@
 <span class="sd">    ...     train_loader,</span>
 <span class="sd">    ...     validate=True,</span>
 <span class="sd">    ...     val_dataloader=val_loader,</span>
-<span class="sd">    ...     save_model_weights=&#39;best&#39;</span>
+<span class="sd">    ...     save_model_weights='best'</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Best validation accuracy: {max(results[&#39;val_acc&#39;]):.2f}%&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f"Best validation accuracy: {max(results['val_acc']):.2f}%")</span>
 
 <span class="sd">    Compute probabilities for test samples:</span>
 
 <span class="sd">    &gt;&gt;&gt; test_data = torch.randn(10, input_dim)</span>
 <span class="sd">    &gt;&gt;&gt; probabilities = clf.predict_proba(test_data)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Shape: {probabilities.shape}&quot;)  # (10, n_classes)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;First sample probabilities: {probabilities[0]}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f"Shape: {probabilities.shape}")  # (10, n_classes)</span>
+<span class="sd">    &gt;&gt;&gt; print(f"First sample probabilities: {probabilities[0]}")</span>
 
 <span class="sd">    Deterministic predictions:</span>
 
 <span class="sd">    &gt;&gt;&gt; predictions = clf.predict(test_data)</span>
-<span class="sd">    &gt;&gt;&gt; print(f&quot;Predicted classes: {predictions}&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; print(f"Predicted classes: {predictions}")</span>
 
 <span class="sd">    Stochastic predictions:</span>
 
@@ -414,17 +625,19 @@
 <span class="sd">           Minimax Generalized Cross-Entropy. In Proceedings of the</span>
 <span class="sd">           International Conference on Artificial Intelligence and</span>
 <span class="sd">           Statistics (AISTATS).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-<div class="viewcode-block" id="mgce_clf.__init__"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">loss_parameter</span><span class="o">=</span><span class="s1">&#39;1.4&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="mgce_clf.__init__">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">loss_parameter</span><span class="o">=</span><span class="s1">'1.4'</span><span class="p">,</span>
                  <span class="n">lambda_</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
                  <span class="n">deterministic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">optimizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">scheduler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">):</span>
+                 <span class="n">device</span><span class="o">=</span><span class="s1">'cuda'</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span> <span class="o">=</span> <span class="n">loss_parameter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">lambda_</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="n">deterministic</span>
@@ -434,10 +647,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span></div>
 
-<div class="viewcode-block" id="mgce_clf.fit"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.fit">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grad_bound</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+
+<div class="viewcode-block" id="mgce_clf.fit">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.fit">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">grad_bound</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">val_dataloader</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">compute_ece</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">save_model_weights</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">&quot;./&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+            <span class="n">compute_ece</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">save_model_weights</span><span class="o">=</span><span class="s1">'best'</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s2">"./"</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Fit the MRC model using the provided training data.</span>
 
 <span class="sd">        This method trains the neural network using the minimax risk</span>
@@ -481,23 +697,23 @@
 <span class="sd">            Number of bins to use for ECE computation. Only used if</span>
 <span class="sd">            compute_ece=True and validate=True.</span>
 <span class="sd">            </span>
-<span class="sd">        save_model_weights : {&#39;best&#39;, &#39;last&#39;, &#39;None&#39;}, default=&#39;best&#39;</span>
+<span class="sd">        save_model_weights : {'best', 'last', 'None'}, default='best'</span>
 <span class="sd">            Strategy for saving model weights:</span>
-<span class="sd">            - &#39;best&#39;: Save weights from epoch with highest validation accuracy</span>
-<span class="sd">            - &#39;last&#39;: Save weights from the final epoch</span>
-<span class="sd">            - &#39;None&#39;: Don&#39;t save any weights</span>
+<span class="sd">            - 'best': Save weights from epoch with highest validation accuracy</span>
+<span class="sd">            - 'last': Save weights from the final epoch</span>
+<span class="sd">            - 'None': Don't save any weights</span>
 <span class="sd">            </span>
-<span class="sd">        path : str, default=&quot;./&quot;</span>
+<span class="sd">        path : str, default="./"</span>
 <span class="sd">            Directory path where model weights should be saved (if applicable).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dict</span>
 <span class="sd">            Dictionary containing training metrics:</span>
-<span class="sd">            - &#39;train_loss&#39;: List of training losses per epoch</span>
-<span class="sd">            - &#39;train_acc&#39;: List of training accuracies per epoch</span>
-<span class="sd">            - &#39;val_loss&#39;: List of validation losses per epoch (if validate=True)</span>
-<span class="sd">            - &#39;val_acc&#39;: List of validation accuracies per epoch (if validate=True)</span>
+<span class="sd">            - 'train_loss': List of training losses per epoch</span>
+<span class="sd">            - 'train_acc': List of training accuracies per epoch</span>
+<span class="sd">            - 'val_loss': List of validation losses per epoch (if validate=True)</span>
+<span class="sd">            - 'val_acc': List of validation accuracies per epoch (if validate=True)</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -511,16 +727,16 @@
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        See class-level examples.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Validate inputs</span>
         <span class="k">if</span> <span class="n">validate</span> <span class="ow">and</span> <span class="n">val_dataloader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;val_dataloader must be provided when validate=True&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"val_dataloader must be provided when validate=True"</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Model must be provided before calling fit()&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Model must be provided before calling fit()"</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Optimizer must be provided before calling fit()&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Optimizer must be provided before calling fit()"</span><span class="p">)</span>
 
         <span class="c1"># Initialize the alpha-loss function with the number of classes and beta parameter</span>
         <span class="n">loss_function</span> <span class="o">=</span> <span class="n">mgce_loss</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataloader</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">classes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_parameter</span><span class="p">)</span>
@@ -544,7 +760,7 @@
         <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-6</span>
 
         <span class="c1"># Main training loop over epochs with optional progress bar</span>
-        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Training&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">"Training"</span><span class="p">):</span>
 
             <span class="c1"># Initialize training statistics for the current epoch</span>
             <span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
@@ -619,7 +835,7 @@
             <span class="c1"># Log training progress if verbose mode is enabled</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Train Loss: </span><span class="si">%.4f</span><span class="s2"> | Train Acc: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Train Loss: </span><span class="si">%.4f</span><span class="s2"> | Train Acc: </span><span class="si">%.2f%%</span><span class="s2">"</span><span class="p">,</span>
                     <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                     <span class="n">n_epochs</span><span class="p">,</span>
                     <span class="n">avg_train_loss</span><span class="p">,</span>
@@ -701,77 +917,80 @@
                 <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">compute_ece</span> <span class="ow">and</span> <span class="n">conf_ece</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                            <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2"> | Val ECE: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="s2">"Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2"> | Val ECE: </span><span class="si">%.2f%%</span><span class="s2">"</span><span class="p">,</span>
                             <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">avg_val_loss</span><span class="p">,</span> <span class="n">avg_val_acc</span><span class="p">,</span> <span class="n">conf_ece</span>
                         <span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                            <span class="s2">&quot;Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2">&quot;</span><span class="p">,</span>
+                            <span class="s2">"Epoch [</span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] | Val Loss: </span><span class="si">%.4f</span><span class="s2"> | Val Acc: </span><span class="si">%.2f%%</span><span class="s2">"</span><span class="p">,</span>
                             <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_epochs</span><span class="p">,</span> <span class="n">avg_val_loss</span><span class="p">,</span> <span class="n">avg_val_acc</span>
                         <span class="p">)</span>
 
                 <span class="c1"># Update best model if current validation accuracy is better</span>
-                <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span> <span class="ow">and</span> <span class="n">avg_val_acc</span> <span class="o">&gt;</span> <span class="n">best_val_acc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">'best'</span> <span class="ow">and</span> <span class="n">avg_val_acc</span> <span class="o">&gt;</span> <span class="n">best_val_acc</span><span class="p">:</span>
                     <span class="n">best_val_acc</span> <span class="o">=</span> <span class="n">avg_val_acc</span>
                     <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
                     <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
 
         <span class="c1"># Handle model weight saving based on the specified strategy</span>
-        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;last&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">'last'</span><span class="p">:</span>
             <span class="c1"># Save weights from the current (last) epoch</span>
             <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">&#39;best&#39;</span> <span class="ow">and</span> <span class="n">validate</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="o">==</span> <span class="s1">'best'</span> <span class="ow">and</span> <span class="n">validate</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
             <span class="c1"># Save weights from the current (last) epoch since validation set is not available</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation set is not provided for best model weights. </span><span class="se">\</span>
-<span class="s1">                   Saving the last model weights&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'Validation set is not provided for best model weights. </span><span class="se">\</span>
+<span class="s1">                   Saving the last model weights'</span><span class="p">)</span>
             <span class="n">best_model_weights</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
-        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="k">elif</span> <span class="n">save_model_weights</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'best'</span><span class="p">,</span> <span class="s1">'last'</span><span class="p">,</span> <span class="s1">'None'</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
             <span class="c1"># Raise error for invalid save_model_weights options</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid value for saving model weights: </span><span class="si">{</span><span class="n">save_model_weights</span><span class="si">}</span><span class="s2">. &quot;</span>
-                            <span class="s2">&quot;Valid options are: &#39;best&#39;, &#39;last&#39;, &#39;None&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Invalid value for saving model weights: </span><span class="si">{</span><span class="n">save_model_weights</span><span class="si">}</span><span class="s2">. "</span>
+                            <span class="s2">"Valid options are: 'best', 'last', 'None'"</span><span class="p">)</span>
 
         <span class="c1"># Save model weights to file if a saving strategy is specified</span>
-        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;best&#39;</span><span class="p">,</span> <span class="s1">&#39;last&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">best_model_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Create output directory if it doesn&#39;t exist</span>
+        <span class="k">if</span> <span class="n">save_model_weights</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'best'</span><span class="p">,</span> <span class="s1">'last'</span><span class="p">]</span> <span class="ow">and</span> <span class="n">best_model_weights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Create output directory if it doesn't exist</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             
             <span class="c1"># Generate filename with epoch information</span>
-            <span class="n">save_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;mrc_model_epoch_</span><span class="si">{</span><span class="n">best_epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.pt&quot;</span><span class="p">)</span>
+            <span class="n">save_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"mrc_model_epoch_</span><span class="si">{</span><span class="n">best_epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.pt"</span><span class="p">)</span>
             
             <span class="c1"># Save the model state dictionary to file</span>
             <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">best_model_weights</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
             
             <span class="c1"># Log the save location if verbose mode is enabled</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Model weights saved at: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Model weights saved at: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
 
         <span class="c1"># Mark classifier as fitted</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="c1"># Prepare results dictionary with training metrics</span>
         <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;train_loss&quot;</span><span class="p">:</span> <span class="n">train_loss_arr</span><span class="p">,</span>
-            <span class="s2">&quot;train_acc&quot;</span><span class="p">:</span> <span class="n">train_acc_arr</span>
+            <span class="s2">"train_loss"</span><span class="p">:</span> <span class="n">train_loss_arr</span><span class="p">,</span>
+            <span class="s2">"train_acc"</span><span class="p">:</span> <span class="n">train_acc_arr</span>
         <span class="p">}</span>
         
         <span class="c1"># Add validation metrics to results if validation was performed</span>
         <span class="k">if</span> <span class="n">validate</span><span class="p">:</span>
             <span class="n">results</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-                <span class="s2">&quot;val_loss&quot;</span><span class="p">:</span> <span class="n">val_loss_arr</span><span class="p">,</span>
-                <span class="s2">&quot;val_acc&quot;</span><span class="p">:</span> <span class="n">val_acc_arr</span><span class="p">,</span>
-                <span class="s2">&quot;val_ece&quot;</span><span class="p">:</span> <span class="n">val_ece_arr</span>
+                <span class="s2">"val_loss"</span><span class="p">:</span> <span class="n">val_loss_arr</span><span class="p">,</span>
+                <span class="s2">"val_acc"</span><span class="p">:</span> <span class="n">val_acc_arr</span><span class="p">,</span>
+                <span class="s2">"val_ece"</span><span class="p">:</span> <span class="n">val_ece_arr</span>
             <span class="p">})</span>
 
         <span class="k">return</span> <span class="n">results</span></div>
+
         
-<div class="viewcode-block" id="mgce_clf.predict_proba"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="mgce_clf.predict_proba">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict_proba">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Compute class probabilities for the given input samples.</span>
 
 <span class="sd">        This method computes the conditional probabilities p(y|x) for each</span>
 <span class="sd">        class given the input features. The probabilities are computed using</span>
 <span class="sd">        the trained model and the minimax risk framework with :math:`\alpha`-losses</span>
-<span class="sd">        via the loss function&#39;s get_probs method.</span>
+<span class="sd">        via the loss function's get_probs method.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -803,13 +1022,13 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        This method uses the :math:`\alpha`-loss framework&#39;s get_probs function to compute</span>
+<span class="sd">        This method uses the :math:`\alpha`-loss framework's get_probs function to compute</span>
 <span class="sd">        probabilities, ensuring consistency with the training loss function</span>
 <span class="sd">        rather than using standard softmax normalization.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Validate input data format and check if model has been fitted</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="c1"># Convert to tensor if needed and move to device</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -834,8 +1053,11 @@
         <span class="c1"># Convert back to numpy and return</span>
         <span class="k">return</span> <span class="n">probabilities</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="mgce_clf.get_worst_case_probs"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_worst_case_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="mgce_clf.get_worst_case_probs">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.get_worst_case_probs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_worst_case_probs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Compute worst-case class probabilities.</span>
 
 <span class="sd">        This method computes the worst-case probability distribution</span>
@@ -846,7 +1068,7 @@
 <span class="sd">        .. math::</span>
 
 <span class="sd">            \mathrm{p}^*_y(x) = \frac{\mathrm{h}_y(x)^{(\beta-1)/\beta}}</span>
-<span class="sd">            {\sum_{y&#39;} \mathrm{h}_{y&#39;}(x)^{(\beta-1)/\beta}}</span>
+<span class="sd">            {\sum_{y'} \mathrm{h}_{y'}(x)^{(\beta-1)/\beta}}</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -882,7 +1104,7 @@
 <span class="sd">           :alt: Relationship between worst-case and prediction probabilities</span>
 <span class="sd">           :width: 400px</span>
 <span class="sd">           :align: center</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Get prediction probabilities</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
@@ -897,8 +1119,11 @@
         <span class="k">return</span> <span class="n">worst_case_probs</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="mgce_clf.predict"><a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="mgce_clf.predict">
+<a class="viewcode-back" href="../../../../generated/MRCpy.pytorch.mgce.classifier.mgce_clf.html#MRCpy.pytorch.mgce.classifier.mgce_clf.predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Predict class labels for the given input samples.</span>
 
 <span class="sd">        This method predicts the most likely class for each input sample</span>
@@ -937,11 +1162,11 @@
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
 <span class="sd">        predict_proba : Get class probabilities instead of hard predictions</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">:</span>
             <span class="c1"># Validate input data format and check if model has been fitted</span>
             <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+            <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
             <span class="c1"># Convert to tensor if needed and move to device</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -969,8 +1194,9 @@
                 <span class="n">predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">prob</span><span class="p">),</span> <span class="n">p</span><span class="o">=</span><span class="n">prob</span><span class="p">))</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span></div>
 
+
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute phi features for the minimax risk framework.</span>
 
 <span class="sd">        This method computes the phi feature representation used in the</span>
@@ -1003,10 +1229,10 @@
 <span class="sd">        -----</span>
 <span class="sd">        This method is primarily used internally by the MRC framework</span>
 <span class="sd">        and may not be needed for typical usage scenarios.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># Validate input and check if fitted</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="c1"># Convert to tensor if needed and move to device</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -1022,49 +1248,54 @@
             
         <span class="c1"># Convert back to numpy and return</span>
         <span class="k">return</span> <span class="n">phi_features</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
 
-  
-  
+  <p class="copyright">
     
-   
+      © Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

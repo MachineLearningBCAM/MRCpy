@@ -1,9 +1,5 @@
 :orphan:
 
-
-
-.. _sphx_glr_auto_examples:
-
 Gallery of examples
 ===================
 
@@ -18,14 +14,79 @@ specific features of MRCpy library.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and ...">
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and feature mappings settings. We load the different datasets and use 10-Fold Cross-Validation to generate the partitions for train and test. We separate 1 partition each time for testing and use the others for training. On each iteration we calculate the classification error as well as the upper and lower bounds for the error. We also calculate the mean training time.">
 
 .. only:: html
 
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_1_example_mrc_thumb.png
-     :alt: Example: Use of MRC with different settings
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_1_example_mrc_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+  :ref:`sphx_glr_auto_examples_plot_1_example_mrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of MRC with different settings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and feature mappings settings. We load the different datasets and use 10-Fold Cross-Validation to generate the partitions for train and test. We separate 1 partition each time for testing and use the others for training. On each iteration we calculate the classification error. We also calculate the mean training time.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_2_example_cmrc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of CMRC with different settings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have the optimization parameter from the previous time moment \mu_{t-1} and the learning parameters from the previous time moment \hat{\tau}_{t-1}, \lambda_{t-1}. Using those parameters corresponding to time t-1 the algorithm obtains the performance guarantee R(\mathcal{U}_{t-1}). When receiving the next instance x_{t-1} the algorithm predicts its label \hat{y}_{t-1}. Then, it receives the actual label y_{t-1} and it updates the model using it and therefore obtaining the new parameters for the next time instant: optimization parameter \mu_t and learning parameters \hat{\tau}_{t}, \lambda_{t}.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of AMRC (Adaptative MRC) for Online Learning</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding paper. We load the dataset, train the DWGCS model using data collected from training and testing distribution and predict the new instances from the testing distribution.">
+
+.. only:: html
+
+  .. image:: /auto_examples/images/thumb/sphx_glr_plot_4_example_dwgcs_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_plot_4_example_dwgcs.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -36,76 +97,9 @@ specific features of MRCpy library.
    :hidden:
 
    /auto_examples/plot_1_example_mrc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_2_example_cmrc_thumb.png
-     :alt: Example: Use of CMRC with different settings
-
-     :ref:`sphx_glr_auto_examples_plot_2_example_cmrc.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_2_example_cmrc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_3_example_amrc_thumb.png
-     :alt: Example: Use of AMRC (Adaptative MRC) for Online Learning
-
-     :ref:`sphx_glr_auto_examples_plot_3_example_amrc.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_3_example_amrc
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/images/thumb/sphx_glr_plot_4_example_dwgcs_thumb.png
-     :alt: Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation
-
-     :ref:`sphx_glr_auto_examples_plot_4_example_dwgcs.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
    /auto_examples/plot_4_example_dwgcs
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
-
-
-
-.. _sphx_glr_auto_examples_further_examples:
 
 Further applications
 --------------------
@@ -115,14 +109,113 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl...">
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We are using ResNet18 pretrained model implementation in Pytorch library. Resnet models were proposed in “Deep Residual Learning for Image Recognition”. Here we are using the version ResNet18 which contains 18 layers and it is pretrained over ImageNet dataset&lt;https://www.image-net.org/index.php&gt; which has 1000 different classes.">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part I
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_feature_extraction_thumb.png
+    :alt:
 
-     :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
+  :ref:`sphx_glr_auto_examples_further_examples_feature_extraction.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part I</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to then predict the class of a set of test images using their correponding extracted features.">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_1_image_classification_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part II</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hyperparameter tuning and comparison to Cross-Validation. We will see that using the Upper Bound gets similar performances to Cross-Validation but being four times faster.">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_2_grid_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_plot_2_grid.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hyperparameter Tuning: Upper Bound vs Cross-Validation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to the one of other methods like SVC (SVM Classification) or MLPClassifier (neural network). Furthermore, with non-determinitic approach and loss 0-1, MRC method provides a theoretical upper and lower bound for the error that can be an useful non-biased indicator of the performance of the algorithm on a given dataset. It also can be used to perform hyperparameter tuning in a much faster way than cross-validation, you can check an example about that grid.">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_3_comparison_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Comparison to other methods</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the loss are an unbiased estimator of the error. The models are trained with different number of cases ranging from 10% to 80% of the data and then are tested with 20% of the samples. The graphs show how in most of the cases the error is between those bounds which proves the potential of this feature of the MRCs. The results are for a MRC(phi = &#x27;fourier&#x27;, loss = &#x27;0-1&#x27;, s = 1)">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_4_upperLower_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_plot_4_upperLower.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Use of Upper and Lower bound as error estimation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 positive patient at the moment of hospital triage. This example uses a dataset that comprises different demographic variables and biomarkers of the patients and a binary outcome Status where Status = 0 define the group of survivors and Status = 1 determines a decease.">
+
+.. only:: html
+
+  .. image:: /auto_examples/further_examples/images/thumb/sphx_glr_z_COVID_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Example: Predicting COVID-19 patients outcome using MRCs</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
@@ -131,134 +224,23 @@ This gallery contains examples that illustrate further applications of MRCpy lib
 
 .. toctree::
    :hidden:
+   :includehidden:
 
-   /auto_examples/further_examples/feature_extraction
 
-.. raw:: html
+   /auto_examples/further_examples/index.rst
 
-    <div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th...">
 
 .. only:: html
 
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_1_image_classification_thumb.png
-     :alt: MRCs with Deep Neural Networks: Part II
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
-     :ref:`sphx_glr_auto_examples_further_examples_plot_1_image_classification.py`
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-.. raw:: html
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-    </div>
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_1_image_classification
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_2_grid_thumb.png
-     :alt: Hyperparameter Tuning: Upper Bound vs Cross-Validation
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_2_grid.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_2_grid
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_3_comparison_thumb.png
-     :alt: Example: Comparison to other methods
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_3_comparison.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_3_comparison
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the lo...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_plot_4_upperLower_thumb.png
-     :alt: Example: Use of Upper and Lower bound as error estimation
-
-     :ref:`sphx_glr_auto_examples_further_examples_plot_4_upperLower.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/plot_4_upperLower
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit...">
-
-.. only:: html
-
- .. figure:: /auto_examples/further_examples/images/thumb/sphx_glr_z_COVID_thumb.png
-     :alt: Example: Predicting COVID-19 patients outcome using MRCs
-
-     :ref:`sphx_glr_auto_examples_further_examples_z_COVID.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /auto_examples/further_examples/z_COVID
-.. raw:: html
-
-    <div class="sphx-glr-clear"></div>
-
-
-
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-gallery
-
-
-  .. container:: sphx-glr-download sphx-glr-download-python
-
-    :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
-
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-    :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
 
 .. only:: html

@@ -1,175 +1,384 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>MRCpy.lmrc &mdash; MRCpy 0.1.0 documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/gallery-rendered-html.css" type="text/css" />
 
-  
-  
+<html lang="en" data-content_root="../../" data-theme="auto">
 
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MRCpy.lmrc &#8212; MRCpy</title>
   
   
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
 
+    </style>
+  </noscript>
   
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=84d19390" />
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/js/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    
+    <script src="../../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/MRCpy/lmrc';</script>
+    <script src="../../_static/js/copybutton.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-</head>
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
-<body class="wy-body-for-nav">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
-   
-  <div class="wy-grid-for-nav">
+  
+  <dialog id="pst-search-dialog">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-            <a href="../../index.html" class="icon icon-home"> MRCpy
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
 
-          
-        </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
 
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MRCpy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
         
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting started</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../minimax_framework.html">Minimax Framework</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">MRCpy Package Contents</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../auto_examples/index.html">Gallery of examples</a></li>
-</ul>
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
 
-            
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
           
-        </div>
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../auto_examples/index.html">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
         
       </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
+    
+    
+    
+      <div class="sidebar-header-items__end">
         
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">MRCpy</a>
-        
-      </nav>
+          <div class="navbar-item">
 
-
-      <div class="wy-nav-content">
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
-        <div class="rst-content">
-        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
           
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
         
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-      <li>MRCpy.lmrc</li>
+      </div>
     
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
-
+  </div>
   
-  <hr/>
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MRCpy.lmrc</span></li>
+  </ul>
+</nav>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <h1>Source code for MRCpy.lmrc</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">Cost Sensitive Minimax Risk Classification. Copyright (C) 2025 Jorge Angulo Rodriguez</span>
 
 <span class="sd">This program is free software: you can redistribute it and/or modify it under the terms of the</span>
@@ -182,7 +391,7 @@
 
 <span class="sd">You should have received a copy of the GNU General Public License along with this program.</span>
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">cvxpy.utilities.key_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_str</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConvexHull</span><span class="p">,</span> <span class="n">convex_hull_plot_2d</span><span class="p">,</span> <span class="n">Delaunay</span><span class="p">,</span> <span class="n">distance</span>
@@ -195,8 +404,10 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cvx</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cg</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<div class="viewcode-block" id="LMRC"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">LMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="LMRC">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LMRC</span><span class="p">(</span><span class="n">BaseMRC</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">'''</span>
 <span class="sd">    Cost Sensitive Minimax Risk Classifier.</span>
 
 <span class="sd">    The class LMRC implements Cost Sensitive Minimax Risk Classifiers (MRC),</span>
@@ -223,8 +434,8 @@
 <span class="sd">        of :math:`\Phi(X,Y)` in the supervised dataset (X,Y).</span>
 
 <span class="sd">    loss : str or array-like of shape (n_classes_classification, n_classes)</span>
-<span class="sd">        If a string, one of ``&#39;0-1&#39;``, ``&#39;ordinal&#39;``, ``&#39;abstention&#39;``,</span>
-<span class="sd">        ``&#39;random&#39;``, ``&#39;ordinal-squared&#39;``. Generates the corresponding</span>
+<span class="sd">        If a string, one of ``'0-1'``, ``'ordinal'``, ``'abstention'``,</span>
+<span class="sd">        ``'random'``, ``'ordinal-squared'``. Generates the corresponding</span>
 <span class="sd">        loss matrix. If an array, it will be used as the transposed loss matrix.</span>
 
 <span class="sd">    alpha : float, optional</span>
@@ -236,22 +447,22 @@
 <span class="sd">        for finding the solution of optimization in</span>
 <span class="sd">        the subgradient approach.</span>
 
-<span class="sd">    phi : str or BasePhi instance, default=&#39;linear&#39;</span>
+<span class="sd">    phi : str or BasePhi instance, default='linear'</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
 <span class="sd">        The currently available feature mapping methods are</span>
-<span class="sd">        ``&#39;fourier&#39;`` and ``&#39;linear&#39;``.</span>
+<span class="sd">        ``'fourier'`` and ``'linear'``.</span>
 <span class="sd">        The users can also implement their own feature mapping object</span>
 <span class="sd">        (should be a ``BasePhi`` instance) and pass it to this argument.</span>
-<span class="sd">        Note that when using ``&#39;fourier&#39;`` feature mapping,</span>
+<span class="sd">        Note that when using ``'fourier'`` feature mapping,</span>
 <span class="sd">        training and testing instances are expected to be normalized.</span>
 <span class="sd">        To implement a feature mapping, please go through the</span>
 <span class="sd">        :ref:`Feature Mapping` section.</span>
 
-<span class="sd">        ``&#39;linear&#39;``</span>
+<span class="sd">        ``'linear'``</span>
 <span class="sd">            It uses the identity feature map referred to as Linear feature map.</span>
 <span class="sd">            See class ``BasePhi``.</span>
 
-<span class="sd">        ``&#39;fourier&#39;``</span>
+<span class="sd">        ``'fourier'``</span>
 <span class="sd">            It uses Random Fourier Feature map. See class ``RandomFourierPhi``.</span>
 
 <span class="sd">    eps : float, default=1e-4</span>
@@ -270,15 +481,15 @@
 <span class="sd">        For example in case of fourier features,</span>
 <span class="sd">        the number of features is given by ``n_components``</span>
 <span class="sd">        parameter which can be passed as argument</span>
-<span class="sd">        ``LMRC(phi=&#39;fourier&#39;, n_components=500)``.</span>
+<span class="sd">        ``LMRC(phi='fourier', n_components=500)``.</span>
 
 <span class="sd">        The list of arguments for each feature mappings class</span>
 <span class="sd">        can be found in the corresponding documentation.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    '''</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__generate_loss_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Beta</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
 
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        This function generates some common loss matrices: abstention,</span>
 <span class="sd">         0-1, ordinal, ordinal-squared, weighted (only for binary) and random.</span>
 
@@ -286,8 +497,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        loss : `str` (0-1, ordinal, abstention, random, ordinal-squared) or</span>
 <span class="sd">            `array`-like of shape (`n_classes_classification`, `n_classes`)</span>
-<span class="sd">            If it&#39;s a string, it generates the loss matrix.</span>
-<span class="sd">            If it&#39;s an array, it will use as the transposed loss maxtrix</span>
+<span class="sd">            If it's a string, it generates the loss matrix.</span>
+<span class="sd">            If it's an array, it will use as the transposed loss maxtrix</span>
 
 <span class="sd">        n : `int`</span>
 <span class="sd">            number of classes</span>
@@ -299,59 +510,61 @@
 <span class="sd">        -------</span>
 <span class="sd">        self :</span>
 <span class="sd">            transposed loss matrix or validated loss matrix.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="c1">#Check if it is an string and generate the matrix</span>
         <span class="c1"># if it is one of the defined types</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="s2">&quot;abstention&quot;</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"abstention"</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">LT</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))))</span>
                 <span class="k">return</span> <span class="n">LT</span>
-            <span class="k">if</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">&quot;0-1&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">"0-1"</span><span class="p">:</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">LT</span>
-            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">&quot;ordinal&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">"ordinal"</span><span class="p">:</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">LT</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">LT</span>
-            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">&quot;ordinal-squared&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">"ordinal-squared"</span><span class="p">:</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="p">[[(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">LT</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">LT</span>
-            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">&quot;random&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">"random"</span><span class="p">:</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
                 <span class="c1"># Set the diagonal elements to 0</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">LT</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">LT</span>
-            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">&quot;weighted&quot;</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">loss</span> <span class="o">==</span> <span class="s2">"weighted"</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">LT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="n">Beta</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
                 <span class="k">return</span> <span class="n">LT</span>
             <span class="k">return</span> <span class="mi">1</span>
         <span class="k">else</span><span class="p">:</span> <span class="c1">#If it is not a string, we validate it as an array</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Array must be numeric&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Array must be numeric"</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">loss</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> dimensions&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Expected </span><span class="si">{</span><span class="mi">2</span><span class="si">}</span><span class="s2"> dimensions"</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">loss</span>
 
-<div class="viewcode-block" id="LMRC.__init__"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="LMRC.__init__">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">s</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-                 <span class="n">loss</span> <span class="o">=</span> <span class="s2">&quot;0-1&quot;</span><span class="p">,</span>
+                 <span class="n">loss</span> <span class="o">=</span> <span class="s2">"0-1"</span><span class="p">,</span>
                  <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                  <span class="n">alpha</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
-                 <span class="n">phi</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+                 <span class="n">phi</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span>
                  <span class="n">use_closed_form</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_closed_form</span> <span class="o">=</span> <span class="n">use_closed_form</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GUROBI&#39;</span><span class="p">,</span> <span class="s1">&#39;MOSEK&#39;</span><span class="p">,</span> <span class="s1">&#39;SCS&#39;</span><span class="p">,</span> <span class="s1">&#39;CLARABEL&#39;</span><span class="p">,</span> <span class="s1">&#39;CVXOPT&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;ECOS&#39;</span><span class="p">,</span> <span class="s1">&#39;ECOS_BB&#39;</span><span class="p">,</span> <span class="s1">&#39;GLPK&#39;</span><span class="p">,</span> <span class="s1">&#39;GLPK_MI&#39;</span><span class="p">,</span> <span class="s1">&#39;OSQP&#39;</span><span class="p">,</span>
-                           <span class="s2">&quot;COPT&quot;</span><span class="p">,</span> <span class="s2">&quot;XPRESS&quot;</span><span class="p">,</span> <span class="s2">&quot;PROXQP&quot;</span><span class="p">,</span> <span class="s2">&quot;CPLEX&quot;</span><span class="p">,</span> <span class="s1">&#39;SCIPY&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'GUROBI'</span><span class="p">,</span> <span class="s1">'MOSEK'</span><span class="p">,</span> <span class="s1">'SCS'</span><span class="p">,</span> <span class="s1">'CLARABEL'</span><span class="p">,</span> <span class="s1">'CVXOPT'</span><span class="p">,</span>
+                            <span class="s1">'ECOS'</span><span class="p">,</span> <span class="s1">'ECOS_BB'</span><span class="p">,</span> <span class="s1">'GLPK'</span><span class="p">,</span> <span class="s1">'GLPK_MI'</span><span class="p">,</span> <span class="s1">'OSQP'</span><span class="p">,</span>
+                           <span class="s2">"COPT"</span><span class="p">,</span> <span class="s2">"XPRESS"</span><span class="p">,</span> <span class="s2">"PROXQP"</span><span class="p">,</span> <span class="s2">"CPLEX"</span><span class="p">,</span> <span class="s1">'SCIPY'</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__generate_loss_matrix</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span> <span class="c1">#|Y|</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classification_classes_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># |T|</span>
@@ -359,8 +572,11 @@
                          <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span><span class="p">,</span>
                          <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LMRC.minimax_risk"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.minimax_risk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="LMRC.minimax_risk">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.minimax_risk">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Solves the minimax risk problem</span>
 <span class="sd">        for different the given loss matrix</span>
 <span class="sd">        The solution of the default L-MRC optimization</span>
@@ -388,7 +604,7 @@
 <span class="sd">        self :</span>
 <span class="sd">            Fitted estimator</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">=</span> <span class="n">n_classes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">tau_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -410,7 +626,7 @@
         <span class="c1"># Get H-form of the polyhedron of restrictions defined by the Convex learning problem given by the loss matrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_A_b</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_matrix</span><span class="p">)</span>
 
-        <span class="c1"># Let&#39;s compute homogenization matrix N</span>
+        <span class="c1"># Let's compute homogenization matrix N</span>
 
         <span class="n">n_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classification_classes_</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)])</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">loss_matrix</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">)])</span>
@@ -457,7 +673,7 @@
             <span class="k">if</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">break</span>
         <span class="k">if</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Learning problem is not feasible&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Learning problem is not feasible"</span><span class="p">)</span>
         <span class="c1"># Upper bounds are now available.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bn</span> <span class="o">-</span> <span class="n">an</span><span class="p">)</span> <span class="o">@</span> <span class="n">eta</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span>
                             <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bn</span> <span class="o">+</span> <span class="n">an</span><span class="p">)</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -468,7 +684,7 @@
                 <span class="k">if</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">tri</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span> <span class="o">&gt;</span> <span class="mf">0.0001</span><span class="p">):</span>
                     <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
-            <span class="s2">&quot;Error in array ordering during triangulation&quot;</span>
+            <span class="s2">"Error in array ordering during triangulation"</span>
             <span class="n">exit</span><span class="p">()</span>
         <span class="c1"># We store the inverted simplex matrices for later, as they are needed for</span>
         <span class="c1"># classification</span>
@@ -480,8 +696,11 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-<div class="viewcode-block" id="LMRC.predict_proba"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.predict_proba">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="LMRC.predict_proba">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.predict_proba">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">                Conditional probabilities corresponding to each class</span>
 <span class="sd">                for each unlabeled input instance</span>
 
@@ -497,9 +716,9 @@
 <span class="sd">                    Probabilities :math:`(p(y|x))` corresponding to the predictions</span>
 <span class="sd">                    for each class.</span>
 
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">hy_x</span> <span class="o">=</span> <span class="p">[]</span>
@@ -528,20 +747,23 @@
                 <span class="c1"># Remove auxiliary dimensions corresponding to Slack variables</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="n">h_t</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classification_classes_</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># If all fails, we just return the &quot;uniform&quot; with respect to the loss</span>
+                <span class="c1"># If all fails, we just return the "uniform" with respect to the loss</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__uniform_distribution</span><span class="p">()</span>
             <span class="n">hy_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">hy_x</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="LMRC.get_upper_bound"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.get_upper_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="LMRC.get_upper_bound">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.get_upper_bound">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Returns the upper bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        upper_bound : `float`</span>
 <span class="sd">            Upper bound of the expected loss for the fitted classifier.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="c1"># If model is fitted, we already have the upper bound</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_fitted_</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span>
@@ -577,19 +799,22 @@
                     <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Failed cvxpy problem using solver: &quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">"Failed cvxpy problem using solver: "</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
                     <span class="k">pass</span>
                 <span class="k">if</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">break</span>
             <span class="k">if</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Learning problem is not feasible&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Learning problem is not feasible"</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bn</span> <span class="o">-</span> <span class="n">an</span><span class="p">)</span> <span class="o">@</span> <span class="n">eta</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span>
                            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">bn</span> <span class="o">+</span> <span class="n">an</span><span class="p">)</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="n">nu</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span></div>
 
-<div class="viewcode-block" id="LMRC.get_lower_bound"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.get_lower_bound">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="LMRC.get_lower_bound">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.get_lower_bound">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">            Obtains the lower bound on the expected loss for the fitted classifier.</span>
 
 <span class="sd">            Parameters</span>
@@ -606,9 +831,9 @@
 <span class="sd">            -------</span>
 <span class="sd">            lower_bound : `float`</span>
 <span class="sd">                Lower bound of the error for the fitted classifier.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="c1"># Classifier should be fitted to obtain the lower bound</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="c1"># Learned feature mappings</span>
         <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lowerPhiConfigs</span>
@@ -648,8 +873,11 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_</span></div>
 
-<div class="viewcode-block" id="LMRC.error"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.error">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="LMRC.error">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.error">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Return the error obtained for the given test</span>
 <span class="sd">         data and labels using the loss function given</span>
 
@@ -675,9 +903,9 @@
 
 <span class="sd">        error: `array`-like of shape (`n_samples`) (if mean is `False`)</span>
 <span class="sd">            Array with the errors commited when classifying each instance</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="n">Y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="p">[]</span>
@@ -691,7 +919,7 @@
             <span class="n">p</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">q</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">q</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">):</span>
                 <span class="n">q_t</span> <span class="o">=</span> <span class="n">q</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classification_classes_</span><span class="p">]</span>
-                <span class="n">q_t</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">([</span><span class="n">q_t</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;l1&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">q_t</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">([</span><span class="n">q_t</span><span class="p">],</span> <span class="n">norm</span><span class="o">=</span><span class="s2">"l1"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">max_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">q_t</span><span class="p">)</span>
                 <span class="n">q_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">q_t</span><span class="p">)</span>
                 <span class="n">q_max</span><span class="p">[</span><span class="n">max_index</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
@@ -702,17 +930,20 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">error</span></div>
+
     <span class="c1"># This version of the predict(X) function</span>
-    <span class="c1"># is almost the same as the parent&#39;s class method</span>
+    <span class="c1"># is almost the same as the parent's class method</span>
     <span class="c1"># However, small adjustments need to be done in order to prevent</span>
     <span class="c1"># issues with non-squared loss matrices</span>
-<div class="viewcode-block" id="LMRC.predict"><a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.predict">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<div class="viewcode-block" id="LMRC.predict">
+<a class="viewcode-back" href="../../generated/MRCpy.LMRC.html#MRCpy.LMRC.predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Predict classes for new instances using a fitted model.</span>
 
 <span class="sd">        Returns the predicted classes for the given instances in ``X``</span>
 <span class="sd">        using the probabilities given by the function ``predict_proba``.</span>
-<span class="sd">        This method overwrites the parent&#39;s class method so that</span>
+<span class="sd">        This method overwrites the parent's class method so that</span>
 <span class="sd">        non-square loss matrices are allowed.</span>
 
 <span class="sd">        Parameters</span>
@@ -725,10 +956,10 @@
 <span class="sd">        -------</span>
 <span class="sd">        y_pred : array-like of shape (n_samples,)</span>
 <span class="sd">            Predicted labels corresponding to the given instances.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;is_fitted_&quot;</span><span class="p">)</span>
+        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
         <span class="c1"># Get the prediction probabilities for the classifier</span>
         <span class="n">proba</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
@@ -742,13 +973,14 @@
 
         <span class="k">return</span> <span class="n">y_pred</span></div>
 
+
     <span class="c1">##################################################################################</span>
     <span class="c1">######### AUXILIARY FUNCTIONS ####################################################</span>
     <span class="c1">##################################################################################</span>
 
     <span class="c1"># Transforms the problem restrictions into Aw_x&lt;=b form given LT . Returns A, b</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__get_A_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">LT</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">            Computes the H-form of the polyhedron of restrictions.</span>
 <span class="sd">            That is polyhedron L is given as ${\omega \in R^m | A\omega &lt; b}$</span>
 
@@ -762,7 +994,7 @@
 <span class="sd">            A: `array`-like of shape (`restrictions`,`m`),</span>
 <span class="sd">             where `restrictions` is not known a-priori</span>
 <span class="sd">            b `array`-like of shape (`restrictions`)</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="c1"># CP matrix encodes the restrictions. It transforms them into equality restrictions by adding Slack variables.</span>
         <span class="c1"># It also adds new restriction to encode that ||h||=1</span>
         <span class="c1"># CP = |unos(|T|) zeros(|Y|)|</span>
@@ -771,9 +1003,9 @@
             <span class="kn">import</span><span class="w"> </span><span class="nn">cdd</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="s2">&quot;pycddlib is required for LMRC. &quot;</span>
-                <span class="s2">&quot;See installation guide: &quot;</span>
-                <span class="s2">&quot;https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation&quot;</span>
+                <span class="s2">"pycddlib is required for LMRC. "</span>
+                <span class="s2">"See installation guide: "</span>
+                <span class="s2">"https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation"</span>
             <span class="p">)</span>
         <span class="n">d_1</span> <span class="o">=</span> <span class="n">LT</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># |Y|</span>
         <span class="n">d_2</span> <span class="o">=</span> <span class="n">LT</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># |T|</span>
@@ -923,7 +1155,7 @@
             <span class="n">h_proj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">hh</span><span class="p">)</span>
             <span class="c1"># Normalize, so that the resulting array is still a provability distribution</span>
             <span class="n">h_proj</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hh</span><span class="p">)</span>
-            <span class="c1"># Now we use the new coordinates to &quot;project&quot; cx_1 into the simplex corresponding to this</span>
+            <span class="c1"># Now we use the new coordinates to "project" cx_1 into the simplex corresponding to this</span>
             <span class="c1"># particular h_t</span>
             <span class="n">cx_1_proj</span> <span class="o">=</span> <span class="n">N</span> <span class="o">@</span> <span class="n">h_proj</span>
             <span class="c1"># We compute the distance to the ordiginal, and we will choose the projected point that is</span>
@@ -945,49 +1177,54 @@
         <span class="n">uniform</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">value</span>
         <span class="k">return</span> <span class="n">uniform</span></div>
 
+
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
 
-  
-  
+  <p class="copyright">
     
-   
+      © Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

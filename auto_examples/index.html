@@ -1,287 +1,456 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Gallery of examples &mdash; MRCpy 0.1.0 documentation</title>
-  
 
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery-rendered-html.css" type="text/css" />
+<html lang="en" data-content_root="../" data-theme="auto">
 
-  
-  
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <title>Gallery of examples &#8212; MRCpy</title>
   
   
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "auto";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "auto";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
 
+    </style>
+  </noscript>
   
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=84d19390" />
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/js/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    
+    <script src="../_static/documentation_options.js?v=38b66d78"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/index';</script>
+    <script src="../_static/js/copybutton.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Example: Use of MRC with different settings" href="plot_1_example_mrc.html" />
-    <link rel="prev" title="MRCpy.phi.BasePhi" href="../generated/MRCpy.phi.BasePhi.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../index.html" class="icon icon-home"> MRCpy
-          
-
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting started</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../minimax_framework.html">Minimax Framework</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">MRCpy Package Contents</a></li>
-</ul>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Gallery of examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#basic-examples">Basic Examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="plot_1_example_mrc.html">Example: Use of MRC with different settings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_2_example_cmrc.html">Example: Use of CMRC with different settings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_3_example_amrc.html">Example: Use of AMRC (Adaptative MRC) for Online Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="plot_4_example_dwgcs.html">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#further-applications">Further applications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/plot_3_comparison.html">Example: Comparison to other methods</a></li>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="further_examples/z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-            
-          
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MRCpy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Gallery of examples</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="../_sources/auto_examples/index.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
+    <link rel="prev" title="MRCpy.phi.BasePhi" href="../generated/MRCpy.phi.BasePhi.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="auto">
 
   
-  <hr/>
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">MRCpy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../minimax_framework.html">
+    Minimax Framework
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    MRCpy Package Contents
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Gallery of examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../citing.html">
+    Citing MRCpy
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MachineLearningBCAM/MRCpy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="plot_1_example_mrc.html">Example: Use of MRC with different settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_2_example_cmrc.html">Example: Use of CMRC with different settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_3_example_amrc.html">Example: Use of AMRC (Adaptative MRC) for Online Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot_4_example_dwgcs.html">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="further_examples/index.html">Further applications</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/feature_extraction.html">MRCs with Deep Neural Networks: Part I</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/plot_1_image_classification.html">MRCs with Deep Neural Networks: Part II</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/plot_2_grid.html">Hyperparameter Tuning: Upper Bound vs Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/plot_3_comparison.html">Example: Comparison to other methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/plot_4_upperLower.html">Example: Use of Upper and Lower bound as error estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="further_examples/z_COVID.html">Example: Predicting COVID-19 patients outcome using MRCs</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Gallery of examples</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="gallery-of-examples">
-<span id="sphx-glr-auto-examples"></span><h1>Gallery of examples<a class="headerlink" href="#gallery-of-examples" title="Permalink to this headline">¶</a></h1>
+<h1>Gallery of examples<a class="headerlink" href="#gallery-of-examples" title="Link to this heading">#</a></h1>
 <section id="basic-examples">
-<h2>Basic Examples<a class="headerlink" href="#basic-examples" title="Permalink to this headline">¶</a></h2>
+<h2>Basic Examples<a class="headerlink" href="#basic-examples" title="Link to this heading">#</a></h2>
 <p>This gallery consists of introductory examples and examples demonstrating
 specific features of MRCpy library.</p>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and ..."><figure class="align-default" id="id1">
-<img alt="Example: Use of MRC with different settings" src="../_images/sphx_glr_plot_1_example_mrc_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="plot_1_example_mrc.html#sphx-glr-auto-examples-plot-1-example-mrc-py"><span class="std std-ref">Example: Use of MRC with different settings</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Example of using MRC with some of the common classification datasets with different losses and feature mappings settings. We load the different datasets and use 10-Fold Cross-Validation to generate the partitions for train and test. We separate 1 partition each time for testing and use the others for training. On each iteration we calculate the classification error as well as the upper and lower bounds for the error. We also calculate the mean training time."><img alt="" src="../_images/sphx_glr_plot_1_example_mrc_thumb.png" />
+<p><a class="reference internal" href="plot_1_example_mrc.html#sphx-glr-auto-examples-plot-1-example-mrc-py"><span class="std std-ref">Example: Use of MRC with different settings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Use of MRC with different settings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and feature mappings settings. We load the different datasets and use 10-Fold Cross-Validation to generate the partitions for train and test. We separate 1 partition each time for testing and use the others for training. On each iteration we calculate the classification error. We also calculate the mean training time."><img alt="" src="../_images/sphx_glr_plot_2_example_cmrc_thumb.png" />
+<p><a class="reference internal" href="plot_2_example_cmrc.html#sphx-glr-auto-examples-plot-2-example-cmrc-py"><span class="std std-ref">Example: Use of CMRC with different settings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Use of CMRC with different settings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have the optimization parameter from the previous time moment \mu_{t-1} and the learning parameters from the previous time moment \hat{\tau}_{t-1}, \lambda_{t-1}. Using those parameters corresponding to time t-1 the algorithm obtains the performance guarantee R(\mathcal{U}_{t-1}). When receiving the next instance x_{t-1} the algorithm predicts its label \hat{y}_{t-1}. Then, it receives the actual label y_{t-1} and it updates the model using it and therefore obtaining the new parameters for the next time instant: optimization parameter \mu_t and learning parameters \hat{\tau}_{t}, \lambda_{t}."><img alt="" src="../_images/sphx_glr_plot_3_example_amrc_thumb.png" />
+<p><a class="reference internal" href="plot_3_example_amrc.html#sphx-glr-auto-examples-plot-3-example-amrc-py"><span class="std std-ref">Example: Use of AMRC (Adaptative MRC) for Online Learning</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Use of AMRC (Adaptative MRC) for Online Learning</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding paper. We load the dataset, train the DWGCS model using data collected from training and testing distribution and predict the new instances from the testing distribution."><img alt="" src="../_images/sphx_glr_plot_4_example_dwgcs_thumb.png" />
+<p><a class="reference internal" href="plot_4_example_dwgcs.html#sphx-glr-auto-examples-plot-4-example-dwgcs-py"><span class="std std-ref">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</div>
+</div></div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of using CMRC with some of the common classification datasets with different losses and..."><figure class="align-default" id="id2">
-<img alt="Example: Use of CMRC with different settings" src="../_images/sphx_glr_plot_2_example_cmrc_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="plot_2_example_cmrc.html#sphx-glr-auto-examples-plot-2-example-cmrc-py"><span class="std std-ref">Example: Use of CMRC with different settings</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="From left to right in the diagram above we can check what happens in every time moment. We have..."><figure class="align-default" id="id3">
-<img alt="Example: Use of AMRC (Adaptative MRC) for Online Learning" src="../_images/sphx_glr_plot_3_example_amrc_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="plot_3_example_amrc.html#sphx-glr-auto-examples-plot-3-example-amrc-py"><span class="std std-ref">Example: Use of AMRC (Adaptative MRC) for Online Learning</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of using DWGCS with the sythetic dataset used on the experiments  of the corresponding ..."><figure class="align-default" id="id4">
-<img alt="Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation" src="../_images/sphx_glr_plot_4_example_dwgcs_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="plot_4_example_dwgcs.html#sphx-glr-auto-examples-plot-4-example-dwgcs-py"><span class="std std-ref">Example: Use of DWGCS (Double-Weighting General Covariate Shift) for Covariate Shift Adaptation</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-clear"></div></section>
+</section>
 <section id="further-applications">
-<span id="sphx-glr-auto-examples-further-examples"></span><h2>Further applications<a class="headerlink" href="#further-applications" title="Permalink to this headline">¶</a></h2>
+<h2>Further applications<a class="headerlink" href="#further-applications" title="Link to this heading">#</a></h2>
 <p>This gallery contains examples that illustrate further applications of MRCpy library and its features.</p>
-<div class="sphx-glr-thumbcontainer" tooltip="We are using `ResNet18 &lt;https://pytorch.org/hub/pytorch_vision_resnet/&gt;`_ pretrained model impl..."><figure class="align-default" id="id5">
-<img alt="MRCs with Deep Neural Networks: Part I" src="../_images/sphx_glr_feature_extraction_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/feature_extraction.html#sphx-glr-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="We are using ResNet18 pretrained model implementation in Pytorch library. Resnet models were proposed in “Deep Residual Learning for Image Recognition”. Here we are using the version ResNet18 which contains 18 layers and it is pretrained over ImageNet dataset&lt;https://www.image-net.org/index.php&gt; which has 1000 different classes."><img alt="" src="../_images/sphx_glr_feature_extraction_thumb.png" />
+<p><a class="reference internal" href="further_examples/feature_extraction.html#sphx-glr-auto-examples-further-examples-feature-extraction-py"><span class="std std-ref">MRCs with Deep Neural Networks: Part I</span></a></p>
+  <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part I</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to then predict the class of a set of test images using their correponding extracted features."><img alt="" src="../_images/sphx_glr_plot_1_image_classification_thumb.png" />
+<p><a class="reference internal" href="further_examples/plot_1_image_classification.html#sphx-glr-auto-examples-further-examples-plot-1-image-classification-py"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a></p>
+  <div class="sphx-glr-thumbnail-title">MRCs with Deep Neural Networks: Part II</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hyperparameter tuning and comparison to Cross-Validation. We will see that using the Upper Bound gets similar performances to Cross-Validation but being four times faster."><img alt="" src="../_images/sphx_glr_plot_2_grid_thumb.png" />
+<p><a class="reference internal" href="further_examples/plot_2_grid.html#sphx-glr-auto-examples-further-examples-plot-2-grid-py"><span class="std std-ref">Hyperparameter Tuning: Upper Bound vs Cross-Validation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Hyperparameter Tuning: Upper Bound vs Cross-Validation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to the one of other methods like SVC (SVM Classification) or MLPClassifier (neural network). Furthermore, with non-determinitic approach and loss 0-1, MRC method provides a theoretical upper and lower bound for the error that can be an useful non-biased indicator of the performance of the algorithm on a given dataset. It also can be used to perform hyperparameter tuning in a much faster way than cross-validation, you can check an example about that grid."><img alt="" src="../_images/sphx_glr_plot_3_comparison_thumb.png" />
+<p><a class="reference internal" href="further_examples/plot_3_comparison.html#sphx-glr-auto-examples-further-examples-plot-3-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Comparison to other methods</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the loss are an unbiased estimator of the error. The models are trained with different number of cases ranging from 10% to 80% of the data and then are tested with 20% of the samples. The graphs show how in most of the cases the error is between those bounds which proves the potential of this feature of the MRCs. The results are for a MRC(phi = &#x27;fourier&#x27;, loss = &#x27;0-1&#x27;, s = 1)"><img alt="" src="../_images/sphx_glr_plot_4_upperLower_thumb.png" />
+<p><a class="reference internal" href="further_examples/plot_4_upperLower.html#sphx-glr-auto-examples-further-examples-plot-4-upperlower-py"><span class="std std-ref">Example: Use of Upper and Lower bound as error estimation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Use of Upper and Lower bound as error estimation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 positive patient at the moment of hospital triage. This example uses a dataset that comprises different demographic variables and biomarkers of the patients and a binary outcome Status where Status = 0 define the group of survivors and Status = 1 determines a decease."><img alt="" src="../_images/sphx_glr_z_COVID_thumb.png" />
+<p><a class="reference internal" href="further_examples/z_COVID.html#sphx-glr-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Example: Predicting COVID-19 patients outcome using MRCs</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Example: Predicting COVID-19 patients outcome using MRCs</div>
+</div></div><div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-thumbcontainer" tooltip="We will use image features correponding to a set of training images to train an MRC model to th..."><figure class="align-default" id="id6">
-<img alt="MRCs with Deep Neural Networks: Part II" src="../_images/sphx_glr_plot_1_image_classification_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/plot_1_image_classification.html#sphx-glr-auto-examples-further-examples-plot-1-image-classification-py"><span class="std std-ref">MRCs with Deep Neural Networks: Part II</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="Example of how to use the Upper Bounds provided by the MRC method in the MRCpy library for hype..."><figure class="align-default" id="id7">
-<img alt="Hyperparameter Tuning: Upper Bound vs Cross-Validation" src="../_images/sphx_glr_plot_2_grid_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/plot_2_grid.html#sphx-glr-auto-examples-further-examples-plot-2-grid-py"><span class="std std-ref">Hyperparameter Tuning: Upper Bound vs Cross-Validation</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="We will see that the performance of the MRC methods with the appropiate settings is similar to ..."><figure class="align-default" id="id8">
-<img alt="Example: Comparison to other methods" src="../_images/sphx_glr_plot_3_comparison_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/plot_3_comparison.html#sphx-glr-auto-examples-further-examples-plot-3-comparison-py"><span class="std std-ref">Example: Comparison to other methods</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="This example is an extension to ex2 where we will prove how the upper and lower bound of the lo..."><figure class="align-default" id="id9">
-<img alt="Example: Use of Upper and Lower bound as error estimation" src="../_images/sphx_glr_plot_4_upperLower_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/plot_4_upperLower.html#sphx-glr-auto-examples-further-examples-plot-4-upperlower-py"><span class="std std-ref">Example: Use of Upper and Lower bound as error estimation</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-thumbcontainer" tooltip="In this example we will use MRCpy.MRC and MRCpy.CMRC to predict the outcome of a COVID-19 posit..."><figure class="align-default" id="id10">
-<img alt="Example: Predicting COVID-19 patients outcome using MRCs" src="../_images/sphx_glr_z_COVID_thumb.png" />
-<figcaption>
-<p><span class="caption-text"><a class="reference internal" href="further_examples/z_COVID.html#sphx-glr-auto-examples-further-examples-z-covid-py"><span class="std std-ref">Example: Predicting COVID-19 patients outcome using MRCs</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
-</figcaption>
-</figure>
-</div><div class="toctree-wrapper compound">
-</div>
-<div class="sphx-glr-clear"></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/07fcc19ba03226cd3d83d4e40ec44385/auto_examples_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">auto_examples_python.zip</span></code></a></p>
 </div>
@@ -294,51 +463,70 @@ specific features of MRCpy library.</p>
 </section>
 
 
-           </div>
-           
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-examples">Basic Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-applications">Further applications</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plot_1_example_mrc.html" class="btn btn-neutral float-right" title="Example: Use of MRC with different settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../generated/MRCpy.phi.BasePhi.html" class="btn btn-neutral float-left" title="MRCpy.phi.BasePhi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
     </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-        </div>
-      </div>
-
-    </section>
-
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
 
-  
-  
+  <p class="copyright">
     
-   
+      © Copyright 2021, Kartheek Bondugula, Claudia Guerrero, Santiago Mazuelas and Aritz Perez.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>
