@@ -120,6 +120,15 @@ html_context = {
 
 html_show_sourcelink = False
 
+# These pages are flat (no nested toctree of their own), so the default
+# primary sidebar ("Section Navigation") renders empty -- drop it there
+# to give the content the full width instead.
+html_sidebars = {
+    "getting_started": [],
+    "minimax_framework": [],
+    "citing": [],
+}
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
