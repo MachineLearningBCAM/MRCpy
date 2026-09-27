@@ -7,3 +7,18 @@
     width: 0;
     overflow: hidden;
 }
+
+/* Widen the page and content column, and bump the base font size a
+   bit -- the theme's defaults (88rem page cap, 60em article column,
+   1rem base) leave a lot of empty space on wide screens. */
+:root {
+    --pst-font-size-base: 1.125rem;
+}
+
+.bd-page-width {
+    max-width: 92rem;
+}
+
+.bd-article-container {
+    max-width: 70em;
+}
