@@ -394,7 +394,6 @@
 <span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">it</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">combinations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
@@ -1002,38 +1001,80 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'0-1'</span><span class="p">:</span>
 
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="c1">#TODO: An efficient implementation with less matrix computation</span>
-                    <span class="c1"># Summing up the phi configurations</span>
-                    <span class="c1"># for all possible subsets of classes for each instance</span>
+                    <span class="c1"># nesterov_optimization_minimized_mrc precomputes an</span>
+                    <span class="c1"># O((3n)^2) Gram matrix once, trading that setup cost</span>
+                    <span class="c1"># for very cheap O(n) per-iteration updates -- a net</span>
+                    <span class="c1"># win only when n (the deduplicated sample count) is</span>
+                    <span class="c1"># small relative to max_iters, and only while the</span>
+                    <span class="c1"># Gram matrix stays memory-safe. Above this</span>
+                    <span class="c1"># threshold, fall back to the generic oracle-based</span>
+                    <span class="c1"># solver instead of letting the Gram matrix blow up</span>
+                    <span class="c1"># in time and memory.</span>
+                    <span class="n">max_n_for_minimized</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">//</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
 
-                    <span class="c1"># Create the feature mapping matrix</span>
-                    <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">eval_x</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-                    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">max_n_for_minimized</span><span class="p">:</span>
+                        <span class="c1"># Closed-form 3-candidate subset structure for</span>
+                        <span class="c1"># binary 0-1 loss, built directly from</span>
+                        <span class="c1"># X_transform (compact, same as the 'cvx'</span>
+                        <span class="c1"># solver) -- no one-hot tensor, no eval_x.</span>
+                        <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">X_transform</span><span class="p">,</span> <span class="o">-</span><span class="n">X_transform</span><span class="p">,</span>
+                                      <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">))])</span>
+                        <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span>
+                                                <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+                        <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+                        <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
 
-                    <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
-                                                            <span class="n">numVals</span><span class="p">)))</span>
+                        <span class="n">tau_flattened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                        <span class="n">lambda_flattened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                        <span class="c1"># Learn the classifier</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> \
+                                <span class="n">nesterov_optimization_minimized_mrc</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>
+                                                                    <span class="n">h</span><span class="p">,</span>
+                                                                    <span class="n">tau_flattened</span><span class="p">,</span>
+                                                                    <span class="n">lambda_flattened</span><span class="p">,</span>
+                                                                    <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Same closed-form 0-1 loss subobjective,</span>
+                        <span class="c1"># evaluated fresh each iteration via the generic</span>
+                        <span class="c1"># oracle-based solver instead of precomputing an</span>
+                        <span class="c1"># O(n^2) Gram matrix.</span>
+                        <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
+<span class="w">                            </span><span class="sd">"""</span>
+<span class="sd">                            mu: (1, n_features)</span>
+<span class="sd">                            X_transform: (n_samples, n_features)</span>
+<span class="sd">                            """</span>
+                            <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>  <span class="c1"># (n_samples,)</span>
 
-                    <span class="c1"># Compute the corresponding length of the subset of classes</span>
-                    <span class="c1"># for which sums computed for each instance</span>
-                    <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span>\
-                        <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+                            <span class="n">idx_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+                            <span class="n">idx_neg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)</span>
 
-                    <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-                    <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
+                            <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span>
+                                <span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">idx_pos</span><span class="p">],</span> <span class="n">idx_pos</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                <span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">[</span><span class="n">idx_neg</span><span class="p">],</span> <span class="n">idx_neg</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                                <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                            <span class="p">]</span>
+                            <span class="n">value</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sign</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span>
+                                                   <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
-                    <span class="n">tau_flattened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-                    <span class="n">lambda_flattened</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-                    <span class="c1"># Learn the classifier</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> \
-                            <span class="n">nesterov_optimization_minimized_mrc</span><span class="p">(</span><span class="n">M</span><span class="p">,</span>
-                                                                <span class="n">h</span><span class="p">,</span>
-                                                                <span class="n">tau_flattened</span><span class="p">,</span>
-                                                                <span class="n">lambda_flattened</span><span class="p">,</span>
-                                                                <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
+                            <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sign</span>
+
+                        <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">sign</span><span class="p">):</span>
+<span class="w">                            </span><span class="sd">"""</span>
+<span class="sd">                            mu: (1, n_features)</span>
+<span class="sd">                            idx: sample index achieving the max (None</span>
+<span class="sd">                                for the constant candidate)</span>
+<span class="sd">                            sign: +1 if the max came from max(z), -1 if</span>
+<span class="sd">                                from max(-z), 0 if from the constant</span>
+<span class="sd">                                candidate (zero gradient)</span>
+<span class="sd">                            """</span>
+                            <span class="n">grad_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                            <span class="k">if</span> <span class="n">sign</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">grad_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+                            <span class="k">return</span> <span class="n">grad_</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span> <span class="o">=</span> <span class="n">nesterov_optimization_mrc</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span> <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># Define the subobjective function and</span>
                     <span class="c1"># its gradient for the 0-1 loss function.                    </span>
@@ -1044,25 +1085,27 @@
 <span class="sd">                        """</span>
                         <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu</span><span class="o">.</span><span class="n">T</span>   <span class="c1"># (n_samples, n_classes)</span>
 
-                        <span class="c1"># Iterate through all subsets and </span>
-                        <span class="c1"># find the sample and subset pair achieving maximum value</span>
-                        <span class="n">exprs</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="n">subset_sample_sets</span> <span class="o">=</span> <span class="p">[]</span>
-                        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-                            <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span> <span class="n">r</span><span class="p">):</span>
-                                <span class="c1"># sum over selected classes</span>
-                                <span class="n">scores</span> <span class="o">=</span> <span class="n">phi_mu</span><span class="p">[:,</span> <span class="n">S</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># (n_samples,)</span>
-                                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-                                <span class="n">subset_sample_sets</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">idx</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
-                                <span class="n">exprs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-                        <span class="n">set_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">exprs</span><span class="p">)</span>
+                        <span class="c1"># For a fixed cardinality r, the subset of classes</span>
+                        <span class="c1"># maximizing the sum of scores is just the r</span>
+                        <span class="c1"># largest entries, so the r-th largest partial sum</span>
+                        <span class="c1"># is a descending sort followed by a cumulative</span>
+                        <span class="c1"># sum. That makes the maximum over all non-empty</span>
+                        <span class="c1"># subsets a maximum over the n_samples x n_classes</span>
+                        <span class="c1"># table below, instead of an enumeration of all</span>
+                        <span class="c1"># 2^n_classes - 1 subsets.</span>
+                        <span class="n">sorted_desc</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="o">-</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="c1"># cumsum[:, r - 1] is the sum of the r largest</span>
+                        <span class="c1"># scores for each sample.</span>
+                        <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">sorted_desc</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+                        <span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">cumsum</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r_vals</span> <span class="o">+</span> <span class="mi">1</span>
 
                         <span class="c1"># Obtain the sample and subset achieving the maximum value</span>
-                        <span class="n">sample_idx</span> <span class="o">=</span> <span class="n">subset_sample_sets</span><span class="p">[</span><span class="n">set_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                        <span class="n">S</span> <span class="o">=</span> <span class="n">subset_sample_sets</span><span class="p">[</span><span class="n">set_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">sample_idx</span><span class="p">,</span> <span class="n">r_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                        <span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">phi_mu</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">])[:</span><span class="n">r_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
 
-                        <span class="k">return</span> <span class="n">exprs</span><span class="p">[</span><span class="n">set_idx</span><span class="p">],</span> <span class="n">sample_idx</span><span class="p">,</span> <span class="n">S</span>
+                        <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">,</span> <span class="n">r_idx</span><span class="p">],</span> <span class="n">sample_idx</span><span class="p">,</span> <span class="n">S</span>
                     
                     <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">subset</span><span class="p">):</span>
 <span class="w">                        </span><span class="sd">"""</span>
