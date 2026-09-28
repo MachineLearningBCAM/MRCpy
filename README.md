@@ -44,6 +44,70 @@ Optional (for PyTorch MGCE classifier):
 
 ## Usage
 
+MRC classifiers follow the scikit-learn estimator API, so they work with the
+usual `fit` / `predict` / `score` calls and with scikit-learn tooling such as
+`cross_val_score` and `GridSearchCV`. In addition to predictions, every MRC
+model exposes performance guarantees for the underlying classification task:
+
+```python
+from sklearn.model_selection import train_test_split
+
+from MRCpy import MRC
+from MRCpy.datasets import load_mammographic
+
+X, y = load_mammographic()
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+clf = MRC(phi='threshold').fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+print('error:  %.3f' % (y_pred != y_test).mean())
+print('bounds: [%.3f, %.3f]' % (clf.get_lower_bound(), clf.get_upper_bound()))
+```
+
+```
+error:  0.207
+bounds: [0.084, 0.240]
+```
+
+`get_upper_bound()` and `get_lower_bound()` bracket the minimum expected error
+of the classification task, and are obtained from the training data alone — no
+test set is required.
+
+The library also provides a PyTorch classifier, `mgce_clf`, which trains any
+`torch.nn.Module` under the minimax generalized cross-entropy loss [1]. It takes
+a model and an optimizer, is fitted from a `DataLoader`, and then predicts on
+NumPy arrays like the estimators above:
+
+```python
+import torch
+from torch import nn
+from torch.utils.data import DataLoader, TensorDataset
+from sklearn.model_selection import train_test_split
+
+from MRCpy.datasets import load_mammographic
+from MRCpy.pytorch.mgce.classifier import mgce_clf
+
+X, y = load_mammographic()
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+train_set = TensorDataset(torch.tensor(X_train, dtype=torch.float32),
+                          torch.tensor(y_train, dtype=torch.long))
+train_set.classes = [0, 1]  # fit() reads the class list from the dataset
+train_loader = DataLoader(train_set, batch_size=32, shuffle=True)
+
+model = nn.Sequential(nn.Linear(X.shape[1], 32), nn.ReLU(), nn.Linear(32, 2))
+
+clf = mgce_clf(loss_parameter=1.4,
+               model=model,
+               optimizer=torch.optim.Adam(model.parameters(), lr=1e-2),
+               device='cpu')
+clf.fit(train_loader, n_epochs=20, verbose=False, save_model_weights=None)
+
+y_pred = clf.predict(X_test)
+print('error: %.3f' % (y_pred != y_test).mean())
+```
+
 See the [MRCpy documentation page](https://machinelearningbcam.github.io/MRCpy/) for full documentation about installation, API, usage, and examples.
 
 ## Citations
@@ -148,6 +212,39 @@ If you use MRCpy in a scientific publication, we would appreciate citations to t
 ```
 
 </details>
+
+## Contributing
+
+Contributions are welcome — bug reports, new classifiers, feature mappings,
+documentation and examples alike. If you are planning a larger change, please
+[open an issue](https://github.com/MachineLearningBCAM/MRCpy/issues) first so
+the design can be discussed before you write the code.
+
+To set up a development install:
+
+```bash
+git clone https://github.com/MachineLearningBCAM/MRCpy.git
+cd MRCpy
+pip install -e .
+pip install -r dev-requirements.txt
+```
+
+Then open a pull request against `main`. Continuous integration checks code
+style and runs the full test suite, and both must pass before a pull request
+can be merged.
+
+### Running tests
+
+```bash
+python -m unittest discover -s tests
+```
+
+To reproduce the coverage report produced by CI:
+
+```bash
+coverage run --source=MRCpy/ -m unittest discover -s tests
+coverage report
+```
 
 ## Updates and Discussion
 
