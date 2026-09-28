@@ -79,7 +79,12 @@ def nesterov_optimization_mrc(tau_mat, lambda_mat, f_, g_, max_iters):
         # Update the parameters
         theta_k_prev = theta_k
         theta_k = 2 / (k + 1)
-        alpha_k = 1 / (np.power((k + 1), (3 / 2)))
+        # Native float power rather than np.power: these are scalars, and
+        # NumPy's dispatch overhead on scalar arguments dominates the
+        # arithmetic itself when this runs on every iteration. The
+        # power-then-reciprocal order is kept so the rounding, and hence
+        # the result, is bit-identical to the previous expression.
+        alpha_k = 1 / ((k + 1) ** 1.5)
 
         # Calculate the new points
         w_k_prev = w_k
@@ -250,7 +255,7 @@ def nesterov_optimization_minimized_mrc(F, b, tau_, lambda_, max_iters):
         `nu`: `float`).
     '''
     b = np.reshape(b, (-1, 1))
-    n, m = F.shape
+    m = F.shape[1]
     a = np.reshape(-tau_, (-1, 1))  # make it a column
     mu_k = np.zeros((m, 1))
     c_k = 1
@@ -258,7 +263,10 @@ def nesterov_optimization_minimized_mrc(F, b, tau_, lambda_, max_iters):
     nu_k = 0
     alpha = F @ a
     G = F @ F.transpose()
-    H = 2 * F @ np.diag(lambda_)
+    # Multiplying by a diagonal matrix on the right only rescales the
+    # columns, so broadcast the diagonal instead of materializing an
+    # (m, m) mostly-zero matrix and running a full matmul through it.
+    H = 2 * F * lambda_
     y_k = mu_k
     v_k = F @ mu_k + b
     w_k = v_k
@@ -271,91 +279,50 @@ def nesterov_optimization_minimized_mrc(F, b, tau_, lambda_, max_iters):
     f_star = a.transpose() @ mu_k +\
         lambda_.transpose() @ np.abs(mu_k) + v_k[i_k]
 
-    if n * n > (1024) ** 3:  # Large Dimension
-        for k in range(1, max_iters + 1):
-            g_k = a + lambda_ * s_k + F[[i_k], :].T
-            y_k_next = mu_k - c_k * g_k
-            mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
-            u_k = alpha + d_k + G[:, [i_k]]
-            w_k_next = v_k - c_k * u_k
-            v_k_next = (1 + nu_k) * w_k_next - nu_k * w_k
-            i_k_next = np.argmax(v_k_next)
-            s_k_next = np.sign(mu_k_next)
-            delta_k = s_k_next - s_k
+    MD = H / 2
 
-            d_k_next = d_k
-            for i in range(m):
-                if delta_k[i] == 2:
-                    d_k_next = d_k_next + H[:, [i]]
-                elif delta_k[i] == -2:
-                    d_k_next = d_k_next - H[:, [i]]
-                elif delta_k[i] == 1 or delta_k[i] == -1:
-                    d_k_next = d_k_next + (1 / 2)\
-                        * np.sign(delta_k[i]) * H[:, [i]]
+    for k in range(1, max_iters + 1):
+        g_k = a + lambda_ * s_k + F[[i_k], :].T
+        y_k_next = mu_k - c_k * g_k
+        mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
+        # G is symmetric (G = F @ F.T), so its i_k-th row holds the same
+        # values as its i_k-th column. Reading the row is a contiguous
+        # view; reading the column strides through memory and, with a
+        # list index, also copies.
+        u_k = alpha + d_k + G[i_k, :].reshape(-1, 1)
+        w_k_next = v_k - c_k * u_k
+        v_k_next = (1 + nu_k) * w_k_next - nu_k * w_k
+        i_k_next = np.argmax(v_k_next)
+        s_k_next = np.sign(mu_k_next)
+        delta_k = s_k_next - s_k
 
-            c_k_next = (k + 1) ** (-3 / 2)
-            theta_k_next = 2 / (k + 1)
-            nu_k_next = theta_k_next * ((1 / theta_k) - 1)
-            f_k_next = a.transpose() @ mu_k_next +\
-                lambda_.transpose() @ np.abs(mu_k_next) +\
-                v_k_next[i_k_next]
-            if f_k_next < f_star:
-                f_star = f_k_next
-                mu_star = mu_k_next
-                v_star = -v_k_next[i_k_next]
+        # delta_k entries are in {-2,-1,0,1,2}; each contributes
+        # H[:, i] * delta_k[i] / 2, so sum the nonzero columns at once.
+        index = np.where(delta_k != 0)[0]
+        d_k_next = d_k + MD[:, index] @ delta_k[index]
 
-            # Update variables
-            mu_k = mu_k_next
-            y_k = y_k_next
-            nu_k = nu_k_next
-            v_k = v_k_next
-            w_k = w_k_next
-            s_k = s_k_next
-            d_k = d_k_next
-            c_k = c_k_next
-            i_k = i_k_next
-            theta_k = theta_k_next
+        c_k_next = (k + 1) ** (-3 / 2)
+        theta_k_next = 2 / (k + 1)
+        nu_k_next = theta_k_next * ((1 / theta_k) - 1)
+        f_k_next = a.transpose() @ mu_k_next +\
+            lambda_.transpose() @ np.abs(mu_k_next) +\
+            v_k_next[i_k_next]
+        if f_k_next < f_star:
+            f_star = f_k_next
+            mu_star = mu_k_next
+            v_star = -v_k_next[i_k_next]
 
-    else:  # Small Dimension
-
-        MD = H / 2
-
-        for k in range(1, max_iters + 1):
-            g_k = a + lambda_ * s_k + F[[i_k], :].T
-            y_k_next = mu_k - c_k * g_k
-            mu_k_next = (1 + nu_k) * y_k_next - nu_k * y_k
-            u_k = alpha + d_k + G[:, [i_k]]
-            w_k_next = v_k - c_k * u_k
-            v_k_next = (1 + nu_k) * w_k_next - nu_k * w_k
-            i_k_next = np.argmax(v_k_next)
-            s_k_next = np.sign(mu_k_next)
-            delta_k = s_k_next - s_k
-
-            index = np.where(delta_k != 0)[0]
-            d_k_next = d_k + MD[:, index] @ delta_k[index]
-
-            c_k_next = (k + 1) ** (-3 / 2)
-            theta_k_next = 2 / (k + 1)
-            nu_k_next = theta_k_next * ((1 / theta_k) - 1)
-            f_k_next = a.transpose() @ mu_k_next +\
-                lambda_.transpose() @ np.abs(mu_k_next) +\
-                v_k_next[i_k_next]
-            if f_k_next < f_star:
-                f_star = f_k_next
-                mu_star = mu_k_next
-                v_star = -v_k_next[i_k_next]
-
-            # Update variables
-            mu_k = mu_k_next
-            y_k = y_k_next
-            nu_k = nu_k_next
-            v_k = v_k_next
-            w_k = w_k_next
-            s_k = s_k_next
-            d_k = d_k_next
-            c_k = c_k_next
-            i_k = i_k_next
-            theta_k = theta_k_next
+        # Update variables
+        mu_k = mu_k_next
+        y_k = y_k_next
+        nu_k = nu_k_next
+        v_k = v_k_next
+        w_k = w_k_next
+        s_k = s_k_next
+        d_k = d_k_next
+        c_k = c_k_next
+        i_k = i_k_next
+        theta_k = theta_k_next
 
     new_params_ = {'w_k': w_k_next.flatten(),
                    'w_k_prev': w_k.flatten(),

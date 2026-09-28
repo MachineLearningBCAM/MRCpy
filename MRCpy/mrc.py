@@ -14,7 +14,6 @@ If not, see https://www.gnu.org/licenses/.
 """
 
 import itertools as it
-from itertools import combinations
 import warnings
 
 import cvxpy as cvx
@@ -612,38 +611,80 @@ class MRC(BaseMRC):
             if self.loss == '0-1':
 
                 if self.n_classes == 2:
-                    #TODO: An efficient implementation with less matrix computation
-                    # Summing up the phi configurations
-                    # for all possible subsets of classes for each instance
+                    # nesterov_optimization_minimized_mrc precomputes an
+                    # O((3n)^2) Gram matrix once, trading that setup cost
+                    # for very cheap O(n) per-iteration updates -- a net
+                    # win only when n (the deduplicated sample count) is
+                    # small relative to max_iters, and only while the
+                    # Gram matrix stays memory-safe. Above this
+                    # threshold, fall back to the generic oracle-based
+                    # solver instead of letting the Gram matrix blow up
+                    # in time and memory.
+                    max_n_for_minimized = min(self.max_iters // 9, 2000)
 
-                    # Create the feature mapping matrix
-                    phi = self.phi.eval_x(X)
-                    phi = np.unique(phi, axis=0)
+                    if n <= max_n_for_minimized:
+                        # Closed-form 3-candidate subset structure for
+                        # binary 0-1 loss, built directly from
+                        # X_transform (compact, same as the 'cvx'
+                        # solver) -- no one-hot tensor, no eval_x.
+                        F = np.vstack([X_transform, -X_transform,
+                                      np.zeros((n, d))])
+                        cardS = np.concatenate([np.ones(n), np.ones(n),
+                                                np.full(n, 2)])
+                        M = F / (cardS[:, np.newaxis])
+                        h = 1 - (1 / cardS)
 
-                    F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                                for numVals in range(1, self.n_classes + 1)
-                                for S in it.combinations(np.arange(self.n_classes),
-                                                            numVals)))
+                        tau_flattened = self.tau_mat.flatten()
+                        lambda_flattened = self.lambda_mat.flatten()
+                        # Learn the classifier
+                        self.upper_params_ = \
+                                nesterov_optimization_minimized_mrc(M,
+                                                                    h,
+                                                                    tau_flattened,
+                                                                    lambda_flattened,
+                                                                    self.max_iters)
+                    else:
+                        # Same closed-form 0-1 loss subobjective,
+                        # evaluated fresh each iteration via the generic
+                        # oracle-based solver instead of precomputing an
+                        # O(n^2) Gram matrix.
+                        def f_(mu):
+                            """
+                            mu: (1, n_features)
+                            X_transform: (n_samples, n_features)
+                            """
+                            z = (X_transform @ mu.T).flatten()  # (n_samples,)
 
-                    # Compute the corresponding length of the subset of classes
-                    # for which sums computed for each instance
-                    cardS = np.arange(1, self.n_classes + 1).\
-                        repeat([n * scs.comb(self.n_classes, numVals)
-                                for numVals in np.arange(1,
-                                self.n_classes + 1)])
+                            idx_pos = np.argmax(z)
+                            idx_neg = np.argmax(-z)
 
-                    M = F / (cardS[:, np.newaxis])
-                    h = 1 - (1 / cardS)
+                            candidates = [
+                                (z[idx_pos], idx_pos, 1),
+                                (-z[idx_neg], idx_neg, -1),
+                                (0.5, None, 0),
+                            ]
+                            value, idx, sign = max(candidates,
+                                                   key=lambda c: c[0])
 
-                    tau_flattened = self.tau_mat.flatten()
-                    lambda_flattened = self.lambda_mat.flatten()
-                    # Learn the classifier
-                    self.upper_params_ = \
-                            nesterov_optimization_minimized_mrc(M,
-                                                                h,
-                                                                tau_flattened,
-                                                                lambda_flattened,
-                                                                self.max_iters)
+                            return value, idx, sign
+
+                        def g_(mu, idx, sign):
+                            """
+                            mu: (1, n_features)
+                            idx: sample index achieving the max (None
+                                for the constant candidate)
+                            sign: +1 if the max came from max(z), -1 if
+                                from max(-z), 0 if from the constant
+                                candidate (zero gradient)
+                            """
+                            grad_ = np.zeros((1, d))
+                            if sign != 0:
+                                grad_[0, :] = sign * X_transform[idx, :]
+                            return grad_
+
+                        self.upper_params_ = nesterov_optimization_mrc(
+                            self.tau_mat, self.lambda_mat, f_, g_,
+                            self.max_iters)
                 else:
                     # Define the subobjective function and
                     # its gradient for the 0-1 loss function.                    
@@ -654,25 +695,27 @@ class MRC(BaseMRC):
                         """
                         phi_mu = X_transform @ mu.T   # (n_samples, n_classes)
 
-                        # Iterate through all subsets and 
-                        # find the sample and subset pair achieving maximum value
-                        exprs = []
-                        subset_sample_sets = []
-                        for r in range(1, self.n_classes + 1):
-                            for S in combinations(range(self.n_classes), r):
-                                # sum over selected classes
-                                scores = phi_mu[:, S].sum(axis=1)   # (n_samples,)
-                                idx = np.argmax(scores)
-                                subset_sample_sets.append((idx, S))
-                                exprs.append((scores[idx] - 1) / r + 1)
-
-                        set_idx = np.argmax(exprs)
+                        # For a fixed cardinality r, the subset of classes
+                        # maximizing the sum of scores is just the r
+                        # largest entries, so the r-th largest partial sum
+                        # is a descending sort followed by a cumulative
+                        # sum. That makes the maximum over all non-empty
+                        # subsets a maximum over the n_samples x n_classes
+                        # table below, instead of an enumeration of all
+                        # 2^n_classes - 1 subsets.
+                        sorted_desc = -np.sort(-phi_mu, axis=1)
+                        # cumsum[:, r - 1] is the sum of the r largest
+                        # scores for each sample.
+                        cumsum = np.cumsum(sorted_desc, axis=1)
+                        r_vals = np.arange(1, self.n_classes + 1)
+                        values = (cumsum - 1) / r_vals + 1
 
                         # Obtain the sample and subset achieving the maximum value
-                        sample_idx = subset_sample_sets[set_idx][0]
-                        S = subset_sample_sets[set_idx][1]
+                        sample_idx, r_idx = np.unravel_index(
+                            np.argmax(values), values.shape)
+                        S = np.argsort(-phi_mu[sample_idx])[:r_idx + 1]
 
-                        return exprs[set_idx], sample_idx, S
+                        return values[sample_idx, r_idx], sample_idx, S
                     
                     def g_(mu, idx, subset):
                         """
