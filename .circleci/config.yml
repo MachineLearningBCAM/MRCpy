@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 jobs:
   style-test:
@@ -111,7 +111,6 @@ jobs:
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/_build/html
 
 workflows:
-  version: 2
   build:
     jobs:
       - style-test
