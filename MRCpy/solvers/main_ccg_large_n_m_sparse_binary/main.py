@@ -9,8 +9,6 @@ coordinates the initialization phase and the iterative CCG algorithm.
 from .ccg import mrc_ccg_large_n_m_sparse_binary
 import time
 import numpy as np
-import itertools as it
-import scipy.special as scs
 import scipy as sp
 
 from .cg_large_m.cg import alg1
@@ -160,31 +158,27 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 
 	#-> Initialization.
 	n = X_transform.shape[0]
-	n_classes = 2
 
-	# Initialization changes based on binary or multiclass classification due to one-hot encoding.
-	idx_cols = []
+	# Accept tau_ and lambda_ as (n_features,) or (1, n_features).
+	tau_ = np.asarray(tau_, dtype=float).ravel()
+	lambda_ = np.asarray(lambda_, dtype=float).ravel()
+	tau_row = tau_[np.newaxis, :]
+
 	#---> Reduce n by using mean vector tau_
-	phi_1 = tau_
-	n_init = phi_1.shape[0]
-	F_init = np.vstack(list(np.sum(phi_1[:, S, ], axis=1)
-							for numVals in range(1, n_classes + 1)
-							for S in it.combinations(np.arange(n_classes), numVals)))
-
-	cardS = np.arange(1, n_classes + 1). \
-		repeat([n_init * scs.comb(n_classes, numVals)
-				for numVals in np.arange(1, n_classes + 1)])
+	# Constraints of the centroid for the class subsets {0}, {1} and {0, 1},
+	# with phi(tau, 0) = tau and phi(tau, 1) = -tau.
+	cardS = np.array([1, 1, 2])
 
 	# Constraint coefficient matrix for obtaining initial set of features.
-	F_init = F_init / (cardS[:, np.newaxis])
+	F_init = np.vstack([tau_row, -tau_row, np.zeros_like(tau_row)]) / cardS[:, np.newaxis]
 
 	# Coefficient vector of constraints for obtaining initial set of features.
 	b_init = (1 / cardS) - 1
 
 	# Add the samples corresponding with centroids
-	X_full = sp.sparse.vstack([X_transform, tau_])
+	X_full = sp.sparse.vstack([X_transform, sp.sparse.csr_matrix(tau_row)]).tocsr()
 
-	dict_nnz[n] = tau_.nonzero()[1].tolist()
+	dict_nnz[n] = np.flatnonzero(tau_).tolist()
 	idx_samples_plus_constr = [n]
 	idx_samples_minus_constr = [n]
 
@@ -219,4 +213,9 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 																												eps_2=eps_2,
 																												dict_nnz=dict_nnz,
 																												max_iters=max_iters)
-	return mu, nu, R, R_k
+
+	# mu is only defined on the selected columns; expand it to all features.
+	mu_full = np.zeros(tau_.shape[0])
+	mu_full[np.asarray(idx_cols)] = mu
+
+	return mu_full, nu, R, R_k

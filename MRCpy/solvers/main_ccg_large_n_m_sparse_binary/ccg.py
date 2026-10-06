@@ -176,7 +176,6 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 											  idx_cols,
 											  nu_init,
 											  mu_init,
-											  is_sparse,
 											  dict_nnz)
 
 	R_k.append(MRC_model.objVal)

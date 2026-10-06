@@ -1,6 +1,7 @@
 '''Super class for the feature mapping functions.'''
 
 import numpy as np
+from scipy import sparse
 from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 
@@ -162,7 +163,14 @@ class BasePhi():
         check_is_fitted(self, ["is_fitted_"])
 
         n = X.shape[0]
-        if self.fit_intercept:
+        if sparse.issparse(X):
+            # Keep sparse inputs sparse (csr) when adding the intercept.
+            if self.fit_intercept:
+                X_feat = sparse.hstack([sparse.csr_matrix(np.ones((n, 1))),
+                                        X]).tocsr()
+            else:
+                X_feat = sparse.csr_matrix(X, copy=True)
+        elif self.fit_intercept:
             X_feat = np.hstack(([[1]] * n, X))
         else:
             X_feat = X.copy()

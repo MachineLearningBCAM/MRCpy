@@ -3,6 +3,7 @@
 import unittest
 
 import numpy as np
+from scipy import sparse
 
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
@@ -123,6 +124,37 @@ class TestMRC(unittest.TestCase):
         y_pred = clf.predict(X_binary)
         self.assertTrue(y_pred.shape == (X_binary.shape[0], ))
         self.assertTrue(np.all(np.isin(y_pred, [0, 1])))
+
+    # Test sparse binary training with the ccg solver against the
+    # dense cvx solution of the same problem
+    def test_MRC_sparse_binary_ccg(self):
+        rng = np.random.default_rng(0)
+        X_sparse = sparse.random(300, 200, density=0.05, format='csr',
+                                 random_state=1)
+        scores = X_sparse @ rng.normal(size=200)
+        # Non 0/1 labels to check the label mapping
+        y_sparse = np.where(scores > np.quantile(scores, 0.7), 1, -1)
+
+        for fit_intercept in (True, False):
+            clf = MRC(phi='linear', loss='0-1', solver='ccg',
+                      fit_intercept=fit_intercept)
+            clf.fit(X_sparse, y_sparse)
+            self.assertTrue(clf.is_fitted_)
+
+            clf_dense = MRC(phi='linear', loss='0-1', solver='cvx',
+                            fit_intercept=fit_intercept)
+            clf_dense.fit(X_sparse.toarray(), y_sparse)
+            self.assertAlmostEqual(clf.get_upper_bound(),
+                                   clf_dense.get_upper_bound(), places=4)
+
+            hy_x = clf.predict_proba(X_sparse)
+            self.assertTrue(hy_x.shape == (X_sparse.shape[0], 2))
+            self.assertTrue(np.allclose(np.sum(hy_x, axis=1), 1))
+            self.assertTrue(np.allclose(hy_x,
+                                        clf.predict_proba(X_sparse.toarray())))
+
+            y_pred = clf.predict(X_sparse)
+            self.assertTrue(np.all(np.isin(y_pred, [-1, 1])))
 
     # Test with fit_intercept=False
     def test_MRC_no_intercept(self):
