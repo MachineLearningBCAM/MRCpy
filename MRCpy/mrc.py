@@ -20,13 +20,14 @@ import cvxpy as cvx
 import numpy as np
 import time
 import scipy.special as scs
-from sklearn.utils import check_array
+from sklearn.utils import check_array, check_X_y
 from sklearn.utils.validation import check_is_fitted
 from scipy import sparse
 import scipy as sp
 
 # Import the MRC super class
 from MRCpy import BaseMRC
+from MRCpy.phi import BasePhi
 from MRCpy.solvers.cvx import *
 from MRCpy.solvers.nesterov import *
 from MRCpy.solvers.cg import *
@@ -423,50 +424,56 @@ class MRC(BaseMRC):
         if is_sparse:
             if self.solver != 'ccg':
                 raise ValueError("Sparse matrices are only supported for ccg solver")
-            
-            if self.n_classes != 2:
-                raise ValueError("Sparse matrices are not supported \
-                                 for multi-class classification")
-            
-            if self.phi != 'linear':
-                raise ValueError('Sparse matrices only \
-                                 support linear features')
-        
 
-            # Call the minimax risk function that can solve the 
+            if not (self.phi == 'linear' or type(self.phi) is BasePhi):
+                raise ValueError('Sparse matrices only '
+                                 'support linear features')
+
+            X, Y = check_X_y(X, Y, accept_sparse='csr')
+
+            # Map the labels to 0 and 1, as BaseMRC.fit does.
+            origY = Y
+            self.classes_ = np.unique(origY)
+            n_classes = len(self.classes_)
+            if n_classes != 2:
+                raise ValueError('Sparse matrices are not supported '
+                                 'for multi-class classification')
+            Y = (origY == self.classes_[1]).astype(int)
+
+            # Call the minimax risk function that can solve the
             # optimization for sparse matrices using ccg solver.
             # The implementation is only available for binary classification.
-            n_classes = len(np.unique(Y))
             n = X.shape[0]
 
-            # Transformed features
-            if self.fit_intercept is True:
-                X_transformed = sp.sparse.hstack([sp.sparse.csr_matrix([[1]]*n), X]).tocsr()
-                dict_nnz = {}
-                for idx, row in enumerate(X):
-                    dict_nnz[idx] = row.nonzero()[1].tolist()
+            # Linear features (plus the intercept column when fit_intercept)
+            # kept in sparse format.
+            if self.phi == 'linear':
+                self.phi = BasePhi(n_classes=n_classes,
+                                   fit_intercept=self.fit_intercept,
+                                   **self.phi_kwargs)
+            self.phi.fit(X, Y)
+            X_transformed = self.phi.transform(X)
+            X_transformed.eliminate_zeros()
+            X_transformed.sort_indices()
 
-                for sample_idx, nnz_arr in dict_nnz.items():
-                    nnz_arr_numpy = np.asarray(nnz_arr) + 1
-                    nnz_arr_intercept = [0]
-                    nnz_arr_intercept.extend(nnz_arr_numpy.tolist())
-                    dict_nnz[sample_idx] = nnz_arr_intercept
+            # Nonzero columns of each instance
+            dict_nnz = {i: X_transformed.indices[X_transformed.indptr[i]:
+                                                 X_transformed.indptr[i + 1]].tolist()
+                        for i in range(n)}
 
-            # Compute the mean vector estimate
-            tau_0 = X_transformed[Y == 0, :].sum(axis=0)
-            tau_1 = (-1) * X_transformed[Y == 1, :].sum(axis=0)
-            tau_ = (tau_0 + tau_1) / n
+            # Mean vector estimate, phi(x, 0) = x and phi(x, 1) = -x
+            tau_ = (np.asarray(X_transformed[Y == 0, :].sum(axis=0)) -
+                    np.asarray(X_transformed[Y == 1, :].sum(axis=0))) / n
 
-            # Compute the standard deviation
-            std_mat = X_transformed.copy()
-            std_mat.data **=2
-            lambda_ = np.sqrt(std_mat.sum(axis=0) / n - np.square(tau_))
+            # Standard deviation, sqrt(E[x^2] - tau^2), scaled as in
+            # compute_lambda for dense inputs.
+            sq_mat = X_transformed.copy()
+            sq_mat.data **= 2
+            std_ = np.sqrt(np.clip(np.asarray(sq_mat.sum(axis=0)) / n -
+                                   np.square(tau_), 0, None))
+            lambda_ = self.s * std_ / np.sqrt(n)
 
-            # Reshape for compatibility with upcoming computations
-            tau_ = np.reshape(np.asarray(tau_), (tau_.shape[1],))
-            lambda_ = self.s * np.reshape(np.asarray(lambda_), (lambda_.shape[1],))
-
-            self.minimax_risk(X, tau_, lambda_, n_classes, dict_nnz)
+            self.minimax_risk(X_transformed, tau_, lambda_, n_classes, dict_nnz)
 
         else:
             super().fit(X=X, Y=Y, X_=X_)
@@ -1052,6 +1059,9 @@ class MRC(BaseMRC):
                    the sparse matrix of training samples to dense matrix')
 
         X_transform = self.X_transform
+        if sparse.issparse(X_transform):
+            X_transform = X_transform.toarray()
+
         # Learned feature mappings
         phi_mu = np.dot(X_transform, self.mu_.T)
         if self.n_classes == 2:
