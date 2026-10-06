@@ -400,13 +400,14 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scs</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">sparse</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
 <span class="c1"># Import the MRC super class</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMRC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePhi</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cvx</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.nesterov</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cg</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
@@ -810,50 +811,56 @@
         <span class="k">if</span> <span class="n">is_sparse</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">!=</span> <span class="s1">'ccg'</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Sparse matrices are only supported for ccg solver"</span><span class="p">)</span>
-            
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Sparse matrices are not supported </span><span class="se">\</span>
-<span class="s2">                                 for multi-class classification"</span><span class="p">)</span>
-            
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">!=</span> <span class="s1">'linear'</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Sparse matrices only </span><span class="se">\</span>
-<span class="s1">                                 support linear features'</span><span class="p">)</span>
-        
 
-            <span class="c1"># Call the minimax risk function that can solve the </span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">'linear'</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="ow">is</span> <span class="n">BasePhi</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Sparse matrices only '</span>
+                                 <span class="s1">'support linear features'</span><span class="p">)</span>
+
+            <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
+
+            <span class="c1"># Map the labels to 0 and 1, as BaseMRC.fit does.</span>
+            <span class="n">origY</span> <span class="o">=</span> <span class="n">Y</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">origY</span><span class="p">)</span>
+            <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n_classes</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Sparse matrices are not supported '</span>
+                                 <span class="s1">'for multi-class classification'</span><span class="p">)</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="p">(</span><span class="n">origY</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="c1"># Call the minimax risk function that can solve the</span>
             <span class="c1"># optimization for sparse matrices using ccg solver.</span>
             <span class="c1"># The implementation is only available for binary classification.</span>
-            <span class="n">n_classes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span>
             <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-            <span class="c1"># Transformed features</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="n">X_transformed</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sp</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">([[</span><span class="mi">1</span><span class="p">]]</span><span class="o">*</span><span class="n">n</span><span class="p">),</span> <span class="n">X</span><span class="p">])</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
-                <span class="n">dict_nnz</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-                    <span class="n">dict_nnz</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="c1"># Linear features (plus the intercept column when fit_intercept)</span>
+            <span class="c1"># kept in sparse format.</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">'linear'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">BasePhi</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span>
+                                   <span class="n">fit_intercept</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">,</span>
+                                   <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+            <span class="n">X_transformed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+            <span class="n">X_transformed</span><span class="o">.</span><span class="n">eliminate_zeros</span><span class="p">()</span>
+            <span class="n">X_transformed</span><span class="o">.</span><span class="n">sort_indices</span><span class="p">()</span>
 
-                <span class="k">for</span> <span class="n">sample_idx</span><span class="p">,</span> <span class="n">nnz_arr</span> <span class="ow">in</span> <span class="n">dict_nnz</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">nnz_arr_numpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">nnz_arr</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-                    <span class="n">nnz_arr_intercept</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">nnz_arr_intercept</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nnz_arr_numpy</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
-                    <span class="n">dict_nnz</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">nnz_arr_intercept</span>
+            <span class="c1"># Nonzero columns of each instance</span>
+            <span class="n">dict_nnz</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">X_transformed</span><span class="o">.</span><span class="n">indices</span><span class="p">[</span><span class="n">X_transformed</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                                                 <span class="n">X_transformed</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)}</span>
 
-            <span class="c1"># Compute the mean vector estimate</span>
-            <span class="n">tau_0</span> <span class="o">=</span> <span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">tau_1</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">tau_</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau_0</span> <span class="o">+</span> <span class="n">tau_1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
+            <span class="c1"># Mean vector estimate, phi(x, 0) = x and phi(x, 1) = -x</span>
+            <span class="n">tau_</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="o">/</span> <span class="n">n</span>
 
-            <span class="c1"># Compute the standard deviation</span>
-            <span class="n">std_mat</span> <span class="o">=</span> <span class="n">X_transformed</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">std_mat</span><span class="o">.</span><span class="n">data</span> <span class="o">**=</span><span class="mi">2</span>
-            <span class="n">lambda_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">std_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tau_</span><span class="p">))</span>
+            <span class="c1"># Standard deviation, sqrt(E[x^2] - tau^2), scaled as in</span>
+            <span class="c1"># compute_lambda for dense inputs.</span>
+            <span class="n">sq_mat</span> <span class="o">=</span> <span class="n">X_transformed</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">sq_mat</span><span class="o">.</span><span class="n">data</span> <span class="o">**=</span> <span class="mi">2</span>
+            <span class="n">std_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sq_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="n">n</span> <span class="o">-</span>
+                                   <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tau_</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">std_</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
-            <span class="c1"># Reshape for compatibility with upcoming computations</span>
-            <span class="n">tau_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tau_</span><span class="p">),</span> <span class="p">(</span><span class="n">tau_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],))</span>
-            <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">lambda_</span><span class="p">),</span> <span class="p">(</span><span class="n">lambda_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],))</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="n">X_</span><span class="p">)</span>
@@ -1448,6 +1455,9 @@
 <span class="s1">                   the sparse matrix of training samples to dense matrix'</span><span class="p">)</span>
 
         <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_transform</span>
+        <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X_transform</span><span class="p">):</span>
+            <span class="n">X_transform</span> <span class="o">=</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
         <span class="c1"># Learned feature mappings</span>
         <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
