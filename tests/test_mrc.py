@@ -7,7 +7,7 @@ from scipy import sparse
 
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
-from MRCpy.datasets import load_iris, load_glass, load_mammographic
+from MRCpy.datasets import load_iris, load_mammographic
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.cg import mrc_cg
 
@@ -80,11 +80,11 @@ class TestMRC(unittest.TestCase):
         self.MRC_training(phi='relu', loss='0-1', solver='cg')
 
     # Test the cg solver against the cvx solver for multiclass
-    # (glass, 6 classes) and binary (mammographic) data: the minimax risk
+    # (iris, 3 classes) and binary (mammographic) data: the minimax risk
     # (upper_) of the optimization, and the upper bound of the deterministic
     # classifier obtained from the solution mu.
     def test_MRC0_1_cg_vs_cvx(self):
-        for load in (load_glass, load_mammographic):
+        for load in (load_iris, load_mammographic):
             X, y = load(with_info=False)
             for fit_intercept in (True, False):
                 clf_cg = MRC(phi='linear', loss='0-1', solver='cg',
@@ -105,7 +105,7 @@ class TestMRC(unittest.TestCase):
     # Test the cg solver starting with no columns and adding at most
     # n_max columns per iteration
     def test_MRC0_1_cg_no_initial_columns(self):
-        X, y = load_glass(with_info=False)
+        X, y = load_iris(with_info=False)
         clf = MRC(phi='linear', loss='0-1', solver='cvx')
         clf.fit(X, y)
         X_transform = np.unique(clf.compute_features(X), axis=0)
