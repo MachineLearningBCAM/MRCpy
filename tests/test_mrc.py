@@ -7,7 +7,8 @@ from scipy import sparse
 
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
-from MRCpy.datasets import load_iris
+from MRCpy.datasets import load_iris, load_ecoli, load_mammographic
+from MRCpy.solvers.cg import mrc_cg
 
 
 class TestMRC(unittest.TestCase):
@@ -76,6 +77,43 @@ class TestMRC(unittest.TestCase):
         self.MRC_training(phi='linear', loss='0-1', solver='cg')
         self.MRC_training(phi='fourier', loss='0-1', solver='cg')
         self.MRC_training(phi='relu', loss='0-1', solver='cg')
+
+    # Test the cg solver against the cvx solver for multiclass
+    # (ecoli, 8 classes) and binary (mammographic) data: the minimax risk
+    # (upper_) of the optimization, and the upper bound of the deterministic
+    # classifier obtained from the solution mu.
+    def test_MRC0_1_cg_vs_cvx(self):
+        for load in (load_ecoli, load_mammographic):
+            X, y = load(with_info=False)
+            for fit_intercept in (True, False):
+                clf_cg = MRC(phi='linear', loss='0-1', solver='cg',
+                             eps1=1e-7, fit_intercept=fit_intercept)
+                clf_cg.fit(X, y)
+                clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx',
+                              fit_intercept=fit_intercept)
+                clf_cvx.fit(X, y)
+                self.assertAlmostEqual(clf_cg.upper_, clf_cvx.upper_,
+                                       places=5)
+                self.assertTrue(clf_cg.mu_.shape == clf_cg.tau_mat.shape)
+
+                # get_upper_bound() replaces upper_ by the upper bound of
+                # the deterministic classifier, so it is compared after.
+                self.assertAlmostEqual(clf_cg.get_upper_bound(),
+                                       clf_cvx.get_upper_bound(), places=5)
+
+    # Test the cg solver starting with no columns and adding at most
+    # n_max columns per iteration
+    def test_MRC0_1_cg_no_initial_columns(self):
+        X, y = load_ecoli(with_info=False)
+        clf = MRC(phi='linear', loss='0-1', solver='cvx')
+        clf.fit(X, y)
+        X_transform = np.unique(clf.compute_features(X), axis=0)
+
+        mu, nu, upper, I = mrc_cg(X_transform, clf.tau_mat, clf.lambda_mat,
+                                  [], 5, 400, None, 1e-7)
+        self.assertAlmostEqual(upper, clf.upper_, places=5)
+        self.assertTrue(mu.shape == clf.tau_mat.shape)
+        self.assertTrue(len(I) > 5)
 
     # Using constraint-column generation (ccg) solver
     # Training test for MRC with 0-1 loss.
