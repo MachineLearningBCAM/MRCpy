@@ -8,6 +8,7 @@ from scipy import sparse
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
 from MRCpy.datasets import load_iris, load_glass, load_mammographic
+from MRCpy.phi import BasePhi
 from MRCpy.solvers.cg import mrc_cg
 
 
@@ -193,6 +194,24 @@ class TestMRC(unittest.TestCase):
 
             y_pred = clf.predict(X_sparse)
             self.assertTrue(np.all(np.isin(y_pred, [-1, 1])))
+
+    # Test that one-hot encoded features are rejected for binary
+    # classification and accepted for multiclass classification
+    def test_MRC_one_hot_binary(self):
+        X_binary = self.X[self.y != 2]
+        y_binary = self.y[self.y != 2]
+
+        for solver in ('cvx', 'subgrad', 'cg', 'ccg'):
+            with self.assertRaises(ValueError):
+                MRC(phi='linear', loss='0-1', solver=solver,
+                    one_hot=True).fit(X_binary, y_binary)
+            with self.assertRaises(ValueError):
+                MRC(phi=BasePhi(n_classes=2, one_hot=True), loss='0-1',
+                    solver=solver).fit(X_binary, y_binary)
+
+        clf = MRC(phi='linear', loss='0-1', solver='subgrad', one_hot=True)
+        clf.fit(self.X, self.y)
+        self.assertTrue(clf.is_fitted_)
 
     # Test with fit_intercept=False
     def test_MRC_no_intercept(self):
