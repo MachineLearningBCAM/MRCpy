@@ -411,6 +411,18 @@ class MRC(BaseMRC):
 
         '''
 
+        # The solvers use the binary formulation, with phi(x, 1) = -phi(x, 0),
+        # whenever there are two classes. One-hot encoded features give
+        # parameters of a different shape for the same problem.
+        if isinstance(self.phi, BasePhi):
+            one_hot = self.phi.one_hot
+        else:
+            one_hot = self.phi_kwargs.get('one_hot', False)
+        if one_hot and len(np.unique(Y)) == 2:
+            raise ValueError('one_hot=True is not supported for binary '
+                             'classification. Use one_hot=False (the '
+                             'default), which solves the same problem.')
+
         is_sparse = sparse.issparse(X)
 
         # 1. If the training instances matrix is sparse,
