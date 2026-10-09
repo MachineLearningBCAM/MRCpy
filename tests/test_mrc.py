@@ -213,6 +213,34 @@ class TestMRC(unittest.TestCase):
         clf.fit(self.X, self.y)
         self.assertTrue(clf.is_fitted_)
 
+    # Test that the features given by compute_features are used for the
+    # estimates tau and lambda and for the optimization, for dense and
+    # sparse inputs
+    def test_MRC_compute_features_override(self):
+        class ScaledMRC(MRC):
+            def compute_features(self, X):
+                return 2 * self.phi.transform(X)
+
+        rng = np.random.default_rng(0)
+        X_sparse = sparse.random(100, 20, density=0.2, format='csr',
+                                 random_state=1)
+        y_sparse = (X_sparse @ rng.normal(size=20) > 0).astype(int)
+
+        for X, y, solver in ((self.X, self.y, 'subgrad'),
+                             (X_sparse, y_sparse, 'ccg')):
+            clf = MRC(phi='linear', loss='0-1', solver=solver).fit(X, y)
+            clf_scaled = ScaledMRC(phi='linear', loss='0-1',
+                                   solver=solver).fit(X, y)
+            self.assertTrue(np.allclose(clf_scaled.tau_mat, 2 * clf.tau_mat))
+            self.assertTrue(np.allclose(clf_scaled.lambda_mat,
+                                        2 * clf.lambda_mat))
+            X_transform = clf.X_transform
+            X_transform_scaled = clf_scaled.X_transform
+            if sparse.issparse(X_transform):
+                X_transform = X_transform.toarray()
+                X_transform_scaled = X_transform_scaled.toarray()
+            self.assertTrue(np.allclose(X_transform_scaled, 2 * X_transform))
+
     # Test with fit_intercept=False
     def test_MRC_no_intercept(self):
         clf = MRC(phi='linear', loss='0-1', solver='subgrad', fit_intercept=False)

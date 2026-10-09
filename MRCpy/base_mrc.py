@@ -256,7 +256,7 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         self.phi.fit(X, Y)
 
         # Compute the expectation estimates
-        X_transform = self.phi.transform(X)
+        X_transform = self.compute_features(X)
         tau_mat = self.compute_tau(X_transform, Y)
         lambda_mat = self.compute_lambda(X_transform, Y, tau_mat)
 
