@@ -667,90 +667,14 @@ class MRC(BaseMRC):
                         # evaluated fresh each iteration via the generic
                         # oracle-based solver instead of precomputing an
                         # O(n^2) Gram matrix.
-                        def f_(mu):
-                            """
-                            mu: (1, n_features)
-                            X_transform: (n_samples, n_features)
-                            """
-                            z = (X_transform @ mu.T).flatten()  # (n_samples,)
-
-                            idx_pos = np.argmax(z)
-                            idx_neg = np.argmax(-z)
-
-                            candidates = [
-                                (z[idx_pos], idx_pos, 1),
-                                (-z[idx_neg], idx_neg, -1),
-                                (0.5, None, 0),
-                            ]
-                            value, idx, sign = max(candidates,
-                                                   key=lambda c: c[0])
-
-                            return value, idx, sign
-
-                        def g_(mu, idx, sign):
-                            """
-                            mu: (1, n_features)
-                            idx: sample index achieving the max (None
-                                for the constant candidate)
-                            sign: +1 if the max came from max(z), -1 if
-                                from max(-z), 0 if from the constant
-                                candidate (zero gradient)
-                            """
-                            grad_ = np.zeros((1, d))
-                            if sign != 0:
-                                grad_[0, :] = sign * X_transform[idx, :]
-                            return grad_
-
+                        f_, g_ = self._zero_one_oracle(X_transform)
                         self.upper_params_ = nesterov_optimization_mrc(
                             self.tau_mat, self.lambda_mat, f_, g_,
                             self.max_iters)
                 else:
                     # Define the subobjective function and
-                    # its gradient for the 0-1 loss function.                    
-                    def f_(mu):
-                        """
-                        mu: (n_classes, n_features)
-                        X_transform: (n_samples, n_features)
-                        """
-                        phi_mu = X_transform @ mu.T   # (n_samples, n_classes)
-
-                        # For a fixed cardinality r, the subset of classes
-                        # maximizing the sum of scores is just the r
-                        # largest entries, so the r-th largest partial sum
-                        # is a descending sort followed by a cumulative
-                        # sum. That makes the maximum over all non-empty
-                        # subsets a maximum over the n_samples x n_classes
-                        # table below, instead of an enumeration of all
-                        # 2^n_classes - 1 subsets.
-                        sorted_desc = -np.sort(-phi_mu, axis=1)
-                        # cumsum[:, r - 1] is the sum of the r largest
-                        # scores for each sample.
-                        cumsum = np.cumsum(sorted_desc, axis=1)
-                        r_vals = np.arange(1, self.n_classes + 1)
-                        values = (cumsum - 1) / r_vals + 1
-
-                        # Obtain the sample and subset achieving the maximum value
-                        sample_idx, r_idx = np.unravel_index(
-                            np.argmax(values), values.shape)
-                        S = np.argsort(-phi_mu[sample_idx])[:r_idx + 1]
-
-                        return values[sample_idx, r_idx], sample_idx, S
-                    
-                    def g_(mu, idx, subset):
-                        """
-                        mu: (n_classes, n_features)
-                        idx: sample index
-                        subset: tuple of class indices
-                        """
-
-                        # Not accounting for binary case
-                        # since this implementation is only for multiclass
-                        # Construct the corresponding gradient and return
-                        r = len(subset)
-                        grad_ = np.zeros((self.n_classes, d))
-                        grad_[subset, :] = X_transform[idx, :].reshape(1, -1) / r
-
-                        return grad_
+                    # its gradient for the 0-1 loss function.
+                    f_, g_ = self._zero_one_oracle(X_transform)
 
                     # Calculate the upper bound
                     self.upper_params_ = nesterov_optimization_mrc(self.tau_mat,
@@ -825,74 +749,40 @@ class MRC(BaseMRC):
 
     #-----> Initialization for constraint generation method.
 
-        #-> Reduce the feature space by restricting the number of features
-        #   based on the variance in the features, that is, picking first
-        #   10*N minimum variance features.
+        #-> Solve the optimization using first order subgradient methods
+        #   to get an initial low accuracy solution in minimum time.
+            f_, g_ = self._zero_one_oracle(X_transform)
+            upper_params_ = nesterov_optimization_mrc(self.tau_mat,
+                                                      self.lambda_mat,
+                                                      f_,
+                                                      g_,
+                                                      100)
+            mu_ = np.asarray(upper_params_['mu']).reshape(self.tau_mat.shape)
 
-            # Create the feature mapping matrix
-            phi = self.phi.eval_x(X)
-            phi = np.unique(phi, axis=0)
-
-            F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                        for numVals in range(1, self.n_classes + 1)
-                        for S in it.combinations(np.arange(self.n_classes),
-                                                    numVals)))
-
-            # Compute the corresponding length of the subset of classes
-            # for which sums computed for each instance
-            cardS = np.arange(1, self.n_classes + 1).\
-                repeat([n * scs.comb(self.n_classes, numVals)
-                        for numVals in np.arange(1,
-                        self.n_classes + 1)])
-
-            tau_flattened = self.tau_mat.flatten()
-            lambda_flattened = self.lambda_mat.flatten()
-
-            M = F / (cardS[:, np.newaxis])
-            h = 1 - (1 / cardS)
-            N = M.shape[0]
-            argsort_columns = np.argsort(np.abs(lambda_flattened))
-            index_CG        = argsort_columns[:10*N]
-
-        #-> Solve the optimization using the reduced training set
-        #   and first order subgradient methods to get an
-        #   initial low accuracy solution in minimum time.
-            M_reduced = M[:, index_CG]
-            M_reduced_t = M_reduced.transpose()
-
-            # Calculate the upper bound
-            upper_params_ = \
-                 nesterov_optimization_minimized_mrc(M_reduced,
-                                                     h,
-                                                     tau_flattened[index_CG],
-                                                     lambda_flattened[index_CG],
-                                                     100)
-            mu_ = upper_params_['mu']
-            nu_ = upper_params_['nu']
-
-        #-> Transform the solution obtained in the reduced space
-        #   to the original space
+        #-> Use the largest coefficients of the low accuracy solution
+        #   as the initial columns (y, j).
             initial_features_limit = 100
             if np.sum(mu_!=0) > initial_features_limit:
-                I = (np.argsort(np.abs(mu_))[::-1])[:initial_features_limit]
+                I = np.unravel_index(np.argsort(np.abs(mu_), axis=None)[::-1]
+                                     [:initial_features_limit], mu_.shape)
+                I = list(zip(*I))
             else:
-                I = np.where(mu_!=0)[0]
+                I = [tuple(col) for col in np.argwhere(mu_!=0)]
 
-            warm_start = mu_[I] 
-            I = np.array(index_CG)[I].tolist()
+            warm_start = np.zeros(mu_.shape)
+            for col in I:
+                warm_start[col] = mu_[col]
 
     #-----> Now apply the method of constraint generation using the 
     #       low accuracy solution.
 
-            self.mu_, self.nu_, self.upper_, self.I = mrc_cg(M,
-                                                             h,
-                                                             tau_flattened,
-                                                             lambda_flattened,
+            self.mu_, self.nu_, self.upper_, self.I = mrc_cg(X_transform,
+                                                             self.tau_mat,
+                                                             self.lambda_mat,
                                                              I,
                                                              self.n_max,
                                                              self.k_max,
                                                              warm_start,
-                                                             nu_,
                                                              self.eps1)
 
     #-----> Combined constraint-column generation with efficient constraint selections
@@ -920,8 +810,9 @@ class MRC(BaseMRC):
                         main_large_n
                     )
 
-                    phi = self.phi.eval_x(X)
-                    phi = np.unique(phi, axis=0)
+                    # Scores of each sample for the two classes, phi(x, 0) = x
+                    # and phi(x, 1) = -x, built from the compact features.
+                    phi = np.stack([X_transform, -X_transform], axis=1)
 
                     (self.mu_, self.nu_, self.upper_, self.R_k) = main_large_n(
                         phi,
@@ -1002,6 +893,111 @@ class MRC(BaseMRC):
             self.mu_ = self.mu_.reshape(self.n_classes, d)
 
         return self
+
+    def _zero_one_oracle(self, X_transform):
+        '''
+        Subobjective of the 0-1 loss MRC optimization and its subgradient,
+        computed from the features (without one-hot encoding), for the
+        Nesterov accelerated approach (`nesterov_optimization_mrc`).
+
+        Parameters
+        ----------
+        X_transform : `array`-like of shape (`n_samples`, `n_features`)
+            Features corresponding with the instances.
+
+        Returns
+        -------
+        f_ : function of the form `f_(mu)`
+            Maximum over the instances and subsets of classes of the
+            subobjective, and the instance and subset achieving it.
+
+        g_ : function of the form `g_(mu, idx, subset)`
+            Subgradient of the subobjective at the instance and subset
+            given by `f_`.
+        '''
+
+        d = X_transform.shape[1]
+
+        if self.n_classes == 2:
+            def f_(mu):
+                """
+                mu: (1, n_features)
+                X_transform: (n_samples, n_features)
+                """
+                z = (X_transform @ mu.T).flatten()  # (n_samples,)
+
+                idx_pos = np.argmax(z)
+                idx_neg = np.argmax(-z)
+
+                candidates = [
+                    (z[idx_pos], idx_pos, 1),
+                    (-z[idx_neg], idx_neg, -1),
+                    (0.5, None, 0),
+                ]
+                value, idx, sign = max(candidates,
+                                       key=lambda c: c[0])
+
+                return value, idx, sign
+
+            def g_(mu, idx, sign):
+                """
+                mu: (1, n_features)
+                idx: sample index achieving the max (None
+                    for the constant candidate)
+                sign: +1 if the max came from max(z), -1 if
+                    from max(-z), 0 if from the constant
+                    candidate (zero gradient)
+                """
+                grad_ = np.zeros((1, d))
+                if sign != 0:
+                    grad_[0, :] = sign * X_transform[idx, :]
+                return grad_
+
+        else:
+            def f_(mu):
+                """
+                mu: (n_classes, n_features)
+                X_transform: (n_samples, n_features)
+                """
+                phi_mu = X_transform @ mu.T   # (n_samples, n_classes)
+
+                # For a fixed cardinality r, the subset of classes
+                # maximizing the sum of scores is just the r
+                # largest entries, so the r-th largest partial sum
+                # is a descending sort followed by a cumulative
+                # sum. That makes the maximum over all non-empty
+                # subsets a maximum over the n_samples x n_classes
+                # table below, instead of an enumeration of all
+                # 2^n_classes - 1 subsets.
+                sorted_desc = -np.sort(-phi_mu, axis=1)
+                # cumsum[:, r - 1] is the sum of the r largest
+                # scores for each sample.
+                cumsum = np.cumsum(sorted_desc, axis=1)
+                r_vals = np.arange(1, self.n_classes + 1)
+                values = (cumsum - 1) / r_vals + 1
+
+                # Obtain the sample and subset achieving the maximum value
+                sample_idx, r_idx = np.unravel_index(
+                    np.argmax(values), values.shape)
+                S = np.argsort(-phi_mu[sample_idx])[:r_idx + 1]
+
+                return values[sample_idx, r_idx], sample_idx, S
+
+            def g_(mu, idx, subset):
+                """
+                mu: (n_classes, n_features)
+                idx: sample index
+                subset: tuple of class indices
+                """
+
+                # Construct the corresponding gradient and return
+                r = len(subset)
+                grad_ = np.zeros((self.n_classes, d))
+                grad_[subset, :] = X_transform[idx, :].reshape(1, -1) / r
+
+                return grad_
+
+        return f_, g_
 
     def get_upper_bound(self):
         '''
