@@ -464,7 +464,7 @@ class MRC(BaseMRC):
                                    fit_intercept=self.fit_intercept,
                                    **self.phi_kwargs)
             self.phi.fit(X, Y)
-            X_transformed = self.phi.transform(X)
+            X_transformed = self.compute_features(X)
             X_transformed.eliminate_zeros()
             X_transformed.sort_indices()
 
