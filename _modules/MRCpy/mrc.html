@@ -798,6 +798,18 @@
 
 <span class="sd">        '''</span>
 
+        <span class="c1"># The solvers use the binary formulation, with phi(x, 1) = -phi(x, 0),</span>
+        <span class="c1"># whenever there are two classes. One-hot encoded features give</span>
+        <span class="c1"># parameters of a different shape for the same problem.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">BasePhi</span><span class="p">):</span>
+            <span class="n">one_hot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">one_hot</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">one_hot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'one_hot'</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">one_hot</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'one_hot=True is not supported for binary '</span>
+                             <span class="s1">'classification. Use one_hot=False (the '</span>
+                             <span class="s1">'default), which solves the same problem.'</span><span class="p">)</span>
+
         <span class="n">is_sparse</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
         <span class="c1"># 1. If the training instances matrix is sparse,</span>
