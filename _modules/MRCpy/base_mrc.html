@@ -643,7 +643,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
 
         <span class="c1"># Compute the expectation estimates</span>
-        <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_features</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="n">tau_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
         <span class="n">lambda_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_lambda</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">)</span>
 
