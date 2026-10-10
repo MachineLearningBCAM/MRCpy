@@ -139,8 +139,9 @@ class TestMRC(unittest.TestCase):
     # Test the ccg solver for a large number of instances against the cvx
     # solver for multiclass data (glass, and satellite adding at most 3
     # constraints per iteration) and binary data (mammographic): the
-    # minimax risk (upper_) of the optimization, and the upper bound of the
-    # deterministic classifier obtained from the solution mu.
+    # minimax risk (upper_) and the parameter nu_ of the optimization, and
+    # the upper bound of the deterministic classifier obtained from the
+    # solution mu.
     def test_MRC0_1_ccg_large_number_of_samples(self):
         X_glass, y_glass = load_glass(with_info=False)
         X_sat, y_sat = load_satellite(with_info=False)
@@ -157,6 +158,9 @@ class TestMRC(unittest.TestCase):
                 self.assertAlmostEqual(clf_ccg.upper_, clf_cvx.upper_,
                                        places=5)
                 self.assertTrue(clf_ccg.mu_.shape == clf_ccg.tau_mat.shape)
+                self.assertAlmostEqual(float(np.ravel(clf_ccg.nu_)[0]),
+                                       float(np.ravel(clf_cvx.nu_)[0]),
+                                       places=5)
 
                 # get_upper_bound() replaces upper_ by the upper bound of
                 # the deterministic classifier, so it is compared after.

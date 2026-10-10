@@ -104,7 +104,8 @@ def mrc_ccg_large_number_of_samples(X, tau_mat, lambda_mat, n_max=400, k_max=150
 		Parameters mu = mu_1 - mu_2 learnt by the algorithm.
 
 	nu : `float`
-		Parameter nu learnt by the algorithm.
+		Parameter nu of the classifier learnt by the algorithm, the negative
+		of the variable nu of the linear program P.
 
 	R : `float`
 		Worst-case error probability given by the last model, which is the
@@ -170,7 +171,9 @@ def mrc_ccg_large_number_of_samples(X, tau_mat, lambda_mat, n_max=400, k_max=150
 
 	R = R_k[-1]
 
-	return mu, nu, R, R_k
+	# The parameter nu of the classifier is the negative of the variable nu
+	# of the linear program.
+	return mu, -nu, R, R_k
 
 def mrc_dual_lp_model(tau_mat, lambda_mat):
 	"""
@@ -243,7 +246,7 @@ def dual_solution(MRC_model, constrs, shape):
 		Parameters mu.
 
 	nu : `float`
-		Parameter nu.
+		Variable nu of P_I.
 	"""
 
 	mu_1 = MRC_model.getAttr("Pi", constrs['mu_1'].flatten().tolist())
