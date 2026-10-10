@@ -410,7 +410,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePhi</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cvx</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.nesterov</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.cg</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.mrc_cg</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <div class="viewcode-block" id="MRC">
 <a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC">[docs]</a>
@@ -532,20 +532,33 @@
 <span class="sd">        .. seealso:: For more information about the constraint generation </span>
 <span class="sd">            algorithm for 0-1 MRC, see [5]_</span>
 
-<span class="sd">    max_iters : `int`, default = `10000`</span>
+<span class="sd">    max_iters : `int`, default = `None`</span>
 <span class="sd">        Maximum number of iterations to use</span>
 <span class="sd">        for finding the solution of optimization when</span>
-<span class="sd">        using the subgradient approach.</span>
+<span class="sd">        using the subgradient approach (`10000` by default) or the</span>
+<span class="sd">        ’ccg’ solver (`150` by default).</span>
 
-<span class="sd">    n_max : `int`, default = `100`</span>
-<span class="sd">        Maximum number of features selected in each iteration</span>
-<span class="sd">        in case of ’cg’ solver.</span>
+<span class="sd">    n_max : `int`, default = `None`</span>
+<span class="sd">        Maximum number of constraints added in each iteration</span>
+<span class="sd">        in case of ’ccg’ solver (`400` by default).</span>
 
-<span class="sd">    k_max : `int`, default = `20`</span>
+<span class="sd">    m_max : `int`, default = `None`</span>
+<span class="sd">        Maximum number of features added in each iteration</span>
+<span class="sd">        in case of ’cg’ solver (`100` by default).</span>
+
+<span class="sd">    k_max : `int`, default = `400`</span>
 <span class="sd">        Maximum number of iterations in case of ’cg’ solver.</span>
+<span class="sd">        In case of ’ccg’ solver with a large number of features,</span>
+<span class="sd">        maximum number of features added in each iteration.</span>
 
-<span class="sd">    eps : `float`, default = `1e-4`</span>
-<span class="sd">        Dual constraints' violation threshold for ’cg’ solver. </span>
+<span class="sd">    eps1 : `float`, default = `None`</span>
+<span class="sd">        Constraints' violation threshold in case of ’ccg’ solver</span>
+<span class="sd">        (`1e-2` by default).</span>
+
+<span class="sd">    eps2 : `float`, default = `None`</span>
+<span class="sd">        Dual constraints' (features') violation threshold in case of</span>
+<span class="sd">        ’cg’ solver (`1e-4` by default) and ’ccg’ solver with a large</span>
+<span class="sd">        number of features (`1e-5` by default).</span>
 
 <span class="sd">    phi : `str` or `BasePhi` instance, default = 'linear'</span>
 <span class="sd">        Type of feature mapping function to use for mapping the input data.</span>
@@ -711,33 +724,50 @@
                  <span class="n">solver</span><span class="o">=</span><span class="s1">'subgrad'</span><span class="p">,</span>
                  <span class="n">max_iters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">n_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">m_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">k_max</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
                  <span class="n">eps1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">eps2</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+                 <span class="n">eps2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="n">k_max</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="o">=</span> <span class="n">eps2</span>
 
         <span class="c1"># Use the defaults</span>
+        <span class="c1"># Constraints: n_max and eps1 for the 'ccg' solver</span>
         <span class="k">if</span> <span class="n">n_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="mi">100</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="mi">400</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span> <span class="o">=</span> <span class="n">n_max</span>
 
-        <span class="c1"># Use the defaults</span>
         <span class="k">if</span> <span class="n">eps1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span> <span class="o">=</span> <span class="mf">1e-4</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span> <span class="o">=</span> <span class="mf">1e-2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span> <span class="o">=</span> <span class="n">eps1</span>
+
+        <span class="c1"># Features: m_max and eps2 for the 'cg' solver</span>
+        <span class="k">if</span> <span class="n">m_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="n">m_max</span>
+
+        <span class="k">if</span> <span class="n">eps2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="o">=</span> <span class="mf">1e-4</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="o">=</span> <span class="mf">1e-5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="o">=</span> <span class="n">eps2</span>
 
         <span class="c1"># Use the defaults</span>
         <span class="k">if</span> <span class="n">max_iters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -747,6 +777,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">20</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">150</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="n">max_iters</span>
 
@@ -1135,17 +1167,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">'best_value'</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
-            <span class="c1"># Use methods based on constraint generation</span>
-            <span class="c1"># to solve the optimization with many features but few samples.</span>
+            <span class="c1"># Use column generation (generation of features) to solve the</span>
+            <span class="c1"># optimization with many features but few samples.</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'log'</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'The </span><span class="se">\'</span><span class="s1">cg</span><span class="se">\'</span><span class="s1"> solver is only available '</span> <span class="o">+</span>
                                  <span class="s1">'for 0-1 loss.'</span><span class="p">)</span>
 
-    <span class="c1">#-----&gt; Initialization for constraint generation method.</span>
-
-        <span class="c1">#-&gt; Solve the optimization using first order subgradient methods</span>
-        <span class="c1">#   to get an initial low accuracy solution in minimum time.</span>
+            <span class="c1"># Initial low accuracy solution in minimum time, using the</span>
+            <span class="c1"># Nesterov accelerated subgradient method.</span>
             <span class="n">f_</span><span class="p">,</span> <span class="n">g_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zero_one_oracle</span><span class="p">(</span><span class="n">X_transform</span><span class="p">)</span>
             <span class="n">upper_params_</span> <span class="o">=</span> <span class="n">nesterov_optimization_mrc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
                                                       <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
@@ -1154,31 +1184,29 @@
                                                       <span class="mi">100</span><span class="p">)</span>
             <span class="n">mu_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">upper_params_</span><span class="p">[</span><span class="s1">'mu'</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-        <span class="c1">#-&gt; Use the largest coefficients of the low accuracy solution</span>
-        <span class="c1">#   as the initial columns (y, j).</span>
+            <span class="c1"># Initial subset J of features: the largest coefficients (y, j)</span>
+            <span class="c1"># of the low accuracy solution, which is also the warm start.</span>
             <span class="n">initial_features_limit</span> <span class="o">=</span> <span class="mi">100</span>
             <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">initial_features_limit</span><span class="p">:</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu_</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
                                      <span class="p">[:</span><span class="n">initial_features_limit</span><span class="p">],</span> <span class="n">mu_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">I</span><span class="p">))</span>
+                <span class="n">J</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">J</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">I</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)]</span>
+                <span class="n">J</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">mu_</span><span class="o">!=</span><span class="mi">0</span><span class="p">)]</span>
 
             <span class="n">warm_start</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mu_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">I</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">J</span><span class="p">:</span>
                 <span class="n">warm_start</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu_</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
 
-    <span class="c1">#-----&gt; Now apply the method of constraint generation using the </span>
-    <span class="c1">#       low accuracy solution.</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">I</span> <span class="o">=</span> <span class="n">mrc_cg</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span>
+            <span class="c1"># Column generation from the low accuracy solution</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">J</span> <span class="o">=</span> <span class="n">mrc_cg</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span>
                                                              <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
                                                              <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                                                             <span class="n">I</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
+                                                             <span class="n">J</span><span class="p">,</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
                                                              <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
                                                              <span class="n">warm_start</span><span class="p">,</span>
-                                                             <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">)</span>
+                                                             <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">)</span>
 
     <span class="c1">#-----&gt; Combined constraint-column generation with efficient constraint selections</span>
     <span class="c1">#       for learning with large-scale data having </span>
