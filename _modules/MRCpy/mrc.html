@@ -875,6 +875,11 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Proportions of the classes, in the order of the rows of tau,</span>
+            <span class="c1"># for the class centers tau_y / p_y used by the ccg solver.</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">class_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">class_prior_</span> <span class="o">=</span> <span class="n">class_counts</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">class_counts</span><span class="p">)</span>
+
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">X_</span><span class="o">=</span><span class="n">X_</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span></div>
@@ -1195,38 +1200,20 @@
             <span class="k">if</span> <span class="n">large_features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
             <span class="c1"># Perform constraint generation approach for large number</span>
             <span class="c1"># of samples.</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-                        <span class="n">main_large_n</span>
-                    <span class="p">)</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.mrc_ccg_large_number_of_samples</span><span class="w"> </span><span class="kn">import</span> <span class="n">mrc_ccg_large_number_of_samples</span>
 
-                    <span class="c1"># Scores of each sample for the two classes, phi(x, 0) = x</span>
-                    <span class="c1"># and phi(x, 1) = -x, built from the compact features.</span>
-                    <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">X_transform</span><span class="p">,</span> <span class="o">-</span><span class="n">X_transform</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">)</span> <span class="o">=</span> <span class="n">main_large_n</span><span class="p">(</span>
-                        <span class="n">phi</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span>
-                    <span class="p">)</span>
-
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_multiclass.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-                        <span class="n">main_large_n_efficient_multiclass</span>
-                    <span class="p">)</span>
-                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">,</span> 
-                    <span class="n">constr_dict</span><span class="p">)</span> <span class="o">=</span> <span class="n">main_large_n_efficient_multiclass</span><span class="p">(</span>
-                        <span class="n">X_transform</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span>
-                    <span class="p">)</span>
+                <span class="c1"># The class proportions give the class centers of the</span>
+                <span class="c1"># initial model (not available if minimax_risk is called</span>
+                <span class="c1"># without fit).</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">)</span> <span class="o">=</span> <span class="n">mrc_ccg_large_number_of_samples</span><span class="p">(</span>
+                    <span class="n">X_transform</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
+                    <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'class_prior_'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Perform a combination of constraint and column generation approach</span>
             <span class="c1"># for large number of samples and features.</span>
