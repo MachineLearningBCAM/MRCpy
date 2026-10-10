@@ -7,7 +7,7 @@ from scipy import sparse
 
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
-from MRCpy.datasets import load_iris, load_mammographic
+from MRCpy.datasets import load_iris, load_mammographic, load_glass, load_satellite
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.cg import mrc_cg
 
@@ -135,6 +135,28 @@ class TestMRC(unittest.TestCase):
             self.assertTrue(hy_x.shape == (X_small.shape[0], r))
             y_pred = clf.predict(X_small)
             self.assertTrue(y_pred.shape == (X_small.shape[0], ))
+
+    # Test the minimax risk (upper_) of the ccg solver for a large number
+    # of instances against the cg solver for multiclass data (glass, and
+    # satellite adding at most 5 constraints per iteration), and against
+    # the cvx solver for binary data (mammographic)
+    def test_MRC0_1_ccg_large_n(self):
+        X_glass, y_glass = load_glass(with_info=False)
+        X_sat, y_sat = load_satellite(with_info=False)
+        for X, y, n_max in ((X_glass, y_glass, 400),
+                            (X_sat[:250], y_sat[:250], 5)):
+            clf_ccg = MRC(phi='linear', loss='0-1', solver='ccg',
+                          n_max=n_max, eps1=1e-7).fit(X, y)
+            clf_cg = MRC(phi='linear', loss='0-1', solver='cg',
+                         eps1=1e-7).fit(X, y)
+            self.assertAlmostEqual(clf_ccg.upper_, clf_cg.upper_, places=5)
+            self.assertTrue(clf_ccg.mu_.shape == clf_ccg.tau_mat.shape)
+
+        X, y = load_mammographic(with_info=False)
+        clf_ccg = MRC(phi='linear', loss='0-1', solver='ccg',
+                      eps1=1e-7).fit(X, y)
+        clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx').fit(X, y)
+        self.assertAlmostEqual(clf_ccg.upper_, clf_cvx.upper_, places=5)
 
     # Test binary classification
     def test_MRC_binary(self):

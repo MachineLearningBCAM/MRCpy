@@ -805,38 +805,16 @@ class MRC(BaseMRC):
             if large_features is not True:
             # Perform constraint generation approach for large number
             # of samples.
-                if self.n_classes == 2:
-                    from MRCpy.solvers.main_ccg_large_n.main import (
-                        main_large_n
-                    )
+                from MRCpy.solvers.ccg_large_n import mrc_ccg_large_n
 
-                    # Scores of each sample for the two classes, phi(x, 0) = x
-                    # and phi(x, 1) = -x, built from the compact features.
-                    phi = np.stack([X_transform, -X_transform], axis=1)
-
-                    (self.mu_, self.nu_, self.upper_, self.R_k) = main_large_n(
-                        phi,
-                        self.phi,
-                        self.tau_mat,
-                        self.lambda_mat,
-                        self.n_max,
-                        self.max_iters,
-                        self.eps1
-                    )
-
-                else:
-                    from MRCpy.solvers.main_ccg_large_n_multiclass.main import (
-                        main_large_n_efficient_multiclass
-                    )
-                    (self.mu_, self.nu_, self.upper_, self.R_k, 
-                    constr_dict) = main_large_n_efficient_multiclass(
-                        X_transform,
-                        self.tau_mat,
-                        self.lambda_mat,
-                        self.n_max,
-                        self.max_iters,
-                        self.eps1
-                    )
+                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_n(
+                    X_transform,
+                    self.tau_mat,
+                    self.lambda_mat,
+                    self.n_max,
+                    self.max_iters,
+                    self.eps1
+                )
             else:
             # Perform a combination of constraint and column generation approach
             # for large number of samples and features.
