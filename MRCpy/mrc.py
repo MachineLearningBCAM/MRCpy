@@ -30,7 +30,7 @@ from MRCpy import BaseMRC
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.cvx import *
 from MRCpy.solvers.nesterov import *
-from MRCpy.solvers.cg import *
+from MRCpy.solvers.mrc_cg import *
 
 class MRC(BaseMRC):
     r'''
@@ -150,20 +150,33 @@ class MRC(BaseMRC):
         .. seealso:: For more information about the constraint generation 
             algorithm for 0-1 MRC, see [5]_
 
-    max_iters : `int`, default = `10000`
+    max_iters : `int`, default = `None`
         Maximum number of iterations to use
         for finding the solution of optimization when
-        using the subgradient approach.
+        using the subgradient approach (`10000` by default) or the
+        ’ccg’ solver (`150` by default).
 
-    n_max : `int`, default = `100`
-        Maximum number of features selected in each iteration
-        in case of ’cg’ solver.
+    n_max : `int`, default = `None`
+        Maximum number of constraints added in each iteration
+        in case of ’ccg’ solver (`400` by default).
 
-    k_max : `int`, default = `20`
+    m_max : `int`, default = `None`
+        Maximum number of features added in each iteration
+        in case of ’cg’ solver (`100` by default).
+
+    k_max : `int`, default = `400`
         Maximum number of iterations in case of ’cg’ solver.
+        In case of ’ccg’ solver with a large number of features,
+        maximum number of features added in each iteration.
 
-    eps : `float`, default = `1e-4`
-        Dual constraints' violation threshold for ’cg’ solver. 
+    eps1 : `float`, default = `None`
+        Constraints' violation threshold in case of ’ccg’ solver
+        (`1e-2` by default).
+
+    eps2 : `float`, default = `None`
+        Dual constraints' (features') violation threshold in case of
+        ’cg’ solver (`1e-4` by default) and ’ccg’ solver with a large
+        number of features (`1e-5` by default).
 
     phi : `str` or `BasePhi` instance, default = 'linear'
         Type of feature mapping function to use for mapping the input data.
@@ -327,33 +340,50 @@ class MRC(BaseMRC):
                  solver='subgrad',
                  max_iters=None,
                  n_max=None,
+                 m_max=None,
                  k_max=400,
                  eps1=None,
-                 eps2=1e-5,
+                 eps2=None,
                  phi='linear',
                  **phi_kwargs):
 
         self.solver = solver
         self.k_max = k_max
-        self.eps2 = eps2
 
         # Use the defaults
+        # Constraints: n_max and eps1 for the 'ccg' solver
         if n_max is None:
-            if self.solver == 'cg':
-                self.n_max = 100
-            elif self.solver == 'ccg':
+            if self.solver == 'ccg':
                 self.n_max = 400
+            else:
+                self.n_max = None
         else:
             self.n_max = n_max
 
-        # Use the defaults
         if eps1 is None:
-            if self.solver == 'cg':
-                self.eps1 = 1e-4
-            elif self.solver == 'ccg':
+            if self.solver == 'ccg':
                 self.eps1 = 1e-2
+            else:
+                self.eps1 = None
         else:
             self.eps1 = eps1
+
+        # Features: m_max and eps2 for the 'cg' solver
+        if m_max is None:
+            if self.solver == 'cg':
+                self.m_max = 100
+            else:
+                self.m_max = None
+        else:
+            self.m_max = m_max
+
+        if eps2 is None:
+            if self.solver == 'cg':
+                self.eps2 = 1e-4
+            else:
+                self.eps2 = 1e-5
+        else:
+            self.eps2 = eps2
 
         # Use the defaults
         if max_iters is None:
@@ -363,6 +393,8 @@ class MRC(BaseMRC):
                 self.max_iters = 20
             elif self.solver == 'ccg':
                 self.max_iters = 150
+            else:
+                self.max_iters = None
         else:
             self.max_iters = max_iters
 
@@ -740,17 +772,15 @@ class MRC(BaseMRC):
             self.upper_ = self.upper_params_['best_value']
 
         elif self.solver == 'cg':
-            # Use methods based on constraint generation
-            # to solve the optimization with many features but few samples.
+            # Use column generation (generation of features) to solve the
+            # optimization with many features but few samples.
 
             if self.loss == 'log':
                 raise ValueError('The \'cg\' solver is only available ' +
                                  'for 0-1 loss.')
 
-    #-----> Initialization for constraint generation method.
-
-        #-> Solve the optimization using first order subgradient methods
-        #   to get an initial low accuracy solution in minimum time.
+            # Initial low accuracy solution in minimum time, using the
+            # Nesterov accelerated subgradient method.
             f_, g_ = self._zero_one_oracle(X_transform)
             upper_params_ = nesterov_optimization_mrc(self.tau_mat,
                                                       self.lambda_mat,
@@ -759,31 +789,29 @@ class MRC(BaseMRC):
                                                       100)
             mu_ = np.asarray(upper_params_['mu']).reshape(self.tau_mat.shape)
 
-        #-> Use the largest coefficients of the low accuracy solution
-        #   as the initial columns (y, j).
+            # Initial subset J of features: the largest coefficients (y, j)
+            # of the low accuracy solution, which is also the warm start.
             initial_features_limit = 100
             if np.sum(mu_!=0) > initial_features_limit:
-                I = np.unravel_index(np.argsort(np.abs(mu_), axis=None)[::-1]
+                J = np.unravel_index(np.argsort(np.abs(mu_), axis=None)[::-1]
                                      [:initial_features_limit], mu_.shape)
-                I = list(zip(*I))
+                J = list(zip(*J))
             else:
-                I = [tuple(col) for col in np.argwhere(mu_!=0)]
+                J = [tuple(col) for col in np.argwhere(mu_!=0)]
 
             warm_start = np.zeros(mu_.shape)
-            for col in I:
+            for col in J:
                 warm_start[col] = mu_[col]
 
-    #-----> Now apply the method of constraint generation using the 
-    #       low accuracy solution.
-
-            self.mu_, self.nu_, self.upper_, self.I = mrc_cg(X_transform,
+            # Column generation from the low accuracy solution
+            self.mu_, self.nu_, self.upper_, self.J = mrc_cg(X_transform,
                                                              self.tau_mat,
                                                              self.lambda_mat,
-                                                             I,
-                                                             self.n_max,
+                                                             J,
+                                                             self.m_max,
                                                              self.k_max,
                                                              warm_start,
-                                                             self.eps1)
+                                                             self.eps2)
 
     #-----> Combined constraint-column generation with efficient constraint selections
     #       for learning with large-scale data having 

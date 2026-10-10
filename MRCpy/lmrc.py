@@ -22,7 +22,7 @@ from sklearn.preprocessing import normalize
 # Import the MRC super class
 from MRCpy import BaseMRC
 from MRCpy.solvers.cvx import *
-from MRCpy.solvers.cg import *
+from MRCpy.solvers.mrc_cg import *
 
 class LMRC(BaseMRC):
     r'''
