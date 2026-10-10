@@ -9,7 +9,7 @@ from scipy import sparse
 from MRCpy import MRC, CMRC, AMRC
 from MRCpy.datasets import load_iris, load_mammographic, load_glass, load_satellite
 from MRCpy.phi import BasePhi
-from MRCpy.solvers.cg import mrc_cg
+from MRCpy.solvers.mrc_cg import mrc_cg
 
 
 class TestMRC(unittest.TestCase):
@@ -88,7 +88,7 @@ class TestMRC(unittest.TestCase):
             X, y = load(with_info=False)
             for fit_intercept in (True, False):
                 clf_cg = MRC(phi='linear', loss='0-1', solver='cg',
-                             eps1=1e-7, fit_intercept=fit_intercept)
+                             eps2=1e-7, fit_intercept=fit_intercept)
                 clf_cg.fit(X, y)
                 clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx',
                               fit_intercept=fit_intercept)
