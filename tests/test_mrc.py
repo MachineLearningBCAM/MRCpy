@@ -136,27 +136,32 @@ class TestMRC(unittest.TestCase):
             y_pred = clf.predict(X_small)
             self.assertTrue(y_pred.shape == (X_small.shape[0], ))
 
-    # Test the minimax risk (upper_) of the ccg solver for a large number
-    # of instances against the cg solver for multiclass data (glass, and
-    # satellite adding at most 5 constraints per iteration), and against
-    # the cvx solver for binary data (mammographic)
-    def test_MRC0_1_ccg_large_n(self):
+    # Test the ccg solver for a large number of instances against the cvx
+    # solver for multiclass data (glass, and satellite adding at most 3
+    # constraints per iteration) and binary data (mammographic): the
+    # minimax risk (upper_) of the optimization, and the upper bound of the
+    # deterministic classifier obtained from the solution mu.
+    def test_MRC0_1_ccg_large_number_of_samples(self):
         X_glass, y_glass = load_glass(with_info=False)
         X_sat, y_sat = load_satellite(with_info=False)
-        for X, y, n_max in ((X_glass, y_glass, 400),
-                            (X_sat[:250], y_sat[:250], 5)):
-            clf_ccg = MRC(phi='linear', loss='0-1', solver='ccg',
-                          n_max=n_max, eps1=1e-7).fit(X, y)
-            clf_cg = MRC(phi='linear', loss='0-1', solver='cg',
-                         eps1=1e-7).fit(X, y)
-            self.assertAlmostEqual(clf_ccg.upper_, clf_cg.upper_, places=5)
-            self.assertTrue(clf_ccg.mu_.shape == clf_ccg.tau_mat.shape)
+        X_mam, y_mam = load_mammographic(with_info=False)
+        for X, y, n_max in ((X_glass[::2], y_glass[::2], 400),
+                            (X_sat[::64], y_sat[::64], 3),
+                            (X_mam, y_mam, 400)):
+            for fit_intercept in (True, False):
+                clf_ccg = MRC(phi='linear', loss='0-1', solver='ccg',
+                              n_max=n_max, eps1=1e-7,
+                              fit_intercept=fit_intercept).fit(X, y)
+                clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx',
+                              fit_intercept=fit_intercept).fit(X, y)
+                self.assertAlmostEqual(clf_ccg.upper_, clf_cvx.upper_,
+                                       places=5)
+                self.assertTrue(clf_ccg.mu_.shape == clf_ccg.tau_mat.shape)
 
-        X, y = load_mammographic(with_info=False)
-        clf_ccg = MRC(phi='linear', loss='0-1', solver='ccg',
-                      eps1=1e-7).fit(X, y)
-        clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx').fit(X, y)
-        self.assertAlmostEqual(clf_ccg.upper_, clf_cvx.upper_, places=5)
+                # get_upper_bound() replaces upper_ by the upper bound of
+                # the deterministic classifier, so it is compared after.
+                self.assertAlmostEqual(clf_ccg.get_upper_bound(),
+                                       clf_cvx.get_upper_bound(), places=5)
 
     # Test binary classification
     def test_MRC_binary(self):

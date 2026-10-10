@@ -488,6 +488,11 @@ class MRC(BaseMRC):
             self.minimax_risk(X_transformed, tau_, lambda_, n_classes, dict_nnz)
 
         else:
+            # Proportions of the classes, in the order of the rows of tau,
+            # for the class centers tau_y / p_y used by the ccg solver.
+            _, class_counts = np.unique(Y, return_counts=True)
+            self.class_prior_ = class_counts / np.sum(class_counts)
+
             super().fit(X=X, Y=Y, X_=X_)
 
         return self
@@ -805,15 +810,19 @@ class MRC(BaseMRC):
             if large_features is not True:
             # Perform constraint generation approach for large number
             # of samples.
-                from MRCpy.solvers.ccg_large_n import mrc_ccg_large_n
+                from MRCpy.solvers.mrc_ccg_large_number_of_samples import mrc_ccg_large_number_of_samples
 
-                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_n(
+                # The class proportions give the class centers of the
+                # initial model (not available if minimax_risk is called
+                # without fit).
+                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_number_of_samples(
                     X_transform,
                     self.tau_mat,
                     self.lambda_mat,
                     self.n_max,
                     self.max_iters,
-                    self.eps1
+                    self.eps1,
+                    getattr(self, 'class_prior_', None)
                 )
             else:
             # Perform a combination of constraint and column generation approach
