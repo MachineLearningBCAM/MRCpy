@@ -151,10 +151,10 @@ class MRC(BaseMRC):
             algorithm for 0-1 MRC, see [5]_
 
     max_iters : `int`, default = `None`
-        Maximum number of iterations to use
-        for finding the solution of optimization when
-        using the subgradient approach (`10000` by default) or the
-        ’ccg’ solver (`150` by default).
+        Maximum number of iterations of the subgradient approach, used
+        to solve the optimization with the ’subgrad’ solver (`10000` by
+        default) and to obtain the lower bound with the ’cg’ (`20` by
+        default) and ’ccg’ (`150` by default) solvers.
 
     n_max : `int`, default = `None`
         Maximum number of constraints added in each iteration
@@ -162,12 +162,13 @@ class MRC(BaseMRC):
 
     m_max : `int`, default = `None`
         Maximum number of features added in each iteration
-        in case of ’cg’ solver (`100` by default).
+        in case of ’cg’ solver (`100` by default) and ’ccg’ solver
+        with a large number of features (`400` by default).
 
-    k_max : `int`, default = `400`
-        Maximum number of iterations in case of ’cg’ solver.
-        In case of ’ccg’ solver with a large number of features,
-        maximum number of features added in each iteration.
+    k_max : `int`, default = `None`
+        Maximum number of iterations of the constraint and column
+        generation in case of ’cg’ solver (`50` by default) and
+        ’ccg’ solver (`150` by default).
 
     eps1 : `float`, default = `None`
         Constraints' violation threshold in case of ’ccg’ solver
@@ -341,14 +342,25 @@ class MRC(BaseMRC):
                  max_iters=None,
                  n_max=None,
                  m_max=None,
-                 k_max=400,
+                 k_max=None,
                  eps1=None,
                  eps2=None,
                  phi='linear',
                  **phi_kwargs):
 
         self.solver = solver
-        self.k_max = k_max
+
+        # Use the defaults
+        # Iterations of the constraint and column generation: k_max
+        if k_max is None:
+            if self.solver == 'cg':
+                self.k_max = 50
+            elif self.solver == 'ccg':
+                self.k_max = 150
+            else:
+                self.k_max = None
+        else:
+            self.k_max = k_max
 
         # Use the defaults
         # Constraints: n_max and eps1 for the 'ccg' solver
@@ -368,10 +380,13 @@ class MRC(BaseMRC):
         else:
             self.eps1 = eps1
 
-        # Features: m_max and eps2 for the 'cg' solver
+        # Features: m_max and eps2 for the 'cg' solver and the 'ccg'
+        # solver with a large number of features
         if m_max is None:
             if self.solver == 'cg':
                 self.m_max = 100
+            elif self.solver == 'ccg':
+                self.m_max = 400
             else:
                 self.m_max = None
         else:
@@ -385,7 +400,8 @@ class MRC(BaseMRC):
         else:
             self.eps2 = eps2
 
-        # Use the defaults
+        # Iterations of the subgradient approach: max_iters for the
+        # 'subgrad' solver and the lower bound of the 'cg' and 'ccg' solvers
         if max_iters is None:
             if self.solver == 'subgrad':
                 self.max_iters = 10000
@@ -848,7 +864,7 @@ class MRC(BaseMRC):
                     self.tau_mat,
                     self.lambda_mat,
                     self.n_max,
-                    self.max_iters,
+                    self.k_max,
                     self.eps1,
                     getattr(self, 'class_prior_', None)
                 )
@@ -869,11 +885,11 @@ class MRC(BaseMRC):
                         self.tau_mat,
                         self.lambda_mat,
                         self.n_max,
-                        self.k_max,
+                        self.m_max,
                         self.eps1,
                         self.eps2,
                         dict_nnz,
-                        self.max_iters
+                        self.k_max
                     )
                 else:
                     #TODO: Implement this solver more efficiently
@@ -891,10 +907,10 @@ class MRC(BaseMRC):
                         self.lambda_mat,
                         self.phi,
                         self.n_max,
-                        self.k_max,
+                        self.m_max,
                         self.eps1,
                         self.eps2,
-                        self.max_iters
+                        self.k_max
                     )
 
         else:

@@ -2,7 +2,7 @@ import numpy as np
 from .mrc_lp_gurobi import mrc_lp_model_gurobi
 from .cg_utils import select
 
-def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=None, eps=1e-4):
+def alg1(F, b, tau_, lambda_, I, m_max=100, k_max=20, warm_start=None, nu_init=None, eps=1e-4):
 	"""
 	Constraint generation algorithm for Minimax Risk Classifiers.
 
@@ -24,7 +24,7 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 		List of feature indices corresponding to features in matrix M.
 		This is the initialization for the constraint generation method.
 
-	n_max : `int`, default=`100`
+	m_max : `int`, default=`100`
 		Maximum number of features selected in each iteration of the algorithm
 
 	k_max : `int`, default=`20`
@@ -99,7 +99,7 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 						  I,
 						  alpha,
 						  eps,
-						  n_max)
+						  m_max)
 
 	k = 0
 	while((len(set(J).difference(set(I))) != 0) and (k < k_max)):
@@ -112,7 +112,7 @@ def alg1(F, b, tau_, lambda_, I, n_max=100, k_max=20, warm_start=None, nu_init=N
 
 		# Select the columns/features for the next iteration.
 		I = J.copy()
-		MRC_model, J = select(MRC_model, F, tau_, lambda_, I, alpha, eps, n_max)
+		MRC_model, J = select(MRC_model, F, tau_, lambda_, I, alpha, eps, m_max)
 
 		k = k + 1
 

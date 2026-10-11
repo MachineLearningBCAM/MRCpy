@@ -13,7 +13,7 @@ import scipy as sp
 
 from .cg_large_m.cg import alg1
 
-def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1, eps_2, dict_nnz={}, max_iters=150):
+def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, m_max, eps_1, eps_2, dict_nnz={}, k_max=150):
 	"""
 	Efficient learning of 0-1 MRCs for sparse binary datasets with large number 
 	of samples and features.
@@ -55,7 +55,7 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 		the CCG phase. Controls the rate at which sample constraints are
 		added to the model. Typical values: 100-500.
 
-	k_max : int
+	m_max : int
 		Maximum number of features (columns) to add per iteration during
 		the CCG phase. Controls the rate at which features are added to
 		the model. Typical values: 100-500.
@@ -80,7 +80,7 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 		
 		Example: {0: [1, 5, 10], 1: [2, 5, 8], ...}
 
-	max_iters : int, default=150
+	k_max : int, default=150
 		Maximum number of column and constraint generation iterations in
 		the CCG phase. The algorithm terminates when either no violations
 		remain or this limit is reached. Typical values: 50-200.
@@ -120,7 +120,7 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 	- Iteratively solves the restricted optimization problem
 	- Identifies and adds violated dual constraints (features)
 	- Identifies and adds violated primal constraints (samples)
-	- Continues until convergence or max_iters is reached
+	- Continues until convergence or k_max is reached
 
 	The algorithm requires Gurobi as the LP solver. Ensure Gurobi is properly
 	installed and licensed before using this function.
@@ -142,9 +142,9 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 	>>> # Run the algorithm
 	>>> mu, nu, R, R_k = main_large_n_m_sparse_binary(
 	...     X, tau, lambda_,
-	...     n_max=200, k_max=200,
+	...     n_max=200, m_max=200,
 	...     eps_1=1e-2, eps_2=1e-5,
-	...     dict_nnz=dict_nnz, max_iters=100
+	...     dict_nnz=dict_nnz, k_max=100
 	... )
 	>>> print(f"Worst-case error bound: {R:.4f}")
 	>>> print(f"Number of selected features: {np.sum(mu != 0)}")
@@ -206,13 +206,13 @@ def main_large_n_m_sparse_binary(X_transform, tau_, lambda_, n_max, k_max, eps_1
 																												lambda_,
 																												idx_cols,
 																												n_max,
-																												k_max,
+																												m_max,
 																												nu_init=nu,
 																												mu_init=mu,
 																												eps_1=eps_1,
 																												eps_2=eps_2,
 																												dict_nnz=dict_nnz,
-																												max_iters=max_iters)
+																												k_max=k_max)
 
 	# mu is only defined on the selected columns; expand it to all features.
 	mu_full = np.zeros(tau_.shape[0])
