@@ -4,6 +4,6 @@ scikit-learn>=0.22
 cvxpy>=1.1
 pandas>=1.0
 pyarrow
-gurobipy
+gurobipy>=9.5
 torch>=1.9.0
 tqdm>=4.50.0

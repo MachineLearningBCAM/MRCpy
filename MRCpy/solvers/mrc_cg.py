@@ -204,7 +204,7 @@ def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
 	else:
 		# s_iy - x_i^T mu_y + nu >= 1, s_iy >= 0, sum_y s_iy <= 1
 		rhs = 1
-		s = MRC_model.addMVar((n, n_score_cols), lb=0, name="s")
+		s = MRC_model.addVars(n, n_score_cols, lb=0, name="s")
 	MRC_model.update()
 
 	# Constraints with the scores, created without the terms in mu,
@@ -214,13 +214,13 @@ def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
 	constrs = np.empty((n, n_score_cols), dtype=object)
 	for i in range(n):
 		for y in range(n_score_cols):
-			expr = nu if s is None else nu + s[i, y].item()
+			expr = nu if s is None else nu + s[i, y]
 			constrs[i, y] = MRC_model.addConstr(expr >= rhs)
 
 	if binary:
 		MRC_model.addConstr(nu >= 0.5)
 	else:
-		MRC_model.addConstr(s.sum(axis=1) <= 1)
+		MRC_model.addConstrs(s.sum(i, '*') <= 1 for i in range(n))
 
 	# Add the initial features.
 	mu_vars = {}
