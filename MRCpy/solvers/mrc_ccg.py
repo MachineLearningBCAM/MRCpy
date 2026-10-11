@@ -1,5 +1,6 @@
-'''Constraint and column generation for the 0-1 loss MRC linear program with
-a large number of instances and features, as described in [1].
+'''Constraint generation, and column generation, for the 0-1 loss MRC linear
+program with a large number of instances, and features, as described in
+[1].
 
 The 0-1 MRC is given by the linear program (4) in [1]
 
@@ -9,7 +10,13 @@ The 0-1 MRC is given by the linear program (4) in [1]
 
 with a constraint for each instance x and non-empty subset C of the labels
 Y, given by the row F_c = sum_{y in C} Phi(x, y)^T / |C| of F and the
-component b_c = 1 / |C| - 1 of b. Then, mu = mu_1 - mu_2.
+component b_c = 1 / |C| - 1 of b. Then, mu = mu_1 - mu_2. Its dual is the
+linear program (6) in [1]
+
+    D :  max   -b^T alpha
+        alpha
+         s.t.  tau - lambda <= F^T alpha <= tau + lambda,
+               1^T alpha = 1,  alpha >= 0.
 
 The feature mapping Phi(x, y) is not built. The parameters mu, the mean
 estimates tau and their deviations lambda are matrices of shape
@@ -21,11 +28,15 @@ of mu with the sign s(y):
     binary:     r(y) = 0, s(0) = 1, s(1) = -1  (Phi(x, 1) = -Phi(x, 0)).
 
 Accordingly, F_c is a matrix of the shape of mu, whose row r is the sum of
-s(y) x / |C| over the labels y in C that use the row r of mu.
+s(y) x / |C| over the labels y in C that use the row r of mu. For
+multiclass classification, the row y is x / |C| if y is in C and zero
+otherwise. For binary classification, the single row is x, -x and 0 for
+C = {0}, {1} and {0, 1}.
 
-Both the constraints and the features (the entries (r, j) of mu) are
-generated (Algorithm 1 in [1]): the primal P_{I,J} over a subset I of
-constraints and a subset J of features is solved at each iteration k,
+The constraints are generated (Algorithm 1 in [1]), and for a large number
+of features also the features, that is, the entries (r, j) of mu. At each
+iteration k, the model over a subset I of constraints and a subset J of
+features,
 
     P_{I,J} :  min   -(tau - lambda)_J^T mu_1 + (tau + lambda)_J^T mu_2 + nu
             mu_1, mu_2, nu
@@ -33,36 +44,47 @@ constraints and a subset J of features is solved at each iteration k,
                      -(tau - lambda)_J^T mu_1 + (tau + lambda)_J^T mu_2 + nu >= 0,
                      mu_1, mu_2 >= 0,
 
-with the additional constraint of the objective being nonnegative, which
-bounds the model for any I and J (Section III-E in [1]), with dual
-variable alpha_0. Then:
+is solved, with the additional constraint of the objective being
+nonnegative, which bounds the model for any I and J (Section III-E in
+[1]), with dual variable alpha_0. Its optimal value is R^k. Then:
 
 - CONSTR: the constraint with the maximum violation of each instance,
   obtained with Algorithm 2 in [1], is added to I if its violation exceeds
   eps_1, checking the instances in order and adding at most n_max.
-- FEAT: a feature not in J is added if its dual constraint (6) in [1],
+- FEAT: a feature not in J is added if its dual constraint,
   (tau - lambda) (1 - alpha_0) <= F_I^T alpha <= (tau + lambda) (1 - alpha_0),
   is violated by more than eps_2, adding the m_max most violated, where
   alpha are the dual variables of the constraints in I.
 
-The constraints and features are not removed (Section III-C in [1]). The
-initial subset I is given by the class centers X_hat in (13) in [1], for
-the subsets with a single label: x_hat_y = tau_y / p_y for each label y,
-with p the class proportions, for multiclass classification, and tau for
-binary classification. For binary classification, the constraint of the
-subset of both labels, nu >= 1/2, is the same for all the instances and
-it is added.
+With a large number of instances only (`DualModel`), J has all the
+features and the dual D_I of P_{I,J} is solved, in which a constraint c of
+the primal is a variable alpha_c that keeps the previous solution feasible
+when it is added with alpha_c = 0. The constraints in I that are not tight
+are removed once alpha_0 = 0, that is, once the constraints in I bound the
+model. With a large number of features (`PrimalModel`), the features are
+also generated and the primal P_{I,J} is solved, in which a feature is a
+pair of variables mu_1, mu_2 that keep the previous solution feasible when
+they are added with value 0. Most iterations add features in this case.
+The constraints are not removed (Section III-C in [1]).
 
-The initial subset J of features is, for binary classification, the 1000
-features with the largest |tau| - lambda, that is, with the largest
-violation of their dual constraint in a model without constraints
-(alpha = 0), and for multiclass classification, the entries of the 100
-features with the smallest standard deviation of tau across the classes,
-for all the classes.
+The initial subset I is given by the class centers X_hat in (13) in [1],
+for the subsets with a single label: x_hat_y = tau_y / p_y for each label
+y, with p the class proportions, for multiclass classification, and tau
+for binary classification, which is the average of the instances with
+Phi(x, 1) = -Phi(x, 0). As averages of the instances, their constraints
+are implied by the constraints of the instances. For binary
+classification, the constraint of the subset of both labels, nu >= 1/2,
+is the same for all the instances and it is added.
 
-The instances can be given as a dense array or a sparse (csr) matrix. For
-sparse instances, only their nonzero entries are used to build the
-constraints and the features of the model.
+With a large number of features, the initial subset J is, for binary
+classification, the 1000 features with the largest |tau| - lambda, that
+is, with the largest violation of their dual constraint in a model without
+constraints (alpha = 0), and for multiclass classification, the entries of
+the 100 features with the smallest standard deviation of tau across the
+classes, for all the classes.
+
+The instances can be given as a dense array or a sparse (csr) matrix, of
+which only the nonzero entries are used to build the model.
 
 .. [1] Bondugula, K., Mazuelas, S., & Pérez, A. (2025).
        Efficient Large-Scale Learning of Minimax Risk Classifiers.
@@ -75,12 +97,12 @@ import numpy as np
 from scipy import sparse
 
 
-def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
-						   k_max=150, eps_1=1e-2, eps_2=1e-5, p=None):
+def mrc_ccg(X, tau_mat, lambda_mat, n_max=400, m_max=400, k_max=150,
+			eps_1=1e-2, eps_2=1e-5, p=None, generate_features=False):
 	"""
-	Constraint and column generation algorithm for 0-1 loss Minimax Risk
-	Classifiers with a large number of instances and features (Algorithm 1
-	in [1]).
+	Constraint generation, and column generation, algorithm for 0-1 loss
+	Minimax Risk Classifiers with a large number of instances, and features
+	(Algorithm 1 in [1]).
 
 	Parameters:
 	-----------
@@ -97,7 +119,8 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 		Maximum number of constraints added in each iteration.
 
 	m_max : `int`, default=`400`
-		Maximum number of features added in each iteration.
+		Maximum number of features added in each iteration, if the features
+		are generated.
 
 	k_max : `int`, default=`150`
 		Maximum number of iterations after solving the initial model.
@@ -106,7 +129,8 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 		Violation threshold of the constraints.
 
 	eps_2 : `float`, default=`1e-5`
-		Violation threshold of the dual constraints of the features.
+		Violation threshold of the dual constraints of the features, if the
+		features are generated.
 
 	p : `array`-like of shape (`n_classes`,), default=`None`
 		Proportions of the classes, in the order of the rows of `tau_mat`,
@@ -114,6 +138,12 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 		for multiclass classification. If `None`, the initial model for
 		multiclass classification has no class centers. Not used for binary
 		classification, whose class center is tau.
+
+	generate_features : `bool`, default=`False`
+		Whether the features are generated, for a large number of features,
+		solving the primal model. Otherwise, the model has all the features,
+		the dual model is solved and the constraints that are not tight are
+		removed.
 
 	Return:
 	-------
@@ -125,7 +155,8 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 		of the variable nu of the linear program P.
 
 	R : `float`
-		Worst-case error probability given by the last model.
+		Worst-case error probability given by the last model, which is the
+		optimal one up to the violation thresholds.
 
 	R_k : `list`
 		Worst-case error probability R^k given by the model at each
@@ -157,17 +188,21 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 	else:
 		X = np.vstack((X_hat, np.asarray(X, dtype=float)))
 
-	model = MRCModel(X, tau_mat, lambda_mat, rows, signs)
+	if generate_features:
+		model = PrimalModel(X, tau_mat, lambda_mat, rows, signs)
+	else:
+		model = DualModel(X, tau_mat, lambda_mat, rows, signs)
 
 	# Initial model: the constraints of the class centers for the subsets
 	# with a single label, nu >= 1/2 for binary classification, and the
-	# initial features.
+	# initial features if the features are generated.
 	if tau_mat.shape[0] == 1:
 		model.add_constraint(0, (0, 1))
 	for i in range(X_hat.shape[0]):
 		for y in range(rows.shape[0]):
 			model.add_constraint(i, (y,))
-	initial_features(model)
+	if generate_features:
+		model.add_features(initial_features(tau_mat, lambda_mat))
 
 	R_k = []
 	last_checked = 0
@@ -176,11 +211,19 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 	count_added = 1
 	k = 0
 	while k <= k_max and count_added > 0:
-		model.MRC_model.optimize()
-		mu, nu = model.primal_solution()
-		R_k.append(model.MRC_model.objVal)
+		mu, nu, R = model.solve()
+		R_k.append(R)
 
-		n_features_added = feat(model, m_max, eps_2)
+		if generate_features:
+			n_features_added = feat(model, m_max, eps_2)
+		else:
+			n_features_added = 0
+			# While alpha_0 > 0, the model is bounded by alpha_0 instead of
+			# the constraints, the solution is degenerate and the
+			# constraints that are not tight cannot be removed without
+			# cycling.
+			if np.isclose(model.alpha_0.X, 0):
+				model.remove_not_tight(mu, nu)
 		n_constraints_added, last_checked = constr(model, mu, nu, n_max,
 												   eps_1, last_checked)
 		count_added = n_features_added + n_constraints_added
@@ -192,9 +235,9 @@ def mrc_ccg_large_and_wide(X, tau_mat, lambda_mat, n_max=400, m_max=400,
 	# of the linear program.
 	return mu, -nu, R, R_k
 
-def initial_features(model):
+def initial_features(tau_mat, lambda_mat):
 	"""
-	Adds the initial subset J of features to the model.
+	Initial subset J of features if the features are generated.
 
 	For binary classification, the 1000 features with the largest
 	|tau| - lambda, that is, with the largest violation of their dual
@@ -204,11 +247,18 @@ def initial_features(model):
 
 	Parameters:
 	-----------
-	model : `MRCModel`
-		The model with the initial constraints.
+	tau_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
+		Mean estimates tau.
+
+	lambda_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
+		Deviations lambda of the mean estimates.
+
+	Return:
+	-------
+	features : `list` of `tuple`
+		Features (r, j) in J.
 	"""
 
-	tau_mat, lambda_mat = model.tau_mat, model.lambda_mat
 	if tau_mat.shape[0] == 1:
 		score = np.abs(tau_mat) - lambda_mat
 		idx = np.argsort(score, axis=None)[::-1][:1000]
@@ -217,16 +267,231 @@ def initial_features(model):
 		cols = np.argsort(np.std(tau_mat, axis=0))[:100]
 		features = [(r, j) for r in range(tau_mat.shape[0]) for j in cols]
 
-	model.add_features([(int(r), int(j)) for r, j in features])
+	return [(int(r), int(j)) for r, j in features]
 
-class MRCModel:
+def constraint_coefficients(X, i, C, rows, signs, n_rows):
 	"""
-	Linear model P_{I,J} of MRC 0-1 loss over the subset I of constraints
-	and the subset J of features.
+	Nonzero columns and values of the instance i, and coefficient of the
+	instance in each row of F_c, for the constraint of instance i and subset
+	C of the labels.
 
 	Parameters:
 	-----------
-	X : `array`-like or sparse matrix of shape (`n_samples`, `n_features`)
+	X : `array`-like or sparse (csr) matrix of shape (`n_samples`, `n_features`)
+		Features corresponding with the instances.
+
+	i : `int`
+		Index of the instance.
+
+	C : `tuple`
+		Subset of the labels.
+
+	rows : `array`-like of shape (`n_classes`,)
+		Row r(y) of mu of each label.
+
+	signs : `array`-like of shape (`n_classes`,)
+		Sign s(y) of each label.
+
+	n_rows : `int`
+		Number of rows of mu.
+
+	Return:
+	-------
+	nnz : `array`-like
+		Nonzero columns of the instance.
+
+	x_nnz : `array`-like
+		Values of the instance in the nonzero columns.
+
+	mask : `array`-like of shape (`n_classes`,)
+		Subset C of the labels, as a boolean array over the labels.
+
+	coef_rows : `array`-like of shape (`n_rows`,)
+		Coefficient of the instance in each row of F_c.
+	"""
+
+	if sparse.issparse(X):
+		start, end = X.indptr[i], X.indptr[i + 1]
+		nnz, x_nnz = X.indices[start:end], X.data[start:end]
+	else:
+		x = X[i]
+		nnz = np.flatnonzero(x)
+		x_nnz = x[nnz]
+
+	mask = np.zeros(rows.shape[0], dtype=bool)
+	mask[list(C)] = True
+	coef_rows = np.bincount(rows, weights=mask * signs,
+							minlength=n_rows) / len(C)
+
+	return nnz, x_nnz, mask, coef_rows
+
+class DualModel:
+	"""
+	Dual linear model D_I of MRC 0-1 loss over the subset I of constraints
+	(of the primal), with all the features, in which each constraint c in I
+	is a variable alpha_c,
+
+		D_I :  max   sum_{c in I} (1 - 1 / |C|) alpha_c
+			  alpha
+			   s.t.  (tau - lambda) (1 - alpha_0) <= F_I^T alpha <= (tau + lambda) (1 - alpha_0),
+					 1^T alpha + alpha_0 = 1,  alpha >= 0,
+
+	with F_I^T alpha = sum_{c in I} alpha_c F_c. The solution mu_1, mu_2, nu
+	of P_I is given by the dual variables of its constraints.
+
+	Parameters:
+	-----------
+	X : `array`-like or sparse (csr) matrix of shape (`n_samples`, `n_features`)
+		Features corresponding with the instances, including the class
+		centers.
+
+	tau_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
+		Mean estimates tau.
+
+	lambda_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
+		Deviations lambda of the mean estimates.
+
+	rows : `array`-like of shape (`n_classes`,)
+		Row r(y) of mu of each label.
+
+	signs : `array`-like of shape (`n_classes`,)
+		Sign s(y) of each label.
+
+	Attributes:
+	-----------
+	The following lists have an element for each constraint c = (x, C) in
+	I, aligned by position. They are updated as the constraints are added
+	(`add_constraint`) and removed (`remove_not_tight`) along the
+	iterations.
+
+	instances : `list` of `int`
+		Index of the instance x in X.
+
+	masks : `list` of `array`-like of shape (`n_classes`,)
+		Subset C of the labels, as a boolean array over the labels.
+
+	vars : `list` of `gurobipy.Var`
+		Variable alpha_c of the constraint in the dual linear model.
+
+	The constraints of the dual linear model are named after their dual
+	variables:
+
+	constrs : `dict`
+		`'mu_1'` and `'mu_2'`, arrays of the shape of `tau_mat` with the
+		constraints for the lower bound tau - lambda and the upper bound
+		tau + lambda of each entry of F_I^T alpha, and `'nu'` for the sum of
+		the variables.
+	"""
+
+	def __init__(self, X, tau_mat, lambda_mat, rows, signs):
+		self.X = X
+		self.tau_mat = tau_mat
+		self.lambda_mat = lambda_mat
+		self.rows = rows
+		self.signs = signs
+
+		self.instances = []
+		self.masks = []
+		self.vars = []
+
+		# Define the MRC 0-1 linear model (dual).
+		self.MRC_model = gp.Model("MRC_0_1_dual")
+		self.MRC_model.Params.LogToConsole = 0
+		self.MRC_model.Params.OutputFlag = 0
+		self.MRC_model.setParam('DualReductions', 0)
+		self.MRC_model.ModelSense = GRB.MAXIMIZE
+
+		self.alpha_0 = self.MRC_model.addVar(lb=0, name='alpha_0')
+		self.MRC_model.update()
+
+		# F_I^T alpha <= (tau + lambda) (1 - alpha_0)
+		# -F_I^T alpha <= (lambda - tau) (1 - alpha_0)
+		# The terms of the variables alpha_c are added with each constraint c.
+		upper = tau_mat + lambda_mat
+		lower = lambda_mat - tau_mat
+		constr_mu_2 = np.empty(tau_mat.shape, dtype=object)
+		constr_mu_1 = np.empty(tau_mat.shape, dtype=object)
+		for r in range(tau_mat.shape[0]):
+			for j in range(tau_mat.shape[1]):
+				constr_mu_2[r, j] = self.MRC_model.addConstr(upper[r, j] * self.alpha_0 <= upper[r, j])
+				constr_mu_1[r, j] = self.MRC_model.addConstr(lower[r, j] * self.alpha_0 <= lower[r, j])
+		constr_nu = self.MRC_model.addConstr(self.alpha_0 == 1)
+		self.constrs = {'mu_1': constr_mu_1, 'mu_2': constr_mu_2, 'nu': constr_nu}
+
+	def add_constraint(self, i, C):
+		"""
+		Adds the constraint of instance i and subset C of the labels, as the
+		variable alpha_c of the dual linear model with column F_c, objective
+		-b_c = 1 - 1 / |C| and coefficient 1 in 1^T alpha + alpha_0 = 1.
+		"""
+
+		nnz, x_nnz, mask, coef_rows = constraint_coefficients(
+			self.X, i, C, self.rows, self.signs, self.tau_mat.shape[0])
+
+		coeffs = []
+		dual_constrs = []
+		for r in np.flatnonzero(coef_rows):
+			values = coef_rows[r] * x_nnz
+			coeffs.extend(values.tolist())
+			dual_constrs.extend(self.constrs['mu_2'][r, nnz].tolist())
+			coeffs.extend((-values).tolist())
+			dual_constrs.extend(self.constrs['mu_1'][r, nnz].tolist())
+		coeffs.append(1.)
+		dual_constrs.append(self.constrs['nu'])
+
+		alpha = self.MRC_model.addVar(lb=0, obj=1 - (1 / len(C)),
+									  column=gp.Column(coeffs, dual_constrs))
+		self.instances.append(i)
+		self.masks.append(mask)
+		self.vars.append(alpha)
+
+	def solve(self):
+		"""
+		Solves the model, giving the solution mu = mu_1 - mu_2 and nu of P_I
+		from the dual variables of the constraints of D_I, and the optimal
+		value R^k.
+		"""
+
+		self.MRC_model.optimize()
+		mu_1 = self.MRC_model.getAttr("Pi", self.constrs['mu_1'].flatten().tolist())
+		mu_2 = self.MRC_model.getAttr("Pi", self.constrs['mu_2'].flatten().tolist())
+		mu = (np.asarray(mu_1) - np.asarray(mu_2)).reshape(self.tau_mat.shape)
+		nu = self.constrs['nu'].Pi
+
+		return mu, nu, self.MRC_model.objVal
+
+	def values(self, mu):
+		"""
+		Value F_c mu - b_c of each constraint c in I at mu, that is,
+		(sum_{y in C} Phi(x, y)^T mu - 1) / |C| + 1.
+		"""
+
+		scores = np.asarray(self.X[self.instances] @ mu.T)[:, self.rows] * self.signs
+		masks = np.asarray(self.masks)
+		return (np.sum(scores * masks, axis=1) - 1) / np.sum(masks, axis=1) + 1
+
+	def remove_not_tight(self, mu, nu):
+		"""
+		Removes the constraints in I that are not tight at the solution
+		(mu, nu), that is, with F_c mu - nu - b_c < 0.
+		"""
+
+		keep = np.isclose(self.values(mu) - nu, 0)
+		for c in np.flatnonzero(~keep):
+			self.MRC_model.remove(self.vars[c])
+		self.instances = [i for i, k in zip(self.instances, keep) if k]
+		self.masks = [m for m, k in zip(self.masks, keep) if k]
+		self.vars = [v for v, k in zip(self.vars, keep) if k]
+
+class PrimalModel:
+	"""
+	Linear model P_{I,J} of MRC 0-1 loss over the subset I of constraints
+	and the subset J of features, in which each feature (r, j) in J is a
+	pair of variables mu_1, mu_2.
+
+	Parameters:
+	-----------
+	X : `array`-like or sparse (csr) matrix of shape (`n_samples`, `n_features`)
 		Features corresponding with the instances, including the class
 		centers.
 
@@ -299,22 +564,8 @@ class MRCModel:
 		nu - F_c (mu_1 - mu_2) >= -b_c = 1 - 1 / |C|, over the features in J.
 		"""
 
-		if self.is_sparse:
-			# Nonzero columns and values of the row i of the csr matrix
-			start, end = self.X.indptr[i], self.X.indptr[i + 1]
-			nnz, x_nnz = self.X.indices[start:end], self.X.data[start:end]
-		else:
-			x = self.X[i]
-			nnz = np.flatnonzero(x)
-			x_nnz = x[nnz]
-
-		mask = np.zeros(self.rows.shape[0], dtype=bool)
-		mask[list(C)] = True
-		size = len(C)
-
-		# Coefficient of x in each row of F_c
-		coef_rows = np.bincount(self.rows, weights=mask * self.signs,
-								minlength=self.tau_mat.shape[0]) / size
+		nnz, x_nnz, _, coef_rows = constraint_coefficients(
+			self.X, i, C, self.rows, self.signs, self.tau_mat.shape[0])
 
 		coeffs = []
 		mu_vars = []
@@ -327,7 +578,7 @@ class MRCModel:
 
 		expr = gp.LinExpr(coeffs, mu_vars) + self.nu
 		self.constrs.append(self.MRC_model.addLConstr(expr, GRB.GREATER_EQUAL,
-													  1 - (1 / size)))
+													  1 - (1 / len(C))))
 		self.instances.append(i)
 		self.coef_rows.append(coef_rows)
 
@@ -364,16 +615,19 @@ class MRCModel:
 			self.mu_vars[(r, j)] = (mu_1, mu_2)
 			self.in_J[r, j] = True
 
-	def primal_solution(self):
+	def solve(self):
 		"""
-		Solution mu = mu_1 - mu_2 and nu of the solved model P_{I,J}.
+		Solves the model, giving the solution mu = mu_1 - mu_2 and nu of
+		P_{I,J}, with mu zero for the features not in J, and the optimal
+		value R^k.
 		"""
 
+		self.MRC_model.optimize()
 		mu = np.zeros(self.tau_mat.shape)
 		for (r, j), (mu_1, mu_2) in self.mu_vars.items():
 			mu[r, j] = mu_1.X - mu_2.X
 
-		return mu, self.nu.X
+		return mu, self.nu.X, self.MRC_model.objVal
 
 	def dual_constraints(self):
 		"""
@@ -399,7 +653,7 @@ def feat(model, m_max, eps_2):
 
 	Parameters:
 	-----------
-	model : `MRCModel`
+	model : `PrimalModel`
 		The solved model.
 
 	m_max : `int`
@@ -450,7 +704,7 @@ def constr(model, mu, nu, n_max, eps_1, last_checked):
 
 	Parameters:
 	-----------
-	model : `MRCModel`
+	model : `DualModel` or `PrimalModel`
 		The solved model.
 
 	mu : `array`-like

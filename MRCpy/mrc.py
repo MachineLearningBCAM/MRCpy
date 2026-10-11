@@ -846,46 +846,26 @@ class MRC(BaseMRC):
                 raise ValueError('The \'ccg\' solver is only available ' +
                                  'for 0-1 loss.')
 
-            # This classification is based on empirical observation.
-            if d > 1000 or is_sparse:
-                large_features = True
-            else:
-                large_features = False
+            # Constraint generation for a large number of samples, and also
+            # column generation for a large number of features (dense or
+            # sparse instances). This classification is based on empirical
+            # observation.
+            from MRCpy.solvers.mrc_ccg import mrc_ccg
 
-            if large_features is not True:
-            # Perform constraint generation approach for large number
-            # of samples.
-                from MRCpy.solvers.mrc_ccg_large_number_of_samples import mrc_ccg_large_number_of_samples
-
-                # The class proportions give the class centers of the
-                # initial model (not available if minimax_risk is called
-                # without fit).
-                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_number_of_samples(
-                    X_transform,
-                    self.tau_mat,
-                    self.lambda_mat,
-                    self.n_max,
-                    self.k_max,
-                    self.eps1,
-                    getattr(self, 'class_prior_', None)
-                )
-            else:
-            # Perform a combination of constraint and column generation approach
-            # for large number of samples and features, with dense or sparse
-            # instances.
-                from MRCpy.solvers.mrc_ccg_large_and_wide import mrc_ccg_large_and_wide
-
-                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_and_wide(
-                    X_transform,
-                    self.tau_mat,
-                    self.lambda_mat,
-                    self.n_max,
-                    self.m_max,
-                    self.k_max,
-                    self.eps1,
-                    self.eps2,
-                    getattr(self, 'class_prior_', None)
-                )
+            # The class proportions give the class centers of the initial
+            # model (not available if minimax_risk is called without fit).
+            (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg(
+                X_transform,
+                self.tau_mat,
+                self.lambda_mat,
+                self.n_max,
+                self.m_max,
+                self.k_max,
+                self.eps1,
+                self.eps2,
+                getattr(self, 'class_prior_', None),
+                generate_features=(d > 1000 or is_sparse)
+            )
 
         else:
             raise ValueError('Unexpected solver ... ')

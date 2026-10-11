@@ -10,7 +10,7 @@ from MRCpy import MRC, CMRC, AMRC
 from MRCpy.datasets import load_iris, load_mammographic, load_glass, load_satellite
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.mrc_cg import mrc_cg
-from MRCpy.solvers.mrc_ccg_large_and_wide import mrc_ccg_large_and_wide
+from MRCpy.solvers.mrc_ccg import mrc_ccg
 
 
 class TestMRC(unittest.TestCase):
@@ -197,7 +197,8 @@ class TestMRC(unittest.TestCase):
         self.assertTrue(np.all(np.isin(y_pred, [0, 1])))
 
     # Test the ccg solver for a large number of instances and features
-    # against the cvx solver, with dense and sparse instances, for
+    # (generating the features) against the cvx solver, with dense and
+    # sparse instances, for
     # multiclass data (iris, glass) and binary data (mammographic): the
     # minimax risk and the parameter nu
     def test_MRC0_1_ccg_large_and_wide(self):
@@ -210,13 +211,55 @@ class TestMRC(unittest.TestCase):
                               fit_intercept=fit_intercept).fit(X, y)
                 X_transform = np.unique(clf_cvx.compute_features(X), axis=0)
                 for X_input in (X_transform, sparse.csr_matrix(X_transform)):
-                    mu, nu, upper, R_k = mrc_ccg_large_and_wide(
+                    mu, nu, upper, R_k = mrc_ccg(
                         X_input, clf_cvx.tau_mat, clf_cvx.lambda_mat,
-                        eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_)
+                        eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_,
+                        generate_features=True)
                     self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
                     self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
                                            places=5)
                     self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
+
+    # Test the generation of features of the ccg solver for multiclass data
+    # (iris with 200 random Fourier features, more than the 100 initial
+    # features) against the cvx solver, with dense and sparse instances
+    def test_MRC0_1_ccg_feature_generation(self):
+        X, y = self.X[::2], self.y[::2]
+        clf_cvx = MRC(phi='fourier', n_components=200, random_state=0,
+                      loss='0-1', solver='cvx').fit(X, y)
+        X_transform = np.unique(clf_cvx.compute_features(X), axis=0)
+        for X_input in (X_transform, sparse.csr_matrix(X_transform)):
+            mu, nu, upper, R_k = mrc_ccg(
+                X_input, clf_cvx.tau_mat, clf_cvx.lambda_mat,
+                eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_,
+                generate_features=True)
+            self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+            self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
+                                   places=5)
+            self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
+
+    # Test the ccg solver for multiclass data (iris) without the class
+    # proportions (p=None), that is, without the class centers in the
+    # initial model, against the cvx solver, and with k_max=0, which only
+    # solves the initial model
+    def test_MRC0_1_ccg_no_class_centers_and_k_max_0(self):
+        clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx').fit(self.X,
+                                                                  self.y)
+        X_transform = clf_cvx.compute_features(self.X)
+        for generate_features in (False, True):
+            mu, nu, upper, R_k = mrc_ccg(
+                X_transform, clf_cvx.tau_mat, clf_cvx.lambda_mat,
+                eps_1=1e-7, eps_2=1e-9, p=None,
+                generate_features=generate_features)
+            self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+            self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
+                                   places=5)
+
+            mu, nu, upper, R_k = mrc_ccg(
+                X_transform, clf_cvx.tau_mat, clf_cvx.lambda_mat, k_max=0,
+                p=clf_cvx.class_prior_, generate_features=generate_features)
+            self.assertTrue(len(R_k) == 1)
+            self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
 
     # Test sparse binary training with the ccg solver against the
     # dense cvx solution of the same problem
