@@ -14,7 +14,7 @@ import scipy.special as scs
 
 from .cg_large_m.cg import alg1
 
-def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, max_iters):
+def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, m_max, eps_1, eps_2, k_max):
 	"""
 	Efficient learning of 0-1 MRCs for large numbers of samples and features.
 
@@ -57,7 +57,7 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 		the CCG phase. Controls the rate at which sample constraints are
 		added to the model. Typical values: 100-500.
 
-	k_max : int
+	m_max : int
 		Maximum number of features (columns) to add per iteration during
 		the CCG phase. Controls the rate at which features are added to
 		the model. Typical values: 100-500.
@@ -74,7 +74,7 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 		during the CCG phase. Smaller values lead to more features being
 		considered. Typical values: 1e-6 to 1e-4.
 
-	max_iters : int
+	k_max : int
 		Maximum number of column and constraint generation iterations in
 		the CCG phase. The algorithm terminates when either no violations
 		remain or this limit is reached. Typical values: 50-200.
@@ -114,7 +114,7 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 	- Iteratively solves the restricted optimization problem
 	- Identifies and adds violated dual constraints (features)
 	- Identifies and adds violated primal constraints (samples)
-	- Continues until convergence or max_iters is reached
+	- Continues until convergence or k_max is reached
 
 	The algorithm requires Gurobi as the LP solver. Ensure Gurobi is properly
 	installed and licensed before using this function.
@@ -137,8 +137,8 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 	>>> # Run CCG algorithm
 	>>> mu, nu, R, R_k = main_large_n_m(
 	...     X, tau_mat, lambda_mat, phi,
-	...     n_max=200, k_max=200,
-	...     eps_1=1e-2, eps_2=1e-5, max_iters=100
+	...     n_max=200, m_max=200,
+	...     eps_1=1e-2, eps_2=1e-5, k_max=100
 	... )
 	>>> print(f"Worst-case error bound: {R:.4f}")
 	>>> print(f"Converged in {len(R_k)} iterations")
@@ -200,11 +200,11 @@ def main_large_n_m(X, tau_mat, lambda_mat, phi_ob, n_max, k_max, eps_1, eps_2, m
 									lambda_,
 									idx_cols,
 									n_max,
-									k_max,
+									m_max,
 									nu,
 									mu,
 									eps_1,
 									eps_2,
-									max_iters)
+									k_max)
 
 	return mu, nu, R, R_k

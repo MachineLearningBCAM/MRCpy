@@ -125,7 +125,7 @@ class TestMRC(unittest.TestCase):
         y_small = self.y[:60]
         r = np.unique(y_small).shape[0]
         for phi in ['threshold', 'linear', 'fourier', 'relu']:
-            clf = MRC(phi=phi, loss='0-1', max_iters=500, solver='ccg')
+            clf = MRC(phi=phi, loss='0-1', k_max=500, solver='ccg')
             clf.fit(X_small, y_small)
             upper = clf.get_upper_bound()
             print('Upper bound: ', upper)

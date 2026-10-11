@@ -5,7 +5,7 @@ import numpy as np
 import itertools as it
 import scipy.special as scs
 
-def mrc_cg_m_large(X, y, phi_ob, s, n_max, k_max, eps):
+def mrc_cg_m_large(X, y, phi_ob, s, m_max, k_max, eps):
 	"""
 	Efficient learning of 0-1 MRCs.
 
@@ -41,7 +41,7 @@ def mrc_cg_m_large(X, y, phi_ob, s, n_max, k_max, eps):
         :math:`\\text{std}(\\phi(X,Y))` stands for standard deviation
         of :math:`\\phi(X,Y)` in the supervised dataset (X,Y).
 
-	n_max : `int`, default=`100`
+	m_max : `int`, default=`100`
 		Maximum number of features selected in each iteration of the algorithm.
 
 	k_max : `int`, default=`20`
@@ -114,7 +114,7 @@ def mrc_cg_m_large(X, y, phi_ob, s, n_max, k_max, eps):
 							 tau_,
 							 lambda_,
 							 I,
-							 n_max,
+							 m_max,
 							 k_max,
 							 warm_start,
 							 nu_init,
