@@ -141,11 +141,17 @@ class MRC(BaseMRC):
             Efficient learning algorithm for large number of samples
             and features based on constraint generation. Efficiently
             handles the multi-class case (with quasi linear complexity).
-            `eps1` and `eps2` are the parameters that provide a 
-            trade-off between time complexity and acccuracy. 
-            The maximum number of constraints selected in each iteration
-            is controlled by the hyperparamters `n_max` and `m_max`. 
-            These hyperparameters also affect the comptutional complexity.
+            With at most 1000 features, it generates the constraints, and
+            with more features or sparse instances, it generates both the
+            constraints and the features. `eps1` and `eps2` are the
+            violation thresholds of the constraints and the features,
+            which provide a trade-off between time complexity and
+            accuracy. The maximum number of constraints and features added
+            in each iteration is controlled by the hyperparameters `n_max`
+            and `m_max`, and the maximum number of iterations by `k_max`.
+            These hyperparameters also affect the computational complexity.
+            Sparse instances (scipy sparse matrices) are supported for
+            binary classification.
 
         .. seealso:: For more information about the constraint generation 
             algorithm for 0-1 MRC, see [5]_
@@ -516,11 +522,6 @@ class MRC(BaseMRC):
             X_transformed.eliminate_zeros()
             X_transformed.sort_indices()
 
-            # Nonzero columns of each instance
-            dict_nnz = {i: X_transformed.indices[X_transformed.indptr[i]:
-                                                 X_transformed.indptr[i + 1]].tolist()
-                        for i in range(n)}
-
             # Mean vector estimate, phi(x, 0) = x and phi(x, 1) = -x
             tau_ = (np.asarray(X_transformed[Y == 0, :].sum(axis=0)) -
                     np.asarray(X_transformed[Y == 1, :].sum(axis=0))) / n
@@ -533,7 +534,7 @@ class MRC(BaseMRC):
                                    np.square(tau_), 0, None))
             lambda_ = self.s * std_ / np.sqrt(n)
 
-            self.minimax_risk(X_transformed, tau_, lambda_, n_classes, dict_nnz)
+            self.minimax_risk(X_transformed, tau_, lambda_, n_classes)
 
         else:
             # Proportions of the classes, in the order of the rows of tau,
@@ -545,7 +546,7 @@ class MRC(BaseMRC):
 
         return self
 
-    def minimax_risk(self, X, tau_mat, lambda_mat, n_classes, dict_nnz = None):
+    def minimax_risk(self, X, tau_mat, lambda_mat, n_classes):
         '''
         Solves the minimax risk problem
         for different types of loss (0-1 and log loss).
@@ -870,48 +871,21 @@ class MRC(BaseMRC):
                 )
             else:
             # Perform a combination of constraint and column generation approach
-            # for large number of samples and features.
-                if is_sparse and self.n_classes == 2:
-                    from MRCpy.solvers.main_ccg_large_n_m_sparse_binary.main import (
-                        main_large_n_m_sparse_binary
-                    )
+            # for large number of samples and features, with dense or sparse
+            # instances.
+                from MRCpy.solvers.mrc_ccg_large_and_wide import mrc_ccg_large_and_wide
 
-                    # Training data is considered to be sparse csr matrix
-                    # The dictionary dict_nnz provides the information
-                    # on the nonzero columns in each instance x of the dataset.
-                    (self.mu_, self.nu_, 
-                    self.upper_, self.R_k) = main_large_n_m_sparse_binary(
-                        X_transform,
-                        self.tau_mat,
-                        self.lambda_mat,
-                        self.n_max,
-                        self.m_max,
-                        self.eps1,
-                        self.eps2,
-                        dict_nnz,
-                        self.k_max
-                    )
-                else:
-                    #TODO: Implement this solver more efficiently
-                    #      Current implementation in the folder 
-                    #      solvers/main_ccg_large_n_m is inefficient.
-                    from MRCpy.solvers.main_ccg_large_n_m.main import (
-                        main_large_n_m
-                    )
-                    (self.mu_, self.nu_, self.upper_, R_k,
-                     solver_times_gurobi, solver_times, idx_cols,
-                     mrc_cg_time, init_mrc_cg_time,
-                     n_tries) = main_large_n_m(
-                        X,
-                        self.tau_mat,
-                        self.lambda_mat,
-                        self.phi,
-                        self.n_max,
-                        self.m_max,
-                        self.eps1,
-                        self.eps2,
-                        self.k_max
-                    )
+                (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg_large_and_wide(
+                    X_transform,
+                    self.tau_mat,
+                    self.lambda_mat,
+                    self.n_max,
+                    self.m_max,
+                    self.k_max,
+                    self.eps1,
+                    self.eps2,
+                    getattr(self, 'class_prior_', None)
+                )
 
         else:
             raise ValueError('Unexpected solver ... ')

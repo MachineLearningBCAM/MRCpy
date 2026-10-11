@@ -10,6 +10,7 @@ from MRCpy import MRC, CMRC, AMRC
 from MRCpy.datasets import load_iris, load_mammographic, load_glass, load_satellite
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.mrc_cg import mrc_cg
+from MRCpy.solvers.mrc_ccg_large_and_wide import mrc_ccg_large_and_wide
 
 
 class TestMRC(unittest.TestCase):
@@ -195,6 +196,28 @@ class TestMRC(unittest.TestCase):
         self.assertTrue(y_pred.shape == (X_binary.shape[0], ))
         self.assertTrue(np.all(np.isin(y_pred, [0, 1])))
 
+    # Test the ccg solver for a large number of instances and features
+    # against the cvx solver, with dense and sparse instances, for
+    # multiclass data (iris, glass) and binary data (mammographic): the
+    # minimax risk and the parameter nu
+    def test_MRC0_1_ccg_large_and_wide(self):
+        X_glass, y_glass = load_glass(with_info=False)
+        X_mam, y_mam = load_mammographic(with_info=False)
+        for X, y in ((self.X, self.y), (X_glass[::2], y_glass[::2]),
+                     (X_mam, y_mam)):
+            for fit_intercept in (True, False):
+                clf_cvx = MRC(phi='linear', loss='0-1', solver='cvx',
+                              fit_intercept=fit_intercept).fit(X, y)
+                X_transform = np.unique(clf_cvx.compute_features(X), axis=0)
+                for X_input in (X_transform, sparse.csr_matrix(X_transform)):
+                    mu, nu, upper, R_k = mrc_ccg_large_and_wide(
+                        X_input, clf_cvx.tau_mat, clf_cvx.lambda_mat,
+                        eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_)
+                    self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+                    self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
+                                           places=5)
+                    self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
+
     # Test sparse binary training with the ccg solver against the
     # dense cvx solution of the same problem
     def test_MRC_sparse_binary_ccg(self):
@@ -214,6 +237,12 @@ class TestMRC(unittest.TestCase):
             clf_dense = MRC(phi='linear', loss='0-1', solver='cvx',
                             fit_intercept=fit_intercept)
             clf_dense.fit(X_sparse.toarray(), y_sparse)
+            self.assertAlmostEqual(clf.upper_, clf_dense.upper_, places=4)
+            self.assertAlmostEqual(float(np.ravel(clf.nu_)[0]),
+                                   float(np.ravel(clf_dense.nu_)[0]), places=4)
+
+            # get_upper_bound() replaces upper_ by the upper bound of the
+            # deterministic classifier, so it is compared after.
             self.assertAlmostEqual(clf.get_upper_bound(),
                                    clf_dense.get_upper_bound(), places=4)
 
