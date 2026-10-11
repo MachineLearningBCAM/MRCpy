@@ -5,7 +5,7 @@ import scipy.special as scs
 import scipy as sp
 from .mrc_lp_large_n_m import mrc_lp_large_n_m_model_gurobi
 
-def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, dict_nnz={}, max_iters=150):
+def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, dict_nnz={}, k_max=150):
 	"""
 	Column and constraint generation algorithm for Minimax Risk Classifiers
 	with sparse binary features and large sample sizes.
@@ -92,7 +92,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 		are sample indices, values are lists of feature indices where the
 		sample has non-zero values. If empty, will be computed as needed.
 
-	max_iters : int, default=150
+	k_max : int, default=150
 		Maximum number of column/constraint generation iterations. The
 		algorithm terminates when either no violations remain or this
 		limit is reached.
@@ -137,7 +137,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 	The stopping criteria are:
 	- No features violate dual constraints by more than eps_2, AND
 	- No samples violate primal constraints by more than eps_1, OR
-	- Maximum iterations (max_iters) is reached
+	- Maximum iterations (k_max) is reached
 
 	The algorithm uses Gurobi as the LP solver. Ensure Gurobi is properly
 	installed and licensed.
@@ -157,7 +157,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 	>>> mu, nu, R, R_k, idx_plus, idx_minus, idx_cols = \\
 	...     mrc_ccg_large_n_m_sparse_binary(
 	...         X, idx_plus, idx_minus, tau, lambda_, idx_cols,
-	...         dict_nnz=dict_nnz, max_iters=50
+	...         dict_nnz=dict_nnz, k_max=50
 	...     )
 	"""
 	# Initialization
@@ -254,7 +254,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 		MRC_model.update()
 
 	k = 0
-	while(n_features_generated + n_constr_generated > 0 and k < max_iters):
+	while(n_features_generated + n_constr_generated > 0 and k < k_max):
 
 		# Solve the updated optimization and get the dual solution.
 		MRC_model.optimize()
@@ -339,7 +339,7 @@ def mrc_ccg_large_n_m_sparse_binary(X, idx_samples_plus_constr, idx_samples_minu
 		k = k + 1
 
 	# Obtain the final primal solution.
-	if k == max_iters:
+	if k == k_max:
 		MRC_model.optimize()
 		mu_plus = np.asarray([(MRC_model.getVarByName("mu_+_" + str(i))) for i in idx_cols])
 		mu_minus = np.asarray([(MRC_model.getVarByName("mu_-_" + str(i))) for i in idx_cols])

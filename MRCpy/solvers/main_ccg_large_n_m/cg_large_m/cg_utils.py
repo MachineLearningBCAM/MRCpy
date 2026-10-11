@@ -2,7 +2,7 @@ import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
 
-def select(MRC_model, F, tau_, lambda_, I, alpha, eps, n_max):
+def select(MRC_model, F, tau_, lambda_, I, alpha, eps, m_max):
 
 	"""
 	Function to update existing MRC model by adding new feature (variable).
@@ -30,7 +30,7 @@ def select(MRC_model, F, tau_, lambda_, I, alpha, eps, n_max):
 	eps : `float`, default=`1e-4`
 		Constraints' threshold. Maximum violation allowed in the constraints.
 
-	n_max : `int`, default=`100`
+	m_max : `int`, default=`100`
 		Maximum number of features selected in each iteration of the algorithm.
 
 	Returns:
@@ -70,7 +70,7 @@ def select(MRC_model, F, tau_, lambda_, I, alpha, eps, n_max):
 	# Add the features
 	k = 0
 	n_violations = np.sum(v > eps)
-	if n_violations <= n_max:
+	if n_violations <= m_max:
 		i = 0
 		j = 0
 		while(i < v.shape[0] and j < n_violations):
@@ -83,7 +83,7 @@ def select(MRC_model, F, tau_, lambda_, I, alpha, eps, n_max):
 
 	else:
 		I_sorted_ind = np.argsort(v)[::-1]
-		for i in range(n_max):
+		for i in range(m_max):
 			j = I_sorted_ind[i]
 			J.append(I_c[j])
 			MRC_model = add_var(MRC_model, F, tau_, lambda_, I_c[j])

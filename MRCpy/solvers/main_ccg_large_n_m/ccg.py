@@ -2,7 +2,7 @@ import numpy as np
 from .ccg_utils import generate_cols, generate_rows, add_constr, add_var
 from .mrc_lp_large_n_m import mrc_lp_large_n_m_model_gurobi
 
-def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, max_iters=150):
+def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_max=400, nu_init=None, mu_init=None, eps_1=1e-2, eps_2=1e-5, k_max=150):
 	"""
 	Column and constraint generation algorithm for Minimax Risk Classifiers
 	with large numbers of samples and features.
@@ -79,7 +79,7 @@ def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_m
 		violations exceeding this amount will be added to the model. Smaller
 		values lead to more features being added and potentially better solutions.
 
-	max_iters : int, default=150
+	k_max : int, default=150
 		Maximum number of column/constraint generation iterations. The algorithm
 		terminates when either no violations remain or this limit is reached.
 
@@ -110,7 +110,7 @@ def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_m
 	The stopping criteria are:
 	- No features violate dual constraints by more than eps_2, AND
 	- No samples violate primal constraints by more than eps_1, OR
-	- Maximum iterations (max_iters) is reached
+	- Maximum iterations (k_max) is reached
 
 	The algorithm uses Gurobi as the LP solver. Ensure Gurobi is properly
 	installed and licensed.
@@ -137,7 +137,7 @@ def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_m
 	>>> # Run CCG algorithm
 	>>> mu, nu, R, R_k = mrc_ccg_large_n_m(
 	...     F_init, b_init, X, phi, tau, lambda_, idx_cols,
-	...     n_max=100, m_max=100, eps_1=1e-2, eps_2=1e-5, max_iters=50
+	...     n_max=100, m_max=100, eps_1=1e-2, eps_2=1e-5, k_max=50
 	... )
 	"""
 
@@ -221,7 +221,7 @@ def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_m
 		MRC_model.update()
 
 	k = 0
-	while(n_features_generated + n_constr_generated > 0 and k < max_iters):
+	while(n_features_generated + n_constr_generated > 0 and k < k_max):
 
 		# Solve the updated optimization and get the dual solution.
 		MRC_model.optimize()
@@ -287,7 +287,7 @@ def mrc_ccg_large_n_m(F_, b_, X, phi_ob, tau_, lambda_, idx_cols, n_max=400, m_m
 		k = k + 1
 
 	# Obtain the final primal solution.
-	if k == max_iters:
+	if k == k_max:
 		MRC_model.optimize()
 		mu_plus = np.asarray([(MRC_model.getVarByName("mu_+_" + str(i))) for i in idx_cols])
 		mu_minus = np.asarray([(MRC_model.getVarByName("mu_-_" + str(i))) for i in idx_cols])

@@ -16,7 +16,7 @@ import numpy as np
 from operator import itemgetter
 from gurobipy import *
 
-def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, alpha_pos, alpha_neg, alpha_0, not_idx_cols, n_max, eps_2):
+def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, lambda_, alpha_pos, alpha_neg, alpha_0, not_idx_cols, m_max, eps_2):
 	"""
 	Generate features (columns) to add to the optimization model based on
 	dual constraint violations.
@@ -65,9 +65,9 @@ def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, la
 		Indices of features not currently in the working set. These are
 		the candidate features that may be added.
 
-	n_max : int
-		Maximum number of features to add. If more than n_max features
-		violate the threshold, only the n_max most violated are selected.
+	m_max : int
+		Maximum number of features to add. If more than m_max features
+		violate the threshold, only the m_max most violated are selected.
 
 	eps_2 : float
 		Violation threshold for adding features. Only features with
@@ -81,7 +81,7 @@ def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, la
 
 	n_features_added : int
 		Number of features actually added. This equals len(cols_to_add)
-		and is at most min(n_max, number of violations > eps_2).
+		and is at most min(m_max, number of violations > eps_2).
 
 	Notes
 	-----
@@ -108,10 +108,10 @@ def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, la
 	v = np.maximum((m[not_idx_cols] - (1 - alpha_0) * (tau_[not_idx_cols] + lambda_[not_idx_cols])), 0.) + \
 		np.maximum(((1 - alpha_0) * (tau_[not_idx_cols] - lambda_[not_idx_cols]) - m[not_idx_cols]), 0.)
 
-	# Add the n_max most violated features
+	# Add the m_max most violated features
 	n_features_added = 0
 	n_violations = np.sum(v > eps_2)
-	if n_violations <= n_max:
+	if n_violations <= m_max:
 		i = 0
 		j = 0
 		while (i < v.shape[0] and j < n_violations):
@@ -123,8 +123,8 @@ def generate_cols(X, idx_samples_plus_constr, idx_samples_minus_constr, tau_, la
 
 	else:
 		# Sorting efficiently in python with O(m)
-		sorted_v = list(sorted(enumerate(v), key = itemgetter(1)))[-n_max:]
-		for i in range(n_max):
+		sorted_v = list(sorted(enumerate(v), key = itemgetter(1)))[-m_max:]
+		for i in range(m_max):
 			j = sorted_v[i][0]
 			cols_to_add.append(not_idx_cols[j])
 			n_features_added = n_features_added + 1
