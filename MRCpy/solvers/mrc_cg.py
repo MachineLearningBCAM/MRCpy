@@ -131,46 +131,50 @@ def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 	# compare consistently in J, J_new and the keys of mu_vars.
 	J = [(int(y), int(j)) for y, j in J]
 
-	# Initial model
-	MRC_model, mu_vars, constrs = mrc_cg_init_model(X,
-													tau_mat,
-													lambda_mat,
-													J,
-													warm_start)
+	# Row r(y) of mu and sign s(y) of each label
+	if tau_mat.shape[0] == 1:
+		rows = np.array([0, 0])
+		signs = np.array([1., -1.])
+	else:
+		rows = np.arange(tau_mat.shape[0])
+		signs = np.ones(tau_mat.shape[0])
+
+	# Initial model over the subset J of features
+	model = PrimalModel(X, tau_mat, lambda_mat, rows, signs)
+	model.add_features(J)
+	if warm_start is not None and len(J) > 0:
+		model.set_warm_start(warm_start, J)
+	mu, nu, R = model.solve()
 
 	# Add and remove features
-	J_new = select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
+	J_new = select(model, J, eps_2, m_max)
 
 	k = 0
 	while((len(set(J_new).difference(set(J))) != 0) and (k < k_max)):
 
 		# Solve the model over the new subset of features
-		MRC_model.optimize()
+		mu, nu, R = model.solve()
 
 		# Add and remove features
 		J = J_new.copy()
-		J_new = select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
+		J_new = select(model, J, eps_2, m_max)
 
 		k = k + 1
 
-	# Solution of the last solved model. The features removed by the last
+	# Features of the last solved model. The features removed by the last
 	# selection are zero, and the features added by it are not solved yet.
-	J = [col for col in J if col in mu_vars]
-	mu = np.zeros(tau_mat.shape)
-	for col in J:
-		mu[col] = mu_vars[col][0].X - mu_vars[col][1].X
+	J = [col for col in J if col in model.mu_vars]
 
 	# The parameter nu of the classifier is the negative of the variable nu
 	# of the linear program.
-	nu = (-1) * MRC_model.getVarByName("nu").X
-	R = MRC_model.objVal
+	return mu, -nu, R, J
 
-	return mu, nu, R, J
-
-def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
+class PrimalModel:
 	"""
-	Builds and solves the linear model P_J (14) in [1] of MRC 0-1 loss over
-	the subset J of features.
+	Linear model P_J (14) in [1] of MRC 0-1 loss over the subset J of
+	features, in which each feature (y, j) in J is a pair of variables
+	mu_1, mu_2, and the constraints of each instance are encoded by the
+	scores z_iy = Phi(x_i, y)^T mu.
 
 	Parameters:
 	-----------
@@ -183,148 +187,172 @@ def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
 	lambda_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
 		Deviations lambda of the mean estimates.
 
-	J : `list` of (`int`, `int`)
-		Subset of features, as entries (y, j) of mu.
+	rows : `array`-like of shape (`n_classes`,)
+		Row r(y) of mu of each label.
 
-	warm_start : `array`-like of the shape of `tau_mat`, default=`None`
-		Parameters mu as a warm start, zero outside the features in J.
+	signs : `array`-like of shape (`n_classes`,)
+		Sign s(y) of each label.
 
-	Return:
-	-------
-	MRC_model : A MRC object in GUROBI
-		The solved linear model.
+	Attributes:
+	-----------
+	constrs : `array`-like of shape (`n_samples`, `n_classes`)
+		Constraints with the scores z_iy of each instance and label, whose
+		dual variables beta give the dual constraints of the features. The
+		terms of the variables mu_1 and mu_2 are added with each feature.
+
+	The features in J are given by the following, which are updated as the
+	features are added (`add_features`) and removed (`remove_features`)
+	along the iterations:
+
+	in_J : `array`-like of the shape of `tau_mat`
+		Boolean array with the features (y, j) in J.
 
 	mu_vars : `dict`
-		Variables (mu_1, mu_2) of each feature (y, j) in the model.
-
-	constrs : `array`-like of shape (`n_samples`, `n_classes`) or (`n_samples`, 2)
-		Constraints with the scores z_iy of each instance and label, whose
-		dual variables beta give the dual constraints of the features.
+		Variables (mu_1, mu_2) of each feature (y, j) in J.
 	"""
 
-	n, d = X.shape
-	binary = (tau_mat.shape[0] == 1)
-	n_score_cols = 2 if binary else tau_mat.shape[0]
+	def __init__(self, X, tau_mat, lambda_mat, rows, signs):
+		self.X = X
+		self.tau_mat = tau_mat
+		self.lambda_mat = lambda_mat
+		self.rows = rows
+		self.signs = signs
 
-	# Define the MRC 0-1 linear model (primal).
-	MRC_model = gp.Model("MRC_0_1_primal")
-	MRC_model.Params.LogToConsole = 0
-	MRC_model.Params.OutputFlag = 0
-	MRC_model.setParam('Method', 0)
-	MRC_model.setParam('LPWarmStart', 2)
-	MRC_model.setParam('DualReductions', 0)
+		self.in_J = np.zeros(tau_mat.shape, dtype=bool)
+		self.mu_vars = {}
 
-	nu = MRC_model.addVar(lb=-GRB.INFINITY, obj=1, name="nu")
-	if binary:
-		# nu - s(y) x_i^T mu >= 0, with s = (1, -1)
-		rhs = 0
-		s = None
-	else:
-		# s_iy - x_i^T mu_y + nu >= 1, s_iy >= 0, sum_y s_iy <= 1
-		rhs = 1
-		s = MRC_model.addVars(n, n_score_cols, lb=0, name="s")
-	MRC_model.update()
+		n = X.shape[0]
+		n_labels = rows.shape[0]
+		binary = (tau_mat.shape[0] == 1)
 
-	# Constraints with the scores, created without the terms in mu,
-	# that is, no variable selected at this point.
-	# The terms -x_i^T mu_y are added feature by feature in add_var, as the
-	# features enter the model, and leave it with them.
-	constrs = np.empty((n, n_score_cols), dtype=object)
-	for i in range(n):
-		for y in range(n_score_cols):
-			expr = nu if s is None else nu + s[i, y]
-			constrs[i, y] = MRC_model.addConstr(expr >= rhs)
+		# Define the MRC 0-1 linear model (primal).
+		self.MRC_model = gp.Model("MRC_0_1_primal")
+		self.MRC_model.Params.LogToConsole = 0
+		self.MRC_model.Params.OutputFlag = 0
+		self.MRC_model.setParam('Method', 0)
+		self.MRC_model.setParam('LPWarmStart', 2)
+		self.MRC_model.setParam('DualReductions', 0)
 
-	if binary:
-		MRC_model.addConstr(nu >= 0.5)
-	else:
-		MRC_model.addConstrs(s.sum(i, '*') <= 1 for i in range(n))
+		self.nu = self.MRC_model.addVar(lb=-GRB.INFINITY, obj=1, name="nu")
+		if binary:
+			# nu - s(y) x_i^T mu >= 0
+			rhs = 0
+			self.s = None
+		else:
+			# s_iy - x_i^T mu_y + nu >= 1, s_iy >= 0, sum_y s_iy <= 1
+			rhs = 1
+			self.s = self.MRC_model.addVars(n, n_labels, lb=0, name="s")
+		self.MRC_model.update()
 
-	# Add the initial features.
-	mu_vars = {}
-	for col in J:
-		add_var(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, col)
-	MRC_model.update()
-
-	# Warm start with a feasible point for the given coefficients.
-	if warm_start is not None and len(J) > 0:
-		mu_start = np.zeros(tau_mat.shape)
-		for col in J:
-			mu_start[col] = warm_start[col]
-			mu_vars[col][0].PStart = max(mu_start[col], 0)
-			mu_vars[col][1].PStart = max(-mu_start[col], 0)
-
-		z = X @ mu_start.T
+		# Constraints with the scores, created without the terms in mu,
+		# that is, no feature selected at this point.
+		self.constrs = np.empty((n, n_labels), dtype=object)
+		for i in range(n):
+			for y in range(n_labels):
+				expr = self.nu if self.s is None else self.nu + self.s[i, y]
+				self.constrs[i, y] = self.MRC_model.addConstr(expr >= rhs)
 
 		if binary:
-			nu.PStart = max(np.max(np.abs(z)), 0.5)
+			self.MRC_model.addConstr(self.nu >= 0.5)
+		else:
+			self.MRC_model.addConstrs(self.s.sum(i, '*') <= 1 for i in range(n))
+
+	def add_features(self, features):
+		"""
+		Adds the features (y, j) to J, as the variables mu_1 and mu_2 of the
+		entry (y, j) of mu, with their coefficients -s(y') x_ij and
+		s(y') x_ij in the constraints with the scores of the labels y' that
+		use the row y of mu.
+		"""
+
+		for col in features:
+			r, j = col
+			x_j = self.X[:, j]
+			nnz = np.flatnonzero(x_j)
+
+			# Coefficients of mu_1 in the constraints with the scores
+			labels = np.flatnonzero(self.rows == r)
+			coeffs = np.concatenate([-self.signs[y] * x_j[nnz] for y in labels])
+			constrs = np.concatenate([self.constrs[nnz, y] for y in labels]).tolist()
+
+			# Objective -(tau - lambda) for mu_1 and (tau + lambda) for mu_2.
+			mu_1 = self.MRC_model.addVar(lb=0, obj=self.lambda_mat[col] - self.tau_mat[col],
+										 column=gp.Column(coeffs.tolist(), constrs))
+			mu_2 = self.MRC_model.addVar(lb=0, obj=self.lambda_mat[col] + self.tau_mat[col],
+										 column=gp.Column((-coeffs).tolist(), constrs))
+			self.mu_vars[col] = (mu_1, mu_2)
+			self.in_J[col] = True
+		self.MRC_model.update()
+
+	def remove_features(self, features):
+		"""
+		Removes the features (y, j) from J, with their variables mu_1 and
+		mu_2.
+		"""
+
+		for col in features:
+			mu_1, mu_2 = self.mu_vars.pop(col)
+			self.MRC_model.remove(mu_1)
+			self.MRC_model.remove(mu_2)
+			self.in_J[col] = False
+
+	def set_warm_start(self, warm_start, J):
+		"""
+		Sets the warm start of the model at the parameters mu given by
+		warm_start over the features J, with the feasible nu and scores s
+		for these parameters.
+		"""
+
+		mu_start = np.zeros(self.tau_mat.shape)
+		for col in J:
+			mu_start[col] = warm_start[col]
+			self.mu_vars[col][0].PStart = max(mu_start[col], 0)
+			self.mu_vars[col][1].PStart = max(-mu_start[col], 0)
+
+		z = self.X @ mu_start.T
+
+		if self.s is None:
+			self.nu.PStart = max(np.max(np.abs(z)), 0.5)
 		else:
 			# nu = 1 + max_i max_C (sum_{y in C} z_iy - 1) / |C|
+			n_labels = self.rows.shape[0]
 			cumsum = np.cumsum(-np.sort(-z, axis=1), axis=1)
-			nu_start = np.max((cumsum - 1) / np.arange(1, n_score_cols + 1)) + 1
-			nu.PStart = nu_start
+			nu_start = np.max((cumsum - 1) / np.arange(1, n_labels + 1)) + 1
+			self.nu.PStart = nu_start
 			s_start = np.maximum(z - nu_start + 1, 0)
-			for i in range(n):
-				for y in range(n_score_cols):
-					s[i, y].PStart = s_start[i, y]
+			for i in range(z.shape[0]):
+				for y in range(n_labels):
+					self.s[i, y].PStart = s_start[i, y]
 
-	# Solve the model
-	MRC_model.optimize()
+	def solve(self):
+		"""
+		Solves the model (LPSOLVE in [1]), giving the solution
+		mu = mu_1 - mu_2 and nu of P_J, with mu zero for the features not in
+		J, and the optimal value R^k.
+		"""
 
-	return MRC_model, mu_vars, constrs
+		self.MRC_model.optimize()
+		mu = np.zeros(self.tau_mat.shape)
+		for col, (mu_1, mu_2) in self.mu_vars.items():
+			mu[col] = mu_1.X - mu_2.X
 
-def add_var(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, col):
-	"""
-	Adds the feature col = (y, j) to the model, as the variables
-	mu_1 and mu_2 of the entry (y, j) of mu.
+		return mu, self.nu.X, self.MRC_model.objVal
 
-	Parameters:
-	-----------
-	MRC_model : A MRC object in GUROBI
-		The model to be updated.
+	def dual_constraints(self):
+		"""
+		F^T alpha of the dual solution of the solved model, given by
+		F^T alpha = beta^T X with beta the dual variables of the constraints
+		with the scores. The row r is the sum of s(y) beta_y^T X over the
+		labels y that use the row r of mu.
+		"""
 
-	mu_vars : `dict`
-		Variables (mu_1, mu_2) of each feature (y, j) in the model.
-		It is updated with the new feature.
+		beta = np.asarray(self.MRC_model.getAttr("Pi", self.constrs.flatten().tolist())).reshape(self.constrs.shape)
+		if self.tau_mat.shape[0] == 1:
+			# Binary: Phi(x, 0) = x and Phi(x, 1) = -x
+			return ((beta[:, 0] - beta[:, 1]) @ self.X)[np.newaxis, :]
+		return beta.T @ self.X
 
-	constrs : `array`-like of shape (`n_samples`, `n_classes`) or (`n_samples`, 2)
-		Constraints with the scores z_iy of each instance and label.
-
-	X : `array`-like of shape (`n_samples`, `n_features`)
-		Features corresponding with the instances.
-
-	tau_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
-		Mean estimates tau.
-
-	lambda_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
-		Deviations lambda of the mean estimates.
-
-	col : (`int`, `int`)
-		Feature (y, j) to be added.
-	"""
-
-	y, j = col
-	x_j = X[:, j]
-	nnz = np.flatnonzero(x_j)
-
-	# Coefficients of mu_1 in the constraints with the scores.
-	if tau_mat.shape[0] == 1:
-		# Binary: -x_ij for label 0 and +x_ij for label 1.
-		coeffs = np.concatenate([-x_j[nnz], x_j[nnz]])
-		rows = np.concatenate([constrs[nnz, 0], constrs[nnz, 1]])
-	else:
-		coeffs = -x_j[nnz]
-		rows = constrs[nnz, y]
-
-	# Objective -(tau - lambda) for mu_1 and (tau + lambda) for mu_2.
-	rows = rows.tolist()
-	mu_1 = MRC_model.addVar(lb=0, obj=lambda_mat[col] - tau_mat[col],
-							column=gp.Column(coeffs.tolist(), rows))
-	mu_2 = MRC_model.addVar(lb=0, obj=lambda_mat[col] + tau_mat[col],
-							column=gp.Column((-coeffs).tolist(), rows))
-	mu_vars[col] = (mu_1, mu_2)
-
-def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max):
+def select(model, J, eps_2, m_max):
 	"""
 	Updates the subset J of features in the model (function SELECT,
 	Algorithm 2 in [1]): removes the features with mu_j = 0 that are not in
@@ -334,23 +362,8 @@ def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
 
 	Parameters:
 	-----------
-	MRC_model : A MRC object in GUROBI
-		The solved linear model.
-
-	mu_vars : `dict`
-		Variables (mu_1, mu_2) of each feature (y, j) in the model.
-
-	constrs : `array`-like of shape (`n_samples`, `n_classes`) or (`n_samples`, 2)
-		Constraints with the scores z_iy of each instance and label.
-
-	X : `array`-like of shape (`n_samples`, `n_features`)
-		Features corresponding with the instances.
-
-	tau_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
-		Mean estimates tau.
-
-	lambda_mat : `array`-like of shape (`n_classes`, `n_features`) or (1, `n_features`)
-		Deviations lambda of the mean estimates.
+	model : `PrimalModel`
+		The solved model.
 
 	J : `list` of (`int`, `int`)
 		Subset of features in the model.
@@ -367,40 +380,26 @@ def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
 		Subset of features in the updated model.
 	"""
 
-	# Dual variables beta of the constraints with the scores, and
-	# F^T alpha = beta^T X in the dual constraints of the features.
-	beta = np.asarray(MRC_model.getAttr("Pi", constrs.flatten().tolist())).reshape(constrs.shape)
-	if tau_mat.shape[0] == 1:
-		# Binary: Phi(x, 0) = x and Phi(x, 1) = -x
-		F_alpha = ((beta[:, 0] - beta[:, 1]) @ X)[np.newaxis, :]
-	else:
-		F_alpha = beta.T @ X
+	F_alpha = model.dual_constraints()
 
 	# Violations of the dual constraints of the features not in J,
 	# tau - lambda <= F^T alpha <= tau + lambda, that is, the positive part
 	# of v = |F^T alpha - tau| - lambda in Algorithm 2 in [1].
-	v = np.maximum((F_alpha - tau_mat - lambda_mat), 0.) + np.maximum((tau_mat - lambda_mat - F_alpha), 0.)
-	not_in_model = np.ones(tau_mat.shape, dtype=bool)
-	for col in J:
-		not_in_model[col] = False
-	J_c = np.argwhere(not_in_model)
-	v = v[not_in_model]
-
-	J_new = J.copy()
+	v = np.maximum((F_alpha - model.tau_mat - model.lambda_mat), 0.) + np.maximum((model.tau_mat - model.lambda_mat - F_alpha), 0.)
+	J_c = np.argwhere(~model.in_J)
+	v = v[~model.in_J]
 
 	# Remove the features with mu_j = 0 that are not in the basis
+	removed = []
 	for col in J:
-		mu_1, mu_2 = mu_vars[col]
+		mu_1, mu_2 = model.mu_vars[col]
 		mu = mu_1.X - mu_2.X
 		basic_status = not ((mu_1.VBasis == -1) and (mu_2.VBasis == -1))
 
 		if (mu == 0) and (basic_status == False):
-			J_new.remove(col)
-
-			# Remove from the gurobi model
-			MRC_model.remove(mu_1)
-			MRC_model.remove(mu_2)
-			del mu_vars[col]
+			removed.append(col)
+	model.remove_features(removed)
+	J_new = [col for col in J if col not in removed]
 
 	# Add the features
 	n_violations = np.sum(v > eps_2)
@@ -409,9 +408,8 @@ def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
 	else:
 		cols_to_add = J_c[np.argsort(v)[::-1][:m_max]]
 
-	for y, j in cols_to_add:
-		col = (int(y), int(j))
-		J_new.append(col)
-		add_var(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, col)
+	cols_to_add = [(int(y), int(j)) for y, j in cols_to_add]
+	J_new.extend(cols_to_add)
+	model.add_features(cols_to_add)
 
 	return J_new
