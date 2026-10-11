@@ -1,15 +1,23 @@
-'''Column generation for the 0-1 loss MRC linear program with a large
-number of features, as described in [1].
+'''Constraint generation over the features (column generation) for the
+0-1 loss MRC linear program with a large number of features, as described
+in [1].
 
-The 0-1 MRC is given by the linear program (4) in [1]
+The 0-1 MRC is given by the linear program (10) in [1]
 
     P :  min   -(tau - lambda)^T mu_1 + (tau + lambda)^T mu_2 + nu
        mu_1, mu_2, nu
          s.t.  F (mu_1 - mu_2) - nu 1 <= b,  mu_1, mu_2 >= 0,
 
-with a constraint for each instance x and non-empty subset C of the labels
-Y, given by the row F_c = sum_{y in C} Phi(x, y)^T / |C| of F and the
-component b_c = 1 / |C| - 1 of b. Then, mu = mu_1 - mu_2.
+with a constraint for each pair (x, C) in the set S of instances x and
+non-empty subsets C of the labels Y, given by the row g_i^T of F and the
+component b_i of b in (9) in [1], g_i = sum_{y in C} Phi(x, y) / |C| and
+b_i = 1 / |C| - 1. Then, mu = mu_1 - mu_2. Its dual is the linear program
+(11) in [1]
+
+    D :  max   -b^T alpha
+        alpha
+         s.t.  tau - lambda <= F^T alpha <= tau + lambda,
+               1^T alpha = 1,  alpha >= 0.
 
 The feature mapping Phi(x, y) is not built. The parameters mu, the mean
 estimates tau and their deviations lambda are matrices of shape
@@ -20,9 +28,10 @@ of mu with the sign s(y):
     multiclass: r(y) = y, s(y) = 1,
     binary:     r(y) = 0, s(0) = 1, s(1) = -1  (Phi(x, 1) = -Phi(x, 0)).
 
-All the constraints of P are in the model. Instead of the n (2^|Y| - 1)
-constraints of P, the constraints of each instance x_i are encoded exactly
-by the scores z_iy = Phi(x_i, y)^T mu:
+All the constraints of P are in the model. Instead of the
+|S| = n (2^|Y| - 1) constraints of P, the constraints of each instance x_i
+are encoded exactly by the scores z_iy = Phi(x_i, y)^T mu (this encoding is
+an implementation detail, not described in [1]):
 
     binary:     nu >= z_i0,  nu >= z_i1  (for all i),  nu >= 1/2,
     multiclass: s_iy >= z_iy - nu + 1,  s_iy >= 0,  sum_y s_iy <= 1,
@@ -34,17 +43,27 @@ max_C (sum_{y in C} z_iy - 1) / |C| <= t if and only if
 sum_y (z_iy - t)_+ <= 1.
 
 The features, that is, the entries (y, j) of mu with their variables in
-mu_1 and mu_2, are generated (function FEAT of Algorithm 1 in [1]): a
-subset J of features is in the model and P is solved over J at each
-iteration. A feature j not in J is added if its dual constraint (6) in [1],
-tau_j - lambda_j <= (F^T alpha)_j <= tau_j + lambda_j, is violated by more
-than eps_2, where F^T alpha = beta^T X with beta the dual variables of the
-constraints with the scores. The features in J with mu_j = 0 that are not
-in the basis are removed.
+mu_1 and mu_2, are selected with Algorithm 1 in [1]. At each iteration k,
+the subproblem P_J (14) in [1] of P over a subset J of features is solved
+(LPSOLVE), giving the worst-case error probability R^k, and the subset of
+features is updated from the dual solution alpha^k by the function SELECT
+(Algorithm 2 in [1]), with the violations of the dual constraints of the
+features
 
-.. [1] Bondugula, K., Mazuelas, S., & Pérez, A. (2025).
-       Efficient Large-Scale Learning of Minimax Risk Classifiers.
-       arXiv preprint arXiv:2511.17626.
+    v = |F^T alpha - tau| - lambda,
+
+where F^T alpha = beta^T X with beta the dual variables of the constraints
+with the scores. The features with v_j > eps_2 (epsilon in [1]) are added,
+at most m_max (n_max in [1]), the ones with the largest violations if there
+are more. The features with mu_j = 0 that are not in the basis are removed
+(Algorithm 2 in [1] keeps the features with v_j = 0, which include all the
+features with mu_j != 0). The algorithm ends when SELECT adds no feature
+or after k_max iterations.
+
+.. [1] Bondugula, K., Mazuelas, S., & Pérez, A. (2023). Efficient
+       Learning of Minimax Risk Classifiers in High Dimensions. The 39th
+       Conference on Uncertainty in Artificial Intelligence (UAI), 206-215.
+       arXiv preprint arXiv:2306.06649.
 '''
 
 # Kept for the modules that import this module with `*`.
@@ -60,9 +79,8 @@ import numpy as np
 
 def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 	"""
-	Column generation algorithm for 0-1 loss Minimax Risk Classifiers with a
-	large number of features (Algorithm 1 in [1], without the generation of
-	constraints).
+	Constraint generation algorithm over the features for 0-1 loss Minimax
+	Risk Classifiers with a large number of features (Algorithm 1 in [1]).
 
 	Parameters:
 	-----------
@@ -76,10 +94,10 @@ def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 		Deviations lambda of the mean estimates.
 
 	J : `list` of (`int`, `int`)
-		Initial subset of features, as entries (y, j) of mu.
+		Initial subset of features (I in [1]), as entries (y, j) of mu.
 
 	m_max : `int`
-		Maximum number of features added in each iteration.
+		Maximum number of features added in each iteration (n_max in [1]).
 
 	k_max : `int`
 		Maximum number of iterations after solving the initial model.
@@ -89,7 +107,7 @@ def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 		the features in J.
 
 	eps_2 : `float`
-		Violation threshold of the dual constraints.
+		Violation threshold of the dual constraints (epsilon in [1]).
 
 	Return:
 	-------
@@ -101,10 +119,10 @@ def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 		of the variable nu of the linear program P.
 
 	R : `float`
-		Worst-case error probability given by the last model.
+		Worst-case error probability R^k given by the last model.
 
 	J : `list` of (`int`, `int`)
-		Subset of features in the last model.
+		Subset of features in the last model (I* in [1]).
 	"""
 
 	tau_mat = np.atleast_2d(np.asarray(tau_mat, dtype=float))
@@ -151,8 +169,8 @@ def mrc_cg(X, tau_mat, lambda_mat, J, m_max, k_max, warm_start, eps_2):
 
 def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
 	"""
-	Builds and solves the linear model P of MRC 0-1 loss over the subset J
-	of features.
+	Builds and solves the linear model P_J (14) in [1] of MRC 0-1 loss over
+	the subset J of features.
 
 	Parameters:
 	-----------
@@ -308,10 +326,11 @@ def add_var(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, col):
 
 def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max):
 	"""
-	Updates the subset J of features in the model (function FEAT of
-	Algorithm 1 in [1]): removes the features with mu_j = 0 that are not in
+	Updates the subset J of features in the model (function SELECT,
+	Algorithm 2 in [1]): removes the features with mu_j = 0 that are not in
 	the basis, and adds the features whose dual constraint is violated by
-	more than eps_2, at most m_max, the most violated ones if there are more.
+	more than eps_2 (epsilon in [1]), at most m_max (n_max in [1]), the most
+	violated ones if there are more.
 
 	Parameters:
 	-----------
@@ -358,7 +377,8 @@ def select(MRC_model, mu_vars, constrs, X, tau_mat, lambda_mat, J, eps_2, m_max)
 		F_alpha = beta.T @ X
 
 	# Violations of the dual constraints of the features not in J,
-	# tau - lambda <= F^T alpha <= tau + lambda.
+	# tau - lambda <= F^T alpha <= tau + lambda, that is, the positive part
+	# of v = |F^T alpha - tau| - lambda in Algorithm 2 in [1].
 	v = np.maximum((F_alpha - tau_mat - lambda_mat), 0.) + np.maximum((tau_mat - lambda_mat - F_alpha), 0.)
 	not_in_model = np.ones(tau_mat.shape, dtype=bool)
 	for col in J:
