@@ -523,11 +523,17 @@
 <span class="sd">            Efficient learning algorithm for large number of samples</span>
 <span class="sd">            and features based on constraint generation. Efficiently</span>
 <span class="sd">            handles the multi-class case (with quasi linear complexity).</span>
-<span class="sd">            `eps1` and `eps2` are the parameters that provide a </span>
-<span class="sd">            trade-off between time complexity and acccuracy. </span>
-<span class="sd">            The maximum number of constraints selected in each iteration</span>
-<span class="sd">            is controlled by the hyperparamters `n_max` and `m_max`. </span>
-<span class="sd">            These hyperparameters also affect the comptutional complexity.</span>
+<span class="sd">            With at most 1000 features, it generates the constraints, and</span>
+<span class="sd">            with more features or sparse instances, it generates both the</span>
+<span class="sd">            constraints and the features. `eps1` and `eps2` are the</span>
+<span class="sd">            violation thresholds of the constraints and the features,</span>
+<span class="sd">            which provide a trade-off between time complexity and</span>
+<span class="sd">            accuracy. The maximum number of constraints and features added</span>
+<span class="sd">            in each iteration is controlled by the hyperparameters `n_max`</span>
+<span class="sd">            and `m_max`, and the maximum number of iterations by `k_max`.</span>
+<span class="sd">            These hyperparameters also affect the computational complexity.</span>
+<span class="sd">            Sparse instances (scipy sparse matrices) are supported for</span>
+<span class="sd">            binary classification.</span>
 
 <span class="sd">        .. seealso:: For more information about the constraint generation </span>
 <span class="sd">            algorithm for 0-1 MRC, see [5]_</span>
@@ -903,11 +909,6 @@
             <span class="n">X_transformed</span><span class="o">.</span><span class="n">eliminate_zeros</span><span class="p">()</span>
             <span class="n">X_transformed</span><span class="o">.</span><span class="n">sort_indices</span><span class="p">()</span>
 
-            <span class="c1"># Nonzero columns of each instance</span>
-            <span class="n">dict_nnz</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">X_transformed</span><span class="o">.</span><span class="n">indices</span><span class="p">[</span><span class="n">X_transformed</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
-                                                 <span class="n">X_transformed</span><span class="o">.</span><span class="n">indptr</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)}</span>
-
             <span class="c1"># Mean vector estimate, phi(x, 0) = x and phi(x, 1) = -x</span>
             <span class="n">tau_</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">-</span>
                     <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="o">/</span> <span class="n">n</span>
@@ -920,7 +921,7 @@
                                    <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">tau_</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
             <span class="n">lambda_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">std_</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minimax_risk</span><span class="p">(</span><span class="n">X_transformed</span><span class="p">,</span> <span class="n">tau_</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Proportions of the classes, in the order of the rows of tau,</span>
@@ -935,7 +936,7 @@
 
 <div class="viewcode-block" id="MRC.minimax_risk">
 <a class="viewcode-back" href="../../generated/MRCpy.MRC.html#MRCpy.MRC.minimax_risk">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">dict_nnz</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimax_risk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">,</span> <span class="n">lambda_mat</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        Solves the minimax risk problem</span>
 <span class="sd">        for different types of loss (0-1 and log loss).</span>
@@ -1235,73 +1236,26 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'The </span><span class="se">\'</span><span class="s1">ccg</span><span class="se">\'</span><span class="s1"> solver is only available '</span> <span class="o">+</span>
                                  <span class="s1">'for 0-1 loss.'</span><span class="p">)</span>
 
-            <span class="c1"># This classification is based on empirical observation.</span>
-            <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="ow">or</span> <span class="n">is_sparse</span><span class="p">:</span>
-                <span class="n">large_features</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">large_features</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># Constraint generation for a large number of samples, and also</span>
+            <span class="c1"># column generation for a large number of features (dense or</span>
+            <span class="c1"># sparse instances). This classification is based on empirical</span>
+            <span class="c1"># observation.</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.mrc_ccg</span><span class="w"> </span><span class="kn">import</span> <span class="n">mrc_ccg</span>
 
-            <span class="k">if</span> <span class="n">large_features</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="c1"># Perform constraint generation approach for large number</span>
-            <span class="c1"># of samples.</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.mrc_ccg_large_number_of_samples</span><span class="w"> </span><span class="kn">import</span> <span class="n">mrc_ccg_large_number_of_samples</span>
-
-                <span class="c1"># The class proportions give the class centers of the</span>
-                <span class="c1"># initial model (not available if minimax_risk is called</span>
-                <span class="c1"># without fit).</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">)</span> <span class="o">=</span> <span class="n">mrc_ccg_large_number_of_samples</span><span class="p">(</span>
-                    <span class="n">X_transform</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
-                    <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'class_prior_'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Perform a combination of constraint and column generation approach</span>
-            <span class="c1"># for large number of samples and features.</span>
-                <span class="k">if</span> <span class="n">is_sparse</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_m_sparse_binary.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-                        <span class="n">main_large_n_m_sparse_binary</span>
-                    <span class="p">)</span>
-
-                    <span class="c1"># Training data is considered to be sparse csr matrix</span>
-                    <span class="c1"># The dictionary dict_nnz provides the information</span>
-                    <span class="c1"># on the nonzero columns in each instance x of the dataset.</span>
-                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> 
-                    <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">)</span> <span class="o">=</span> <span class="n">main_large_n_m_sparse_binary</span><span class="p">(</span>
-                        <span class="n">X_transform</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">,</span>
-                        <span class="n">dict_nnz</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span>
-                    <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1">#TODO: Implement this solver more efficiently</span>
-                    <span class="c1">#      Current implementation in the folder </span>
-                    <span class="c1">#      solvers/main_ccg_large_n_m is inefficient.</span>
-                    <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.solvers.main_ccg_large_n_m.main</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-                        <span class="n">main_large_n_m</span>
-                    <span class="p">)</span>
-                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="n">R_k</span><span class="p">,</span>
-                     <span class="n">solver_times_gurobi</span><span class="p">,</span> <span class="n">solver_times</span><span class="p">,</span> <span class="n">idx_cols</span><span class="p">,</span>
-                     <span class="n">mrc_cg_time</span><span class="p">,</span> <span class="n">init_mrc_cg_time</span><span class="p">,</span>
-                     <span class="n">n_tries</span><span class="p">)</span> <span class="o">=</span> <span class="n">main_large_n_m</span><span class="p">(</span>
-                        <span class="n">X</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span>
-                    <span class="p">)</span>
+            <span class="c1"># The class proportions give the class centers of the initial</span>
+            <span class="c1"># model (not available if minimax_risk is called without fit).</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_k</span><span class="p">)</span> <span class="o">=</span> <span class="n">mrc_ccg</span><span class="p">(</span>
+                <span class="n">X_transform</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">,</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'class_prior_'</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">generate_features</span><span class="o">=</span><span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="ow">or</span> <span class="n">is_sparse</span><span class="p">)</span>
+            <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Unexpected solver ... '</span><span class="p">)</span>

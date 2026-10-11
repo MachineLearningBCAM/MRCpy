@@ -505,11 +505,17 @@ algorithm for 0-1 MRC, see <a class="reference internal" href="#r5b93aed459d1-4"
 <dt>’ccg’</dt><dd><p>Efficient learning algorithm for large number of samples
 and features based on constraint generation. Efficiently
 handles the multi-class case (with quasi linear complexity).
-<code class="xref py py-obj docutils literal notranslate"><span class="pre">eps1</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">eps2</span></code> are the parameters that provide a 
-trade-off between time complexity and acccuracy. 
-The maximum number of constraints selected in each iteration
-is controlled by the hyperparamters <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_max</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">m_max</span></code>. 
-These hyperparameters also affect the comptutional complexity.</p>
+With at most 1000 features, it generates the constraints, and
+with more features or sparse instances, it generates both the
+constraints and the features. <code class="xref py py-obj docutils literal notranslate"><span class="pre">eps1</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">eps2</span></code> are the
+violation thresholds of the constraints and the features,
+which provide a trade-off between time complexity and
+accuracy. The maximum number of constraints and features added
+in each iteration is controlled by the hyperparameters <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_max</span></code>
+and <code class="xref py py-obj docutils literal notranslate"><span class="pre">m_max</span></code>, and the maximum number of iterations by <code class="xref py py-obj docutils literal notranslate"><span class="pre">k_max</span></code>.
+These hyperparameters also affect the computational complexity.
+Sparse instances (scipy sparse matrices) are supported for
+binary classification.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -873,7 +879,7 @@ contained subobjects that are estimators.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.MRC.minimax_risk">
-<span class="sig-name descname"><span class="pre">minimax_risk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict_nnz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/mrc.html#MRC.minimax_risk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.MRC.minimax_risk" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">minimax_risk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_mat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/mrc.html#MRC.minimax_risk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.MRC.minimax_risk" title="Link to this definition">#</a></dt>
 <dd><p>Solves the minimax risk problem
 for different types of loss (0-1 and log loss).
 The solution of the default MRC optimization
