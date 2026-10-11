@@ -482,25 +482,28 @@ and the length of the feature mapping is set.</p>
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="MRCpy.phi.ThresholdPhi.d_tree_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_tree_split</span></code></a>(X, Y[, n_thresholds])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.add_intercept" title="MRCpy.phi.ThresholdPhi.add_intercept"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_intercept</span></code></a>(X_feat)</p></td>
+<td><p>Add the intercept to the given features, as a first column of ones, if <code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_intercept</span></code> is true.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.d_tree_split" title="MRCpy.phi.ThresholdPhi.d_tree_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">d_tree_split</span></code></a>(X, Y[, n_thresholds])</p></td>
 <td><p>Learn the univariate thresholds by using the split points of decision trees for each dimension of data.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_exp" title="MRCpy.phi.ThresholdPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X_transform, Y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_exp" title="MRCpy.phi.ThresholdPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X_transform, Y)</p></td>
 <td><p>Computes the average value of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span> to estimate <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> that defines the constraint of the uncertainty set of distribution.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_std" title="MRCpy.phi.ThresholdPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X_transform, Y, tau_mat)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.est_std" title="MRCpy.phi.ThresholdPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X_transform, Y, tau_mat)</p></td>
 <td><p>Standard deviation of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>  that accounts for inaccuracies in the mean estimate <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_x" title="MRCpy.phi.ThresholdPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_x" title="MRCpy.phi.ThresholdPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</p></td>
 <td><p>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="MRCpy.phi.ThresholdPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X, Y)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.eval_xy" title="MRCpy.phi.ThresholdPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X, Y)</p></td>
 <td><p>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.fit" title="MRCpy.phi.ThresholdPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, Y])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.fit" title="MRCpy.phi.ThresholdPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, Y])</p></td>
 <td><p>Learns the set of thresholds using one-dimensional decision stumps obtained from the dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</p></td>
 <td><p>Compute the threshold features (0/1) by comparing with the thresholds obtained in each dimension.</p></td>
 </tr>
 </tbody>
@@ -510,6 +513,28 @@ and the length of the feature mapping is set.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_thresholds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/threshold_phi.html#ThresholdPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.add_intercept">
+<span class="sig-name descname"><span class="pre">add_intercept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_feat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.ThresholdPhi.add_intercept" title="Link to this definition">#</a></dt>
+<dd><p>Add the intercept to the given features, as a first column of ones,
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_intercept</span></code> is true.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like or sparse matrix of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features given by <a class="reference internal" href="#MRCpy.phi.ThresholdPhi.transform" title="MRCpy.phi.ThresholdPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like or sparse matrix of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> + 1) or (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features with the intercept. Sparse features are kept sparse
+(csr).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.ThresholdPhi.d_tree_split">
@@ -718,6 +743,7 @@ by comparing with the thresholds obtained in each dimension.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi.__init__"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi.add_intercept"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi.add_intercept()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi.d_tree_split"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi.d_tree_split()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi.est_exp"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi.est_exp()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.ThresholdPhi.est_std"><code class="docutils literal notranslate"><span class="pre">ThresholdPhi.est_std()</span></code></a></li>

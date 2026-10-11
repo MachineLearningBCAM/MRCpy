@@ -691,10 +691,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        X_transform : array-like of shape (n_samples, n_features)</span>
-<span class="sd">            Feature corresponding with each instance.</span>
+<span class="sd">            Feature corresponding with each instance, including the</span>
+<span class="sd">            intercept if `fit_intercept` is true.</span>
 <span class="sd">        '''</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">add_intercept</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">compute_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">'''</span>

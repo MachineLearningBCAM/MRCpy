@@ -421,6 +421,11 @@
 <span class="sd">        The definition of `fit` and `transform` in this class correspond to the</span>
 <span class="sd">        usual identity feature map referred to as **Linear feature map**.</span>
 
+<span class="sd">        The `transform` function returns the features without the intercept,</span>
+<span class="sd">        which is added by this class (`add_intercept`) according to</span>
+<span class="sd">        `fit_intercept`, so that it does not need to be added by the feature</span>
+<span class="sd">        mappings that extend this class.</span>
+
 <span class="sd">        The `transform` function is only used by the `eval_xy` function</span>
 <span class="sd">        of this class to get the one-hot encoded features.</span>
 <span class="sd">        If the user defines his own `eval_xy` function</span>
@@ -535,7 +540,8 @@
 <a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">'''</span>
-<span class="sd">        Transform the given instances to the features and return a copy.</span>
+<span class="sd">        Transform the given instances to the features (without the</span>
+<span class="sd">        intercept) and return a copy.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -552,20 +558,42 @@
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"is_fitted_"</span><span class="p">])</span>
 
-        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-            <span class="c1"># Keep sparse inputs sparse (csr) when adding the intercept.</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">:</span>
-                <span class="n">X_feat</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
-                                        <span class="n">X</span><span class="p">])</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">X_feat</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">:</span>
-            <span class="n">X_feat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(([[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+            <span class="n">X_feat</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">X_feat</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">X_feat</span></div>
+
+
+<div class="viewcode-block" id="BasePhi.add_intercept">
+<a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.add_intercept">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_intercept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_feat</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Add the intercept to the given features, as a first column of ones,</span>
+<span class="sd">        if `fit_intercept` is true.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X_feat : `array`-like or sparse matrix of shape (`n_samples`, `n_features`)</span>
+<span class="sd">            Features given by `transform`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_feat : `array`-like or sparse matrix of shape (`n_samples`, `n_features` + 1) or (`n_samples`, `n_features`)</span>
+<span class="sd">            Features with the intercept. Sparse features are kept sparse</span>
+<span class="sd">            (csr).</span>
+
+<span class="sd">        '''</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit_intercept</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">X_feat</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X_feat</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span>
+                                  <span class="n">X_feat</span><span class="p">])</span><span class="o">.</span><span class="n">tocsr</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X_feat</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="BasePhi.eval_xy">
@@ -595,8 +623,8 @@
 
 <span class="sd">        '''</span>
 
-        <span class="c1"># Get the features</span>
-        <span class="n">X_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="c1"># Get the features, with the intercept</span>
+        <span class="n">X_feat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_intercept</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
         <span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">check_X_y</span><span class="p">(</span><span class="n">X_feat</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">n</span> <span class="o">=</span> <span class="n">X_feat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 

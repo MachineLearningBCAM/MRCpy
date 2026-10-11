@@ -516,25 +516,28 @@ and the length of the feature mapping is set.</p>
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="MRCpy.phi.RandomReLUPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X_transform, Y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.add_intercept" title="MRCpy.phi.RandomReLUPhi.add_intercept"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_intercept</span></code></a>(X_feat)</p></td>
+<td><p>Add the intercept to the given features, as a first column of ones, if <code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_intercept</span></code> is true.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_exp" title="MRCpy.phi.RandomReLUPhi.est_exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_exp</span></code></a>(X_transform, Y)</p></td>
 <td><p>Computes the average value of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span> to estimate <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> that defines the constraint of the uncertainty set of distribution.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_std" title="MRCpy.phi.RandomReLUPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X_transform, Y, tau_mat)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.est_std" title="MRCpy.phi.RandomReLUPhi.est_std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_std</span></code></a>(X_transform, Y, tau_mat)</p></td>
 <td><p>Standard deviation of <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>  that accounts for inaccuracies in the mean estimate <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="MRCpy.phi.RandomReLUPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_x" title="MRCpy.phi.RandomReLUPhi.eval_x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_x</span></code></a>(X)</p></td>
 <td><p>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and all the labels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="MRCpy.phi.RandomReLUPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X, Y)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.eval_xy" title="MRCpy.phi.RandomReLUPhi.eval_xy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval_xy</span></code></a>(X, Y)</p></td>
 <td><p>Evaluates the one-hot encoded features of the given instances i.e., X, <span class="math notranslate nohighlight">\(\Phi(x,y)\)</span>, x <span class="math notranslate nohighlight">\(\in\)</span> X and y <span class="math notranslate nohighlight">\(\in\)</span> Y.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.fit" title="MRCpy.phi.RandomReLUPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, Y])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.fit" title="MRCpy.phi.RandomReLUPhi.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, Y])</p></td>
 <td><p>Learns the set of random weights for computing the features space.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.rff_sigma" title="MRCpy.phi.RandomReLUPhi.rff_sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>(X)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.rff_sigma" title="MRCpy.phi.RandomReLUPhi.rff_sigma"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rff_sigma</span></code></a>(X)</p></td>
 <td><p>Computes the scaling parameter for the ReLU features using the heuristic given in the paper &quot;Compact Nonlinear Maps and Circulant Extensions&quot; <a class="reference internal" href="#refpr"><span class="std std-ref">[1]</span></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X)</p></td>
 <td><p>Compute the ReLU random features (<span class="math notranslate nohighlight">\(z(x)\)</span>).</p></td>
 </tr>
 </tbody>
@@ -544,6 +547,28 @@ and the length of the feature mapping is set.</p>
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_classes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_intercept</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_hot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/phi/random_relu_phi.html#RandomReLUPhi.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.__init__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.add_intercept">
+<span class="sig-name descname"><span class="pre">add_intercept</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_feat</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.phi.RandomReLUPhi.add_intercept" title="Link to this definition">#</a></dt>
+<dd><p>Add the intercept to the given features, as a first column of ones,
+if <code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_intercept</span></code> is true.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like or sparse matrix of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features given by <a class="reference internal" href="#MRCpy.phi.RandomReLUPhi.transform" title="MRCpy.phi.RandomReLUPhi.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl>
+<dt><strong>X_feat</strong><span class="classifier"><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array</span></code></a>-like or sparse matrix of shape (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code> + 1) or (<code class="xref py py-obj docutils literal notranslate"><span class="pre">n_samples</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_features</span></code>)</span></dt><dd><p>Features with the intercept. Sparse features are kept sparse
+(csr).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.phi.RandomReLUPhi.est_exp">
@@ -755,6 +780,7 @@ extensions.</a></p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi.__init__"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi.add_intercept"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi.add_intercept()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi.est_exp"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi.est_exp()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi.est_std"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi.est_std()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.phi.RandomReLUPhi.eval_x"><code class="docutils literal notranslate"><span class="pre">RandomReLUPhi.eval_x()</span></code></a></li>
