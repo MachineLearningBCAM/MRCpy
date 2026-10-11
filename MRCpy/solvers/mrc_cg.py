@@ -245,7 +245,10 @@ def mrc_cg_init_model(X, tau_mat, lambda_mat, J, warm_start=None):
 			cumsum = np.cumsum(-np.sort(-z, axis=1), axis=1)
 			nu_start = np.max((cumsum - 1) / np.arange(1, n_score_cols + 1)) + 1
 			nu.PStart = nu_start
-			s.PStart = np.maximum(z - nu_start + 1, 0)
+			s_start = np.maximum(z - nu_start + 1, 0)
+			for i in range(n):
+				for y in range(n_score_cols):
+					s[i, y].PStart = s_start[i, y]
 
 	# Solve the model
 	MRC_model.optimize()
