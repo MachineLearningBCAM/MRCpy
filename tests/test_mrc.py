@@ -322,7 +322,7 @@ class TestMRC(unittest.TestCase):
     def test_MRC_compute_features_override(self):
         class ScaledMRC(MRC):
             def compute_features(self, X):
-                return 2 * self.phi.transform(X)
+                return 2 * super().compute_features(X)
 
         rng = np.random.default_rng(0)
         X_sparse = sparse.random(100, 20, density=0.2, format='csr',
@@ -352,6 +352,24 @@ class TestMRC(unittest.TestCase):
         self.assertTrue(clf.is_fitted_)
         y_pred = clf.predict(self.X)
         self.assertTrue(y_pred.shape == (self.X.shape[0], ))
+
+    # Test that the intercept is added for all the feature mappings with
+    # fit_intercept=True, as a first column of ones, in the features given
+    # by compute_features and in the one-hot encoded features of eval_xy
+    def test_MRC_intercept_feature_mappings(self):
+        n_classes = np.unique(self.y).shape[0]
+        for phi in ('linear', 'threshold', 'fourier', 'relu'):
+            X_transform = {}
+            for fit_intercept in (True, False):
+                clf = MRC(phi=phi, loss='0-1', solver='subgrad', max_iters=10,
+                          random_state=0, fit_intercept=fit_intercept)
+                clf.fit(self.X, self.y)
+                X_transform[fit_intercept] = clf.compute_features(self.X)
+                self.assertTrue(clf.phi.len_ == n_classes *
+                                X_transform[fit_intercept].shape[1])
+            self.assertTrue(np.all(X_transform[True][:, 0] == 1))
+            self.assertTrue(np.allclose(X_transform[True][:, 1:],
+                                        X_transform[False]))
 
     # Test with different deterministic values
     def test_MRC_deterministic(self):
