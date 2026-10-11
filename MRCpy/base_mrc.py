@@ -303,10 +303,11 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         Returns
         -------
         X_transform : array-like of shape (n_samples, n_features)
-            Feature corresponding with each instance.
+            Feature corresponding with each instance, including the
+            intercept if `fit_intercept` is true.
         '''
 
-        return self.phi.transform(X)
+        return self.phi.add_intercept(self.phi.transform(X))
 
     def compute_tau(self, X_transform, Y):
         '''

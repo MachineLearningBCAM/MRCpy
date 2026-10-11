@@ -39,6 +39,11 @@ class BasePhi():
         The definition of `fit` and `transform` in this class correspond to the
         usual identity feature map referred to as **Linear feature map**.
 
+        The `transform` function returns the features without the intercept,
+        which is added by this class (`add_intercept`) according to
+        `fit_intercept`, so that it does not need to be added by the feature
+        mappings that extend this class.
+
         The `transform` function is only used by the `eval_xy` function
         of this class to get the one-hot encoded features.
         If the user defines his own `eval_xy` function
@@ -145,7 +150,8 @@ class BasePhi():
 
     def transform(self, X):
         '''
-        Transform the given instances to the features and return a copy.
+        Transform the given instances to the features (without the
+        intercept) and return a copy.
 
         Parameters
         ----------
@@ -162,20 +168,39 @@ class BasePhi():
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, ["is_fitted_"])
 
-        n = X.shape[0]
         if sparse.issparse(X):
-            # Keep sparse inputs sparse (csr) when adding the intercept.
-            if self.fit_intercept:
-                X_feat = sparse.hstack([sparse.csr_matrix(np.ones((n, 1))),
-                                        X]).tocsr()
-            else:
-                X_feat = sparse.csr_matrix(X, copy=True)
-        elif self.fit_intercept:
-            X_feat = np.hstack(([[1]] * n, X))
+            X_feat = sparse.csr_matrix(X, copy=True)
         else:
             X_feat = X.copy()
 
         return X_feat
+
+    def add_intercept(self, X_feat):
+        '''
+        Add the intercept to the given features, as a first column of ones,
+        if `fit_intercept` is true.
+
+        Parameters
+        ----------
+        X_feat : `array`-like or sparse matrix of shape (`n_samples`, `n_features`)
+            Features given by `transform`.
+
+        Returns
+        -------
+        X_feat : `array`-like or sparse matrix of shape (`n_samples`, `n_features` + 1) or (`n_samples`, `n_features`)
+            Features with the intercept. Sparse features are kept sparse
+            (csr).
+
+        '''
+
+        if not self.fit_intercept:
+            return X_feat
+
+        n = X_feat.shape[0]
+        if sparse.issparse(X_feat):
+            return sparse.hstack([sparse.csr_matrix(np.ones((n, 1))),
+                                  X_feat]).tocsr()
+        return np.hstack((np.ones((n, 1)), X_feat))
 
     def eval_xy(self, X, Y):
         r'''
@@ -202,8 +227,8 @@ class BasePhi():
 
         '''
 
-        # Get the features
-        X_feat = self.transform(X)
+        # Get the features, with the intercept
+        X_feat = self.add_intercept(self.transform(X))
         X_feat, Y = check_X_y(X_feat, Y, accept_sparse=True)
         n = X_feat.shape[0]
 
