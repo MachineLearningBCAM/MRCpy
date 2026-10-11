@@ -533,10 +533,10 @@
 <span class="sd">            algorithm for 0-1 MRC, see [5]_</span>
 
 <span class="sd">    max_iters : `int`, default = `None`</span>
-<span class="sd">        Maximum number of iterations to use</span>
-<span class="sd">        for finding the solution of optimization when</span>
-<span class="sd">        using the subgradient approach (`10000` by default) or the</span>
-<span class="sd">        ’ccg’ solver (`150` by default).</span>
+<span class="sd">        Maximum number of iterations of the subgradient approach, used</span>
+<span class="sd">        to solve the optimization with the ’subgrad’ solver (`10000` by</span>
+<span class="sd">        default) and to obtain the lower bound with the ’cg’ (`20` by</span>
+<span class="sd">        default) and ’ccg’ (`150` by default) solvers.</span>
 
 <span class="sd">    n_max : `int`, default = `None`</span>
 <span class="sd">        Maximum number of constraints added in each iteration</span>
@@ -544,12 +544,13 @@
 
 <span class="sd">    m_max : `int`, default = `None`</span>
 <span class="sd">        Maximum number of features added in each iteration</span>
-<span class="sd">        in case of ’cg’ solver (`100` by default).</span>
+<span class="sd">        in case of ’cg’ solver (`100` by default) and ’ccg’ solver</span>
+<span class="sd">        with a large number of features (`400` by default).</span>
 
-<span class="sd">    k_max : `int`, default = `400`</span>
-<span class="sd">        Maximum number of iterations in case of ’cg’ solver.</span>
-<span class="sd">        In case of ’ccg’ solver with a large number of features,</span>
-<span class="sd">        maximum number of features added in each iteration.</span>
+<span class="sd">    k_max : `int`, default = `None`</span>
+<span class="sd">        Maximum number of iterations of the constraint and column</span>
+<span class="sd">        generation in case of ’cg’ solver (`50` by default) and</span>
+<span class="sd">        ’ccg’ solver (`150` by default).</span>
 
 <span class="sd">    eps1 : `float`, default = `None`</span>
 <span class="sd">        Constraints' violation threshold in case of ’ccg’ solver</span>
@@ -725,14 +726,25 @@
                  <span class="n">max_iters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">n_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">m_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">k_max</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+                 <span class="n">k_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">eps1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">eps2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">phi</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">phi_kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="n">k_max</span>
+
+        <span class="c1"># Use the defaults</span>
+        <span class="c1"># Iterations of the constraint and column generation: k_max</span>
+        <span class="k">if</span> <span class="n">k_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="mi">50</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="mi">150</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="n">k_max</span>
 
         <span class="c1"># Use the defaults</span>
         <span class="c1"># Constraints: n_max and eps1 for the 'ccg' solver</span>
@@ -752,10 +764,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span> <span class="o">=</span> <span class="n">eps1</span>
 
-        <span class="c1"># Features: m_max and eps2 for the 'cg' solver</span>
+        <span class="c1"># Features: m_max and eps2 for the 'cg' solver and the 'ccg'</span>
+        <span class="c1"># solver with a large number of features</span>
         <span class="k">if</span> <span class="n">m_max</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
@@ -769,7 +784,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span> <span class="o">=</span> <span class="n">eps2</span>
 
-        <span class="c1"># Use the defaults</span>
+        <span class="c1"># Iterations of the subgradient approach: max_iters for the</span>
+        <span class="c1"># 'subgrad' solver and the lower bound of the 'cg' and 'ccg' solvers</span>
         <span class="k">if</span> <span class="n">max_iters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'subgrad'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">=</span> <span class="mi">10000</span>
@@ -1238,7 +1254,7 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
                     <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">'class_prior_'</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="p">)</span>
@@ -1259,11 +1275,11 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">tau_mat</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">,</span>
                         <span class="n">dict_nnz</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span>
                     <span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1">#TODO: Implement this solver more efficiently</span>
@@ -1281,10 +1297,10 @@
                         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_mat</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">n_max</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">m_max</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">eps1</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">eps2</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span>
                     <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
