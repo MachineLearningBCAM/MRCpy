@@ -97,7 +97,7 @@ import numpy as np
 from scipy import sparse
 
 
-def mrc_ccg(X, tau_mat, lambda_mat, n_max=400, m_max=400, k_max=150,
+def mrc_ccg(X, tau_mat, lambda_mat, n_max=400, m_max=400, k_max=400,
 			eps_1=1e-2, eps_2=1e-5, p=None, generate_features=False):
 	"""
 	Constraint generation, and column generation, algorithm for 0-1 loss
@@ -122,7 +122,7 @@ def mrc_ccg(X, tau_mat, lambda_mat, n_max=400, m_max=400, k_max=150,
 		Maximum number of features added in each iteration, if the features
 		are generated.
 
-	k_max : `int`, default=`150`
+	k_max : `int`, default=`400`
 		Maximum number of iterations after solving the initial model.
 
 	eps_1 : `float`, default=`1e-2`
@@ -399,6 +399,9 @@ class DualModel:
 		self.MRC_model.Params.LogToConsole = 0
 		self.MRC_model.Params.OutputFlag = 0
 		self.MRC_model.setParam('DualReductions', 0)
+		# The constraints are added as variables, so that the basis of the
+		# previous iteration is a warm start, used on the presolved model.
+		self.MRC_model.setParam('LPWarmStart', 2)
 		self.MRC_model.ModelSense = GRB.MAXIMIZE
 
 		self.alpha_0 = self.MRC_model.addVar(lb=0, name='alpha_0')
@@ -550,6 +553,10 @@ class PrimalModel:
 		self.MRC_model.Params.LogToConsole = 0
 		self.MRC_model.Params.OutputFlag = 0
 		self.MRC_model.setParam('DualReductions', 0)
+		# Both constraints and features are added, so that the basis of the
+		# previous iteration is not a good warm start, and each model is
+		# solved from scratch (with presolve).
+		self.MRC_model.setParam('LPWarmStart', 0)
 
 		self.nu = self.MRC_model.addVar(lb=-GRB.INFINITY, obj=1, name='nu')
 		self.MRC_model.update()
