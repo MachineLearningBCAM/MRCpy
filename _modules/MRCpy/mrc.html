@@ -556,7 +556,7 @@
 <span class="sd">    k_max : `int`, default = `None`</span>
 <span class="sd">        Maximum number of iterations of the constraint and column</span>
 <span class="sd">        generation in case of ’cg’ solver (`50` by default) and</span>
-<span class="sd">        ’ccg’ solver (`150` by default).</span>
+<span class="sd">        ’ccg’ solver (`400` by default).</span>
 
 <span class="sd">    eps1 : `float`, default = `None`</span>
 <span class="sd">        Constraints' violation threshold in case of ’ccg’ solver</span>
@@ -746,7 +746,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cg'</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="mi">50</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'ccg'</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="mi">150</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">k_max</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">else</span><span class="p">:</span>
