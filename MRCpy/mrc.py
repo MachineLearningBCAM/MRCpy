@@ -174,7 +174,7 @@ class MRC(BaseMRC):
     k_max : `int`, default = `None`
         Maximum number of iterations of the constraint and column
         generation in case of ’cg’ solver (`50` by default) and
-        ’ccg’ solver (`150` by default).
+        ’ccg’ solver (`400` by default).
 
     eps1 : `float`, default = `None`
         Constraints' violation threshold in case of ’ccg’ solver
@@ -362,7 +362,7 @@ class MRC(BaseMRC):
             if self.solver == 'cg':
                 self.k_max = 50
             elif self.solver == 'ccg':
-                self.k_max = 150
+                self.k_max = 400
             else:
                 self.k_max = None
         else:
