@@ -383,7 +383,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">sparse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_X_y</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NotFittedError</span>
 
 
 <div class="viewcode-block" id="BasePhi">
@@ -536,6 +536,28 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="p">(</span><span class="s1">'is_fitted_'</span><span class="p">,)):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Raises a `NotFittedError` if the feature mapping is not fitted, that</span>
+<span class="sd">        is, if it does not have the given attributes set by `fit`.</span>
+
+<span class="sd">        sklearn's `check_is_fitted` is not used since it requires the</span>
+<span class="sd">        estimator tags of scikit-learn (&gt;= 1.7), which this class does not</span>
+<span class="sd">        define.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        attributes : `list` of `str`</span>
+<span class="sd">            Attributes set by `fit`.</span>
+
+<span class="sd">        '''</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">NotFittedError</span><span class="p">(</span>
+                <span class="s2">"This </span><span class="si">%s</span><span class="s2"> instance is not fitted yet. Call 'fit' with "</span>
+                <span class="s2">"appropriate arguments before using this feature mapping."</span>
+                <span class="o">%</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
 <div class="viewcode-block" id="BasePhi.transform">
 <a class="viewcode-back" href="../../../generated/MRCpy.phi.BasePhi.html#MRCpy.phi.BasePhi.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
@@ -556,7 +578,7 @@
 <span class="sd">        '''</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"is_fitted_"</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_is_fitted</span><span class="p">([</span><span class="s2">"is_fitted_"</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
             <span class="n">X_feat</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

@@ -383,7 +383,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">NearestNeighbors</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_array</span><span class="p">,</span> <span class="n">check_random_state</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.utils.validation</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_is_fitted</span>
 
 <span class="c1"># Import the feature mapping base class</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MRCpy.phi</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePhi</span>
@@ -596,7 +595,7 @@
 
 <span class="sd">        '''</span>
 
-        <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">[</span><span class="s2">"random_weights_"</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_is_fitted</span><span class="p">([</span><span class="s2">"random_weights_"</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">])</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">X_trans</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_weights_</span>
