@@ -8,7 +8,7 @@ from scipy import sparse
 # Import the dataset
 from MRCpy import MRC, CMRC, AMRC
 from MRCpy.datasets import load_iris, load_mammographic, load_glass, load_satellite
-from MRCpy.phi import BasePhi
+from MRCpy.phi import BasePhi, ThresholdPhi, RandomFourierPhi, RandomReLUPhi
 from MRCpy.solvers.mrc_cg import mrc_cg
 from MRCpy.solvers.mrc_ccg import mrc_ccg
 
@@ -426,6 +426,17 @@ class TestMRCEdgeCases(unittest.TestCase):
 
     def setUp(self):
         self.X, self.y = load_iris(with_info=False)
+
+    # Test that the feature mappings raise NotFittedError when they are
+    # used before fit, and work after fit
+    def test_phi_not_fitted(self):
+        from sklearn.exceptions import NotFittedError
+        for Phi in (BasePhi, ThresholdPhi, RandomFourierPhi, RandomReLUPhi):
+            phi = Phi(n_classes=3)
+            with self.assertRaises(NotFittedError):
+                phi.transform(self.X)
+            phi.fit(self.X, self.y)
+            self.assertTrue(phi.transform(self.X).shape[0] == self.X.shape[0])
 
     def test_MRC_single_class(self):
         # Test with single class (should handle gracefully or raise error)

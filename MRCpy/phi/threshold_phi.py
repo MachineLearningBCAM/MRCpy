@@ -3,7 +3,6 @@
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.utils import check_array, check_X_y
-from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping base class
 from MRCpy.phi import BasePhi
@@ -191,7 +190,7 @@ class ThresholdPhi(BasePhi):
 
         n = X.shape[0]
 
-        check_is_fitted(self, ["thrsDim_", "thrsVal_", "is_fitted_"])
+        self._check_is_fitted(["thrsDim_", "thrsVal_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
 
         # Store the features based on the thresholds obtained

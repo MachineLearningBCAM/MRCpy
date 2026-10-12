@@ -3,7 +3,6 @@
 import numpy as np
 from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import check_array, check_random_state
-from sklearn.utils.validation import check_is_fitted
 
 # Import the feature mapping base class
 from MRCpy.phi import BasePhi
@@ -206,7 +205,7 @@ class RandomFourierPhi(BasePhi):
 
         '''
 
-        check_is_fitted(self, ["random_weights_", "is_fitted_"])
+        self._check_is_fitted(["random_weights_", "is_fitted_"])
         X = check_array(X, accept_sparse=True)
 
         X_trans = X @ self.random_weights_

@@ -3,7 +3,7 @@
 import numpy as np
 from scipy import sparse
 from sklearn.utils import check_array, check_X_y
-from sklearn.utils.validation import check_is_fitted
+from sklearn.exceptions import NotFittedError
 
 
 class BasePhi():
@@ -148,6 +148,28 @@ class BasePhi():
 
         return self
 
+    def _check_is_fitted(self, attributes=('is_fitted_',)):
+        '''
+        Raises a `NotFittedError` if the feature mapping is not fitted, that
+        is, if it does not have the given attributes set by `fit`.
+
+        sklearn's `check_is_fitted` is not used since it requires the
+        estimator tags of scikit-learn (>= 1.7), which this class does not
+        define.
+
+        Parameters
+        ----------
+        attributes : `list` of `str`
+            Attributes set by `fit`.
+
+        '''
+
+        if not all(hasattr(self, attr) for attr in attributes):
+            raise NotFittedError(
+                "This %s instance is not fitted yet. Call 'fit' with "
+                "appropriate arguments before using this feature mapping."
+                % type(self).__name__)
+
     def transform(self, X):
         '''
         Transform the given instances to the features (without the
@@ -166,7 +188,7 @@ class BasePhi():
         '''
 
         X = check_array(X, accept_sparse=True)
-        check_is_fitted(self, ["is_fitted_"])
+        self._check_is_fitted(["is_fitted_"])
 
         if sparse.issparse(X):
             X_feat = sparse.csr_matrix(X, copy=True)
