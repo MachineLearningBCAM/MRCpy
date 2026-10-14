@@ -206,10 +206,11 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
             used only to compute the expectation estimates.
 
         X_ : array-like of shape (n_samples2, n_dimensions), default=None
-            These instances are optional and
-            when given, will be used in the minimax risk optimization.
-            These extra instances are generally a smaller set and
-            give an advantage in training time.
+            Instances used in the minimax risk optimization instead of the
+            training instances X, which are still used to compute the
+            expectation estimates. For instance, a smaller set of instances
+            to reduce the training time, or instances from a different
+            distribution. If None, all the training instances X are used.
 
         Returns
         -------
@@ -260,25 +261,14 @@ class BaseMRC(BaseEstimator, ClassifierMixin):
         tau_mat = self.compute_tau(X_transform, Y)
         lambda_mat = self.compute_lambda(X_transform, Y, tau_mat)
 
-        # Limit the number of training samples used in the optimization
-        # for large datasets
-        # Reduces the training time and use of memory 
-        # while retaining competitive performance
-        n_max = 5000
-
-        # Check if separate instances are given for the optimization
+        # Instances used in the optimization: the given instances X_ (for
+        # instance, a smaller set, or instances from a different
+        # distribution), or all the training instances. The expectation
+        # estimates are always computed from the training instances X.
         if X_ is not None:
             X_opt = check_array(X_.copy(), accept_sparse=True)
-        elif X.shape[0] < n_max:
-            X_opt = check_array(X.copy(), accept_sparse=True)
         else:
-            # Use some of the training samples
-            # for the optimization.
-            n_per_class = int(n_max / n_classes)
-            X_opt = X[:3, :]
-            for i in range(n_classes):
-                X_class = X[Y == i, :]
-                X_opt = np.vstack((X_class[:n_per_class, :], X_opt))
+            X_opt = check_array(X.copy(), accept_sparse=True)
 
         # Shuffle the instances
         np.random.seed(self.random_state)
