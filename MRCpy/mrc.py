@@ -106,7 +106,9 @@ class MRC(BaseMRC):
 
     solver : {‘cvx’, ’subgrad’, ’cg’, 'ccg'}, default = ’subgrad’
         Method to use in solving the optimization problem. 
-        Default is ‘subgrad’. To choose a solver,
+        Default is ‘subgrad’. Sparse instances (scipy sparse matrices)
+        are supported for binary classification with linear features by
+        the ’cvx’, ’subgrad’ and ’ccg’ solvers. To choose a solver,
         you might want to consider the following aspects:
 
         ’cvx’
@@ -150,8 +152,6 @@ class MRC(BaseMRC):
             in each iteration is controlled by the hyperparameters `n_max`
             and `m_max`, and the maximum number of iterations by `k_max`.
             These hyperparameters also affect the computational complexity.
-            Sparse instances (scipy sparse matrices) are supported for
-            binary classification.
 
         .. seealso:: For more information about the constraint generation 
             algorithm for 0-1 MRC, see [5]_
@@ -483,13 +483,12 @@ class MRC(BaseMRC):
         #    then it is expected to be final features.
         #    We do not apply further feature transformation
         #    to avoid any disruption to the sparsity structure
-        # 2. X_ is ignored since the current implementation only
-        #    uses constraint generation approach that implicitly
-        #    obtain X_ by iteratively the corresponding relevant
-        #    constraints.
+        # 2. X_ is ignored, and the optimization uses all the training
+        #    instances.
         if is_sparse:
-            if self.solver != 'ccg':
-                raise ValueError("Sparse matrices are only supported for ccg solver")
+            if self.solver not in ('cvx', 'subgrad', 'ccg'):
+                raise ValueError('Sparse matrices are only supported for the '
+                                 'cvx, subgrad and ccg solvers')
 
             if not (self.phi == 'linear' or type(self.phi) is BasePhi):
                 raise ValueError('Sparse matrices only '
@@ -695,7 +694,8 @@ class MRC(BaseMRC):
                     # in time and memory.
                     max_n_for_minimized = min(self.max_iters // 9, 2000)
 
-                    if n <= max_n_for_minimized:
+                    # The closed form is built for dense instances.
+                    if n <= max_n_for_minimized and not sparse.issparse(X_transform):
                         # Closed-form 3-candidate subset structure for
                         # binary 0-1 loss, built directly from
                         # X_transform (compact, same as the 'cvx'
@@ -903,6 +903,11 @@ class MRC(BaseMRC):
 
         d = X_transform.shape[1]
 
+        def row(idx):
+            # Instance idx as a dense vector (also for sparse instances)
+            x = X_transform[idx, :]
+            return x.toarray().ravel() if sparse.issparse(x) else x
+
         if self.n_classes == 2:
             def f_(mu):
                 """
@@ -935,7 +940,7 @@ class MRC(BaseMRC):
                 """
                 grad_ = np.zeros((1, d))
                 if sign != 0:
-                    grad_[0, :] = sign * X_transform[idx, :]
+                    grad_[0, :] = sign * row(idx)
                 return grad_
 
         else:
@@ -978,7 +983,7 @@ class MRC(BaseMRC):
                 # Construct the corresponding gradient and return
                 r = len(subset)
                 grad_ = np.zeros((self.n_classes, d))
-                grad_[subset, :] = X_transform[idx, :].reshape(1, -1) / r
+                grad_[subset, :] = row(idx).reshape(1, -1) / r
 
                 return grad_
 

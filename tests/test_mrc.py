@@ -298,6 +298,29 @@ class TestMRC(unittest.TestCase):
             y_pred = clf.predict(X_sparse)
             self.assertTrue(np.all(np.isin(y_pred, [-1, 1])))
 
+    # Test sparse binary training with the cvx and subgrad solvers against
+    # the same solvers on the dense instances
+    def test_MRC_sparse_binary_cvx_subgrad(self):
+        rng = np.random.default_rng(0)
+        X_sparse = sparse.random(300, 200, density=0.05, format='csr',
+                                 random_state=1)
+        scores = X_sparse @ rng.normal(size=200)
+        y_sparse = (scores > np.quantile(scores, 0.7)).astype(int)
+
+        # max_iters such that subgrad uses the same algorithm for dense
+        # instances (n > max_iters / 9) as for sparse instances
+        for solver, params, places in (('cvx', {}, 5),
+                                       ('subgrad', dict(max_iters=2000), 4)):
+            clf = MRC(phi='linear', loss='0-1', solver=solver, **params)
+            clf.fit(X_sparse, y_sparse)
+            clf_dense = MRC(phi='linear', loss='0-1', solver=solver, **params)
+            clf_dense.fit(X_sparse.toarray(), y_sparse)
+            self.assertTrue(sparse.issparse(clf.X_transform))
+            self.assertAlmostEqual(clf.upper_, clf_dense.upper_, places=places)
+            self.assertTrue(np.allclose(clf.predict_proba(X_sparse),
+                                        clf_dense.predict_proba(X_sparse.toarray()),
+                                        atol=1e-3))
+
     # Test that one-hot encoded features are rejected for binary
     # classification and accepted for multiclass classification
     def test_MRC_one_hot_binary(self):
