@@ -593,10 +593,11 @@
 <span class="sd">            used only to compute the expectation estimates.</span>
 
 <span class="sd">        X_ : array-like of shape (n_samples2, n_dimensions), default=None</span>
-<span class="sd">            These instances are optional and</span>
-<span class="sd">            when given, will be used in the minimax risk optimization.</span>
-<span class="sd">            These extra instances are generally a smaller set and</span>
-<span class="sd">            give an advantage in training time.</span>
+<span class="sd">            Instances used in the minimax risk optimization instead of the</span>
+<span class="sd">            training instances X, which are still used to compute the</span>
+<span class="sd">            expectation estimates. For instance, a smaller set of instances</span>
+<span class="sd">            to reduce the training time, or instances from a different</span>
+<span class="sd">            distribution. If None, all the training instances X are used.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -647,25 +648,14 @@
         <span class="n">tau_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_tau</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
         <span class="n">lambda_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_lambda</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">tau_mat</span><span class="p">)</span>
 
-        <span class="c1"># Limit the number of training samples used in the optimization</span>
-        <span class="c1"># for large datasets</span>
-        <span class="c1"># Reduces the training time and use of memory </span>
-        <span class="c1"># while retaining competitive performance</span>
-        <span class="n">n_max</span> <span class="o">=</span> <span class="mi">5000</span>
-
-        <span class="c1"># Check if separate instances are given for the optimization</span>
+        <span class="c1"># Instances used in the optimization: the given instances X_ (for</span>
+        <span class="c1"># instance, a smaller set, or instances from a different</span>
+        <span class="c1"># distribution), or all the training instances. The expectation</span>
+        <span class="c1"># estimates are always computed from the training instances X.</span>
         <span class="k">if</span> <span class="n">X_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X_</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">n_max</span><span class="p">:</span>
-            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Use some of the training samples</span>
-            <span class="c1"># for the optimization.</span>
-            <span class="n">n_per_class</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_max</span> <span class="o">/</span> <span class="n">n_classes</span><span class="p">)</span>
-            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_classes</span><span class="p">):</span>
-                <span class="n">X_class</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">Y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-                <span class="n">X_opt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X_class</span><span class="p">[:</span><span class="n">n_per_class</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X_opt</span><span class="p">))</span>
+            <span class="n">X_opt</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Shuffle the instances</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
