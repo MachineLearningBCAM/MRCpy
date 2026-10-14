@@ -453,10 +453,13 @@ class MRC(BaseMRC):
             used only to compute the expectation estimates.
 
         X_ : array-like of shape (`n_samples2`, `n_dimensions`), default = None
-            These instances are optional and
-            when given, will be used in the minimax risk optimization.
-            These extra instances are generally a smaller set and
-            give an advantage in training time.
+            Instances used in the minimax risk optimization instead of the
+            training instances X, which are still used to compute the
+            expectation estimates. For instance, a smaller set of instances
+            to reduce the training time, or instances from a different
+            distribution. If None, all the training instances X are used.
+            Not used for sparse instances, for which the optimization uses
+            all the training instances.
 
         Returns
         -------
