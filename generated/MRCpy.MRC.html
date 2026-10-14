@@ -472,7 +472,9 @@ If set to false, no intercept will be used in calculations
 (i.e. data is expected to be already centered).</p>
 </dd>
 <dt><strong>solver</strong><span class="classifier">{‘cvx’, ’subgrad’, ’cg’, ‘ccg’}, default = ’subgrad’</span></dt><dd><p>Method to use in solving the optimization problem. 
-Default is ‘subgrad’. To choose a solver,
+Default is ‘subgrad’. Sparse instances (scipy sparse matrices)
+are supported for binary classification with linear features by
+the ’cvx’, ’subgrad’ and ’ccg’ solvers. To choose a solver,
 you might want to consider the following aspects:</p>
 <dl class="simple">
 <dt>’cvx’</dt><dd><p>Solves the optimization problem using the cvxpy library.
@@ -513,9 +515,7 @@ which provide a trade-off between time complexity and
 accuracy. The maximum number of constraints and features added
 in each iteration is controlled by the hyperparameters <code class="xref py py-obj docutils literal notranslate"><span class="pre">n_max</span></code>
 and <code class="xref py py-obj docutils literal notranslate"><span class="pre">m_max</span></code>, and the maximum number of iterations by <code class="xref py py-obj docutils literal notranslate"><span class="pre">k_max</span></code>.
-These hyperparameters also affect the computational complexity.
-Sparse instances (scipy sparse matrices) are supported for
-binary classification.</p>
+These hyperparameters also affect the computational complexity.</p>
 </dd>
 </dl>
 <div class="admonition seealso">

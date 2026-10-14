@@ -488,7 +488,9 @@
 
 <span class="sd">    solver : {‘cvx’, ’subgrad’, ’cg’, 'ccg'}, default = ’subgrad’</span>
 <span class="sd">        Method to use in solving the optimization problem. </span>
-<span class="sd">        Default is ‘subgrad’. To choose a solver,</span>
+<span class="sd">        Default is ‘subgrad’. Sparse instances (scipy sparse matrices)</span>
+<span class="sd">        are supported for binary classification with linear features by</span>
+<span class="sd">        the ’cvx’, ’subgrad’ and ’ccg’ solvers. To choose a solver,</span>
 <span class="sd">        you might want to consider the following aspects:</span>
 
 <span class="sd">        ’cvx’</span>
@@ -532,8 +534,6 @@
 <span class="sd">            in each iteration is controlled by the hyperparameters `n_max`</span>
 <span class="sd">            and `m_max`, and the maximum number of iterations by `k_max`.</span>
 <span class="sd">            These hyperparameters also affect the computational complexity.</span>
-<span class="sd">            Sparse instances (scipy sparse matrices) are supported for</span>
-<span class="sd">            binary classification.</span>
 
 <span class="sd">        .. seealso:: For more information about the constraint generation </span>
 <span class="sd">            algorithm for 0-1 MRC, see [5]_</span>
@@ -873,13 +873,12 @@
         <span class="c1">#    then it is expected to be final features.</span>
         <span class="c1">#    We do not apply further feature transformation</span>
         <span class="c1">#    to avoid any disruption to the sparsity structure</span>
-        <span class="c1"># 2. X_ is ignored since the current implementation only</span>
-        <span class="c1">#    uses constraint generation approach that implicitly</span>
-        <span class="c1">#    obtain X_ by iteratively the corresponding relevant</span>
-        <span class="c1">#    constraints.</span>
+        <span class="c1"># 2. X_ is ignored, and the optimization uses all the training</span>
+        <span class="c1">#    instances.</span>
         <span class="k">if</span> <span class="n">is_sparse</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">!=</span> <span class="s1">'ccg'</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Sparse matrices are only supported for ccg solver"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'cvx'</span><span class="p">,</span> <span class="s1">'subgrad'</span><span class="p">,</span> <span class="s1">'ccg'</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Sparse matrices are only supported for the '</span>
+                                 <span class="s1">'cvx, subgrad and ccg solvers'</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">==</span> <span class="s1">'linear'</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="ow">is</span> <span class="n">BasePhi</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Sparse matrices only '</span>
@@ -1088,7 +1087,8 @@
                     <span class="c1"># in time and memory.</span>
                     <span class="n">max_n_for_minimized</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iters</span> <span class="o">//</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)</span>
 
-                    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">max_n_for_minimized</span><span class="p">:</span>
+                    <span class="c1"># The closed form is built for dense instances.</span>
+                    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">max_n_for_minimized</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">X_transform</span><span class="p">):</span>
                         <span class="c1"># Closed-form 3-candidate subset structure for</span>
                         <span class="c1"># binary 0-1 loss, built directly from</span>
                         <span class="c1"># X_transform (compact, same as the 'cvx'</span>
@@ -1297,6 +1297,11 @@
 
         <span class="n">d</span> <span class="o">=</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
+        <span class="k">def</span><span class="w"> </span><span class="nf">row</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+            <span class="c1"># Instance idx as a dense vector (also for sparse instances)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">if</span> <span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
 <span class="w">                </span><span class="sd">"""</span>
@@ -1329,7 +1334,7 @@
 <span class="sd">                """</span>
                 <span class="n">grad_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">sign</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">grad_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span>
+                    <span class="n">grad_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">row</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">grad_</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -1372,7 +1377,7 @@
                 <span class="c1"># Construct the corresponding gradient and return</span>
                 <span class="n">r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
                 <span class="n">grad_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
-                <span class="n">grad_</span><span class="p">[</span><span class="n">subset</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span>
+                <span class="n">grad_</span><span class="p">[</span><span class="n">subset</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">row</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r</span>
 
                 <span class="k">return</span> <span class="n">grad_</span>
 
