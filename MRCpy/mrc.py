@@ -30,7 +30,8 @@ from MRCpy import BaseMRC
 from MRCpy.phi import BasePhi
 from MRCpy.solvers.cvx import *
 from MRCpy.solvers.nesterov import *
-from MRCpy.solvers.mrc_cg import *
+from MRCpy.solvers.mrc_cg import mrc_cg
+from MRCpy.solvers.mrc_ccg import mrc_ccg
 
 class MRC(BaseMRC):
     r'''
@@ -851,10 +852,7 @@ class MRC(BaseMRC):
 
             # Constraint generation for a large number of samples, and also
             # column generation for a large number of features (dense or
-            # sparse instances). This classification is based on empirical
-            # observation.
-            from MRCpy.solvers.mrc_ccg import mrc_ccg
-
+            # sparse instances).
             # The class proportions give the class centers of the initial
             # model (not available if minimax_risk is called without fit).
             (self.mu_, self.nu_, self.upper_, self.R_k) = mrc_ccg(
