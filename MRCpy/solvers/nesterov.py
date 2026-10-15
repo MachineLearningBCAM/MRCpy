@@ -3,14 +3,12 @@ import numpy as np
 def nesterov_optimization_mrc(tau_mat, lambda_mat, f_, g_, max_iters):
     '''
     Solution of the MRC convex optimization (minimization)
-    using the Nesterov accelerated approach.
-    .. seealso:: [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
-                        The Strength of Nesterov's Extrapolation in
-                        the Individual Convergence of Nonsmooth
-                        Optimization. IEEE transactions on
-                        neural networks and learning systems,
-                        31(7), 2557-2568.
-                        <https://ieeexplore.ieee.org/document/8822632>`_
+    using the Nesterov accelerated approach (Algorithm 1 in [1]).
+    .. seealso:: [1] `Mazuelas, S., Romero, M., & Grunwald, P. (2023).
+                        Minimax Risk Classifiers with 0-1 Loss.
+                        Journal of Machine Learning Research,
+                        24(208), 1-48.
+                        <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
     Parameters
     ----------
     tau_mat : `array`-like of shape (`n_features`, `n_classes`) or (`m`,)
@@ -216,15 +214,14 @@ def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
 def nesterov_optimization_minimized_mrc(F, b, tau_, lambda_, max_iters):
     '''
     Solution of the MRC convex optimization (minimization)
-    using an optimized version of the Nesterov accelerated approach.
+    using an optimized version of the Nesterov accelerated approach
+    (Algorithm 2 in [1]).
 
-    .. seealso::         [1] `Tao, W., Pan, Z., Wu, G., & Tao, Q. (2019).
-                            The Strength of Nesterov’s Extrapolation in
-                            the Individual Convergence of Nonsmooth
-                            Optimization. IEEE transactions on
-                            neural networks and learning systems,
-                            31(7), 2557-2568.
-                            <https://ieeexplore.ieee.org/document/8822632>`_
+    .. seealso::         [1] `Mazuelas, S., Romero, M., & Grunwald, P. (2023).
+                            Minimax Risk Classifiers with 0-1 Loss.
+                            Journal of Machine Learning Research,
+                            24(208), 1-48.
+                            <https://jmlr.org/papers/volume24/22-0339/22-0339.pdf>`_
 
     Parameters
     ----------
