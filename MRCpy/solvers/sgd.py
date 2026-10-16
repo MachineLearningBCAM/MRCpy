@@ -75,8 +75,8 @@ def SGD_optimization(tau_, lambda_, n, m, f_, g_, max_iters, stepsize, mini_batc
             epoch_id += 1
 
     w_k = w_k_sum / k
-    psi, _ = f_(w_k)
-    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + psi
+    varphi, _ = f_(w_k)
+    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + varphi
     mu = w_k
 
     # Return the optimized values in a dictionary

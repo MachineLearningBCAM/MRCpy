@@ -164,8 +164,8 @@ def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
     w_k_prev = np.zeros(m, dtype=np.float64)
 
     # Setting initial values for the objective function and other results
-    psi, _ = f_(y_k)
-    f_best_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + psi
+    varphi, _ = f_(y_k)
+    f_best_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + varphi
     mu = y_k
 
     # Iteration for finding the optimal values
@@ -174,8 +174,8 @@ def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
         y_k = w_k + theta_k * ((1 / theta_k_prev) - 1) * (w_k - w_k_prev)
 
         # Calculating the subgradient of the objective function at y_k
-        psi, psi_grad = f_(y_k)
-        g_0 = lambda_ * np.sign(y_k) - tau_ + psi_grad
+        varphi, varphi_grad = f_(y_k)
+        g_0 = lambda_ * np.sign(y_k) - tau_ + varphi_grad
 
         # Update the parameters
         theta_k_prev = theta_k
@@ -188,15 +188,15 @@ def nesterov_optimization_cmrc(tau_, lambda_, m, f_, g_, max_iters):
 
         # Check if there is an improvement
         # in the value of the objective function
-        f_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + psi
+        f_value = lambda_ @ np.abs(y_k) - tau_ @ y_k + varphi
         if f_value < f_best_value:
             f_best_value = f_value
             mu = y_k
 
     # Check for possible improvement of the objective valu
     # for the last generated value of w_k
-    psi, _ = f_(w_k)
-    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + psi
+    varphi, _ = f_(w_k)
+    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + varphi
 
     if f_value < f_best_value:
         f_best_value = f_value
