@@ -464,11 +464,12 @@
 <span class="sd">    The :math:`\alpha`-loss family, indexed by :math:`\alpha \geq 1`, smoothly</span>
 <span class="sd">    interpolates between well-known losses:</span>
 
-<span class="sd">    - :math:`\alpha = 1`: the **0-1 loss** :math:`\ell_1(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,</span>
-<span class="sd">      which directly measures classification error but is non-smooth.</span>
-<span class="sd">    - :math:`\alpha \to \infty`: the **log-loss**</span>
-<span class="sd">      :math:`\ell_\infty(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),</span>
+<span class="sd">    - :math:`\alpha = 1`: the **log-loss**</span>
+<span class="sd">      :math:`\ell_1(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),</span>
 <span class="sd">      which is smooth and easy to optimize.</span>
+<span class="sd">    - :math:`\alpha \to \infty`: the **0-1 loss**</span>
+<span class="sd">      :math:`\ell_\infty(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,</span>
+<span class="sd">      which directly measures classification error but is non-smooth.</span>
 
 <span class="sd">    For intermediate :math:`\alpha &gt; 1`:</span>
 
@@ -477,8 +478,8 @@
 <span class="sd">        \ell_\alpha(\mathrm{h}(x), y) = \frac{\alpha}{\alpha - 1}</span>
 <span class="sd">        \left(1 - \mathrm{h}_y(x)^{(\alpha-1)/\alpha}\right)</span>
 
-<span class="sd">    Smaller :math:`\alpha` values stay closer to the 0-1 loss (more robust),</span>
-<span class="sd">    while larger values behave more like log-loss (smoother optimization).</span>
+<span class="sd">    Larger :math:`\alpha` values stay closer to the 0-1 loss (more robust),</span>
+<span class="sd">    while smaller values behave more like log-loss (smoother optimization).</span>
 
 <span class="sd">    See [1]_ for further details.</span>
 <span class="sd">    Following [1]_, the implementation uses the parameter</span>
@@ -492,8 +493,8 @@
 <span class="sd">    ----------</span>
 <span class="sd">    loss_parameter : float, default=1.4</span>
 <span class="sd">        The :math:`\beta = \alpha / (\alpha-1)` parameter for the</span>
-<span class="sd">        :math:`\alpha`-loss function. When beta=0 (alpha=1), it corresponds to</span>
-<span class="sd">        0-1 loss. Larger beta values provide smoother approximations</span>
+<span class="sd">        :math:`\alpha`-loss function. When beta=1 (alpha -&gt; infinity), it</span>
+<span class="sd">        corresponds to the 0-1 loss. Larger beta values provide smoother approximations</span>
 <span class="sd">        closer to log-loss (cross-entropy). Typical values are </span>
 <span class="sd">        in the range [1.0, 11.0].</span>
 
