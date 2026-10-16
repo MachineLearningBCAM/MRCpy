@@ -699,8 +699,9 @@ class CMRC(BaseMRC):
         if self.loss == '0-1':
 
             # Compute the conditional probabilities
+            # h(y|x) = (1 + Phi(x, y)^T mu - varphi(x))_+
             varphi, _ = self.varphi(phi_mu)
-            hy_x = np.clip(1 + phi_mu + varphi[:, np.newaxis], 0., None)
+            hy_x = np.clip(1 + phi_mu - varphi[:, np.newaxis], 0., None)
 
             # Normalize the probabilities
             c = np.sum(hy_x, axis=1)
