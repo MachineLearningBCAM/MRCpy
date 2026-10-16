@@ -82,11 +82,12 @@ class mgce_clf():
     The :math:`\alpha`-loss family, indexed by :math:`\alpha \geq 1`, smoothly
     interpolates between well-known losses:
 
-    - :math:`\alpha = 1`: the **0-1 loss** :math:`\ell_1(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,
-      which directly measures classification error but is non-smooth.
-    - :math:`\alpha \to \infty`: the **log-loss**
-      :math:`\ell_\infty(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),
+    - :math:`\alpha = 1`: the **log-loss**
+      :math:`\ell_1(\mathrm{h}, y) = -\log \mathrm{h}_y(x)` (cross-entropy),
       which is smooth and easy to optimize.
+    - :math:`\alpha \to \infty`: the **0-1 loss**
+      :math:`\ell_\infty(\mathrm{h}, y) = 1 - \mathrm{h}_y(x)`,
+      which directly measures classification error but is non-smooth.
 
     For intermediate :math:`\alpha > 1`:
 
@@ -95,8 +96,8 @@ class mgce_clf():
         \ell_\alpha(\mathrm{h}(x), y) = \frac{\alpha}{\alpha - 1}
         \left(1 - \mathrm{h}_y(x)^{(\alpha-1)/\alpha}\right)
 
-    Smaller :math:`\alpha` values stay closer to the 0-1 loss (more robust),
-    while larger values behave more like log-loss (smoother optimization).
+    Larger :math:`\alpha` values stay closer to the 0-1 loss (more robust),
+    while smaller values behave more like log-loss (smoother optimization).
 
     See [1]_ for further details.
     Following [1]_, the implementation uses the parameter
@@ -110,8 +111,8 @@ class mgce_clf():
     ----------
     loss_parameter : float, default=1.4
         The :math:`\beta = \alpha / (\alpha-1)` parameter for the
-        :math:`\alpha`-loss function. When beta=0 (alpha=1), it corresponds to
-        0-1 loss. Larger beta values provide smoother approximations
+        :math:`\alpha`-loss function. When beta=1 (alpha -> infinity), it
+        corresponds to the 0-1 loss. Larger beta values provide smoother approximations
         closer to log-loss (cross-entropy). Typical values are 
         in the range [1.0, 11.0].
 

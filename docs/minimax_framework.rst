@@ -1,11 +1,11 @@
 Minimax Framework
 =================
 
-MRCpy [3]_ implements minimax risk classifiers (MRCs) that obtain
+MRCpy implements minimax risk classifiers (MRCs) that obtain
 classification rules by minimizing the worst-case expected loss over an
 uncertainty set of distributions. This section provides a general overview
 of the framework underlying all methods in the library, following the
-formulation in [4]_.
+formulation in [3]_.
 
 Minimax Risk Classification
 ---------------------------
@@ -82,6 +82,14 @@ MRCpy supports two main types of loss functions:
 * **Log-loss**: Quantifies the negative log-likelihood for a classification
   rule (cross-entropy).
 
+In addition to the above two main losses, the library also provides an
+implementation of minimax classifiers using a parametric family of losses,
+the :math:`\alpha`-losses, that spans multiple losses including the 0-1 loss
+and the log-loss [4]_. The minimum expected :math:`\alpha`-loss (Bayes risk)
+can be related to generalized notions of entropy [2]_. In particular, the
+Bayes risk corresponding to an :math:`\alpha`-loss coincides with the Arimoto
+conditional entropy, which is closely related to Tsallis entropy.
+
 The library implements multiple techniques within the minimax risk
 classification framework; see the references below for details.
 
@@ -96,10 +104,11 @@ References
        Entropy for Supervised Classification. IEEE Transactions on
        Information Theory, 68(4), 2530-2550.
 
-.. [3] Bondugula, K., Álvarez, V., Segovia-Martín, J.I., Pérez, A.,
-       & Mazuelas, S. (2021). MRCpy: A Library for Minimax Risk Classifiers.
-       arXiv preprint arXiv:2108.01952.
-
-.. [4] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification
+.. [3] Mazuelas, S., Zanoni, A., & Pérez, A. (2020). Minimax Classification
        with 0-1 Loss and Performance Guarantees. Advances in Neural
        Information Processing Systems, 33, 302-312.
+
+.. [4] Bondugula, K., Mazuelas, S., Pérez, A., & Liu, A. (2026).
+       Minimax Generalized Cross-Entropy. In Proceedings of the
+       International Conference on Artificial Intelligence and
+       Statistics (AISTATS).
