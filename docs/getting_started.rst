@@ -43,7 +43,8 @@ You may then use ``pytest tests`` to run all the checks (you will need to have t
    `pycddlib installation guide <https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation>`_
    for details on installing GMP and other dependencies.
 
-Optional (for PyTorch MGCE classifier):
+Optional (for PyTorch MGCE classifier), installed with
+``pip install "MRCpy[pytorch]"``:
 
 - ``torch`` >= 1.9.0
 - ``tqdm`` >= 4.50.0

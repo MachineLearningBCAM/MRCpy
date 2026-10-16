@@ -71,8 +71,14 @@ if __name__ == '__main__':
         'lmrc': [
             'pycddlib>=3.0.2',
         ],
+        'pytorch': [
+            'torch>=1.9.0',
+            'tqdm>=4.50.0',
+        ],
         'all': [
             'pycddlib>=3.0.2',
+            'torch>=1.9.0',
+            'tqdm>=4.50.0',
         ]
     }
 
