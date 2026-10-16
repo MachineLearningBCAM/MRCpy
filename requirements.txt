@@ -5,5 +5,3 @@ cvxpy>=1.1
 pandas>=1.0
 pyarrow
 gurobipy>=9.5
-torch>=1.9.0
-tqdm>=4.50.0

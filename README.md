@@ -38,7 +38,7 @@ __NOTE:__ The solver based on CVXpy in the library uses GUROBI optimizer which r
 - gurobipy (>= 9.5, tested with 9.5, 12 and 13; requires [license](https://portal.gurobi.com/iam/login/?target=https%3A%2F%2Fportal.gurobi.com%2Fiam%2Flicenses%2Flist) — free for academics)
 - pycddlib (required only for LMRC — see [installation guide](https://pycddlib.readthedocs.io/en/latest/quickstart.html#installation))
 
-Optional (for PyTorch MGCE classifier):
+Optional (for PyTorch MGCE classifier), installed with `pip install "MRCpy[pytorch]"`:
 
 - torch, tqdm
 
