@@ -8,7 +8,6 @@ libsvm
 
 # Commercial solvers (require licenses)
 # mosek
-# gurobipy
 
 # Additional utilities
 pyarrow
