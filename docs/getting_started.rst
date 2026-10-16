@@ -34,7 +34,7 @@ You may then use ``pytest tests`` to run all the checks (you will need to have t
 - ``cvxpy`` >= 1.1
 - ``pandas`` >= 1.0
 - ``pyarrow``
-- ``gurobipy`` (requires license)
+- ``gurobipy`` >= 9.5, tested with 9.5, 12 and 13 (requires license)
 - ``pycddlib`` >= 3.0.2 (required only for LMRC)
 
 .. note::
