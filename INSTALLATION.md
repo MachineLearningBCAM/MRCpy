@@ -31,7 +31,6 @@ The package supports several installation extras:
 
 - `pytorch`: PyTorch MGCE classifier support
 - `lmrc`: LMRC classifier (requires pycddlib)
-- `solvers`: Commercial solvers (Gurobi, Mosek)
 - `all`: All optional dependencies
 
 **Examples:**
@@ -95,12 +94,17 @@ pip install -r requirements-optional.txt
 
 3. **Skip if not needed**: LMRC is the only classifier that requires pycddlib
 
-### Commercial Solvers (mosek, gurobipy)
+### Gurobi
 
-These require licenses and should be installed separately:
+`gurobipy` (>= 9.5; tested with 9.5, 12 and 13) is installed with MRCpy, and
+is used by the `cvx` solver and by the `cg` and `ccg` solvers. The pip package
+includes a size-limited license, which is enough for small problems; for larger
+problems, get a free academic license at https://www.gurobi.com/academia/
 
-- **Mosek**: Get academic license at https://www.mosek.com/products/academic-licenses/
-- **Gurobi**: Get academic license at https://www.gurobi.com/academia/
+### Mosek (optional)
+
+Mosek is an optional solver for CVXpy and requires a license: get an academic
+license at https://www.mosek.com/products/academic-licenses/
 
 ### libsvm Issues
 
