@@ -704,10 +704,10 @@ def constr(model, mu, nu, n_max, eps_1, last_checked):
 	The constraint with the maximum violation of an instance x corresponds
 	to the subset C achieving the maximum value (9) in [1],
 
-		psi = max_C (sum_{y in C} Phi(x, y)^T mu - 1) / |C|,
+		varphi = max_C (sum_{y in C} Phi(x, y)^T mu - 1) / |C|,
 
 	obtained as in Algorithm 2 in [1] by sorting Phi(x, y)^T mu in
-	decreasing order, and its violation is psi + 1 - nu.
+	decreasing order, and its violation is varphi + 1 - nu.
 
 	Parameters:
 	-----------
@@ -747,10 +747,10 @@ def constr(model, mu, nu, n_max, eps_1, last_checked):
 	scores = np.asarray(X @ mu.T)[:, model.rows] * model.signs
 	order = np.argsort(-scores, axis=1, kind='stable')
 	sorted_scores = np.take_along_axis(scores, order, axis=1)
-	psi_size = (np.cumsum(sorted_scores, axis=1) - 1) / np.arange(1, scores.shape[1] + 1)
-	size = np.argmax(psi_size, axis=1) + 1
-	psi = psi_size[np.arange(n), size - 1]
-	violation = psi + 1 - nu
+	varphi_size = (np.cumsum(sorted_scores, axis=1) - 1) / np.arange(1, scores.shape[1] + 1)
+	size = np.argmax(varphi_size, axis=1) + 1
+	varphi = varphi_size[np.arange(n), size - 1]
+	violation = varphi + 1 - nu
 
 	# Instances in order from last_checked
 	checked = (last_checked + np.arange(n)) % n

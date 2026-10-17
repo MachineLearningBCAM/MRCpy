@@ -42,8 +42,8 @@ def adam(tau_, lambda_, n, m, f_, g_, max_iters, alpha, mini_batch_size=32, eps=
         batch_end_sample_id = batch_start_sample_id + mini_batch_size
         epoch_id += batch_end_sample_id // n
 
-    psi, _ = f_(w_k)
-    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + psi
+    varphi, _ = f_(w_k)
+    f_value = lambda_ @ np.abs(w_k) - tau_ @ w_k + varphi
     mu = w_k
 
     # Return the optimized values in a dictionary
