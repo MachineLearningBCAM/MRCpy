@@ -393,7 +393,6 @@
 <span class="sd">If not, see https://www.gnu.org/licenses/.</span>
 <span class="sd">"""</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">it</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">cvxpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cvx</span>
@@ -807,168 +806,106 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">lambda_mat</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                    <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="c1"># Features of the instances (n_samples, n_features), used in the</span>
+        <span class="c1"># compact form of the feature mapping Phi(x, y) (see the method</span>
+        <span class="c1"># scores), without the tensor of Phi(x, y) for all the labels.</span>
+        <span class="c1"># Binary classification without one-hot encoding uses</span>
+        <span class="c1"># Phi(x, y) = +-features(x) (parameters of length n_features).</span>
+        <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_features</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binary_compact_</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span>
+                                <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="s1">'one_hot'</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
 
         <span class="c1"># Constants</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-
-        <span class="c1"># In case of 0-1 loss, learn constraints using the phi</span>
-        <span class="c1"># These constraints are used in the optimization instead of phi</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'cvx'</span><span class="p">:</span>
             <span class="c1"># Use cvxpy for the convex optimization of the MRC.</span>
 
             <span class="c1"># Variables</span>
             <span class="n">mu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="n">phi_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+            <span class="n">constraints</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'0-1'</span><span class="p">:</span>
-
-                <span class="c1"># Summing up the phi configurations</span>
-                <span class="c1"># for all possible subsets of classes for each instance</span>
-                <span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">phi</span><span class="p">[:,</span> <span class="n">S</span><span class="p">,</span> <span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-                                   <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                                   <span class="k">for</span> <span class="n">S</span> <span class="ow">in</span> <span class="n">it</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">),</span>
-                                                            <span class="n">numVals</span><span class="p">)))</span>
-    
-                <span class="c1"># Compute the corresponding length of the subset of classes</span>
-                <span class="c1"># for which sums computed for each instance</span>
-                <span class="n">cardS</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span> \
-                    <span class="n">repeat</span><span class="p">([</span><span class="n">n</span> <span class="o">*</span> <span class="n">scs</span><span class="o">.</span><span class="n">comb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">numVals</span><span class="p">)</span>
-                            <span class="k">for</span> <span class="n">numVals</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
-                                                     <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
-
-                <span class="c1"># Constraints in case of 0-1 loss function</span>
-                <span class="n">M</span> <span class="o">=</span> <span class="n">F</span> <span class="o">/</span> <span class="p">(</span><span class="n">cardS</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
-                <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">cardS</span><span class="p">)</span>
-
-                <span class="c1"># Calculate the psi function and</span>
-                <span class="c1"># add it to the objective function</span>
-                <span class="c1"># First we calculate the all possible values of psi</span>
-                <span class="c1"># for all the points</span>
-                <span class="n">psi</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">h</span>
-                <span class="n">sum_psi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">max</span><span class="p">(</span> \
-                                        <span class="n">cvx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> 
-                                                             <span class="n">n</span><span class="p">))),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                <span class="c1"># varphi(x_i) = 1 + max over the subsets S of labels of</span>
+                <span class="c1"># (sum_{y in S} phi_mu[i, y] - 1) / |S| is at most nu_i if</span>
+                <span class="c1"># and only if sum_y pos(phi_mu[i, y] - nu_i + 1) &lt;= 1, as in</span>
+                <span class="c1"># MRC. This encodes the maximum over the 2^n_classes - 1</span>
+                <span class="c1"># subsets of labels with a variable nu_i for each instance.</span>
+                <span class="n">nu</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                <span class="n">constraints</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">phi_mu</span> <span class="o">-</span> <span class="n">cvx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nu</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">'F'</span><span class="p">)</span> <span class="o">@</span>
+                                    <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+                <span class="p">]</span>
+                <span class="n">sum_varphi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">nu</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'log'</span><span class="p">:</span>
                 <span class="c1"># Constraints in case of log loss function</span>
-                <span class="n">sum_psi</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                    <span class="n">sum_psi</span> <span class="o">=</span> <span class="n">sum_psi</span> <span class="o">+</span> \
-                        <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">log_sum_exp</span><span class="p">(</span><span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span><span class="p">)</span>
+                <span class="n">sum_varphi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">cvx</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cvx</span><span class="o">.</span><span class="n">log_sum_exp</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
             <span class="c1"># Objective function</span>
             <span class="n">objective</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Minimize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">@</span> <span class="n">cvx</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">-</span>
-                                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sum_psi</span><span class="p">)</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">tau_</span> <span class="o">@</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sum_varphi</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_</span> <span class="o">=</span> \
-                <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
+                <span class="n">try_solvers</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="n">constraints</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cvx_solvers</span><span class="p">)</span>
 
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'sgd'</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">==</span> <span class="s1">'adam'</span><span class="p">:</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'0-1'</span><span class="p">:</span>
-                <span class="c1"># Function to calculate the psi subobjective</span>
+                <span class="c1"># Function to calculate the varphi subobjective</span>
                 <span class="c1"># to be added to the objective function.</span>
                 <span class="c1"># In addition the function returns subgradient</span>
-                <span class="c1"># of the expected value psi</span>
+                <span class="c1"># of the expected value varphi</span>
                 <span class="c1"># to be used by nesterov optimization.</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
-                    <span class="c1"># First we calculate the all possible values of psi</span>
-                    <span class="c1"># for all the points.</span>
-
-                    <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">psi_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-                    <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span>
-                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                        <span class="c1"># Get psi for each data point</span>
-                        <span class="c1"># and return the max value over all subset</span>
-                        <span class="c1"># and its corresponding index.</span>
-                        <span class="n">g</span><span class="p">,</span> <span class="n">psi_xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
-                        <span class="n">psi_grad</span> <span class="o">=</span> <span class="n">psi_grad</span> <span class="o">+</span> <span class="n">g</span>
-                        <span class="n">psi</span> <span class="o">=</span> <span class="n">psi</span> <span class="o">+</span> <span class="n">psi_xi</span>
-
-                    <span class="n">psi</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi</span><span class="p">)</span>
-                    <span class="n">psi_grad</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_grad</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">psi</span><span class="p">,</span> <span class="n">psi_grad</span>
+                    <span class="n">varphi</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">varphi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">mu</span><span class="p">))</span>
+                    <span class="n">varphi_grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighted_features</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">varphi</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">varphi_grad</span>
 
                 <span class="c1"># When using SGD for the convex optimization</span>
-                <span class="c1"># To compute the subgradient of the subobjective at one point</span>
+                <span class="c1"># To compute the subgradient of the subobjective</span>
+                <span class="c1"># at a batch of instances</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                    <span class="n">i</span> <span class="o">=</span> <span class="n">batch_start_sample_id</span>
-                    <span class="n">psi</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">psi_grad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-                    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">batch_end_sample_id</span><span class="p">:</span>
-                        <span class="n">sample_id</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n</span>
-                        <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span>
-                        <span class="n">g</span><span class="p">,</span> <span class="n">psi_xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
-                        <span class="n">psi_grad</span> <span class="o">=</span> <span class="n">psi_grad</span> <span class="o">+</span> <span class="n">g</span>
-                        <span class="n">psi</span> <span class="o">=</span> <span class="n">psi</span> <span class="o">+</span> <span class="n">psi_xi</span>
-                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-
+                    <span class="n">batch</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_start_sample_id</span><span class="p">,</span>
+                                                  <span class="n">batch_end_sample_id</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">]</span>
+                    <span class="n">_</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">varphi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">mu</span><span class="p">))</span>
                     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_end_sample_id</span> <span class="o">-</span> <span class="n">batch_start_sample_id</span>
-                    <span class="n">psi_grad</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi_grad</span><span class="p">)</span>
-                    <span class="n">psi</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">psi</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">psi_grad</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">weighted_features</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'log'</span><span class="p">:</span>
                 <span class="c1"># Define the objective function and</span>
                 <span class="c1"># the gradient for the log loss function.</span>
 
-                <span class="c1"># The psi subobjective for all the datapoints</span>
+                <span class="c1"># The varphi subobjective for all the datapoints</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">f_</span><span class="p">(</span><span class="n">mu</span><span class="p">):</span>
-                    <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="n">mu</span>
-                    <span class="n">psi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span>\
-                            <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">scs</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">((</span><span class="n">phi_mu</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                    <span class="n">phi_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="n">mu</span><span class="p">)</span>
+                    <span class="n">varphi</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">scs</span><span class="o">.</span><span class="n">logsumexp</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
                     <span class="c1"># Only computed in case of nesterov subgradient.</span>
                     <span class="c1"># In case of SGD, not required.</span>
-                    <span class="n">psi_grad</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="n">varphi_grad</span> <span class="o">=</span> <span class="kc">None</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">RandomReLUPhi</span><span class="p">)</span> <span class="ow">or</span> \
                        <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">ThresholdPhi</span><span class="p">):</span>
-                        <span class="c1"># Use the subgradient approach for the convex optimization</span>
-                        <span class="c1"># The subgradient of the psi subobjective</span>
-                        <span class="c1"># for all the datapoints</span>
-                        
-                        <span class="c1"># Use log-sum-exp trick for numerical stability</span>
-                        <span class="c1"># phi_mu shape: (n_samples, n_classes)</span>
-                        <span class="n">max_phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                        <span class="n">expPhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi_mu</span> <span class="o">-</span> <span class="n">max_phi</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
-                        
-                        <span class="n">psi_grad</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span>\
-                                <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">expPhi</span> <span class="o">@</span> <span class="n">phi</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span>
-                                         <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expPhi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span>
-                                        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+                        <span class="c1"># The subgradient of the varphi subobjective</span>
+                        <span class="c1"># for all the datapoints: expectation of the</span>
+                        <span class="c1"># features with the softmax of the scores</span>
+                        <span class="n">varphi_grad</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">weighted_features</span><span class="p">(</span>
+                            <span class="n">X_transform</span><span class="p">,</span> <span class="n">scs</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 
-                    <span class="k">return</span> <span class="n">psi</span><span class="p">,</span> <span class="n">psi_grad</span>
+                    <span class="k">return</span> <span class="n">varphi</span><span class="p">,</span> <span class="n">varphi_grad</span>
 
                 <span class="c1"># Use SGD for the convex optimization in general.</span>
-                <span class="c1"># Gradient of the subobjective (psi) at an instance.</span>
+                <span class="c1"># Gradient of the subobjective (varphi) at a batch of instances.</span>
                 <span class="k">def</span><span class="w"> </span><span class="nf">g_</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">batch_start_sample_id</span><span class="p">,</span> <span class="n">batch_end_sample_id</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                    <span class="n">i</span> <span class="o">=</span> <span class="n">batch_start_sample_id</span>
-                    <span class="n">expPhi</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">batch</span> <span class="o">=</span> <span class="n">X_transform</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_start_sample_id</span><span class="p">,</span>
+                                                  <span class="n">batch_end_sample_id</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span><span class="p">]</span>
+                    <span class="n">weights</span> <span class="o">=</span> <span class="n">scs</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">mu</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
                     <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_end_sample_id</span> <span class="o">-</span> <span class="n">batch_start_sample_id</span>
-                    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">batch_end_sample_id</span><span class="p">:</span>
-                        <span class="n">sample_id</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n</span>
-
-                        <span class="c1"># Use log-sum-exp trick for numerical stability</span>
-                        <span class="n">phi_mu_xi</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">@</span> <span class="n">mu</span>
-                        <span class="n">max_phi_xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">phi_mu_xi</span><span class="p">)</span>
-                        <span class="n">expPhi_xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">phi_mu_xi</span> <span class="o">-</span> <span class="n">max_phi_xi</span><span class="p">)[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span>
-
-                        <span class="n">sumExpPhi_xi</span> <span class="o">=</span> \
-                                <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(((</span><span class="n">expPhi_xi</span> <span class="o">@</span> <span class="n">phi</span><span class="p">[</span><span class="n">sample_id</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
-                                        <span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">/</span>
-                                        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">expPhi_xi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span>
-                                       <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-                        <span class="n">expPhi</span> <span class="o">=</span> <span class="n">expPhi</span> <span class="o">+</span> <span class="n">sumExpPhi_xi</span>
-
-                        <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
-
-                    <span class="n">expPhi</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> <span class="n">expPhi</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="n">expPhi</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">)</span> <span class="o">*</span> \
+                        <span class="bp">self</span><span class="o">.</span><span class="n">weighted_features</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">RandomReLUPhi</span><span class="p">)</span> <span class="ow">or</span> \
                <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="n">ThresholdPhi</span><span class="p">):</span>
@@ -1011,45 +948,116 @@
         <span class="k">return</span> <span class="bp">self</span></div>
 
 
-<div class="viewcode-block" id="CMRC.psi">
-<a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.psi">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">psi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
+<div class="viewcode-block" id="CMRC.scores">
+<a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.scores">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">'''</span>
-<span class="sd">        Function to compute the psi function in the objective</span>
-<span class="sd">        using the given solution mu and the feature mapping</span>
-<span class="sd">        corresponding to a single instance.</span>
+<span class="sd">        Products :math:`\Phi(x, y)^T \mu` of the feature mapping and the</span>
+<span class="sd">        parameters for each instance and label, using the features of the</span>
+<span class="sd">        instances, without the feature mapping of every label: with</span>
+<span class="sd">        :math:`\psi(x)` the features of instance :math:`x` (from</span>
+<span class="sd">        `compute_features`), in the multiclass case</span>
+<span class="sd">        :math:`\Phi(x, y)^T \mu = \psi(x)^T \mu_y` with :math:`\mu_y` the</span>
+<span class="sd">        parameters of label :math:`y`, and in the binary case</span>
+<span class="sd">        :math:`\Phi(x, y)^T \mu = \pm \psi(x)^T \mu`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        phi_mu : array-like of shape (n_features,)</span>
-<span class="sd">            Product of feature mapping and solution vector.</span>
+<span class="sd">        X_transform : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Features of the instances (from `compute_features`).</span>
 
-<span class="sd">        phi : array-like of shape (n_classes, n_features)</span>
-<span class="sd">            Feature mapping corresponding to an instance and</span>
-<span class="sd">            each class.</span>
+<span class="sd">        mu : array-like of shape (n_classes * n_features,) or (n_features,)</span>
+<span class="sd">            Parameters (`numpy` array or `cvxpy` variable).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        g : array-like of shape (n_features,)</span>
-<span class="sd">            Gradient of psi for a given solution and feature mapping.</span>
-
-<span class="sd">        psi_value : float</span>
-<span class="sd">            The value of psi for a given solution and feature mapping.</span>
+<span class="sd">        phi_mu : array-like of shape (n_samples, n_classes)</span>
+<span class="sd">            Product of the feature mapping and the parameters.</span>
 <span class="sd">        '''</span>
 
-        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">phi_mu</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="n">g</span> <span class="o">=</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">],:]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_compact_</span><span class="p">:</span>
+            <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Expression</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">cvx</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">phi_mu</span><span class="p">,</span> <span class="o">-</span><span class="n">phi_mu</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">phi_mu</span><span class="p">,</span> <span class="o">-</span><span class="n">phi_mu</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">cvx</span><span class="o">.</span><span class="n">Expression</span><span class="p">):</span>
+            <span class="n">mu_mat</span> <span class="o">=</span> <span class="n">cvx</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">X_transform</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                                 <span class="n">order</span><span class="o">=</span><span class="s1">'C'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mu_mat</span> <span class="o">=</span> <span class="n">mu</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X_transform</span> <span class="o">@</span> <span class="n">mu_mat</span><span class="o">.</span><span class="n">T</span></div>
 
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">):</span>
-            <span class="n">new_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">value</span> <span class="o">+</span> <span class="n">phi_mu</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">new_value</span> <span class="o">&gt;=</span> <span class="n">value</span><span class="p">:</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">new_value</span>
-                <span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="n">phi</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">k</span><span class="p">],:])</span> <span class="o">/</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">break</span>
 
-        <span class="k">return</span> <span class="n">g</span><span class="p">,</span> <span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+<div class="viewcode-block" id="CMRC.weighted_features">
+<a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.weighted_features">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">weighted_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_transform</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Sum of the feature mappings of the instances and labels weighted by</span>
+<span class="sd">        the given weights, :math:`\sum_i \sum_y w_{i,y} \Phi(x_i, y)`,</span>
+<span class="sd">        using the features of the instances.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X_transform : array-like of shape (n_samples, n_features)</span>
+<span class="sd">            Features of the instances (from `compute_features`).</span>
+
+<span class="sd">        weights : array-like of shape (n_samples, n_classes)</span>
+<span class="sd">            Weight of each instance and label.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        features : array-like of shape (n_classes * n_features,) or (n_features,)</span>
+<span class="sd">            Weighted sum of the feature mappings.</span>
+<span class="sd">        '''</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">binary_compact_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X_transform</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">weights</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">weights</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+                              <span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="n">X_transform</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CMRC.varphi">
+<a class="viewcode-back" href="../../generated/MRCpy.CMRC.html#MRCpy.CMRC.varphi">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">varphi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi_mu</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">'''</span>
+<span class="sd">        Function :math:`\varphi` of the 0-1 loss for each instance, the</span>
+<span class="sd">        maximum over the subsets S of labels of</span>
+<span class="sd">        :math:`1 + (\sum_{y \in S} \Phi(x, y)^T \mu - 1) / |S|`,</span>
+<span class="sd">        attained at the labels with the largest scores, and the weights of</span>
+<span class="sd">        the labels in its subgradient (1 / |S| for the labels in S).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        phi_mu : array-like of shape (n_samples, n_classes)</span>
+<span class="sd">            Product of the feature mapping and the parameters for each</span>
+<span class="sd">            instance and label (see `scores`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        varphi_value : array-like of shape (n_samples,)</span>
+<span class="sd">            The value of :math:`\varphi` for each instance.</span>
+
+<span class="sd">        weights : array-like of shape (n_samples, n_classes)</span>
+<span class="sd">            Weight of each label in the subgradient of :math:`\varphi`.</span>
+<span class="sd">        '''</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">phi_mu</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># For a fixed cardinality r, the subset of labels maximizing the</span>
+        <span class="c1"># sum of scores is the r labels with the largest scores, so the</span>
+        <span class="c1"># maximum over the subsets is a maximum over r of the cumulative</span>
+        <span class="c1"># sums of the scores sorted in decreasing order (as in MRC).</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cumsum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">r_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">cumsum</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">r_vals</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c1"># Weights 1 / |S| of the labels in the subset S</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">in_S</span> <span class="o">=</span> <span class="n">r_vals</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">put_along_axis</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">in_S</span> <span class="o">/</span> <span class="n">r</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">weights</span></div>
 
 
 <div class="viewcode-block" id="CMRC.get_upper_bound">
@@ -1090,21 +1098,15 @@
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">accept_sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"is_fitted_"</span><span class="p">)</span>
 
-        <span class="n">n</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_phi</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X_transform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_features</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">phi_mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">(</span><span class="n">X_transform</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'0-1'</span><span class="p">:</span>
 
             <span class="c1"># Compute the conditional probabilities</span>
-            <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes</span><span class="p">))</span>
-            <span class="n">phi_mu</span> <span class="o">=</span> <span class="n">phi</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-                <span class="c1"># Compute the constraint function (\psi) for each x</span>
-                <span class="n">g</span><span class="p">,</span> <span class="n">psi_xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">psi</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">phi</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
-
-                <span class="c1"># Conditional probabilities</span>
-                <span class="n">hy_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="n">phi_mu</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">psi_xi</span><span class="p">),</span><span class="mf">0.</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="c1"># h(y|x) = (1 + Phi(x, y)^T mu - varphi(x))_+</span>
+            <span class="n">varphi</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">varphi</span><span class="p">(</span><span class="n">phi_mu</span><span class="p">)</span>
+            <span class="n">hy_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">phi_mu</span> <span class="o">-</span> <span class="n">varphi</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">0.</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
             <span class="c1"># Normalize the probabilities</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hy_x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -1123,7 +1125,7 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s1">'log'</span><span class="p">:</span>
             <span class="c1"># Constraints in case of log loss function</span>
 
-            <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu_</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">phi_mu</span>
 
             <span class="c1"># Normalizing conditional probabilities using log-sum-exp trick</span>
             <span class="c1"># For each class i, compute: 1 / sum_j(exp(v_j - v_i))</span>

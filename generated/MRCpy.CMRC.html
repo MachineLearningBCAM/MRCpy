@@ -600,11 +600,11 @@ the function.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.CMRC.predict_proba" title="MRCpy.CMRC.predict_proba"><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_proba</span></code></a>(X)</p></td>
 <td><p>Computes conditional probabilities corresponding to each class for the given unlabeled instances.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.CMRC.psi" title="MRCpy.CMRC.psi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">psi</span></code></a>(phi_mu, phi)</p></td>
-<td><p>Function to compute the psi function in the objective using the given solution mu and the feature mapping corresponding to a single instance.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.CMRC.score" title="MRCpy.CMRC.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.CMRC.score" title="MRCpy.CMRC.score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">score</span></code></a>(X, y[, sample_weight])</p></td>
 <td><p>Return the mean accuracy on the given test data and labels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.CMRC.scores" title="MRCpy.CMRC.scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scores</span></code></a>(X_transform, mu)</p></td>
+<td><p>Products <span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu\)</span> of the feature mapping and the parameters for each instance and label, using the features of the instances, without the feature mapping of every label: with <span class="math notranslate nohighlight">\(\psi(x)\)</span> the features of instance <span class="math notranslate nohighlight">\(x\)</span> (from <code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code>), in the multiclass case <span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu = \psi(x)^T \mu_y\)</span> with <span class="math notranslate nohighlight">\(\mu_y\)</span> the parameters of label <span class="math notranslate nohighlight">\(y\)</span>, and in the binary case <span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu = \pm \psi(x)^T \mu\)</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.CMRC.set_fit_request" title="MRCpy.CMRC.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, X_])</p></td>
 <td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
@@ -614,6 +614,12 @@ the function.</p>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.CMRC.set_score_request" title="MRCpy.CMRC.set_score_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_score_request</span></code></a>(*[, sample_weight])</p></td>
 <td><p>Request metadata passed to the <code class="docutils literal notranslate"><span class="pre">score</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#MRCpy.CMRC.varphi" title="MRCpy.CMRC.varphi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">varphi</span></code></a>(phi_mu)</p></td>
+<td><p>Function :math:<a href="#id3"><span class="problematic" id="id4">`</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#MRCpy.CMRC.weighted_features" title="MRCpy.CMRC.weighted_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weighted_features</span></code></a>(X_transform, weights)</p></td>
+<td><p>Sum of the feature mappings of the instances and labels weighted by the given weights, <span class="math notranslate nohighlight">\(\sum_i \sum_y w_{i,y} \Phi(x_i, y)\)</span>, using the features of the instances.</p></td>
 </tr>
 </tbody>
 </table>
@@ -881,33 +887,6 @@ corresponding to each class.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MRCpy.CMRC.psi">
-<span class="sig-name descname"><span class="pre">psi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.psi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.psi" title="Link to this definition">#</a></dt>
-<dd><p>Function to compute the psi function in the objective
-using the given solution mu and the feature mapping
-corresponding to a single instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>phi_mu</strong><span class="classifier">array-like of shape (n_features,)</span></dt><dd><p>Product of feature mapping and solution vector.</p>
-</dd>
-<dt><strong>phi</strong><span class="classifier">array-like of shape (n_classes, n_features)</span></dt><dd><p>Feature mapping corresponding to an instance and
-each class.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>g</strong><span class="classifier">array-like of shape (n_features,)</span></dt><dd><p>Gradient of psi for a given solution and feature mapping.</p>
-</dd>
-<dt><strong>psi_value</strong><span class="classifier">float</span></dt><dd><p>The value of psi for a given solution and feature mapping.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="MRCpy.CMRC.score">
 <span class="sig-name descname"><span class="pre">score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MRCpy.CMRC.score" title="Link to this definition">#</a></dt>
 <dd><p>Return the mean accuracy on the given test data and labels.</p>
@@ -928,6 +907,35 @@ each label set be correctly predicted.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>score</strong><span class="classifier">float</span></dt><dd><p>Mean accuracy of <code class="docutils literal notranslate"><span class="pre">self.predict(X)</span></code> w.r.t. <code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.CMRC.scores">
+<span class="sig-name descname"><span class="pre">scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.scores" title="Link to this definition">#</a></dt>
+<dd><p>Products <span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu\)</span> of the feature mapping and the
+parameters for each instance and label, using the features of the
+instances, without the feature mapping of every label: with
+<span class="math notranslate nohighlight">\(\psi(x)\)</span> the features of instance <span class="math notranslate nohighlight">\(x\)</span> (from
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code>), in the multiclass case
+<span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu = \psi(x)^T \mu_y\)</span> with <span class="math notranslate nohighlight">\(\mu_y\)</span> the
+parameters of label <span class="math notranslate nohighlight">\(y\)</span>, and in the binary case
+<span class="math notranslate nohighlight">\(\Phi(x, y)^T \mu = \pm \psi(x)^T \mu\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X_transform</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features of the instances (from <code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code>).</p>
+</dd>
+<dt><strong>mu</strong><span class="classifier">array-like of shape (n_classes * n_features,) or (n_features,)</span></dt><dd><p>Parameters (<a class="reference external" href="https://numpy.org/doc/stable/reference/index.html#module-numpy" title="(in NumPy v2.5)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy</span></code></a> array or <code class="xref py py-obj docutils literal notranslate"><span class="pre">cvxpy</span></code> variable).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>phi_mu</strong><span class="classifier">array-like of shape (n_samples, n_classes)</span></dt><dd><p>Product of the feature mapping and the parameters.</p>
 </dd>
 </dl>
 </dd>
@@ -1044,6 +1052,66 @@ sub-estimator of a meta-estimator, e.g. used inside a
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.CMRC.varphi">
+<span class="sig-name descname"><span class="pre">varphi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi_mu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.varphi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.varphi" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Function :math:<a href="#id6"><span class="problematic" id="id7">`</span></a></p>
+</div></blockquote>
+<dl class="simple">
+<dt>arphi` of the 0-1 loss for each instance, the</dt><dd><p>maximum over the subsets S of labels of
+<span class="math notranslate nohighlight">\(1 + (\sum_{y \in S} \Phi(x, y)^T \mu - 1) / |S|\)</span>,
+attained at the labels with the largest scores, and the weights of
+the labels in its subgradient (1 / <a href="#id12"><span class="problematic" id="id13">|S|</span></a> for the labels in S).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>phi_mu</strong><span class="classifier">array-like of shape (n_samples, n_classes)</span></dt><dd><p>Product of the feature mapping and the parameters for each
+instance and label (see <a class="reference internal" href="#MRCpy.CMRC.scores" title="MRCpy.CMRC.scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scores</span></code></a>).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>varphi_value</strong><span class="classifier">array-like of shape (n_samples,)</span></dt><dd><p>The value of :math:<a href="#id8"><span class="problematic" id="id9">`</span></a></p>
+</dd>
+<dt>arphi` for each instance.</dt><dd><dl class="simple">
+<dt>weights<span class="classifier">array-like of shape (n_samples, n_classes)</span></dt><dd><p>Weight of each label in the subgradient of :math:<a href="#id10"><span class="problematic" id="id11">`</span></a></p>
+</dd>
+</dl>
+</dd>
+<dt>arphi`.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MRCpy.CMRC.weighted_features">
+<span class="sig-name descname"><span class="pre">weighted_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/MRCpy/cmrc.html#CMRC.weighted_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MRCpy.CMRC.weighted_features" title="Link to this definition">#</a></dt>
+<dd><p>Sum of the feature mappings of the instances and labels weighted by
+the given weights, <span class="math notranslate nohighlight">\(\sum_i \sum_y w_{i,y} \Phi(x_i, y)\)</span>,
+using the features of the instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X_transform</strong><span class="classifier">array-like of shape (n_samples, n_features)</span></dt><dd><p>Features of the instances (from <code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_features</span></code>).</p>
+</dd>
+<dt><strong>weights</strong><span class="classifier">array-like of shape (n_samples, n_classes)</span></dt><dd><p>Weight of each instance and label.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>features</strong><span class="classifier">array-like of shape (n_classes * n_features,) or (n_features,)</span></dt><dd><p>Weighted sum of the feature mappings.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <section id="examples-using-mrcpy-cmrc">
@@ -1087,11 +1155,13 @@ sub-estimator of a meta-estimator, e.g. used inside a
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.minimax_risk"><code class="docutils literal notranslate"><span class="pre">CMRC.minimax_risk()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.predict"><code class="docutils literal notranslate"><span class="pre">CMRC.predict()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.predict_proba"><code class="docutils literal notranslate"><span class="pre">CMRC.predict_proba()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.psi"><code class="docutils literal notranslate"><span class="pre">CMRC.psi()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.score"><code class="docutils literal notranslate"><span class="pre">CMRC.score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.scores"><code class="docutils literal notranslate"><span class="pre">CMRC.scores()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.set_fit_request"><code class="docutils literal notranslate"><span class="pre">CMRC.set_fit_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.set_params"><code class="docutils literal notranslate"><span class="pre">CMRC.set_params()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.set_score_request"><code class="docutils literal notranslate"><span class="pre">CMRC.set_score_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.varphi"><code class="docutils literal notranslate"><span class="pre">CMRC.varphi()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MRCpy.CMRC.weighted_features"><code class="docutils literal notranslate"><span class="pre">CMRC.weighted_features()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples-using-mrcpy-cmrc">Examples using <code class="docutils literal notranslate"><span class="pre">MRCpy.CMRC</span></code></a></li>
