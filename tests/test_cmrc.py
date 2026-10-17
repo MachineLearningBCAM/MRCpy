@@ -4,6 +4,7 @@ import unittest
 
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 # Import the dataset
 from MRCpy import CMRC
@@ -36,6 +37,24 @@ class TestCMRC(unittest.TestCase):
         y_pred = clf.predict(self.X)
         self.assertTrue(y_pred.shape == (self.X.shape[0],))
 
+
+    # The predicted label is the label with the largest score
+    # Phi(x, y)^T mu, for the 0-1 loss
+    # (h(y|x) = (1 + Phi(x, y)^T mu - varphi(x))_+) and the log-loss
+    # (softmax of the scores), in multiclass and binary classification.
+    # With standardized instances and ReLU features, varphi(x) < 0 for
+    # many instances.
+    def test_CMRC_predict_largest_score(self):
+        X = StandardScaler().fit_transform(self.X)
+        for y in (self.y, (self.y == 0).astype(int)):
+            for loss in ('0-1', 'log'):
+                for phi in ('linear', 'relu'):
+                    clf = CMRC(phi=phi, loss=loss, solver='adam',
+                               max_iters=100, random_state=0)
+                    clf.fit(X, y)
+                    scores = clf.scores(clf.compute_features(X), clf.mu_)
+                    np.testing.assert_array_equal(clf.predict(X),
+                                                  np.argmax(scores, axis=1))
 
     # Without using cvxpy
     # Training test for CMRC with 0-1 loss.
