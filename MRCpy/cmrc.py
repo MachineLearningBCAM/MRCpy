@@ -13,7 +13,6 @@ You should have received a copy of the GNU General Public License along with thi
 If not, see https://www.gnu.org/licenses/.
 """
 
-import itertools as it
 import warnings
 
 import cvxpy as cvx
@@ -417,168 +416,106 @@ class CMRC(BaseMRC):
         self.lambda_ = check_array(lambda_mat.flatten(), accept_sparse=True,
                                    ensure_2d=False)
 
-        phi = self.compute_phi(X)
+        # Features of the instances (n_samples, n_features), used in the
+        # compact form of the feature mapping Phi(x, y) (see the method
+        # scores), without the tensor of Phi(x, y) for all the labels.
+        # Binary classification without one-hot encoding uses
+        # Phi(x, y) = +-features(x) (parameters of length n_features).
+        X_transform = self.compute_features(X)
+        self.binary_compact_ = (self.n_classes == 2 and
+                                not getattr(self.phi, 'one_hot', False))
 
         # Constants
-        n = phi.shape[0]
-        m = phi.shape[2]
-
-        # In case of 0-1 loss, learn constraints using the phi
-        # These constraints are used in the optimization instead of phi
+        n = X_transform.shape[0]
+        m = self.tau_.shape[0]
 
         if self.solver == 'cvx':
             # Use cvxpy for the convex optimization of the MRC.
 
             # Variables
             mu = cvx.Variable(m)
+            phi_mu = self.scores(X_transform, mu)
+            constraints = None
 
             if self.loss == '0-1':
-
-                # Summing up the phi configurations
-                # for all possible subsets of classes for each instance
-                F = np.vstack(list(np.sum(phi[:, S, ], axis=1)
-                                   for numVals in range(1, self.n_classes + 1)
-                                   for S in it.combinations(np.arange(self.n_classes),
-                                                            numVals)))
-    
-                # Compute the corresponding length of the subset of classes
-                # for which sums computed for each instance
-                cardS = np.arange(1, self.n_classes + 1). \
-                    repeat([n * scs.comb(self.n_classes, numVals)
-                            for numVals in np.arange(1,
-                                                     self.n_classes + 1)])
-
-                # Constraints in case of 0-1 loss function
-                M = F / (cardS[:, np.newaxis])
-                h = 1 - (1 / cardS)
-
-                # Calculate the psi function and
-                # add it to the objective function
-                # First we calculate the all possible values of psi
-                # for all the points
-                psi = M @ mu + h
-                sum_psi = (1 / n) * cvx.sum(cvx.max( \
-                                        cvx.reshape(psi, (n, int(M.shape[0] / 
-                                                             n))), axis=1))
+                # varphi(x_i) = 1 + max over the subsets S of labels of
+                # (sum_{y in S} phi_mu[i, y] - 1) / |S| is at most nu_i if
+                # and only if sum_y pos(phi_mu[i, y] - nu_i + 1) <= 1, as in
+                # MRC. This encodes the maximum over the 2^n_classes - 1
+                # subsets of labels with a variable nu_i for each instance.
+                nu = cvx.Variable(n)
+                constraints = [
+                    cvx.sum(cvx.pos(phi_mu - cvx.reshape(nu, (n, 1), order='F') @
+                                    np.ones((1, self.n_classes)) + 1), axis=1) <= 1
+                ]
+                sum_varphi = (1 / n) * cvx.sum(nu)
 
             elif self.loss == 'log':
                 # Constraints in case of log loss function
-                sum_psi = 0
-                for i in range(n):
-                    sum_psi = sum_psi + \
-                        (1 / n) * cvx.log_sum_exp(phi[i, :, :] @ mu)
+                sum_varphi = (1 / n) * cvx.sum(cvx.log_sum_exp(phi_mu, axis=1))
 
             # Objective function
             objective = cvx.Minimize(self.lambda_ @ cvx.abs(mu) -
-                                     self.tau_ @ mu + sum_psi)
+                                     self.tau_ @ mu + sum_varphi)
 
             self.mu_, self.upper_ = \
-                try_solvers(objective, None, mu, self.cvx_solvers)
+                try_solvers(objective, constraints, mu, self.cvx_solvers)
 
         elif self.solver == 'sgd' or self.solver == 'adam':
 
             if self.loss == '0-1':
-                # Function to calculate the psi subobjective
+                # Function to calculate the varphi subobjective
                 # to be added to the objective function.
                 # In addition the function returns subgradient
-                # of the expected value psi
+                # of the expected value varphi
                 # to be used by nesterov optimization.
                 def f_(mu):
-                    # First we calculate the all possible values of psi
-                    # for all the points.
-
-                    psi = 0
-                    psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
-
-                    phi_mu = phi @ mu
-                    for i in range(n):
-                        # Get psi for each data point
-                        # and return the max value over all subset
-                        # and its corresponding index.
-                        g, psi_xi = self.psi(phi_mu[i, :], phi[i, :, :])
-                        psi_grad = psi_grad + g
-                        psi = psi + psi_xi
-
-                    psi = ((1 / n) * psi)
-                    psi_grad = ((1 / n) * psi_grad)
-                    return psi, psi_grad
+                    varphi, weights = self.varphi(self.scores(X_transform, mu))
+                    varphi_grad = self.weighted_features(X_transform, weights)
+                    return (1 / n) * np.sum(varphi), (1 / n) * varphi_grad
 
                 # When using SGD for the convex optimization
-                # To compute the subgradient of the subobjective at one point
+                # To compute the subgradient of the subobjective
+                # at a batch of instances
                 def g_(mu, batch_start_sample_id, batch_end_sample_id, n):
-                    i = batch_start_sample_id
-                    psi = 0
-                    psi_grad = np.zeros(phi.shape[2], dtype=np.float64)
-                    while i < batch_end_sample_id:
-                        sample_id = i % n
-                        phi_mu = phi[sample_id, :, :] @ mu
-                        g, psi_xi = self.psi(phi_mu, phi[sample_id, :, :])
-                        psi_grad = psi_grad + g
-                        psi = psi + psi_xi
-                        i = i + 1
-
+                    batch = X_transform[np.arange(batch_start_sample_id,
+                                                  batch_end_sample_id) % n]
+                    _, weights = self.varphi(self.scores(batch, mu))
                     batch_size = batch_end_sample_id - batch_start_sample_id
-                    psi_grad = ((1 / batch_size) * psi_grad)
-                    psi = ((1 / batch_size) * psi)
-                    return psi_grad
+                    return (1 / batch_size) * \
+                        self.weighted_features(batch, weights)
 
             elif self.loss == 'log':
                 # Define the objective function and
                 # the gradient for the log loss function.
 
-                # The psi subobjective for all the datapoints
+                # The varphi subobjective for all the datapoints
                 def f_(mu):
-                    phi_mu = phi @ mu
-                    psi = (1 / n) *\
-                            np.sum(scs.logsumexp((phi_mu), axis=1))
+                    phi_mu = self.scores(X_transform, mu)
+                    varphi = (1 / n) * np.sum(scs.logsumexp(phi_mu, axis=1))
 
                     # Only computed in case of nesterov subgradient.
                     # In case of SGD, not required.
-                    psi_grad = None
+                    varphi_grad = None
                     if isinstance(self.phi, RandomReLUPhi) or \
                        isinstance(self.phi, ThresholdPhi):
-                        # Use the subgradient approach for the convex optimization
-                        # The subgradient of the psi subobjective
-                        # for all the datapoints
-                        
-                        # Use log-sum-exp trick for numerical stability
-                        # phi_mu shape: (n_samples, n_classes)
-                        max_phi = np.max(phi_mu, axis=1, keepdims=True)
-                        expPhi = np.exp(phi_mu - max_phi)[:, np.newaxis, :]
-                        
-                        psi_grad = (1 / n) *\
-                                (np.sum(((expPhi @ phi)[:, 0, :] /
-                                         np.sum(expPhi, axis=2)).transpose(),
-                                        axis=1))
+                        # The subgradient of the varphi subobjective
+                        # for all the datapoints: expectation of the
+                        # features with the softmax of the scores
+                        varphi_grad = (1 / n) * self.weighted_features(
+                            X_transform, scs.softmax(phi_mu, axis=1))
 
-                    return psi, psi_grad
+                    return varphi, varphi_grad
 
                 # Use SGD for the convex optimization in general.
-                # Gradient of the subobjective (psi) at an instance.
+                # Gradient of the subobjective (varphi) at a batch of instances.
                 def g_(mu, batch_start_sample_id, batch_end_sample_id, n):
-                    i = batch_start_sample_id
-                    expPhi = 0
+                    batch = X_transform[np.arange(batch_start_sample_id,
+                                                  batch_end_sample_id) % n]
+                    weights = scs.softmax(self.scores(batch, mu), axis=1)
                     batch_size = batch_end_sample_id - batch_start_sample_id
-                    while i < batch_end_sample_id:
-                        sample_id = i % n
-
-                        # Use log-sum-exp trick for numerical stability
-                        phi_mu_xi = phi[sample_id, :, :] @ mu
-                        max_phi_xi = np.max(phi_mu_xi)
-                        expPhi_xi = np.exp(phi_mu_xi - max_phi_xi)[np.newaxis, np.newaxis, :]
-
-                        sumExpPhi_xi = \
-                                np.sum(((expPhi_xi @ phi[sample_id, :, :])
-                                        [:, 0, :] /
-                                        np.sum(expPhi_xi, axis=2)).transpose(),
-                                       axis=1)
-
-                        expPhi = expPhi + sumExpPhi_xi
-
-                        i = i + 1
-
-                    expPhi = ((1 / batch_size) * expPhi)
-                    return expPhi
+                    return (1 / batch_size) * \
+                        self.weighted_features(batch, weights)
 
             if isinstance(self.phi, RandomReLUPhi) or \
                isinstance(self.phi, ThresholdPhi):
@@ -620,43 +557,108 @@ class CMRC(BaseMRC):
 
         return self
 
-    def psi(self, phi_mu, phi):
+    def scores(self, X_transform, mu):
         '''
-        Function to compute the psi function in the objective
-        using the given solution mu and the feature mapping
-        corresponding to a single instance.
+        Products :math:`\Phi(x, y)^T \mu` of the feature mapping and the
+        parameters for each instance and label, using the features of the
+        instances, without the feature mapping of every label: with
+        :math:`\psi(x)` the features of instance :math:`x` (from
+        `compute_features`), in the multiclass case
+        :math:`\Phi(x, y)^T \mu = \psi(x)^T \mu_y` with :math:`\mu_y` the
+        parameters of label :math:`y`, and in the binary case
+        :math:`\Phi(x, y)^T \mu = \pm \psi(x)^T \mu`.
 
         Parameters
         ----------
-        phi_mu : array-like of shape (n_features,)
-            Product of feature mapping and solution vector.
+        X_transform : array-like of shape (n_samples, n_features)
+            Features of the instances (from `compute_features`).
 
-        phi : array-like of shape (n_classes, n_features)
-            Feature mapping corresponding to an instance and
-            each class.
+        mu : array-like of shape (n_classes * n_features,) or (n_features,)
+            Parameters (`numpy` array or `cvxpy` variable).
 
         Returns
         -------
-        g : array-like of shape (n_features,)
-            Gradient of psi for a given solution and feature mapping.
-
-        psi_value : float
-            The value of psi for a given solution and feature mapping.
+        phi_mu : array-like of shape (n_samples, n_classes)
+            Product of the feature mapping and the parameters.
         '''
 
-        indices = np.argsort(phi_mu)[::-1]
-        value = phi_mu[indices[0]] - 1
-        g = phi[indices[0],:]
+        if self.binary_compact_:
+            phi_mu = X_transform @ mu
+            if isinstance(phi_mu, cvx.Expression):
+                return cvx.vstack([phi_mu, -phi_mu]).T
+            return np.column_stack([phi_mu, -phi_mu])
+        if isinstance(mu, cvx.Expression):
+            mu_mat = cvx.reshape(mu, (self.n_classes, X_transform.shape[1]),
+                                 order='C')
+        else:
+            mu_mat = mu.reshape(self.n_classes, -1)
+        return X_transform @ mu_mat.T
 
-        for k in range(1, self.n_classes):
-            new_value = (k * value + phi_mu[indices[k]]) / (k+1)
-            if new_value >= value:
-                value = new_value
-                g = (k * g + phi[indices[k],:]) / (k+1)
-            else:
-                break
+    def weighted_features(self, X_transform, weights):
+        '''
+        Sum of the feature mappings of the instances and labels weighted by
+        the given weights, :math:`\sum_i \sum_y w_{i,y} \Phi(x_i, y)`,
+        using the features of the instances.
 
-        return g, (value + 1)
+        Parameters
+        ----------
+        X_transform : array-like of shape (n_samples, n_features)
+            Features of the instances (from `compute_features`).
+
+        weights : array-like of shape (n_samples, n_classes)
+            Weight of each instance and label.
+
+        Returns
+        -------
+        features : array-like of shape (n_classes * n_features,) or (n_features,)
+            Weighted sum of the feature mappings.
+        '''
+
+        if self.binary_compact_:
+            return np.asarray(X_transform.T @ (weights[:, 0] - weights[:, 1])
+                              ).ravel()
+        return np.asarray((X_transform.T @ weights).T).ravel()
+
+    def varphi(self, phi_mu):
+        '''
+        Function :math:`\varphi` of the 0-1 loss for each instance, the
+        maximum over the subsets S of labels of
+        :math:`1 + (\sum_{y \in S} \Phi(x, y)^T \mu - 1) / |S|`,
+        attained at the labels with the largest scores, and the weights of
+        the labels in its subgradient (1 / |S| for the labels in S).
+
+        Parameters
+        ----------
+        phi_mu : array-like of shape (n_samples, n_classes)
+            Product of the feature mapping and the parameters for each
+            instance and label (see `scores`).
+
+        Returns
+        -------
+        varphi_value : array-like of shape (n_samples,)
+            The value of :math:`\varphi` for each instance.
+
+        weights : array-like of shape (n_samples, n_classes)
+            Weight of each label in the subgradient of :math:`\varphi`.
+        '''
+
+        n = phi_mu.shape[0]
+        # For a fixed cardinality r, the subset of labels maximizing the
+        # sum of scores is the r labels with the largest scores, so the
+        # maximum over the subsets is a maximum over r of the cumulative
+        # sums of the scores sorted in decreasing order (as in MRC).
+        indices = np.argsort(-phi_mu, axis=1)
+        cumsum = np.cumsum(np.take_along_axis(phi_mu, indices, axis=1), axis=1)
+        r_vals = np.arange(1, self.n_classes + 1)
+        values = (cumsum - 1) / r_vals + 1
+        r = np.argmax(values, axis=1) + 1
+
+        # Weights 1 / |S| of the labels in the subset S
+        weights = np.zeros_like(phi_mu, dtype=np.float64)
+        in_S = r_vals[np.newaxis, :] <= r[:, np.newaxis]
+        np.put_along_axis(weights, indices, in_S / r[:, np.newaxis], axis=1)
+
+        return values[np.arange(n), r - 1], weights
 
     def get_upper_bound(self):
         '''
@@ -691,21 +693,15 @@ class CMRC(BaseMRC):
         X = check_array(X, accept_sparse=True)
         check_is_fitted(self, "is_fitted_")
 
-        n = X.shape[0]
-
-        phi = self.compute_phi(X)
+        X_transform = self.compute_features(X)
+        phi_mu = self.scores(X_transform, self.mu_)
 
         if self.loss == '0-1':
 
             # Compute the conditional probabilities
-            hy_x = np.zeros((n, self.n_classes))
-            phi_mu = phi @ self.mu_
-            for i in range(n):
-                # Compute the constraint function (\psi) for each x
-                g, psi_xi = self.psi(phi_mu[i, :], phi[i, :, :])
-
-                # Conditional probabilities
-                hy_x[i, :] = np.clip((1 + phi_mu[i, :] + psi_xi),0., None)
+            # h(y|x) = (1 + Phi(x, y)^T mu - varphi(x))_+
+            varphi, _ = self.varphi(phi_mu)
+            hy_x = np.clip(1 + phi_mu - varphi[:, np.newaxis], 0., None)
 
             # Normalize the probabilities
             c = np.sum(hy_x, axis=1)
@@ -724,7 +720,7 @@ class CMRC(BaseMRC):
         elif self.loss == 'log':
             # Constraints in case of log loss function
 
-            v = np.dot(phi, self.mu_)
+            v = phi_mu
 
             # Normalizing conditional probabilities using log-sum-exp trick
             # For each class i, compute: 1 / sum_j(exp(v_j - v_i))
