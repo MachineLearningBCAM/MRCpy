@@ -216,8 +216,11 @@ class TestMRC(unittest.TestCase):
                         eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_,
                         generate_features=True)
                     self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+                    # nu is weakly determined by the LP, and the wide mode solves the
+                    # LPs with barrier without crossover (an interior, approximately
+                    # optimal solution), so nu is only checked to 3 decimal places
                     self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
-                                           places=5)
+                                           places=3)
                     self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
 
     # Test the generation of features of the ccg solver for multiclass data
@@ -234,8 +237,11 @@ class TestMRC(unittest.TestCase):
                 eps_1=1e-7, eps_2=1e-9, p=clf_cvx.class_prior_,
                 generate_features=True)
             self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+            # nu is weakly determined by the LP, and the wide mode solves the
+            # LPs with barrier without crossover (an interior, approximately
+            # optimal solution), so nu is only checked to 3 decimal places
             self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
-                                   places=5)
+                                   places=3)
             self.assertTrue(mu.shape == clf_cvx.tau_mat.shape)
 
     # Test the ccg solver for multiclass data (iris) without the class
@@ -252,8 +258,11 @@ class TestMRC(unittest.TestCase):
                 eps_1=1e-7, eps_2=1e-9, p=None,
                 generate_features=generate_features)
             self.assertAlmostEqual(upper, clf_cvx.upper_, places=5)
+            # nu is weakly determined by the LP, and the wide mode solves the
+            # LPs with barrier without crossover (an interior, approximately
+            # optimal solution), so nu is only checked to 3 decimal places
             self.assertAlmostEqual(nu, float(np.ravel(clf_cvx.nu_)[0]),
-                                   places=5)
+                                   places=3)
 
             mu, nu, upper, R_k = mrc_ccg(
                 X_transform, clf_cvx.tau_mat, clf_cvx.lambda_mat, k_max=0,

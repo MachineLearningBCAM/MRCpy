@@ -555,8 +555,13 @@ class PrimalModel:
 		self.MRC_model.setParam('DualReductions', 0)
 		# Both constraints and features are added, so that the basis of the
 		# previous iteration is not a good warm start, and each model is
-		# solved from scratch (with presolve).
+		# solved from scratch (with presolve), with the barrier method and
+		# without crossover: the interior solution gives the primal values
+		# and the duals used to select constraints and features, and no
+		# basis is needed.
 		self.MRC_model.setParam('LPWarmStart', 0)
+		self.MRC_model.setParam('Method', 2)
+		self.MRC_model.setParam('Crossover', 0)
 
 		self.nu = self.MRC_model.addVar(lb=-GRB.INFINITY, obj=1, name='nu')
 		self.MRC_model.update()
